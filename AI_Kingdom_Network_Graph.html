@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The AI Kingdom — Learning Path Network</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #080d1a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; width: 100vw; height: 100vh; }
+svg { width: 100vw; height: 100vh; cursor: grab; }
+svg:active { cursor: grabbing; }
+#title { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10; pointer-events: none; }
+#title h1 { font-size: 22px; font-weight: 900; letter-spacing: 4px; color: #f8fafc; text-shadow: 0 0 30px rgba(255,255,255,0.25); }
+#title p { font-size: 11px; color: #64748b; margin-top: 5px; letter-spacing: 1px; }
+#legend { position: fixed; bottom: 20px; left: 20px; background: rgba(8,13,26,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px 18px; z-index: 10; backdrop-filter: blur(12px); min-width: 240px; }
+#legend h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #475569; margin-bottom: 14px; }
+.li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.ld { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+.ln { font-size: 12px; font-weight: 700; line-height: 1.3; }
+.ls { font-size: 10px; color: #64748b; margin-top: 2px; }
+.li.cross .ld { border-radius: 2px; background: repeating-linear-gradient(90deg, #a855f7 0px, #a855f7 4px, transparent 4px, transparent 8px); height: 3px; margin-top: 6px; }
+#info { position: fixed; top: 70px; right: 20px; background: rgba(8,13,26,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px; z-index: 10; font-size: 11px; color: #475569; line-height: 2; max-width: 200px; }
+#tooltip { position: fixed; background: rgba(8,13,26,0.96); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 14px; font-size: 12px; pointer-events: none; z-index: 100; max-width: 260px; display: none; }
+#tt-path { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
+#tt-name { font-weight: 700; font-size: 13px; line-height: 1.4; }
+#tt-type { font-size: 10px; color: #64748b; margin-top: 3px; }
+.link { fill: none; }
+.lp0 { stroke: #06b6d4; }
+.lp1 { stroke: #22c55e; }
+.lp2 { stroke: #f97316; }
+.lroot { stroke: #94a3b8; }
+.cross-link { fill: none; stroke: #a855f7; stroke-dasharray: 5,4; stroke-width: 1.5; opacity: 0.55; }
+</style>
+</head>
+<body>
+<div id="title">
+  <h1>⚜ &nbsp;THE AI KINGDOM&nbsp; ⚜</h1>
+  <p>COMPLETE LEARNING PATH NETWORK &nbsp;·&nbsp; HOVER NODES FOR DETAILS &nbsp;·&nbsp; SCROLL TO ZOOM &nbsp;·&nbsp; DRAG TO PAN</p>
+</div>
+<div id="legend">
+  <h3>4 Learning Paths</h3>
+  <div class="li"><div class="ld" style="background:#06b6d4"></div><div><div class="ln" style="color:#06b6d4">PATH 0 — AI Power Users</div><div class="ls">Use AI tools effectively · no coding required</div></div></div>
+  <div class="li"><div class="ld" style="background:#22c55e"></div><div><div class="ln" style="color:#22c55e">PATH 1 — ML/DL Mastery</div><div class="ls">Deep learning research · train models from scratch</div></div></div>
+  <div class="li"><div class="ld" style="background:#f97316"></div><div><div class="ln" style="color:#f97316">PATH 2 — AI App Developer</div><div class="ls">Build production LLM apps · APIs · agents</div></div></div>
+  <div class="li cross"><div class="ld"></div><div><div class="ln" style="color:#a855f7">PATH 3 — Convergence Zone</div><div class="ls">Where paths intersect · shared cross-path topics</div></div></div>
+</div>
+<div id="info">
+  ○ &nbsp;Large circle = Path hub<br>
+  ◉ &nbsp;Medium = Phase / Section<br>
+  · &nbsp;Small dot = Module<br>
+  ─ ─ Purple = Cross-path topic<br><br>
+  <span style="color:#334155">Scroll · Drag · Hover</span>
+</div>
+<div id="tooltip"><div id="tt-path"></div><div id="tt-name"></div><div id="tt-type"></div></div>
+<svg id="graph"></svg>
+<script>
+const C = { 0:'#06b6d4', 1:'#22c55e', 2:'#f97316', r:'#cbd5e1' };
+const PN = { 0:'PATH 0 · AI Power Users', 1:'PATH 1 · ML/DL Mastery', 2:'PATH 2 · AI App Developer' };
+
+const tree = {
+  id:'ROOT', name:'THE AI\nKINGDOM', type:'root',
+  children:[
+    // ─────────────────────────────────────────────────────────────
+    // PATH 0 — AI POWER USERS
+    // ─────────────────────────────────────────────────────────────
+    { id:'p0', name:'PATH 0\nAI Power Users', type:'path', path:0, children:[
+      { id:'p0s1', name:'S1: Understanding AI', type:'phase', path:0, children:[
+        {id:'p0s1a',name:'1.1 What AI Actually Is',type:'mod',path:0},
+        {id:'p0s1b',name:'1.2 The AI Landscape\n— Models & Providers',type:'mod',path:0},
+        {id:'p0s1c',name:'1.3 AI Capabilities\n& Limitations',type:'mod',path:0}
+      ]},
+      { id:'p0s2', name:'S2: Prompt Engineering\n— The Core Skill', type:'phase', path:0, children:[
+        {id:'p0s2a',name:'2.1 Prompt Fundamentals',type:'mod',path:0},
+        {id:'p0s2b',name:'2.2 Intermediate\nPrompt Techniques',type:'mod',path:0},
+        {id:'p0s2c',name:'2.3 Advanced\nPrompt Techniques',type:'mod',path:0},
+        {id:'p0s2d',name:'2.4 Image Prompting',type:'mod',path:0}
+      ]},
+      { id:'p0s3', name:'S3: The AI Tools\nLandscape', type:'phase', path:0, children:[
+        {id:'p0s3a',name:'3.1 Text & Chat AI',type:'mod',path:0},
+        {id:'p0s3b',name:'3.2 Image Generation',type:'mod',path:0},
+        {id:'p0s3c',name:'3.3 Video Generation',type:'mod',path:0},
+        {id:'p0s3d',name:'3.4 Audio, Voice\n& Music AI',type:'mod',path:0},
+        {id:'p0s3e',name:'3.5 Productivity &\nKnowledge Mgmt AI',type:'mod',path:0},
+        {id:'p0s3f',name:'3.6 Design &\nVisual AI',type:'mod',path:0},
+        {id:'p0s3g',name:'3.7 Business &\nMarketing AI',type:'mod',path:0}
+      ]},
+      { id:'p0s4', name:'S4: Workflow Automation\n— No Code Required', type:'phase', path:0, children:[
+        {id:'p0s4a',name:'4.1 AI Automation\nConcepts',type:'mod',path:0},
+        {id:'p0s4b',name:'4.2 Zapier',type:'mod',path:0},
+        {id:'p0s4c',name:'4.3 Make (Integromat)',type:'mod',path:0},
+        {id:'p0s4d',name:'4.4 n8n',type:'mod',path:0},
+        {id:'p0s4e',name:'4.5 Building AI Agents\nWithout Code',type:'mod',path:0}
+      ]},
+      { id:'p0s5', name:'S5: AI Ethics,\nSafety & Smart Use', type:'phase', path:0, children:[
+        {id:'p0s5a',name:'5.1 Privacy &\nData Safety',type:'mod',path:0},
+        {id:'p0s5b',name:'5.2 Copyright &\nIntellectual Property',type:'mod',path:0},
+        {id:'p0s5c',name:'5.3 Deepfakes &\nMisinformation',type:'mod',path:0},
+        {id:'p0s5d',name:'5.4 Responsible AI Use',type:'mod',path:0}
+      ]},
+      { id:'p0s6', name:'S6: Domain-Specific\nDeep Dives', type:'phase', path:0, children:[
+        {id:'p0s6a',name:'6.1 AI for Musicians\n& Audio Pros',type:'mod',path:0},
+        {id:'p0s6b',name:'6.2 AI for Filmmakers\n& Video Creators',type:'mod',path:0},
+        {id:'p0s6c',name:'6.3 AI for Visual Artists\n& Designers',type:'mod',path:0},
+        {id:'p0s6d',name:'6.4 AI for Writers\n& Journalists',type:'mod',path:0},
+        {id:'p0s6e',name:'6.5 AI for Educators\n& Students',type:'mod',path:0},
+        {id:'p0s6f',name:'6.6 AI for Healthcare\nProfessionals',type:'mod',path:0},
+        {id:'p0s6g',name:'6.7 AI for Legal\nProfessionals',type:'mod',path:0}
+      ]},
+      { id:'p0s7', name:'S7: Staying Current\nWith AI', type:'phase', path:0, children:[
+        {id:'p0s7a',name:'7.1 Essential Newsletters\n& Media',type:'mod',path:0},
+        {id:'p0s7b',name:'7.2 Essential Follows\n(YouTube / Social)',type:'mod',path:0},
+        {id:'p0s7c',name:'7.3 Communities',type:'mod',path:0},
+        {id:'p0s7d',name:'7.4 Habits for\nStaying Current',type:'mod',path:0}
+      ]}
+    ]},
+
+    // ─────────────────────────────────────────────────────────────
+    // PATH 1 — ML/DL MASTERY
+    // ─────────────────────────────────────────────────────────────
+    { id:'p1', name:'PATH 1\nML / DL Mastery', type:'path', path:1, children:[
+      { id:'p1h1', name:'Ph1: Python &\nComputational Thinking', type:'phase', path:1, children:[
+        {id:'p1h1a',name:'1.1 Python Language\nFundamentals',type:'mod',path:1},
+        {id:'p1h1b',name:'1.2 Python for\nData Science',type:'mod',path:1}
+      ]},
+      { id:'p1h2', name:'Ph2: Mathematics\nFoundations', type:'phase', path:1, children:[
+        {id:'p1h2a',name:'2.1 Linear Algebra',type:'mod',path:1},
+        {id:'p1h2b',name:'2.2 Calculus',type:'mod',path:1},
+        {id:'p1h2c',name:'2.3 Probability\n& Statistics',type:'mod',path:1}
+      ]},
+      { id:'p1h3', name:'Ph3: Core Machine\nLearning', type:'phase', path:1, children:[
+        {id:'p1h3a',name:'3.1 ML Fundamentals',type:'mod',path:1},
+        {id:'p1h3b',name:'3.2 Supervised Learning',type:'mod',path:1},
+        {id:'p1h3c',name:'3.3 Unsupervised Learning',type:'mod',path:1},
+        {id:'p1h3d',name:'3.4 Data Preprocessing\n& Feature Engineering',type:'mod',path:1},
+        {id:'p1h3e',name:'3.5 Model Evaluation\n& Selection',type:'mod',path:1}
+      ]},
+      { id:'p1h4', name:'Ph4: Deep Learning\nFoundations', type:'phase', path:1, children:[
+        {id:'p1h4a',name:'4.1 Neural Network\nFundamentals',type:'mod',path:1},
+        {id:'p1h4b',name:'4.2 Training Deep\nNeural Networks',type:'mod',path:1},
+        {id:'p1h4c',name:'4.3 Convolutional\nNeural Networks (CNNs)',type:'mod',path:1},
+        {id:'p1h4d',name:'4.4 Recurrent\nNeural Networks (RNNs)',type:'mod',path:1},
+        {id:'p1h4e',name:'4.5 Attention Mechanisms\n& Transformers',type:'mod',path:1},
+        {id:'p1h4f',name:'4.6 Autoencoders',type:'mod',path:1},
+        {id:'p1h4g',name:'4.7 Frameworks & Tools\n(PyTorch, TF, JAX)',type:'mod',path:1}
+      ]},
+      { id:'p1h5', name:'Ph5: Specialization\nTracks', type:'phase', path:1, children:[
+        {id:'p1h5a',name:'5.1 Natural Language\nProcessing (NLP)',type:'mod',path:1},
+        {id:'p1h5b',name:'5.2 Computer Vision (CV)',type:'mod',path:1},
+        {id:'p1h5c',name:'5.3 Reinforcement\nLearning (RL)',type:'mod',path:1},
+        {id:'p1h5d',name:'5.4 Generative AI',type:'mod',path:1},
+        {id:'p1h5e',name:'5.5 Time Series Analysis\n& Forecasting',type:'mod',path:1},
+        {id:'p1h5f',name:'5.6 Recommender\nSystems',type:'mod',path:1},
+        {id:'p1h5g',name:'5.7 Graph Neural\nNetworks (GNNs)',type:'mod',path:1},
+        {id:'p1h5h',name:'5.8 MLOps &\nDeployment',type:'mod',path:1}
+      ]},
+      { id:'p1h6', name:'Ph6: Cutting-Edge AI\n— LLMs, Agents & Frontier', type:'phase', path:1, children:[
+        {id:'p1h6a',name:'6.1 Large Language\nModels (LLMs)',type:'mod',path:1},
+        {id:'p1h6b',name:'6.2 Fine-Tuning\n& Alignment',type:'mod',path:1},
+        {id:'p1h6c',name:'6.3 AI Agents\n& Tool Use',type:'mod',path:1},
+        {id:'p1h6d',name:'6.4 Multimodal AI',type:'mod',path:1},
+        {id:'p1h6e',name:'6.5 Frontier Research\nTopics',type:'mod',path:1}
+      ]},
+      { id:'p1h7', name:'Ph7: Practical Skills\n& Career Building', type:'phase', path:1, children:[
+        {id:'p1h7a',name:'7.1 Kaggle &\nCompetitions',type:'mod',path:1},
+        {id:'p1h7b',name:'7.2 Portfolio Building',type:'mod',path:1},
+        {id:'p1h7c',name:'7.3 Research Skills',type:'mod',path:1},
+        {id:'p1h7d',name:'7.4 Interview\nPreparation',type:'mod',path:1},
+        {id:'p1h7e',name:'7.5 Compute Resources',type:'mod',path:1},
+        {id:'p1h7f',name:'7.6 Staying Current',type:'mod',path:1},
+        {id:'p1h7g',name:'7.7 Ethics &\nResponsible AI',type:'mod',path:1}
+      ]}
+    ]},
+
+    // ─────────────────────────────────────────────────────────────
+    // PATH 2 — AI APPLICATION DEVELOPER
+    // ─────────────────────────────────────────────────────────────
+    { id:'p2', name:'PATH 2\nAI App Developer', type:'path', path:2, children:[
+      { id:'p2h1', name:'Ph1: LLM Foundations\n& API Literacy', type:'phase', path:2, children:[
+        {id:'p2h1a',name:'1.1 How LLMs Work\n(Conceptual)',type:'mod',path:2},
+        {id:'p2h1b',name:"1.2 LLM APIs:\nDeveloper's Toolkit",type:'mod',path:2},
+        {id:'p2h1c',name:'1.3 Prompt Engineering',type:'mod',path:2}
+      ]},
+      { id:'p2h2', name:'Ph2: Evaluation\n& Benchmarking', type:'phase', path:2, children:[
+        {id:'p2h2a',name:'2.1 Standard Benchmarks',type:'mod',path:2},
+        {id:'p2h2b',name:'2.2 Building Custom Evals',type:'mod',path:2}
+      ]},
+      { id:'p2h3', name:'Ph3: Retrieval\nAugmented Generation (RAG)', type:'phase', path:2, children:[
+        {id:'p2h3a',name:'3.1 Vector Databases\n& Embeddings',type:'mod',path:2},
+        {id:'p2h3b',name:'3.2 Building RAG Systems\n(Basic → Advanced)',type:'mod',path:2}
+      ]},
+      { id:'p2h4', name:'Ph4: LLM Agents\n& Tool Use', type:'phase', path:2, children:[
+        {id:'p2h4a',name:'4.1 Agent Foundations',type:'mod',path:2},
+        {id:'p2h4b',name:'4.2 Agent Frameworks\n(LangChain / LlamaIndex)',type:'mod',path:2},
+        {id:'p2h4c',name:'4.3 LangGraph',type:'mod',path:2},
+        {id:'p2h4d',name:'4.4 Multi-Agent Systems\n& MCP',type:'mod',path:2}
+      ]},
+      { id:'p2h5', name:'Ph5: LLM Safety\n& Reliability', type:'phase', path:2, children:[
+        {id:'p2h5a',name:'5.1 Content Safety\n& Guardrails',type:'mod',path:2},
+        {id:'p2h5b',name:'5.2 Structured Outputs\n& Reliability',type:'mod',path:2}
+      ]},
+      { id:'p2h6', name:'Ph6: Fine-Tuning\n& Model Adaptation', type:'phase', path:2, children:[
+        {id:'p2h6a',name:'6.1 When & Why\nto Fine-Tune',type:'mod',path:2},
+        {id:'p2h6b',name:'6.2 LoRA, QLoRA\n& PEFT Methods',type:'mod',path:2},
+        {id:'p2h6c',name:'6.3 Fine-Tuning Pipeline\n(SFT, DPO, Synthetic Data)',type:'mod',path:2}
+      ]},
+      { id:'p2h7', name:'Ph7: Production\nAI Engineering', type:'phase', path:2, children:[
+        {id:'p2h7a',name:'7.1 Building AI-Powered APIs\n(FastAPI, Streaming, Async)',type:'mod',path:2},
+        {id:'p2h7b',name:'7.2 Caching &\nCost Optimization',type:'mod',path:2},
+        {id:'p2h7c',name:'7.3 Observability\n& Monitoring',type:'mod',path:2},
+        {id:'p2h7d',name:'7.4 Deployment &\nInfrastructure',type:'mod',path:2},
+        {id:'p2h7e',name:'7.5 Serving Open-Source\nModels (vLLM, TGI)',type:'mod',path:2}
+      ]},
+      { id:'p2h8', name:'Ph8: LLM Inference\nMastery', type:'phase', path:2, children:[
+        {id:'p2h8a',name:'8.1 Decoding Algorithms\n(Greedy, Beam, Sampling)',type:'mod',path:2},
+        {id:'p2h8b',name:'8.2 Advanced Decoding\n(CoT, ToT, Self-Consistency)',type:'mod',path:2},
+        {id:'p2h8c',name:'8.3 The KV Cache\n& PagedAttention',type:'mod',path:2},
+        {id:'p2h8d',name:'8.4 Quantization\n(GPTQ, AWQ, GGUF)',type:'mod',path:2},
+        {id:'p2h8e',name:'8.5 Speculative Decoding',type:'mod',path:2},
+        {id:'p2h8f',name:'8.6 Flash Attention\n& Hardware Optimization',type:'mod',path:2},
+        {id:'p2h8g',name:'8.7 LLM Serving Systems\n(vLLM, SGLang)',type:'mod',path:2},
+        {id:'p2h8h',name:'8.8 Structured &\nConstrained Generation',type:'mod',path:2}
+      ]},
+      { id:'p2bx', name:'Bonus Tracks', type:'phase', path:2, children:[
+        {id:'p2bxa',name:'Track A: Multimodal\nAI Applications',type:'mod',path:2},
+        {id:'p2bxb',name:'Track B: AI Coding\nAssistants',type:'mod',path:2}
+      ]}
+    ]}
+  ]
+};
+
+// Cross-path connections representing PATH 3 (Convergence Zone)
+const xlinks = [
+  {s:'p0s2',  t:'p2h1c', label:'Prompt Engineering'},
+  {s:'p0s2c', t:'p2h1c', label:'Advanced Prompting'},
+  {s:'p0s4e', t:'p2h4a', label:'AI Agents (No Code → Code)'},
+  {s:'p0s5',  t:'p1h7g', label:'AI Ethics shared'},
+  {s:'p0s5',  t:'p2h5a', label:'Safety & Guardrails'},
+  {s:'p0s5a', t:'p2h5a', label:'Privacy & Safety'},
+  {s:'p0s3b', t:'p1h5d', label:'Image Generation / GenAI'},
+  {s:'p0s3d', t:'p1h5d', label:'Audio GenAI'},
+  {s:'p0s7d', t:'p1h7f', label:'Staying Current'},
+  {s:'p1h1a', t:'p2h1b', label:'Python for API calls'},
+  {s:'p1h4e', t:'p2h1a', label:'Transformers → LLM Concepts'},
+  {s:'p1h5a', t:'p2h1a', label:'NLP → LLM Foundations'},
+  {s:'p1h5d', t:'p2h1a', label:'GenAI → LLM Dev'},
+  {s:'p1h5h', t:'p2h7d', label:'MLOps → Deployment'},
+  {s:'p1h6a', t:'p2h1a', label:'LLMs (deep theory ↔ applied)'},
+  {s:'p1h6b', t:'p2h6a', label:'Fine-Tuning & Alignment'},
+  {s:'p1h6c', t:'p2h4a', label:'AI Agents'},
+  {s:'p1h6d', t:'p2bxa', label:'Multimodal AI'},
+  {s:'p1h6e', t:'p2h8b', label:'Frontier Decoding Research'},
+  {s:'p1h3e', t:'p2h2a', label:'Model Evaluation'},
+  {s:'p1h7g', t:'p2h5a', label:'Responsible AI → Safety'}
+];
+
+// ─── Layout ──────────────────────────────────────────────────
+const W = window.innerWidth, H = window.innerHeight;
+const R = Math.min(W, H) * 0.44;
+
+const svg = d3.select('#graph').attr('viewBox', `0 0 ${W} ${H}`);
+const g = svg.append('g').attr('transform', `translate(${W/2},${H/2})`);
+
+svg.call(d3.zoom().scaleExtent([0.25, 4]).on('zoom', e => g.attr('transform', e.transform.translate(W/2, H/2))));
+
+const root = d3.hierarchy(tree);
+d3.cluster()
+  .size([2 * Math.PI, R])
+  .separation((a,b) => {
+    if (a.depth === 1 && b.depth === 1) return 4;
+    return (a.parent === b.parent ? 1 : 2) / a.depth;
+  })(root);
+
+function pt(a, r) { return [r * Math.cos(a - Math.PI/2), r * Math.sin(a - Math.PI/2)]; }
+
+// Build ID → node map
+const nmap = {};
+root.descendants().forEach(d => { nmap[d.data.id] = d; });
+
+// ─── Links ────────────────────────────────────────────────────
+const linkG = g.append('g');
+linkG.selectAll('path.link')
+  .data(root.links())
+  .join('path')
+  .attr('class','link')
+  .attr('stroke-opacity', d => d.target.depth === 3 ? 0.25 : 0.5)
+  .attr('stroke-width', d => d.target.depth === 1 ? 2.5 : d.target.depth === 2 ? 1.5 : 0.8)
+  .classed('lroot', d => d.target.data.path === undefined)
+  .classed('lp0', d => d.target.data.path === 0)
+  .classed('lp1', d => d.target.data.path === 1)
+  .classed('lp2', d => d.target.data.path === 2)
+  .attr('d', d3.linkRadial().angle(d => d.x).radius(d => d.y));
+
+// ─── Cross-links ──────────────────────────────────────────────
+xlinks.forEach(xl => {
+  const sn = nmap[xl.s], tn = nmap[xl.t];
+  if (!sn || !tn) return;
+  const [sx,sy] = pt(sn.x, sn.y), [tx,ty] = pt(tn.x, tn.y);
+  linkG.append('path')
+    .attr('class','cross-link')
+    .attr('d', `M${sx},${sy} Q0,0 ${tx},${ty}`)
+    .append('title').text(xl.label);
+});
+
+// ─── Nodes ────────────────────────────────────────────────────
+const nodeG = g.append('g');
+const nodes = nodeG.selectAll('g.node')
+  .data(root.descendants())
+  .join('g')
+  .attr('class','node')
+  .attr('transform', d => { const [x,y]=pt(d.x,d.y); return `translate(${x},${y})`; });
+
+// Circles
+nodes.append('circle')
+  .attr('r', d => d.depth===0?28 : d.depth===1?16 : d.depth===2?8 : 4)
+  .attr('fill', d => {
+    const c = C[d.data.path ?? 'r'];
+    if (d.depth===0) return '#0f172a';
+    if (d.depth===1) return c;
+    if (d.depth===2) return c+'99';
+    return c+'55';
+  })
+  .attr('stroke', d => C[d.data.path ?? 'r'])
+  .attr('stroke-width', d => d.depth===0?2.5 : d.depth===1?2 : 1.5);
+
+// Labels — depth 0, 1, 2 only (depth 3 uses tooltip only)
+nodes.filter(d => d.depth <= 2)
+  .each(function(d) {
+    const el = d3.select(this);
+    const [nx] = pt(d.x, d.y);  // x coord in cartesian
+    const right = nx >= 0;
+    const offset = d.depth===0 ? 0 : (d.depth===1 ? 20 : 12);
+    const anchor = d.depth===0 ? 'middle' : right ? 'start' : 'end';
+    const tx = d.depth===0 ? 0 : right ? offset : -offset;
+    const lines = d.data.name.split('\n');
+    const totalH = (lines.length - 1) * 12;
+    const text = el.append('text')
+      .attr('text-anchor', anchor)
+      .attr('font-size', d.depth===0?'12px' : d.depth===1?'11px' : '9px')
+      .attr('font-weight', d.depth<=1?'800':'600')
+      .attr('fill', C[d.data.path ?? 'r'])
+      .attr('paint-order','stroke')
+      .attr('stroke','#080d1a')
+      .attr('stroke-width', d.depth===0?4:3)
+      .attr('stroke-linejoin','round');
+    lines.forEach((line, i) => {
+      text.append('tspan')
+        .attr('x', tx)
+        .attr('dy', i===0 ? `${-totalH/2}px` : '12px')
+        .text(line);
+    });
+  });
+
+// ─── Tooltip ──────────────────────────────────────────────────
+const TT = document.getElementById('tooltip');
+const TTP = document.getElementById('tt-path');
+const TTN = document.getElementById('tt-name');
+const TTTY = document.getElementById('tt-type');
+const typeLabel = { root:'Hub', path:'Learning Path', phase:'Phase / Section', mod:'Module' };
+
+nodes
+  .on('mouseover', (ev, d) => {
+    TT.style.display = 'block';
+    const p = d.data.path;
+    const col = C[p ?? 'r'];
+    TTP.style.color = col;
+    TTP.textContent = p !== undefined ? PN[p] : 'THE AI KINGDOM';
+    TTN.textContent = d.data.name.replace(/\n/g,' ');
+    TTTY.textContent = typeLabel[d.data.type] || '';
+    TT.style.borderColor = col + '55';
+  })
+  .on('mousemove', (ev) => {
+    TT.style.left = (ev.clientX + 18) + 'px';
+    TT.style.top  = (ev.clientY - 12) + 'px';
+  })
+  .on('mouseleave', () => { TT.style.display = 'none'; });
+
+// ─── Initial zoom to fit ───────────────────────────────────────
+svg.call(d3.zoom().transform, d3.zoomIdentity.translate(W/2, H/2).scale(0.85));
+</script>
+</body>
+</html>
