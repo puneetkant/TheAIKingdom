@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AI Kingdom — Complete Mermaid Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 30px 0 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.8em;
+            margin: 40px 0 10px;
+            color: #a0a0d0;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 5px 0 20px;
+            color: #888;
+            font-weight: normal;
+        }
+        .subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            padding: 20px;
+            background: #12122a;
+            border-radius: 12px;
+            max-width: 1000px;
+            border: 1px solid #333;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #555;
+        }
+        .diagram-section {
+            margin: 30px auto;
+            max-width: 100%;
+            overflow-x: auto;
+            background: #10102a;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #2a2a4a;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .mermaid svg {
+            max-width: 100%;
+        }
+        .section-desc {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.95em;
+            margin: 5px 0 20px;
+            font-style: italic;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        @media (max-width: 1200px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+        .info-box {
+            background: #12122a;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #333;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .info-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .info-box ul { padding-left: 20px; }
+        .info-box li { margin: 5px 0; color: #ccc; }
+        .info-box .tag-theory { color: #5b9bd5; font-weight: bold; }
+        .info-box .tag-practical { color: #70c1b3; font-weight: bold; }
+        .info-box .tag-complete { color: #b07cd8; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>🏰 THE AI KINGDOM</h1>
+<p class="subtitle">A comprehensive map of 4 paths through AI — from Power User to Researcher.<br/>Covering breadth (paths), depth (levels), knowledge types, and job role mappings.</p>
+
+<!-- LEGEND -->
+<div class="legend">
+    <div class="legend-item"><div class="legend-color" style="background:#5b9bd5;"></div> 📖 Theory Only</div>
+    <div class="legend-item"><div class="legend-color" style="background:#70c1b3;"></div> 🔧 Practical Only</div>
+    <div class="legend-item"><div class="legend-color" style="background:#b07cd8;"></div> 📚 Complete (Theory + Practical)</div>
+    <div class="legend-item"><div class="legend-color" style="background:#4a90d9;"></div> 🔵 ML Engineer Path</div>
+    <div class="legend-item"><div class="legend-color" style="background:#50b87a;"></div> 🟢 AI App Developer Path</div>
+    <div class="legend-item"><div class="legend-color" style="background:#e8943a;"></div> 🟠 AI Power User Path</div>
+    <div class="legend-item"><div class="legend-color" style="background:#c165dd;"></div> 🟣 AI Researcher Path</div>
+    <div class="legend-item"><div class="legend-color" style="background:#e74c3c;"></div> 🔴 Job Roles</div>
+    <div class="legend-item"><div class="legend-color" style="background:#f1c40f;"></div> 🟡 Shared / Cross-Path Skills</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 1: THE GRAND OVERVIEW (Level 0 → Level 2) -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>📋 The Grand Overview — 4 Paths & Their Pillars</h2>
+<h3>Level 0 → Level 1 → Level 2: Each path's foundational areas</h3>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '14px', 'fontFamily': 'Segoe UI' }}}%%
+flowchart TD
+    AIK["🏰 THE AI KINGDOM<br/>Master the breadth and depth of AI"]
+
+    AIK --> MLE
+    AIK --> AIAD
+    AIK --> AIPU
+    AIK --> AIR
+
+    MLE["🔵 PATH 1: ML ENGINEER<br/>📚 Build & train models from scratch<br/><i>Needs: Complete knowledge</i>"]
+    AIAD["🟢 PATH 2: AI APP DEVELOPER<br/>🔧 Build production AI apps with LLMs<br/><i>Needs: Practical + some theory</i>"]
+    AIPU["🟠 PATH 3: AI POWER USER<br/>🔧 Use AI tools to 10x productivity<br/><i>Needs: Practical + awareness</i>"]
+    AIR["🟣 PATH 4: AI RESEARCHER<br/>📚 Advance the frontier of AI<br/><i>Needs: Deep complete knowledge</i>"]
+
+    %% ML Engineer Level 2
+    MLE --> MLE1["Phase 1<br/>Python & Computation<br/>📚 Complete"]
+    MLE --> MLE2["Phase 2<br/>Mathematics<br/>📚 Complete"]
+    MLE --> MLE3["Phase 3<br/>Core Machine Learning<br/>📚 Complete"]
+    MLE --> MLE4["Phase 4<br/>Deep Learning<br/>📚 Complete"]
+    MLE --> MLE5["Phase 5<br/>Specialization Tracks<br/>🔧 Practical"]
+    MLE --> MLE6["Phase 6<br/>Cutting-Edge AI<br/>📚 Complete"]
+    MLE --> MLE7["Phase 7<br/>MLOps & Career<br/>🔧 Practical"]
+
+    %% AI App Developer Level 2
+    AIAD --> AD1["Phase 1<br/>LLM Foundations & APIs<br/>📖 Theory + 🔧 Practical"]
+    AIAD --> AD2["Phase 2<br/>Evaluation & Benchmarks<br/>📚 Complete"]
+    AIAD --> AD3["Phase 3<br/>RAG Systems<br/>🔧 Practical"]
+    AIAD --> AD4["Phase 4<br/>AI Agents & Tool Use<br/>🔧 Practical"]
+    AIAD --> AD5["Phase 5<br/>Safety & Reliability<br/>📚 Complete"]
+    AIAD --> AD6["Phase 6<br/>Fine-Tuning<br/>🔧 Practical"]
+    AIAD --> AD7["Phase 7<br/>Production Engineering<br/>🔧 Practical"]
+    AIAD --> AD8["Phase 8<br/>LLM Inference Mastery<br/>📖 Theory + 🔧 Practical"]
+
+    %% AI Power User Level 2
+    AIPU --> PU1["Section 1<br/>Understanding AI<br/>📖 Theory"]
+    AIPU --> PU2["Section 2<br/>Prompt Engineering<br/>🔧 Practical"]
+    AIPU --> PU3["Section 3<br/>AI Tools Landscape<br/>🔧 Practical"]
+    AIPU --> PU4["Section 4<br/>Workflow Automation<br/>🔧 Practical"]
+    AIPU --> PU5["Section 5<br/>Ethics & Safety<br/>📖 Theory"]
+    AIPU --> PU6["Section 6<br/>Domain-Specific AI<br/>🔧 Practical"]
+    AIPU --> PU7["Section 7<br/>Staying Current<br/>🔧 Practical"]
+
+    %% AI Researcher Level 2
+    AIR --> AR1["Foundation<br/>Deep Mathematics<br/>📚 Complete"]
+    AIR --> AR2["Core<br/>ML Theory (Deep)<br/>📚 Complete"]
+    AIR --> AR3["Core<br/>DL Theory (Deep)<br/>📚 Complete"]
+    AIR --> AR4["Specialization<br/>Research Tracks<br/>📚 Complete"]
+    AIR --> AR5["Frontier<br/>LLMs & Generative AI<br/>📚 Complete"]
+    AIR --> AR6["Frontier<br/>Cutting-Edge Research<br/>📖 Theory + 🔧 Experimental"]
+    AIR --> AR7["Meta<br/>Research Methodology<br/>📚 Complete"]
+
+    %% Styling
+    classDef kingdom fill:#1a1a3e,stroke:#667eea,stroke-width:3px,color:#fff
+    classDef mlePath fill:#1a2a4a,stroke:#4a90d9,stroke-width:2px,color:#cde
+    classDef appPath fill:#1a3a2a,stroke:#50b87a,stroke-width:2px,color:#cec
+    classDef puPath fill:#3a2a1a,stroke:#e8943a,stroke-width:2px,color:#edc
+    classDef resPath fill:#2a1a3a,stroke:#c165dd,stroke-width:2px,color:#dce
+
+    class AIK kingdom
+    class MLE,MLE1,MLE2,MLE3,MLE4,MLE5,MLE6,MLE7 mlePath
+    class AIAD,AD1,AD2,AD3,AD4,AD5,AD6,AD7,AD8 appPath
+    class AIPU,PU1,PU2,PU3,PU4,PU5,PU6,PU7 puPath
+    class AIR,AR1,AR2,AR3,AR4,AR5,AR6,AR7 resPath
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 2: ML ENGINEER DEEP DIVE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🔵 Path 1: ML Engineer — Deep Dive</h2>
+<h3>Levels 2 → 3 → 4: Topics, sub-skills, and what you gain</h3>
+<p class="section-desc">ML Engineers need <b>complete knowledge</b> (theory + practice) across all phases. This is the most mathematically rigorous path.</p>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart TD
+    MLE["🔵 ML ENGINEER PATH<br/>📚 Complete Knowledge Required"]
+
+    MLE --> P1["Phase 1: Python & Computation"]
+    MLE --> P2["Phase 2: Mathematics"]
+    MLE --> P3["Phase 3: Core ML"]
+    MLE --> P4["Phase 4: Deep Learning"]
+    MLE --> P5["Phase 5: Specializations"]
+    MLE --> P6["Phase 6: Cutting-Edge AI"]
+    MLE --> P7["Phase 7: MLOps & Career"]
+
+    %% Phase 1 breakdown
+    P1 --> P1A["Core Python 📚<br/>Variables, Control Flow,<br/>OOP, Generators, Decorators"]
+    P1 --> P1B["Data Science Libraries 📚<br/>NumPy, Pandas, Matplotlib,<br/>Seaborn, Plotly"]
+    P1 --> P1C["Software Engineering 🔧<br/>Testing, Git, Packaging,<br/>Virtual Envs, CI basics"]
+
+    P1A --> P1A1["Skill: Python Fluency<br/>Write production-grade Python"]
+    P1B --> P1B1["Skill: Data Manipulation<br/>Clean, transform, visualize data"]
+    P1C --> P1C1["Skill: Code Quality<br/>Testable, maintainable code"]
+
+    %% Phase 2 breakdown
+    P2 --> P2A["Linear Algebra 📚<br/>Vectors, Matrices, Eigenvalues,<br/>SVD, PCA derivation"]
+    P2 --> P2B["Calculus 📚<br/>Derivatives, Gradients,<br/>Chain Rule, Optimization"]
+    P2 --> P2C["Probability & Statistics 📚<br/>Distributions, Bayes Theorem,<br/>Hypothesis Testing, MLE/MAP"]
+
+    P2A --> P2A1["Skill: Math for ML<br/>Understand model internals"]
+    P2B --> P2B1["Skill: Optimization Intuition<br/>Gradient descent, loss landscapes"]
+    P2C --> P2C1["Skill: Statistical Reasoning<br/>Design experiments, interpret results"]
+
+    %% Phase 3 breakdown
+    P3 --> P3A["Supervised Learning 📚<br/>Linear/Logistic Regression, SVM,<br/>Decision Trees, Random Forest,<br/>XGBoost, KNN, Naive Bayes"]
+    P3 --> P3B["Unsupervised Learning 📚<br/>K-Means, DBSCAN, PCA,<br/>t-SNE, UMAP, GMMs,<br/>Hierarchical Clustering"]
+    P3 --> P3C["Feature Engineering 🔧<br/>Encoding, Scaling, Selection,<br/>Imputation, Pipelines"]
+    P3 --> P3D["Model Evaluation 📚<br/>Cross-Validation, Metrics,<br/>Bias-Variance, Hyperparameter<br/>Tuning, Ensemble Methods"]
+
+    P3A --> P3A1["Skill: Algorithm Selection<br/>Choose right model for the task"]
+    P3B --> P3B1["Skill: Pattern Discovery<br/>Find hidden structures in data"]
+    P3D --> P3D1["Skill: Model Validation<br/>Rigorous evaluation practices"]
+
+    %% Phase 4 breakdown
+    P4 --> P4A["Neural Networks 📚<br/>Perceptrons, Backpropagation,<br/>Activation Functions, Loss Functions"]
+    P4 --> P4B["CNNs 📚<br/>Convolution, Pooling,<br/>ResNet, VGG, Transfer Learning"]
+    P4 --> P4C["RNNs & Sequence Models 📚<br/>LSTM, GRU, Seq2Seq,<br/>Bidirectional, Attention"]
+    P4 --> P4D["Transformers 📚<br/>Self-Attention, Multi-Head,<br/>Encoder-Decoder, BERT, GPT"]
+    P4 --> P4E["Frameworks 🔧<br/>PyTorch, TensorFlow,<br/>Hugging Face Transformers"]
+
+    P4A --> P4A1["Skill: Network Design<br/>Architect neural networks"]
+    P4D --> P4D1["Skill: Transformer Mastery<br/>Foundation of modern AI"]
+    P4E --> P4E1["Skill: Framework Fluency<br/>Implement & train models"]
+
+    %% Phase 5 breakdown
+    P5 --> P5A["NLP 🔧<br/>Tokenization, Embeddings,<br/>NER, Sentiment, Translation,<br/>Language Models"]
+    P5 --> P5B["Computer Vision 🔧<br/>Classification, Detection,<br/>Segmentation, GANs,<br/>Diffusion Models"]
+    P5 --> P5C["Reinforcement Learning 🔧<br/>MDPs, Q-Learning, Policy<br/>Gradient, PPO, RLHF"]
+    P5 --> P5D["Other Tracks 🔧<br/>Time Series, Recommender<br/>Systems, Graph NNs"]
+
+    P5A --> P5A1["Skill: NLP Pipeline<br/>End-to-end text ML systems"]
+    P5B --> P5B1["Skill: Vision Pipeline<br/>End-to-end image/video ML"]
+    P5C --> P5C1["Skill: RL Systems<br/>Agent training & environments"]
+
+    %% Phase 6 breakdown
+    P6 --> P6A["LLMs 📚<br/>Architecture, Training,<br/>Scaling Laws, Emergent<br/>Capabilities"]
+    P6 --> P6B["Fine-Tuning & Alignment 📚<br/>SFT, RLHF, DPO,<br/>LoRA, QLoRA, PEFT"]
+    P6 --> P6C["AI Agents 🔧<br/>Tool Use, ReAct,<br/>Planning, Multi-Agent"]
+    P6 --> P6D["Multimodal AI 📚<br/>Vision-Language, Audio,<br/>CLIP, Stable Diffusion"]
+
+    %% Phase 7 breakdown
+    P7 --> P7A["Model Serving 🔧<br/>APIs, Containers, TorchServe,<br/>TFServing, Triton"]
+    P7 --> P7B["MLOps 🔧<br/>MLflow, W&B, DVC,<br/>CI/CD for ML, Monitoring"]
+    P7 --> P7C["Cloud & Compute 🔧<br/>AWS, GCP, Azure,<br/>GPU management"]
+    P7 --> P7D["Kaggle & Portfolio 🔧<br/>Competitions, Papers,<br/>Open Source contributions"]
+
+    classDef phase fill:#1a2a4a,stroke:#4a90d9,stroke-width:2px,color:#cde
+    classDef topic fill:#152040,stroke:#3a70a9,stroke-width:1px,color:#bcd
+    classDef skill fill:#0f1830,stroke:#2a5090,stroke-width:1px,color:#9ab,font-style:italic
+    classDef root fill:#1a1a3e,stroke:#667eea,stroke-width:3px,color:#fff
+
+    class MLE root
+    class P1,P2,P3,P4,P5,P6,P7 phase
+    class P1A,P1B,P1C,P2A,P2B,P2C,P3A,P3B,P3C,P3D,P4A,P4B,P4C,P4D,P4E,P5A,P5B,P5C,P5D,P6A,P6B,P6C,P6D,P7A,P7B,P7C,P7D topic
+    class P1A1,P1B1,P1C1,P2A1,P2B1,P2C1,P3A1,P3B1,P3D1,P4A1,P4D1,P4E1,P5A1,P5B1,P5C1 skill
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 3: AI APPLICATION DEVELOPER DEEP DIVE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🟢 Path 2: AI Application Developer — Deep Dive</h2>
+<h3>Levels 2 → 3 → 4: Build production AI systems with LLMs</h3>
+<p class="section-desc">App Developers need <b>practical knowledge</b> primarily, with <b>conceptual theory</b> for LLM internals. No need to train models from scratch.</p>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart TD
+    AD["🟢 AI APP DEVELOPER PATH<br/>🔧 Practical Focus + Conceptual Theory"]
+
+    AD --> A1["Phase 1: LLM Foundations & APIs"]
+    AD --> A2["Phase 2: Evaluation & Benchmarks"]
+    AD --> A3["Phase 3: RAG Systems"]
+    AD --> A4["Phase 4: Agents & Tool Use"]
+    AD --> A5["Phase 5: Safety & Reliability"]
+    AD --> A6["Phase 6: Fine-Tuning"]
+    AD --> A7["Phase 7: Production Engineering"]
+    AD --> A8["Phase 8: Inference Mastery"]
+
+    %% Phase 1
+    A1 --> A1A["Transformer Architecture 📖<br/>Conceptual understanding only:<br/>Tokens, Attention, Context windows"]
+    A1 --> A1B["LLM APIs 🔧<br/>OpenAI, Anthropic Claude,<br/>Gemini, Ollama, LiteLLM"]
+    A1 --> A1C["Prompt Engineering 📚<br/>Zero/Few-shot, CoT, ReAct,<br/>Tree of Thoughts, DSPy,<br/>Self-Consistency"]
+
+    A1A --> A1A1["Skill: LLM Intuition<br/>Know what models can/can't do"]
+    A1B --> A1B1["Skill: API Fluency<br/>Call any LLM provider's API"]
+    A1C --> A1C1["Skill: Prompt Craft<br/>Engineer reliable prompts"]
+
+    %% Phase 2
+    A2 --> A2A["Standard Benchmarks 📖<br/>MMLU, HellaSwag, GSM8K,<br/>HumanEval, MT-Bench"]
+    A2 --> A2B["Custom Evals 🔧<br/>LLM-as-Judge, Human Eval,<br/>A/B Testing, Eval Datasets"]
+
+    A2A --> A2A1["Skill: Model Selection<br/>Choose the right model"]
+    A2B --> A2B1["Skill: Quality Measurement<br/>Measure & improve AI outputs"]
+
+    %% Phase 3
+    A3 --> A3A["Vector Databases 🔧<br/>Pinecone, Weaviate, Chroma,<br/>pgvector, Qdrant"]
+    A3 --> A3B["Embeddings 📖+🔧<br/>Embedding Models, Dimensions,<br/>Similarity Search"]
+    A3 --> A3C["RAG Pipeline 🔧<br/>Chunking Strategies, Retrieval,<br/>Reranking, Hybrid Search"]
+    A3 --> A3D["Advanced RAG 🔧<br/>Multi-hop, Self-RAG,<br/>RAPTOR, Graph RAG,<br/>Corrective RAG"]
+
+    A3C --> A3C1["Skill: Knowledge Systems<br/>Ground LLMs in real data"]
+    A3D --> A3D1["Skill: Advanced Retrieval<br/>Handle complex knowledge tasks"]
+
+    %% Phase 4
+    A4 --> A4A["Agent Foundations 📚<br/>ReAct, Plan-Execute,<br/>Reflection, Tool Selection"]
+    A4 --> A4B["Frameworks 🔧<br/>LangChain, LlamaIndex,<br/>CrewAI, AutoGen,<br/>Anthropic Agent SDK"]
+    A4 --> A4C["Multi-Agent Systems 🔧<br/>Orchestration, Communication,<br/>Task Decomposition"]
+    A4 --> A4D["Tool Integration 🔧<br/>Function Calling, MCP,<br/>Code Execution, Web Browse"]
+
+    A4A --> A4A1["Skill: Agent Architecture<br/>Design autonomous AI systems"]
+    A4B --> A4B1["Skill: Framework Mastery<br/>Build agents with any framework"]
+
+    %% Phase 5
+    A5 --> A5A["Content Safety 📚<br/>Prompt Injection Defense,<br/>Jailbreak Prevention,<br/>Content Filtering"]
+    A5 --> A5B["Structured Outputs 🔧<br/>JSON Schema, Pydantic,<br/>Instructor, Outlines,<br/>Guardrails"]
+
+    A5A --> A5A1["Skill: AI Safety<br/>Build safe, reliable AI apps"]
+
+    %% Phase 6
+    A6 --> A6A["When to Fine-tune 📖<br/>vs Prompt Engineering<br/>vs RAG — Decision Framework"]
+    A6 --> A6B["PEFT Methods 🔧<br/>LoRA, QLoRA,<br/>Adapters, Prefix Tuning"]
+    A6 --> A6C["Training Pipeline 🔧<br/>Dataset Curation, Hugging Face<br/>Trainer, Axolotl, Unsloth"]
+
+    A6B --> A6B1["Skill: Model Customization<br/>Adapt models to specific tasks"]
+
+    %% Phase 7
+    A7 --> A7A["AI-Powered APIs 🔧<br/>FastAPI, Streaming,<br/>WebSockets, Auth,<br/>Rate Limiting"]
+    A7 --> A7B["Deployment 🔧<br/>Docker, Kubernetes,<br/>Serverless, Edge"]
+    A7 --> A7C["Observability 🔧<br/>LangSmith, LangFuse,<br/>Phoenix, Cost Tracking,<br/>Latency Monitoring"]
+
+    A7A --> A7A1["Skill: AI API Design<br/>Production-grade AI services"]
+    A7C --> A7C1["Skill: AI Ops<br/>Monitor & optimize AI systems"]
+
+    %% Phase 8
+    A8 --> A8A["Decoding Algorithms 📖+🔧<br/>Greedy, Beam Search,<br/>Speculative, Sampling"]
+    A8 --> A8B["Efficient Inference 📖+🔧<br/>KV Cache, Quantization,<br/>Flash Attention, Pruning"]
+    A8 --> A8C["Serving Systems 🔧<br/>vLLM, TGI, TensorRT-LLM,<br/>Ollama at Scale"]
+
+    A8B --> A8B1["Skill: Inference Optimization<br/>Fast, cheap LLM serving"]
+
+    classDef phase fill:#1a3a2a,stroke:#50b87a,stroke-width:2px,color:#cec
+    classDef topic fill:#153025,stroke:#40a06a,stroke-width:1px,color:#bdb
+    classDef skill fill:#0f2018,stroke:#308050,stroke-width:1px,color:#9b9,font-style:italic
+    classDef root fill:#1a1a3e,stroke:#50b87a,stroke-width:3px,color:#fff
+
+    class AD root
+    class A1,A2,A3,A4,A5,A6,A7,A8 phase
+    class A1A,A1B,A1C,A2A,A2B,A3A,A3B,A3C,A3D,A4A,A4B,A4C,A4D,A5A,A5B,A6A,A6B,A6C,A7A,A7B,A7C,A8A,A8B,A8C topic
+    class A1A1,A1B1,A1C1,A2A1,A2B1,A3C1,A3D1,A4A1,A4B1,A5A1,A6B1,A7A1,A7C1,A8B1 skill
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 4: AI POWER USER DEEP DIVE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🟠 Path 3: AI Power User — Deep Dive</h2>
+<h3>Levels 2 → 3 → 4: Use AI without building it</h3>
+<p class="section-desc">Power Users need <b>practical tool skills</b> and <b>conceptual awareness</b>. No coding required. Focus is on leveraging AI for domain-specific productivity.</p>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart TD
+    PU["🟠 AI POWER USER PATH<br/>🔧 Practical + 📖 Awareness"]
+
+    PU --> S1["Sec 1: Understanding AI"]
+    PU --> S2["Sec 2: Prompt Engineering"]
+    PU --> S3["Sec 3: AI Tools Landscape"]
+    PU --> S4["Sec 4: Workflow Automation"]
+    PU --> S5["Sec 5: Ethics & Safety"]
+    PU --> S6["Sec 6: Domain-Specific AI"]
+    PU --> S7["Sec 7: Staying Current"]
+
+    %% Section 1
+    S1 --> S1A["What AI Is 📖<br/>AI vs ML vs DL, LLMs,<br/>Training vs Inference"]
+    S1 --> S1B["AI Landscape 📖<br/>Providers, Models,<br/>Open vs Closed source"]
+    S1 --> S1C["Capabilities & Limits 📖<br/>Hallucinations, Biases,<br/>When NOT to use AI"]
+
+    S1A --> S1A1["Skill: AI Literacy<br/>Explain AI to anyone"]
+    S1C --> S1C1["Skill: Critical AI Thinking<br/>Know when to trust AI"]
+
+    %% Section 2
+    S2 --> S2A["Prompt Fundamentals 🔧<br/>Role + Task + Format +<br/>Constraints + Context"]
+    S2 --> S2B["Intermediate Techniques 🔧<br/>Chain-of-Thought, Role,<br/>Comparison, Reverse Prompting"]
+    S2 --> S2C["Advanced Techniques 🔧<br/>System Prompts, Chaining,<br/>Templates, Custom Assistants"]
+    S2 --> S2D["Image Prompting 🔧<br/>Style, Composition, Negative<br/>Prompts, Midjourney params"]
+
+    S2A --> S2A1["Skill: Effective Prompting<br/>Get quality outputs consistently"]
+    S2C --> S2C1["Skill: AI Workflow Design<br/>Chain prompts into pipelines"]
+
+    %% Section 3
+    S3 --> S3A["Text & Chat AI 🔧<br/>ChatGPT, Claude, Gemini,<br/>Perplexity, Specialized Tools"]
+    S3 --> S3B["Image Generation 🔧<br/>Midjourney, DALL-E, Firefly,<br/>Stable Diffusion, Canva AI"]
+    S3 --> S3C["Video Generation 🔧<br/>Sora, Kling, Runway, Pika,<br/>Synthesia, HeyGen"]
+    S3 --> S3D["Audio & Music AI 🔧<br/>ElevenLabs, Suno, Udio,<br/>AIVA, Descript"]
+    S3 --> S3E["Productivity AI 🔧<br/>Notion AI, Obsidian,<br/>Otter.ai, Gamma"]
+    S3 --> S3F["Design & Business 🔧<br/>Canva, Figma AI, Framer,<br/>Jasper, Copy.ai, HubSpot AI"]
+
+    S3A --> S3A1["Skill: Tool Selection<br/>Right AI tool for each task"]
+    S3D --> S3D1["Skill: Multimedia AI<br/>Create audio/video with AI"]
+
+    %% Section 4
+    S4 --> S4A["Automation Concepts 📖<br/>Triggers, Actions, Workflows,<br/>APIs (conceptual)"]
+    S4 --> S4B["Zapier 🔧<br/>No-code automation,<br/>AI integrations"]
+    S4 --> S4C["Make / Integromat 🔧<br/>Visual workflow builder,<br/>Complex branching"]
+    S4 --> S4D["n8n 🔧<br/>Self-hosted, advanced<br/>AI workflows"]
+    S4 --> S4E["No-Code AI Agents 🔧<br/>CustomGPTs, Claude Projects,<br/>Relevance AI, Voiceflow"]
+
+    S4B --> S4B1["Skill: AI Automation<br/>Automate repetitive tasks"]
+    S4E --> S4E1["Skill: Agent Building<br/>Create AI assistants — no code"]
+
+    %% Section 5
+    S5 --> S5A["Privacy & Data 📖<br/>What data AI collects,<br/>Confidential info risks"]
+    S5 --> S5B["Copyright & IP 📖<br/>Who owns AI output,<br/>Fair use, Licensing"]
+    S5 --> S5C["Deepfakes & Misinfo 📖<br/>Detection, Verification,<br/>Responsible sharing"]
+    S5 --> S5D["Responsible AI Use 📖<br/>Bias awareness, Disclosure,<br/>Human-in-the-loop"]
+
+    S5A --> S5A1["Skill: AI Safety Awareness<br/>Use AI responsibly"]
+
+    %% Section 6
+    S6 --> S6A["Music & Audio 🔧<br/>AI composition, Voice cloning,<br/>Audio enhancement"]
+    S6 --> S6B["Film & Video 🔧<br/>AI pre-production, VFX,<br/>Editing, Color grading"]
+    S6 --> S6C["Art & Design 🔧<br/>Concept art, Brand assets,<br/>UI/UX with AI"]
+    S6 --> S6D["Writing & Journalism 🔧<br/>Drafting, Research, Editing,<br/>Fact-checking with AI"]
+    S6 --> S6E["Education 🔧<br/>AI tutoring, Content creation,<br/>Assessment, Personalization"]
+    S6 --> S6F["Healthcare & Legal 📖<br/>Awareness of AI applications,<br/>Limitations, Regulations"]
+
+    S6D --> S6D1["Skill: Domain AI Mastery<br/>AI-augmented domain expertise"]
+
+    classDef phase fill:#3a2a1a,stroke:#e8943a,stroke-width:2px,color:#edc
+    classDef topic fill:#302518,stroke:#c87a2a,stroke-width:1px,color:#dcb
+    classDef skill fill:#251c10,stroke:#a06020,stroke-width:1px,color:#ba9,font-style:italic
+    classDef root fill:#1a1a3e,stroke:#e8943a,stroke-width:3px,color:#fff
+
+    class PU root
+    class S1,S2,S3,S4,S5,S6,S7 phase
+    class S1A,S1B,S1C,S2A,S2B,S2C,S2D,S3A,S3B,S3C,S3D,S3E,S3F,S4A,S4B,S4C,S4D,S4E,S5A,S5B,S5C,S5D,S6A,S6B,S6C,S6D,S6E,S6F topic
+    class S1A1,S1C1,S2A1,S2C1,S3A1,S3D1,S4B1,S4E1,S5A1,S6D1 skill
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 5: AI RESEARCHER DEEP DIVE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🟣 Path 4: AI Researcher — Deep Dive</h2>
+<h3>Levels 2 → 3 → 4: Push the boundaries of AI knowledge</h3>
+<p class="section-desc">Researchers need the <b>deepest complete knowledge</b> — rigorous theory + experimental validation. Shared foundation with ML Engineer but goes far deeper into math, theory, and frontier topics.</p>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart TD
+    AR["🟣 AI RESEARCHER PATH<br/>📚 Deep Complete Knowledge"]
+
+    AR --> R1["Foundation: Deep Mathematics"]
+    AR --> R2["Core: ML Theory"]
+    AR --> R3["Core: DL Theory"]
+    AR --> R4["Specialization: Research Tracks"]
+    AR --> R5["Frontier: LLMs & GenAI"]
+    AR --> R6["Frontier: Cutting-Edge"]
+    AR --> R7["Meta: Research Skills"]
+
+    %% Deep Mathematics
+    R1 --> R1A["Linear Algebra 📚<br/>Eigendecomposition, SVD,<br/>Matrix Calculus, Tensor Algebra,<br/>Spectral Theory"]
+    R1 --> R1B["Calculus & Analysis 📚<br/>Multivariable, Measure Theory,<br/>Functional Analysis,<br/>Variational Calculus"]
+    R1 --> R1C["Probability Theory 📚<br/>Measure-Theoretic Probability,<br/>Stochastic Processes, Martingales,<br/>Information Theory"]
+    R1 --> R1D["Optimization 📚<br/>Convex Optimization, Non-convex,<br/>Constrained, Stochastic Methods,<br/>Duality Theory"]
+
+    R1A --> R1A1["Skill: Mathematical Rigor<br/>Prove theorems, derive algorithms"]
+    R1D --> R1D1["Skill: Optimization Mastery<br/>Design new training algorithms"]
+
+    %% ML Theory
+    R2 --> R2A["Statistical Learning Theory 📚<br/>VC Dimension, PAC Learning,<br/>Rademacher Complexity,<br/>Bias-Variance Decomposition"]
+    R2 --> R2B["Bayesian Methods 📚<br/>Bayesian Inference, MCMC,<br/>Variational Inference,<br/>Gaussian Processes"]
+    R2 --> R2C["Kernel Methods 📚<br/>Kernel Trick, RKHS,<br/>SVM Theory, Kernel PCA"]
+    R2 --> R2D["Graphical Models 📚<br/>Bayesian Networks, MRFs,<br/>Belief Propagation,<br/>Causal Inference"]
+
+    R2A --> R2A1["Skill: Theoretical Analysis<br/>Bound generalization, prove convergence"]
+    R2B --> R2B1["Skill: Probabilistic Modeling<br/>Uncertainty quantification"]
+
+    %% DL Theory
+    R3 --> R3A["Optimization Landscape 📚<br/>Loss Surfaces, Saddle Points,<br/>Adam/SGD Analysis, Learning<br/>Rate Schedules Theory"]
+    R3 --> R3B["Generalization Theory 📚<br/>Double Descent, Implicit<br/>Regularization, Neural Tangent<br/>Kernels, Lottery Ticket"]
+    R3 --> R3C["Architecture Theory 📚<br/>Universal Approximation,<br/>Depth vs Width, Skip<br/>Connections Theory"]
+    R3 --> R3D["Representation Learning 📚<br/>Disentanglement, Information<br/>Bottleneck, Contrastive Learning<br/>Theory"]
+
+    R3A --> R3A1["Skill: Training Insight<br/>Understand why networks learn"]
+    R3B --> R3B1["Skill: Generalization Understanding<br/>Why models generalize"]
+
+    %% Research Tracks
+    R4 --> R4A["NLP Research 📚<br/>Syntax, Semantics, Pragmatics,<br/>Formal Grammars, Discourse,<br/>Computational Linguistics"]
+    R4 --> R4B["Computer Vision Research 📚<br/>Geometric DL, 3D Vision,<br/>NeRF, Scene Understanding,<br/>Video Understanding"]
+    R4 --> R4C["Reinforcement Learning 📚<br/>MDP Theory, Policy Optimization,<br/>Model-Based RL, Offline RL,<br/>Multi-Agent RL, RLHF"]
+    R4 --> R4D["Graph Neural Networks 📚<br/>Message Passing, Graph<br/>Isomorphism, Spectral Methods,<br/>Geometric Deep Learning"]
+
+    R4A --> R4A1["Skill: Research Depth<br/>Publish in top NLP venues"]
+    R4C --> R4C1["Skill: RL Theory<br/>Design learning algorithms"]
+
+    %% LLMs & GenAI
+    R5 --> R5A["LLM Architecture 📚<br/>Scaling Laws, Emergent Abilities,<br/>In-Context Learning Theory,<br/>Mechanistic Interpretability"]
+    R5 --> R5B["Training at Scale 📚<br/>Distributed Training, FSDP,<br/>DeepSpeed, Megatron-LM,<br/>Data Curation at Scale"]
+    R5 --> R5C["Alignment Research 📚<br/>RLHF Theory, Constitutional AI,<br/>DPO, KTO, Reward Modeling,<br/>Scalable Oversight"]
+    R5 --> R5D["Generative Models 📚<br/>VAEs, GANs, Normalizing Flows,<br/>Diffusion Models Theory,<br/>Score Matching"]
+
+    R5A --> R5A1["Skill: LLM Understanding<br/>Explain model behavior formally"]
+    R5C --> R5C1["Skill: Alignment Science<br/>Make AI systems safe"]
+
+    %% Frontier
+    R6 --> R6A["AI Safety & Alignment 📖+🔧<br/>Deceptive Alignment,<br/>Interpretability, Red Teaming,<br/>Governance"]
+    R6 --> R6B["Efficient Architectures 📖+🔧<br/>Mixture of Experts, State Space,<br/>Mamba, RWKV, Linear Attention"]
+    R6 --> R6C["Neurosymbolic AI 📖<br/>Neural + Symbolic Reasoning,<br/>Program Synthesis, Formal<br/>Verification for AI"]
+    R6 --> R6D["World Models 📖<br/>Planning, Prediction,<br/>Embodied AI, Robotics<br/>Foundation Models"]
+    R6 --> R6E["Multimodal Frontier 📖+🔧<br/>Unified Architectures,<br/>Any-to-Any Generation,<br/>Embodied Multimodal"]
+
+    R6A --> R6A1["Skill: Safety Research<br/>Contribute to AI safety"]
+    R6B --> R6B1["Skill: Architecture Innovation<br/>Design next-gen models"]
+
+    %% Research Skills
+    R7 --> R7A["Paper Reading 📚<br/>arXiv, Conferences (NeurIPS,<br/>ICML, ICLR, ACL, CVPR)"]
+    R7 --> R7B["Paper Writing 📚<br/>LaTeX, Experiment Design,<br/>Reproducibility, Peer Review"]
+    R7 --> R7C["Research Tools 🔧<br/>Weights & Biases, Git,<br/>HPC Clusters, JAX/PyTorch"]
+
+    R7A --> R7A1["Skill: Literature Mastery<br/>Navigate research landscape"]
+    R7B --> R7B1["Skill: Scientific Communication<br/>Write & present research"]
+
+    classDef phase fill:#2a1a3a,stroke:#c165dd,stroke-width:2px,color:#dce
+    classDef topic fill:#201530,stroke:#a155bd,stroke-width:1px,color:#cbc
+    classDef skill fill:#180f28,stroke:#8040a0,stroke-width:1px,color:#a9b,font-style:italic
+    classDef root fill:#1a1a3e,stroke:#c165dd,stroke-width:3px,color:#fff
+
+    class AR root
+    class R1,R2,R3,R4,R5,R6,R7 phase
+    class R1A,R1B,R1C,R1D,R2A,R2B,R2C,R2D,R3A,R3B,R3C,R3D,R4A,R4B,R4C,R4D,R5A,R5B,R5C,R5D,R6A,R6B,R6C,R6D,R6E,R7A,R7B,R7C topic
+    class R1A1,R1D1,R2A1,R2B1,R3A1,R3B1,R4A1,R4C1,R5A1,R5C1,R6A1,R6B1,R7A1,R7B1 skill
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 6: CROSS-PATH SHARED SKILLS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🟡 Cross-Path Shared Skills</h2>
+<h3>Skills that appear across multiple paths — with different depth requirements</h3>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart LR
+    subgraph SHARED["🟡 SHARED SKILLS ACROSS PATHS"]
+        direction TB
+        SH1["Python Programming"]
+        SH2["Prompt Engineering"]
+        SH3["LLM Understanding"]
+        SH4["AI Ethics & Safety"]
+        SH5["Evaluation Skills"]
+        SH6["Transformer Knowledge"]
+        SH7["Fine-Tuning"]
+        SH8["AI Agents"]
+    end
+
+    subgraph DEPTH["📏 DEPTH REQUIRED PER PATH"]
+        direction TB
+        D1["ML Eng: 📚 Complete<br/>App Dev: 🔧 Basic<br/>Power User: ❌ None<br/>Researcher: 📚 Complete"]
+        D2["ML Eng: 🔧 Practical<br/>App Dev: 📚 Complete<br/>Power User: 🔧 Practical<br/>Researcher: 📖 Theory"]
+        D3["ML Eng: 📚 Complete<br/>App Dev: 📖 Conceptual<br/>Power User: 📖 High-level<br/>Researcher: 📚 Deep Complete"]
+        D4["ML Eng: 📖 Awareness<br/>App Dev: 📚 Complete<br/>Power User: 📖 Awareness<br/>Researcher: 📚 Complete"]
+        D5["ML Eng: 📚 Complete<br/>App Dev: 📚 Complete<br/>Power User: ❌ None<br/>Researcher: 📚 Deep Complete"]
+        D6["ML Eng: 📚 Complete<br/>App Dev: 📖 Conceptual<br/>Power User: ❌ None<br/>Researcher: 📚 Deep Complete"]
+        D7["ML Eng: 📚 Complete<br/>App Dev: 🔧 Practical<br/>Power User: ❌ None<br/>Researcher: 📚 Complete"]
+        D8["ML Eng: 🔧 Practical<br/>App Dev: 📚 Complete<br/>Power User: 🔧 No-Code<br/>Researcher: 📖 Theory"]
+    end
+
+    SH1 --- D1
+    SH2 --- D2
+    SH3 --- D3
+    SH4 --- D4
+    SH5 --- D5
+    SH6 --- D6
+    SH7 --- D7
+    SH8 --- D8
+
+    classDef shared fill:#2a2a1a,stroke:#f1c40f,stroke-width:2px,color:#eed
+    classDef depth fill:#1a1a2a,stroke:#888,stroke-width:1px,color:#ccc
+    class SH1,SH2,SH3,SH4,SH5,SH6,SH7,SH8 shared
+    class D1,D2,D3,D4,D5,D6,D7,D8 depth
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 7: SKILLS → JOB ROLES MAPPING -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🔴 Skills → Job Roles Mapping</h2>
+<h3>How combinations of skills from different paths create real-world job roles</h3>
+<p class="section-desc">Each job role is formed by combining specific skills from one or more paths. The source path is color-coded.</p>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '12px' }}}%%
+flowchart TD
+    subgraph SKILLS["📦 SKILL POOLS"]
+        direction TB
+        SK_PY["🔵 Python Fluency"]
+        SK_MATH["🔵 Math Mastery"]
+        SK_ML["🔵 ML Algorithms"]
+        SK_DL["🔵 Deep Learning"]
+        SK_NLP["🔵 NLP Specialization"]
+        SK_CV["🔵 CV Specialization"]
+        SK_RL["🟣 RL Specialization"]
+        SK_MLOPS["🔵 MLOps & Deployment"]
+        SK_API["🟢 LLM API Fluency"]
+        SK_PROMPT["🟢🟠 Prompt Engineering"]
+        SK_RAG["🟢 RAG Systems"]
+        SK_AGENT["🟢 Agent Architecture"]
+        SK_SAFETY["🟢🟣 AI Safety"]
+        SK_FINETUNE["🟢🔵 Fine-Tuning"]
+        SK_PROD["🟢 Production Engineering"]
+        SK_EVAL["🟢🔵 Evaluation"]
+        SK_TOOLS["🟠 AI Tool Mastery"]
+        SK_AUTO["🟠 Workflow Automation"]
+        SK_DOMAIN["🟠 Domain AI Expertise"]
+        SK_THEORY["🟣 Theoretical Depth"]
+        SK_RESEARCH["🟣 Research Methodology"]
+        SK_FRONTIER["🟣 Frontier Knowledge"]
+        SK_ALIGN["🟣 Alignment Science"]
+        SK_INFER["🟢 Inference Optimization"]
+    end
+
+    subgraph ROLES["🎯 JOB ROLES"]
+        direction TB
+        JR1["🔴 Data Scientist<br/>$120K-180K"]
+        JR2["🔴 ML Engineer<br/>$140K-220K"]
+        JR3["🔴 Deep Learning Engineer<br/>$150K-250K"]
+        JR4["🔴 NLP Engineer<br/>$140K-230K"]
+        JR5["🔴 Computer Vision Engineer<br/>$140K-230K"]
+        JR6["🔴 AI Application Developer<br/>$130K-200K"]
+        JR7["🔴 Full Stack AI Engineer<br/>$150K-250K"]
+        JR8["🔴 AI Solutions Architect<br/>$160K-260K"]
+        JR9["🔴 Prompt Engineer<br/>$100K-180K"]
+        JR10["🔴 MLOps Engineer<br/>$130K-200K"]
+        JR11["🔴 AI Product Manager<br/>$140K-220K"]
+        JR12["🔴 AI Researcher<br/>$150K-300K+"]
+        JR13["🔴 AI Safety Researcher<br/>$160K-350K+"]
+        JR14["🔴 AI Consultant<br/>$120K-250K"]
+        JR15["🔴 AI Content Creator<br/>$60K-150K"]
+        JR16["🔴 LLM Inference Engineer<br/>$150K-260K"]
+        JR17["🔴 RL Engineer<br/>$150K-280K"]
+    end
+
+    %% Data Scientist
+    SK_PY --> JR1
+    SK_MATH --> JR1
+    SK_ML --> JR1
+    SK_EVAL --> JR1
+
+    %% ML Engineer
+    SK_PY --> JR2
+    SK_MATH --> JR2
+    SK_ML --> JR2
+    SK_DL --> JR2
+    SK_MLOPS --> JR2
+
+    %% Deep Learning Engineer
+    SK_PY --> JR3
+    SK_MATH --> JR3
+    SK_DL --> JR3
+    SK_FINETUNE --> JR3
+
+    %% NLP Engineer
+    SK_DL --> JR4
+    SK_NLP --> JR4
+    SK_FINETUNE --> JR4
+
+    %% CV Engineer
+    SK_DL --> JR5
+    SK_CV --> JR5
+
+    %% AI App Developer
+    SK_PY --> JR6
+    SK_API --> JR6
+    SK_PROMPT --> JR6
+    SK_RAG --> JR6
+    SK_AGENT --> JR6
+    SK_PROD --> JR6
+
+    %% Full Stack AI Engineer
+    SK_API --> JR7
+    SK_RAG --> JR7
+    SK_AGENT --> JR7
+    SK_PROD --> JR7
+    SK_ML --> JR7
+
+    %% AI Solutions Architect
+    SK_API --> JR8
+    SK_RAG --> JR8
+    SK_PROD --> JR8
+    SK_ML --> JR8
+    SK_MLOPS --> JR8
+
+    %% Prompt Engineer
+    SK_PROMPT --> JR9
+    SK_EVAL --> JR9
+    SK_TOOLS --> JR9
+
+    %% MLOps Engineer
+    SK_PY --> JR10
+    SK_ML --> JR10
+    SK_MLOPS --> JR10
+    SK_PROD --> JR10
+
+    %% AI Product Manager
+    SK_TOOLS --> JR11
+    SK_EVAL --> JR11
+    SK_PROMPT --> JR11
+    SK_DOMAIN --> JR11
+
+    %% AI Researcher
+    SK_MATH --> JR12
+    SK_DL --> JR12
+    SK_THEORY --> JR12
+    SK_RESEARCH --> JR12
+    SK_FRONTIER --> JR12
+
+    %% AI Safety Researcher
+    SK_DL --> JR13
+    SK_SAFETY --> JR13
+    SK_ALIGN --> JR13
+    SK_RESEARCH --> JR13
+
+    %% AI Consultant
+    SK_TOOLS --> JR14
+    SK_PROMPT --> JR14
+    SK_DOMAIN --> JR14
+    SK_AUTO --> JR14
+
+    %% AI Content Creator
+    SK_TOOLS --> JR15
+    SK_PROMPT --> JR15
+    SK_DOMAIN --> JR15
+
+    %% LLM Inference Engineer
+    SK_DL --> JR16
+    SK_INFER --> JR16
+    SK_PROD --> JR16
+
+    %% RL Engineer
+    SK_MATH --> JR17
+    SK_DL --> JR17
+    SK_RL --> JR17
+    SK_THEORY --> JR17
+
+    classDef skillNode fill:#1a2030,stroke:#667eea,stroke-width:1px,color:#bbd,font-size:11px
+    classDef roleNode fill:#2a1515,stroke:#e74c3c,stroke-width:2px,color:#fdd,font-size:12px
+
+    class SK_PY,SK_MATH,SK_ML,SK_DL,SK_NLP,SK_CV,SK_RL,SK_MLOPS,SK_API,SK_PROMPT,SK_RAG,SK_AGENT,SK_SAFETY,SK_FINETUNE,SK_PROD,SK_EVAL,SK_TOOLS,SK_AUTO,SK_DOMAIN,SK_THEORY,SK_RESEARCH,SK_FRONTIER,SK_ALIGN,SK_INFER skillNode
+    class JR1,JR2,JR3,JR4,JR5,JR6,JR7,JR8,JR9,JR10,JR11,JR12,JR13,JR14,JR15,JR16,JR17 roleNode
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- DIAGRAM 8: LEARNING PATH PROGRESSION -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>📈 Learning Path Progression & Convergence Points</h2>
+<h3>How the 4 paths share foundations and diverge at different depth levels</h3>
+
+<div class="diagram-section">
+<pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'fontSize': '13px' }}}%%
+flowchart TD
+    START["🏰 START HERE<br/>Choose Your Path"]
+
+    START --> L1_COMMON["Level 0: Common Foundation<br/>AI Literacy • Basic Prompting • Ethics Awareness"]
+
+    L1_COMMON --> L1_PU["🟠 Power User Track<br/>No coding needed"]
+    L1_COMMON --> L1_CODE["Coding Track<br/>Python required"]
+
+    L1_PU --> L2_PU_TOOLS["Level 1: Master AI Tools<br/>ChatGPT, Claude, Midjourney,<br/>ElevenLabs, Perplexity"]
+    L2_PU_TOOLS --> L3_PU_ADV["Level 2: Advanced Usage<br/>Prompt Chains, Automation,<br/>Zapier, Make, n8n"]
+    L3_PU_ADV --> L4_PU_DOMAIN["Level 3: Domain Specialization<br/>Music/Film/Art/Writing/<br/>Education/Healthcare/Legal"]
+    L4_PU_DOMAIN --> PU_ROLES["🔴 Unlock Roles:<br/>AI Content Creator<br/>AI Consultant<br/>AI Product Manager<br/>Prompt Engineer"]
+
+    L1_CODE --> L2_PYTHON["Level 1: Python Mastery<br/>Core Python, OOP,<br/>Data Science Libraries"]
+
+    L2_PYTHON --> L2_BRANCH["Choose Specialization"]
+
+    L2_BRANCH --> L3_APP["🟢 App Developer Track"]
+    L2_BRANCH --> L3_ML["🔵 ML Engineer Track"]
+
+    %% App Developer Track
+    L3_APP --> L4_APP_API["Level 2: LLM APIs & Prompts<br/>OpenAI, Anthropic, Gemini APIs,<br/>Advanced Prompt Engineering"]
+    L4_APP_API --> L5_APP_BUILD["Level 3: Build AI Systems<br/>RAG, Agents, Tool Use,<br/>Evaluation, Safety"]
+    L5_APP_BUILD --> L6_APP_PROD["Level 4: Production & Scale<br/>FastAPI, Docker, Monitoring,<br/>Fine-tuning, Inference Optimization"]
+    L6_APP_PROD --> APP_ROLES["🔴 Unlock Roles:<br/>AI Application Developer<br/>Full Stack AI Engineer<br/>AI Solutions Architect<br/>LLM Inference Engineer"]
+
+    %% ML Engineer Track
+    L3_ML --> L4_ML_MATH["Level 2: Mathematics<br/>Linear Algebra, Calculus,<br/>Probability & Statistics"]
+    L4_ML_MATH --> L5_ML_CORE["Level 3: Core ML & DL<br/>Supervised/Unsupervised Learning,<br/>Neural Networks, CNNs, RNNs,<br/>Transformers"]
+    L5_ML_CORE --> L6_ML_SPEC["Level 4: Specialization<br/>NLP, CV, RL, Time Series,<br/>Recommender Systems, GNNs"]
+    L6_ML_SPEC --> L7_ML_ADV["Level 5: Advanced & MLOps<br/>LLMs, Fine-tuning, Agents,<br/>Deployment, Monitoring"]
+    L7_ML_ADV --> ML_ROLES["🔴 Unlock Roles:<br/>Data Scientist<br/>ML Engineer<br/>DL Engineer<br/>NLP/CV Engineer<br/>MLOps Engineer"]
+
+    %% Researcher Branch
+    L5_ML_CORE --> L6_RES["🟣 Research Branch<br/>Deep Theory Fork"]
+    L6_RES --> L7_RES_THEORY["Level 4: Deep Theory<br/>Statistical Learning Theory,<br/>Bayesian Methods, Optimization,<br/>Generalization Theory"]
+    L7_RES_THEORY --> L8_RES_FRONT["Level 5: Frontier Research<br/>Mechanistic Interpretability,<br/>Alignment, Efficient Architectures,<br/>Neurosymbolic AI, World Models"]
+    L8_RES_FRONT --> RES_ROLES["🔴 Unlock Roles:<br/>AI Researcher<br/>AI Safety Researcher<br/>RL Engineer<br/>Research Scientist"]
+
+    %% Cross-path connections
+    L6_APP_PROD -.->|"ML knowledge<br/>deepens apps"| L5_ML_CORE
+    L7_ML_ADV -.->|"LLM skills<br/>enhance ML"| L5_APP_BUILD
+    L3_PU_ADV -.->|"Learn to code<br/>→ upgrade path"| L2_PYTHON
+    APP_ROLES -.->|"Deeper theory<br/>→ architect"| L4_ML_MATH
+
+    classDef start fill:#1a1a3e,stroke:#667eea,stroke-width:3px,color:#fff
+    classDef common fill:#2a2a2a,stroke:#f1c40f,stroke-width:2px,color:#eed
+    classDef puNode fill:#3a2a1a,stroke:#e8943a,stroke-width:2px,color:#edc
+    classDef appNode fill:#1a3a2a,stroke:#50b87a,stroke-width:2px,color:#cec
+    classDef mlNode fill:#1a2a4a,stroke:#4a90d9,stroke-width:2px,color:#cde
+    classDef resNode fill:#2a1a3a,stroke:#c165dd,stroke-width:2px,color:#dce
+    classDef roleNode fill:#2a1515,stroke:#e74c3c,stroke-width:2px,color:#fdd
+
+    class START start
+    class L1_COMMON,L2_BRANCH common
+    class L1_PU,L2_PU_TOOLS,L3_PU_ADV,L4_PU_DOMAIN puNode
+    class L3_APP,L4_APP_API,L5_APP_BUILD,L6_APP_PROD appNode
+    class L1_CODE,L2_PYTHON,L3_ML,L4_ML_MATH,L5_ML_CORE,L6_ML_SPEC,L7_ML_ADV mlNode
+    class L6_RES,L7_RES_THEORY,L8_RES_FRONT resNode
+    class PU_ROLES,APP_ROLES,ML_ROLES,RES_ROLES roleNode
+</pre>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- KNOWLEDGE REQUIREMENT MATRIX -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>📊 Knowledge Requirement Matrix</h2>
+<h3>Who needs what: Theory 📖 vs Practical 🔧 vs Complete 📚 vs Not Needed ❌</h3>
+
+<div class="info-box">
+<table style="width:100%; border-collapse: collapse; margin: 10px 0;">
+<thead>
+<tr style="border-bottom: 2px solid #555;">
+    <th style="text-align:left; padding:10px; color:#667eea;">Topic / Skill Area</th>
+    <th style="text-align:center; padding:10px; color:#4a90d9;">🔵 ML Engineer</th>
+    <th style="text-align:center; padding:10px; color:#50b87a;">🟢 AI App Dev</th>
+    <th style="text-align:center; padding:10px; color:#e8943a;">🟠 Power User</th>
+    <th style="text-align:center; padding:10px; color:#c165dd;">🟣 Researcher</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Python Programming</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Mathematics (LinAlg, Calc, Prob)</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📖 Intuition only</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">ML Algorithms</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📖 Conceptual</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Deep Learning (NN, CNN, RNN)</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📖 Conceptual</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Transformer Architecture</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📖 Conceptual</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">LLM APIs & Integration</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">🔧 Practical</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Prompt Engineering</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📖 Theory</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">RAG Systems</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📖 Theory</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">AI Agents</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 No-Code</td>
+    <td style="text-align:center;">📖 Theory</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Evaluation & Benchmarks</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Fine-Tuning (LoRA, RLHF, DPO)</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">MLOps & Deployment</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">🔧 Practical</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">AI Tools (ChatGPT, Midjourney...)</td>
+    <td style="text-align:center;">🔧 Awareness</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">🔧 Awareness</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Workflow Automation (Zapier, n8n)</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">🔧 Awareness</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">❌ Not needed</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">AI Ethics & Safety</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Domain-Specific AI (Music, Film...)</td>
+    <td style="text-align:center;">❌ Optional</td>
+    <td style="text-align:center;">❌ Optional</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">❌ Optional</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Statistical Learning Theory</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Deep Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Frontier Research (Safety, Interp...)</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">📖 Awareness</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Complete</td>
+</tr>
+<tr style="border-bottom: 1px solid #333;">
+    <td style="padding:8px;">Research Methodology & Publishing</td>
+    <td style="text-align:center;">❌ Optional</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">📚 Complete</td>
+</tr>
+<tr>
+    <td style="padding:8px;">Production Engineering (APIs, Docker)</td>
+    <td style="text-align:center;">🔧 Practical</td>
+    <td style="text-align:center;">📚 Complete</td>
+    <td style="text-align:center;">❌ Not needed</td>
+    <td style="text-align:center;">🔧 Awareness</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- JOB ROLES DETAIL -->
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>🎯 Job Roles — Detailed Skill Requirements</h2>
+
+<div class="info-box">
+<h4>Roles primarily from 🔵 ML Engineer Path:</h4>
+<ul>
+    <li><b>Data Scientist</b> — Python 📚 + Math 📚 + Core ML 📚 + Visualization 🔧 + Statistics 📚 | <i>Analyze data, build predictive models, communicate insights</i></li>
+    <li><b>ML Engineer</b> — Python 📚 + Math 📚 + ML 📚 + DL 📚 + MLOps 🔧 | <i>Build, train, deploy, and maintain ML models in production</i></li>
+    <li><b>Deep Learning Engineer</b> — Math 📚 + DL 📚 + Fine-tuning 📚 + Frameworks 🔧 | <i>Design and optimize neural network architectures</i></li>
+    <li><b>NLP Engineer</b> — DL 📚 + NLP 📚 + Fine-tuning 🔧 + LLMs 📚 | <i>Build text understanding and generation systems</i></li>
+    <li><b>Computer Vision Engineer</b> — DL 📚 + CV 📚 + Frameworks 🔧 | <i>Build image/video understanding systems</i></li>
+    <li><b>MLOps Engineer</b> — Python 🔧 + ML 📖 + DevOps 🔧 + Cloud 🔧 + Monitoring 🔧 | <i>Operationalize ML pipelines at scale</i></li>
+</ul>
+</div>
+
+<div class="info-box">
+<h4>Roles primarily from 🟢 AI App Developer Path:</h4>
+<ul>
+    <li><b>AI Application Developer</b> — Python 🔧 + APIs 📚 + Prompts 📚 + RAG 🔧 + Agents 🔧 + Production 🔧 | <i>Build AI-powered products and services</i></li>
+    <li><b>Full Stack AI Engineer</b> — App Dev skills + ML basics 📖 + Frontend 🔧 | <i>End-to-end AI product development</i></li>
+    <li><b>AI Solutions Architect</b> — APIs 📚 + RAG 📚 + Production 📚 + ML understanding 📖 + Cloud 🔧 | <i>Design enterprise AI systems architecture</i></li>
+    <li><b>LLM Inference Engineer</b> — DL 📖 + Inference Optimization 📚 + Production 🔧 + Systems 🔧 | <i>Optimize LLM serving for speed and cost</i></li>
+</ul>
+</div>
+
+<div class="info-box">
+<h4>Roles primarily from 🟠 AI Power User Path:</h4>
+<ul>
+    <li><b>AI Content Creator</b> — AI Tools 📚 + Prompts 🔧 + Domain Creativity 🔧 | <i>Create content using AI across media types</i></li>
+    <li><b>AI Consultant</b> — AI Tools 📚 + Prompts 🔧 + Domain 🔧 + Automation 🔧 + Business 🔧 | <i>Help organizations adopt and leverage AI</i></li>
+    <li><b>Prompt Engineer</b> — Prompt Eng 📚 + Eval 🔧 + Tool Mastery 🔧 | <i>Design and optimize prompts for production systems</i></li>
+    <li><b>AI Product Manager</b> — AI Understanding 📖 + Eval 📖 + Business 📚 + Domain 🔧 | <i>Lead AI product strategy and development</i></li>
+</ul>
+</div>
+
+<div class="info-box">
+<h4>Roles primarily from 🟣 AI Researcher Path:</h4>
+<ul>
+    <li><b>AI Research Scientist</b> — Deep Math 📚 + DL Theory 📚 + Research 📚 + Frontier 📚 | <i>Publish papers, advance state of the art</i></li>
+    <li><b>AI Safety Researcher</b> — DL 📚 + LLMs 📚 + Alignment 📚 + Ethics 📚 + Research 📚 | <i>Ensure AI systems are safe and aligned</i></li>
+    <li><b>RL Engineer</b> — Math 📚 + DL 📚 + RL Theory 📚 + Environments 🔧 | <i>Build agent training systems (robotics, games, RLHF)</i></li>
+</ul>
+</div>
+
+<div class="info-box">
+<h4>🔗 Cross-Path Hybrid Roles (highest demand, highest pay):</h4>
+<ul>
+    <li><b>ML Engineer + AI App Dev</b> → <b>AI Platform Engineer</b> — builds both the models AND the serving infrastructure</li>
+    <li><b>AI App Dev + Power User</b> → <b>AI Solutions Consultant</b> — technical enough to build, business-savvy enough to sell</li>
+    <li><b>ML Engineer + Researcher</b> → <b>Applied Research Scientist</b> — publishes papers AND ships products</li>
+    <li><b>All 4 Paths</b> → <b>AI Technical Lead / CTO</b> — rare, commands highest compensation</li>
+</ul>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center; margin:40px 0; color:#666; font-size:0.9em;">
+    <p>Generated from The AI Kingdom checklists: ML/DL Mastery, AI Application Developer, AI Power Users</p>
+    <p>Last updated: April 2026 | Paths, skills, and roles reflect the current AI industry landscape</p>
+</div>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+            primaryColor: '#1a1a3e',
+            primaryTextColor: '#e0e0e0',
+            primaryBorderColor: '#667eea',
+            lineColor: '#555',
+            secondaryColor: '#2a2a4a',
+            tertiaryColor: '#333',
+            fontSize: '14px'
+        },
+        flowchart: {
+            htmlLabels: true,
+            curve: 'basis',
+            nodeSpacing: 30,
+            rankSpacing: 50,
+            padding: 15,
+            useMaxWidth: true
+        },
+        securityLevel: 'loose'
+    });
+</script>
+
+</body>
+</html>
