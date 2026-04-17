@@ -1,6 +1,41 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.3 Convolutional Neural Networks (CNNs)\4.3.3 CNN Architectures (Historical Evolution)
+# 4.3.3 CNN Architectures (Historical Evolution)
 
-**Project:** CNN Project
+LeNet → AlexNet → VGG → GoogLeNet → ResNet — architectural innovations timeline.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Inception module concept demo |
+| `working_example2.py` | Architecture table + digits flatten vs pooled proxy |
+| `working_example.ipynb` | Interactive: arch timeline → residual block forward demo |
+
+## Architecture Timeline
+
+| Year | Model | Key Innovation | Params |
+|------|-------|---------------|--------|
+| 1998 | LeNet-5 | Conv+Pool stacking | ~60K |
+| 2012 | AlexNet | Deep ReLU + Dropout | ~60M |
+| 2014 | VGG-16 | Depth with 3×3 | ~138M |
+| 2014 | GoogLeNet | Inception modules | ~7M |
+| 2015 | ResNet-50 | Skip connections | ~25M |
+| 2017 | DenseNet | Dense connections | ~8M |
+
+## Residual Block
+
+```python
+# Skip connection (identity shortcut)
+def residual_block(x):
+    h = relu(conv(x))
+    h = conv(h)
+    return relu(h + x)   # ← skip
+```
+
+## Learning Resources
+- [ResNet paper (He 2015)](https://arxiv.org/abs/1512.03385)
+- [PyTorch torchvision models](https://pytorch.org/vision/stable/models.html)
 
 Explore convolutional operations for image data.
 

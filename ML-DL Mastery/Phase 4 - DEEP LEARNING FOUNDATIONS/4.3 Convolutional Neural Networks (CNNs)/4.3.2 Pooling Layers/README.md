@@ -1,6 +1,39 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.3 Convolutional Neural Networks (CNNs)\4.3.2 Pooling Layers
+# 4.3.2 Pooling Layers
 
-**Project:** Learning Project
+MaxPool, AvgPool, Global Average Pooling — spatial downsampling and translation invariance.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Pooling vs no pooling on feature maps |
+| `working_example2.py` | Manual maxpool/avgpool/global + visualisation |
+| `working_example.ipynb` | Interactive: implement pooling → compare shapes |
+
+## Quick Reference
+
+```python
+import torch.nn as nn
+
+nn.MaxPool2d(kernel_size=2, stride=2)        # halves H,W
+nn.AvgPool2d(kernel_size=2, stride=2)
+nn.AdaptiveAvgPool2d((1, 1))                 # global avg pool → (B,C,1,1)
+nn.Flatten()                                  # → (B, C) for classifier
+```
+
+## Pooling Properties
+
+| Type | Invariant To | Use |
+|------|-------------|-----|
+| MaxPool | Small translations | Standard CNNs |
+| AvgPool | Smooth spatial summary | GoogLeNet, lightweight |
+| Global AvgPool | Any spatial size input | Replace FC layers |
+
+## Learning Resources
+- [CS231n Pooling](https://cs231n.github.io/convolutional-networks/#pool)
+- [PyTorch MaxPool2d](https://pytorch.org/docs/stable/generated/torch.nn.MaxPool2d.html)
 
 Explore this topic with a small practical project or coding exercise.
 

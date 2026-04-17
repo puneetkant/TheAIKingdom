@@ -1,6 +1,46 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.6 Autoencoders\4.6.1 Basic Autoencoders
+# 4.6.1 Basic Autoencoders
 
-**Project:** Autoencoder Demo
+Encoder-decoder MLP, bottleneck representation, reconstruction loss (MSE).
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Autoencoder on toy 2D data — visualise latent space |
+| `working_example2.py` | Cal Housing 8→3→8: train, test MSE, reconstruction scatter |
+| `working_example.ipynb` | Interactive: train → loss curve → reconstruction plot |
+
+## Quick Reference
+
+```python
+import torch.nn as nn
+
+class Autoencoder(nn.Module):
+    def __init__(self, n_in, n_z):
+        super().__init__()
+        self.encoder = nn.Sequential(nn.Linear(n_in,64), nn.ReLU(), nn.Linear(64, n_z))
+        self.decoder = nn.Sequential(nn.Linear(n_z,64), nn.ReLU(), nn.Linear(64, n_in))
+    def forward(self, x):
+        z = self.encoder(x)
+        return self.decoder(z), z
+
+loss = nn.MSELoss()(x_hat, x)   # reconstruction loss
+```
+
+## Autoencoder Applications
+
+| Application | Bottleneck | Loss |
+|-------------|-----------|------|
+| Dimensionality reduction | n_z << n_in | MSE |
+| Denoising | Same as input | MSE on clean |
+| Anomaly detection | Large reconstruction error = anomaly | MSE |
+| Generative (VAE) | μ, σ → reparametrize | MSE + KL |
+
+## Learning Resources
+- [Autoencoder tutorial (PyTorch)](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html)
+- [Deep Learning book Ch.14](https://www.deeplearningbook.org/contents/autoencoders.html)
 
 Build an autoencoder-style encoder/decoder flow.
 

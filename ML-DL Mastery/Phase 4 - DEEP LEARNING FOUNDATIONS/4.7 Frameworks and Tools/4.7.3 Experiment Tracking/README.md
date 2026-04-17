@@ -1,6 +1,45 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.7 Frameworks and Tools\4.7.3 Experiment Tracking
+# 4.7.3 Experiment Tracking
 
-**Project:** Experiment Tracking
+Log hyperparameters, metrics, and artifacts. Compare runs. MLflow / Weights & Biases patterns.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | MLflow run logging with `mlflow.start_run()` (real MLflow) |
+| `working_example2.py` | Stdlib-only sweep: Ridge alpha sweep → JSON run logs → plot |
+| `working_example.ipynb` | Interactive: param sweep → compare test MSE across runs |
+
+## Quick Reference
+
+```python
+import mlflow, mlflow.sklearn
+
+mlflow.set_experiment("housing-ridge")
+for alpha in [0.001, 0.01, 0.1, 1.0]:
+    with mlflow.start_run():
+        model = Ridge(alpha=alpha).fit(X_train, y_train)
+        mse   = mean_squared_error(y_test, model.predict(X_test))
+        mlflow.log_param("alpha", alpha)
+        mlflow.log_metric("test_mse", mse)
+        mlflow.sklearn.log_model(model, "model")
+# View: mlflow ui  →  http://localhost:5000
+```
+
+## Tool Comparison
+
+| Tool | OSS | Local UI | Cloud | Key strength |
+|------|-----|----------|-------|--------------|
+| MLflow | ✅ | ✅ | ✅ | Universal — any framework |
+| W&B | Partial | ❌ | ✅ | Rich dashboards, sweeps |
+| DVC | ✅ | ✅ | ✅ | Data versioning |
+| TensorBoard | ✅ | ✅ | ❌ | Deep TF/PyTorch integration |
+
+## Learning Resources
+- [MLflow docs](https://mlflow.org/docs/latest/)
+- [Weights & Biases](https://docs.wandb.ai/)
 
 Log model training and metrics.
 

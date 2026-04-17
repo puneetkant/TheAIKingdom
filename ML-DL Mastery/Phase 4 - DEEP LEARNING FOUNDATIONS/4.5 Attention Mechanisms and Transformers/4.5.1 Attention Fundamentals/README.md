@@ -1,6 +1,40 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.5 Attention Mechanisms and Transformers\4.5.1 Attention Fundamentals
+# 4.5.1 Attention Fundamentals
 
-**Project:** Transformer Concepts
+Scaled dot-product attention, attention weights heatmap, causal mask for autoregressive models.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Bahdanau vs dot-product attention comparison |
+| `working_example2.py` | Manual Q/K/V attention + weight heatmap + causal mask |
+| `working_example.ipynb` | Interactive: implement attention → visualise weights → causal mask |
+
+## Quick Reference
+
+```python
+import torch, torch.nn.functional as F
+
+# Scaled dot-product (PyTorch 2.0+)
+out = F.scaled_dot_product_attention(Q, K, V, is_causal=False)
+
+# Manual
+def attention(Q, K, V):
+    d_k = Q.shape[-1]
+    scores = Q @ K.transpose(-2, -1) / d_k**0.5
+    weights = scores.softmax(dim=-1)
+    return weights @ V
+```
+
+## Attention Formula
+
+$$\text{Attention}(Q,K,V) = \text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$
+
+## Learning Resources
+- [Attention is All You Need (Vaswani 2017)](https://arxiv.org/abs/1706.03762)
+- [Illustrated Attention (Jay Alammar)](https://jalammar.github.io/visualizing-neural-machine-translation-mechanics-of-seq2seq-models-with-attention/)
 
 Inspect attention and transformer architecture.
 

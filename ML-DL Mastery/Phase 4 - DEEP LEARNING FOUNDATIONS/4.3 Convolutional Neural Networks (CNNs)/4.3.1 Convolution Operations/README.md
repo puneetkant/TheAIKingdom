@@ -1,6 +1,6 @@
-# Phase 4 - DEEP LEARNING FOUNDATIONS\4.3 Convolutional Neural Networks (CNNs)\4.3.1 Convolution Operations
+# 4.3.1 Convolution Operations
 
-**Project:** Learning Project
+Manual 2D convolution, Sobel/Laplace edge filters, stride and padding impact on output size.
 
 Explore this topic with a small practical project or coding exercise.
 
