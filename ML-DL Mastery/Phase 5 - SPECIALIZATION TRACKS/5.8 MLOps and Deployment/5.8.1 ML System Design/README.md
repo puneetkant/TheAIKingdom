@@ -1,6 +1,54 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.8 MLOps and Deployment\5.8.1 ML System Design
+# 5.8.1 ML System Design
 
-**Project:** Learning Project
+Data pipelines, training loops, validation schemas, serving interfaces, latency vs throughput.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | ML system architecture patterns |
+| `working_example2.py` | Full skeleton: validate → preprocess → train → serve |
+| `working_example.ipynb` | Interactive: normaliser + validation |
+
+## Quick Reference
+
+```python
+# Pipeline components
+class Pipeline:
+    def fit(self, X): ...
+    def transform(self, X): ...
+
+# Data validation
+def validate(X, y, schema):
+    assert X.shape[1] == schema['n_features']
+    assert not np.isnan(X).any()
+
+# Serving layer
+class ModelServer:
+    def predict(self, raw_input):
+        X = preprocess(raw_input)
+        return model.predict(X)
+
+# Offline vs online serving
+# Batch: process large datasets periodically
+# Online: low-latency per-request prediction (< 100ms SLA)
+```
+
+## ML System Layers
+
+| Layer | Component | Tool |
+|-------|-----------|------|
+| Data | Ingestion, validation | Great Expectations, TFDV |
+| Training | Experiment runs | MLflow, W&B |
+| Packaging | Docker, ONNX | Docker, torch.export |
+| Serving | REST / gRPC | FastAPI, TF Serving, Triton |
+| Monitoring | Drift, latency | Evidently, Prometheus |
+
+## Learning Resources
+- [Google ML Design Patterns](https://www.oreilly.com/library/view/machine-learning-design/9781098115777/)
+- [Made With ML](https://madewithml.com/)
 
 Explore this topic with a small practical project or coding exercise.
 

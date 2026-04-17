@@ -1,6 +1,46 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.1 Natural Language Processing (NLP)\5.1.4 Subword Tokenization
+# 5.1.4 Subword Tokenization
 
-**Project:** Learning Project
+Byte-Pair Encoding (BPE), WordPiece, SentencePiece. Handles OOV and morphology.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | WordPiece tokenization concept |
+| `working_example2.py` | BPE from scratch: merge algorithm → subword vocabulary |
+| `working_example.ipynb` | Interactive: BPE merge steps trace |
+
+## Quick Reference
+
+```python
+# Using HuggingFace tokenizers
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+tokens = tokenizer("Hello, world! This is NLP.")
+print(tokens["input_ids"])
+print(tokenizer.convert_ids_to_tokens(tokens["input_ids"]))
+# ['[CLS]', 'hello', ',', 'world', '!', 'this', 'is', 'nl', '##p', '.', '[SEP]']
+
+# Training a new tokenizer
+from tokenizers import ByteLevelBPETokenizer
+tok = ByteLevelBPETokenizer()
+tok.train(["corpus.txt"], vocab_size=30000, min_frequency=2)
+```
+
+## Algorithm Comparison
+
+| Algorithm | Used by | Strategy |
+|-----------|---------|---------|
+| BPE | GPT-2, RoBERTa | Merge most frequent pair |
+| WordPiece | BERT | Maximize likelihood |
+| SentencePiece | T5, LLaMA | Language-agnostic BPE |
+| Unigram | XLNet | Prune vocabulary |
+
+## Learning Resources
+- [BPE paper (Sennrich 2016)](https://arxiv.org/abs/1508.07909)
+- [HuggingFace tokenizers](https://huggingface.co/docs/tokenizers/)
 
 Explore this topic with a small practical project or coding exercise.
 

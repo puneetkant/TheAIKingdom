@@ -1,6 +1,52 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.8 MLOps and Deployment\5.8.2 Experiment Tracking and Versioning
+# 5.8.2 Experiment Tracking and Versioning
 
-**Project:** Experiment Tracking
+Run logging, hyperparameter sweeps, model registry, artifact versioning, Git + DVC.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | MLflow / W&B setup |
+| `working_example2.py` | Lightweight experiment tracker + LR sweep + JSON log |
+| `working_example.ipynb` | Interactive: run logging + best-run comparison |
+
+## Quick Reference
+
+```python
+# MLflow
+import mlflow
+with mlflow.start_run():
+    mlflow.log_param("lr", 0.01)
+    mlflow.log_metric("val_acc", 0.93)
+    mlflow.sklearn.log_model(model, "model")
+
+# Weights & Biases
+import wandb
+wandb.init(project="my-project", config={"lr": 0.01})
+wandb.log({"val_acc": 0.93})
+
+# DVC: data versioning
+# dvc add data/train.csv
+# dvc run -n train python train.py
+
+# Model registry (MLflow)
+mlflow.register_model("runs:/RUN_ID/model", "MyModel")
+```
+
+## Key Concepts
+
+| Concept | Description |
+|---------|-------------|
+| Run | Single training execution with params + metrics |
+| Experiment | Collection of related runs |
+| Artifact | Model file, dataset, plot |
+| Registry | Versioned model store |
+
+## Learning Resources
+- [MLflow docs](https://mlflow.org/)
+- [Weights & Biases](https://wandb.ai/)
 
 Log model training and metrics.
 

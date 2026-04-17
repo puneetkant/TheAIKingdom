@@ -1,6 +1,48 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.1 Natural Language Processing (NLP)\5.1.8 NLP Tasks
+# 5.1.8 NLP Tasks
 
-**Project:** NLP Project
+NER, POS tagging, text classification, sentiment analysis, QA, summarization.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | spaCy NER + dependency parsing |
+| `working_example2.py` | Rule-based NER + multi-class classification benchmark |
+| `working_example.ipynb` | Interactive: NER patterns → text classification |
+
+## Quick Reference
+
+```python
+# spaCy NER
+import spacy
+nlp = spacy.load("en_core_web_sm")
+doc = nlp("Apple Inc. was founded by Steve Jobs in Cupertino.")
+for ent in doc.ents:
+    print(ent.text, ent.label_)  # Apple Inc. ORG, Steve Jobs PERSON
+
+# HuggingFace pipeline for QA
+from transformers import pipeline
+qa = pipeline("question-answering")
+result = qa(question="Who founded Apple?",
+            context="Apple was founded by Steve Jobs in 1976.")
+print(result["answer"])  # Steve Jobs
+```
+
+## Task Taxonomy
+
+| Task | Input | Output | Metric |
+|------|-------|--------|--------|
+| Text classification | Document | Label | Accuracy, F1 |
+| NER | Sentence | Span+label | F1 (entity) |
+| POS tagging | Sentence | Tag per token | Accuracy |
+| QA (extractive) | Context+Q | Answer span | EM, F1 |
+| Summarization | Long text | Summary | ROUGE |
+
+## Learning Resources
+- [spaCy docs](https://spacy.io/api)
+- [HuggingFace NLP course](https://huggingface.co/learn/nlp-course/)
 
 Process text and build simple NLP pipelines.
 

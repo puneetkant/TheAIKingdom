@@ -1,6 +1,50 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.1 Natural Language Processing (NLP)\5.1.6 Neural NLP Models
+# 5.1.6 Neural NLP Models
 
-**Project:** NLP Project
+TextCNN, GRU/LSTM text classifiers, attention pooling. Neural baselines before Transformers.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | TextCNN with max-over-time pooling (PyTorch) |
+| `working_example2.py` | MLP depth comparison: 1/2/3-layer on 20 newsgroups |
+| `working_example.ipynb` | Interactive: TF-IDF + MLP classifier |
+
+## Quick Reference
+
+```python
+import torch.nn as nn
+
+class TextCNN(nn.Module):
+    def __init__(self, vocab_size, embed_dim, num_filters, filter_sizes, num_classes):
+        super().__init__()
+        self.embed = nn.Embedding(vocab_size, embed_dim)
+        self.convs = nn.ModuleList([
+            nn.Conv1d(embed_dim, num_filters, k) for k in filter_sizes
+        ])
+        self.fc = nn.Linear(num_filters * len(filter_sizes), num_classes)
+
+    def forward(self, x):
+        x = self.embed(x).transpose(1, 2)           # (B, E, L)
+        x = [F.relu(conv(x)).max(dim=2).values      # max-over-time
+             for conv in self.convs]
+        return self.fc(torch.cat(x, dim=1))
+```
+
+## Model Family
+
+| Model | Input | Key idea |
+|-------|-------|---------|
+| TextCNN | Token IDs | Local n-gram filters |
+| Bi-LSTM | Sequence | Long-range context |
+| Attention LSTM | Sequence | Weighted pooling |
+| Transformer | Sequence | Full attention |
+
+## Learning Resources
+- [TextCNN paper (Kim 2014)](https://arxiv.org/abs/1408.5882)
+- [Understanding LSTMs](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
 Process text and build simple NLP pipelines.
 

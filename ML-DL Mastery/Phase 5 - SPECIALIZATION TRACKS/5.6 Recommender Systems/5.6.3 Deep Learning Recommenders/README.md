@@ -1,6 +1,51 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.6 Recommender Systems\5.6.3 Deep Learning Recommenders
+# 5.6.3 Deep Learning Recommenders
 
-**Project:** Recommender System
+NCF, two-tower models, BERT4Rec, session-based, embedding tables, negative sampling.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Two-tower retrieval model |
+| `working_example2.py` | NCF from scratch: embedding + MLP → binary BPR loss |
+| `working_example.ipynb` | Interactive: embedding dot-product scoring |
+
+## Quick Reference
+
+```python
+# Two-tower (retrieval)
+class TwoTower(nn.Module):
+    def __init__(self, n_users, n_items, dim=64):
+        super().__init__()
+        self.user_emb = nn.Embedding(n_users, dim)
+        self.item_emb = nn.Embedding(n_items, dim)
+    def forward(self, u, i):
+        return (self.user_emb(u) * self.item_emb(i)).sum(-1)
+
+# NCF (concatenate + MLP)
+class NCF(nn.Module):
+    def forward(self, u, i):
+        h = torch.cat([self.user_emb(u), self.item_emb(i)], dim=-1)
+        return self.mlp(h)
+
+# BPR loss (pairwise)
+bpr_loss = -torch.log(torch.sigmoid(pos_score - neg_score)).mean()
+```
+
+## Model Comparison
+
+| Model | Type | Input | Key idea |
+|-------|------|-------|---------|
+| NCF | Pointwise | User+Item | MLP on embeddings |
+| Two-tower | Retrieval | User+Item | ANN search |
+| SASRec | Seq attention | Item history | Causal transformer |
+| BERT4Rec | Seq masked | Item history | MLM on sequences |
+
+## Learning Resources
+- [NCF paper](https://arxiv.org/abs/1708.05031)
+- [RecBole library](https://recbole.io/)
 
 Build a simple recommendation engine.
 

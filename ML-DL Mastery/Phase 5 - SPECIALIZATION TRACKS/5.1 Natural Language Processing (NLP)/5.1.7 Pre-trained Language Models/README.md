@@ -1,6 +1,51 @@
-# Phase 5 - SPECIALIZATION TRACKS\5.1 Natural Language Processing (NLP)\5.1.7 Pre-trained Language Models
+# 5.1.7 Pre-trained Language Models
 
-**Project:** Learning Project
+BERT, GPT-2, T5, DistilBERT. Fine-tuning, feature extraction, zero-shot with HuggingFace.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | BERT tokenizer output inspection |
+| `working_example2.py` | HuggingFace sentiment pipeline (falls back to sklearn) |
+| `working_example.ipynb` | Interactive: pipeline demo → fine-tuning pattern |
+
+## Quick Reference
+
+```python
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model     = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+inputs = tokenizer("I love NLP!", return_tensors="pt")
+with torch.no_grad():
+    logits = model(**inputs).logits
+pred = logits.argmax(-1).item()  # 0=NEG, 1=POS
+
+# Fine-tuning pattern
+from transformers import Trainer, TrainingArguments
+args = TrainingArguments("output", num_train_epochs=3, per_device_train_batch_size=16)
+trainer = Trainer(model=model, args=args, train_dataset=ds)
+trainer.train()
+```
+
+## Model Family
+
+| Model | Architecture | Pre-train task | Best for |
+|-------|-------------|----------------|---------|
+| BERT | Encoder | MLM + NSP | Classification, NER |
+| GPT-2 | Decoder | CLM | Text generation |
+| T5 | Enc-Dec | Span masking | Seq2seq tasks |
+| DistilBERT | Encoder | Knowledge distillation | Fast inference |
+
+## Learning Resources
+- [HuggingFace docs](https://huggingface.co/docs/transformers/)
+- [BERT paper](https://arxiv.org/abs/1810.04805)
 
 Explore this topic with a small practical project or coding exercise.
 
