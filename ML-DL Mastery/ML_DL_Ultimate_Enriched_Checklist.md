@@ -28,6 +28,9 @@
 - [ ] Understanding virtual environments (venv, conda)
 - [ ] Using pip for package management
 - [ ] Understanding `requirements.txt` and `pyproject.toml`
+- [ ] Python packaging and editable installs (`setup.py`, `pyproject.toml`, `pip install -e .`)
+- [ ] Installing CLI tools with `pipx`
+- [ ] Using `pipdeptree`, `pip check`, and dependency management best practices
 
 
 🏋️ **Exercises:**
@@ -339,6 +342,9 @@
 - [ ] Type hints and `typing` module
 - [ ] `collections` module deep dive
 - [ ] `itertools` module deep dive
+- [ ] Performance profiling and optimization (`timeit`, `cProfile`, `line_profiler`)
+- [ ] `memoryview` and buffer protocol
+- [ ] `functools` advanced utilities (`lru_cache`, `partial`, `singledispatch`, `cached_property`)
 
 
 🏋️ **Exercises:**
@@ -365,6 +371,56 @@
 1. Write 15 pytest tests for a previous project (Library Management or Text Analyzer)
 2. Practice TDD: write tests first, then implement a Stack and Queue data structure
 3. Use `unittest.mock` to mock an API call in a test
+
+#### 1.1.13 Algorithms & Complexity
+
+📚 **Best Resources to Learn:**
+- Introduction to Algorithms (CLRS) summary, selected chapters
+- CS50 AI / CS50 AP (algorithms section)
+- Big-O Cheat Sheet — bigocheatsheet.com
+- LeetCode Explore: Algorithms
+
+- [ ] Time complexity and Big-O notation
+- [ ] Space complexity
+- [ ] Common algorithm paradigms
+  - [ ] Greedy algorithms
+  - [ ] Divide and conquer
+  - [ ] Dynamic programming
+  - [ ] Recursion and memoization
+  - [ ] Backtracking
+- [ ] Sorting algorithms
+  - [ ] Bubble sort
+  - [ ] Insertion sort
+  - [ ] Selection sort
+  - [ ] Merge sort
+  - [ ] Quick sort
+  - [ ] Heap sort
+- [ ] Searching algorithms
+  - [ ] Linear search
+  - [ ] Binary search
+- [ ] Common data structures for algorithms
+  - [ ] Stacks, queues, deques
+  - [ ] Heaps and priority queues
+  - [ ] Linked lists
+  - [ ] Hash tables
+  - [ ] Trees and binary search trees
+  - [ ] Graphs
+- [ ] Graph algorithms overview
+  - [ ] Depth-first search (DFS)
+  - [ ] Breadth-first search (BFS)
+  - [ ] Topological sort
+  - [ ] Dijkstra's algorithm
+  - [ ] Bellman-Ford (overview)
+  - [ ] A* search (overview)
+- [ ] Algorithmic problem solving and code tracing
+- [ ] Code complexity trade-offs in Python
+
+🏋️ **Exercises:**
+1. Solve and time 20 algorithmic problems on LeetCode / HackerRank
+2. Implement merge sort, quick sort, and heap sort from scratch
+3. Implement binary search and compare runtime with linear search
+4. Implement DFS and BFS on an adjacency list graph
+5. Use `timeit` to compare Python list operations vs `deque` operations
 
 ---
 
@@ -3043,7 +3099,7 @@
   - [ ] Cascade R-CNN
   - [ ] Feature Pyramid Network (FPN)
 - [ ] **One-stage detectors**
-  - [ ] YOLO (v1 through v11 / YOLO-World)
+  - [ ] YOLO (v1 through v8, including Ultralytics YOLOv8)
     - [ ] Grid-based detection
     - [ ] Anchor-free YOLO (v8+)
   - [ ] SSD (Single Shot MultiBox Detector)
@@ -4527,4 +4583,4 @@
 
 > **Note:** This checklist contains approximately **2,500+ individual topics and sub-topics**. Not every item needs to be mastered to the same depth. Items in Phases 1–4 should be thoroughly understood. Specialization tracks (Phase 5) should be deep in your chosen 2–3 tracks and at overview level for others. Phase 6 topics at the frontier change rapidly — focus on understanding the principles rather than memorizing every model name.
 
-> **Last updated:** March 2026
+> **Last updated:** April 2026
