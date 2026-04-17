@@ -1,8 +1,54 @@
-# Phase 2 - MATHEMATICS FOUNDATIONS\2.1 Linear Algebra\2.1.3 Systems of Linear Equations
+# 2.1.3 Systems of Linear Equations
 
-**Project:** Linear System Solver
+Solving Ax=b: `np.linalg.solve`, `lstsq` for over/under-determined systems, Gaussian elimination, condition numbers.
 
-Solve linear equation systems programmatically.
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Cramer's rule, row reduction, basic examples |
+| `working_example2.py` | Cal Housing OLS via lstsq, manual Gaussian elimination, condition number analysis |
+| `working_example.ipynb` | Interactive: solve → OLS → condition number → underdetermined |
+
+## Run
+
+```bash
+python working_example.py
+python working_example2.py
+jupyter lab working_example.ipynb
+```
+
+## Quick Reference
+
+```python
+import numpy as np
+
+# Square system (unique solution)
+x = np.linalg.solve(A, b)
+
+# Overdetermined (n>d) — least squares
+w, residuals, rank, sv = np.linalg.lstsq(A, b, rcond=None)
+
+# Check condition number
+cond = np.linalg.cond(A)    # large → ill-conditioned → unstable
+
+# Rank
+np.linalg.matrix_rank(A)
+```
+
+## Case Summary
+| System | n vs d | Solution |
+|--------|--------|----------|
+| Exact | n=d, full rank | `solve` |
+| Overdetermined | n>d | `lstsq` (min ‖Ax−b‖) |
+| Underdetermined | n<d | `lstsq` (min ‖x‖) |
+
+## Learning Resources
+- [Khan Academy: Systems of equations](https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:systems-of-equations)
+- **Book:** *Mathematics for Machine Learning* Ch. 2.3
+- [Gilbert Strang MIT 18.06](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/)
 
 ## What to build
 

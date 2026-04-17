@@ -1,6 +1,45 @@
-# Phase 3 - CORE MACHINE LEARNING\3.5 Model Evaluation and Selection\3.5.2 Regression Metrics
+# 3.5.2 Regression Metrics
 
-**Project:** Learning Project
+MAE, MSE, RMSE, R², MedAE, MAPE — when to use each, residual analysis.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Manual metric implementations |
+| `working_example2.py` | Model comparison table, residual scatter + histogram |
+| `working_example.ipynb` | Interactive: metrics → model comparison → residual plots |
+
+## Quick Reference
+
+```python
+from sklearn.metrics import (mean_absolute_error, mean_squared_error,
+                              r2_score, median_absolute_error)
+
+mae  = mean_absolute_error(y_test, y_pred)
+rmse = mean_squared_error(y_test, y_pred)**0.5
+r2   = r2_score(y_test, y_pred)
+
+# MAPE (beware division by zero)
+mape = np.abs((y_test - y_pred) / y_test).mean() * 100
+```
+
+## Metric Properties
+
+$$\text{RMSE} = \sqrt{\frac{1}{n}\sum(y_i - \hat{y}_i)^2}$$
+$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}}$$
+
+| Metric | Scale | Outlier Sensitive | Notes |
+|--------|-------|-------------------|-------|
+| MAE | Same as y | No | Robust |
+| RMSE | Same as y | Yes | Penalizes large errors |
+| R² | Dimensionless | Yes | 1=perfect, 0=baseline |
+| MedAE | Same as y | No | Very robust |
+
+## Learning Resources
+- [sklearn regression metrics](https://scikit-learn.org/stable/modules/model_evaluation.html#regression-metrics)
 
 Explore this topic with a small practical project or coding exercise.
 

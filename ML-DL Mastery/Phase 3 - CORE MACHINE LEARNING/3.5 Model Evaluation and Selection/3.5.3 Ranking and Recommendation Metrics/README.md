@@ -1,6 +1,42 @@
-# Phase 3 - CORE MACHINE LEARNING\3.5 Model Evaluation and Selection\3.5.3 Ranking and Recommendation Metrics
+# 3.5.3 Ranking & Recommendation Metrics
 
-**Project:** Learning Project
+NDCG, MAP, Hit Rate, Recall@K — for search, recommendation, and ranking systems.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Basic precision@K, recall@K |
+| `working_example2.py` | Manual NDCG/MAP, regression-as-ranking hit rate |
+| `working_example.ipynb` | Interactive: NDCG@K for two ranking systems → GBM recall@K |
+
+## Quick Reference
+
+```python
+import numpy as np
+
+def dcg(r, k=None):
+    r = np.asarray(r[:k], float)
+    return np.sum(r / np.log2(np.arange(2, len(r)+2)))
+
+def ndcg(r, ideal, k=None):
+    i = dcg(sorted(ideal, reverse=True), k)
+    return dcg(r, k) / i if i else 0.0
+
+# Recall@K for recommendation
+pred_rank = np.argsort(-y_scores)
+recall_at_k = len(relevant & set(pred_rank[:k])) / len(relevant)
+```
+
+## Metric Formulas
+
+$$\text{DCG@k} = \sum_{i=1}^{k} \frac{\text{rel}_i}{\log_2(i+1)} \qquad \text{NDCG@k} = \frac{\text{DCG@k}}{\text{IDCG@k}}$$
+
+## Learning Resources
+- [Evaluation Measures in Information Retrieval](https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval))
+- [RecSys metrics overview](https://arxiv.org/abs/2012.10185)
 
 Explore this topic with a small practical project or coding exercise.
 

@@ -1,6 +1,36 @@
-# Phase 2 - MATHEMATICS FOUNDATIONS\2.1 Linear Algebra\2.1.5 Vector Spaces
+# 2.1.5 Vector Spaces
 
-**Project:** Vector Space Concepts
+Basis, rank, linear independence, Gram-Schmidt orthonormalisation, null space via SVD, feature space analysis.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Span, basis, subspace examples |
+| `working_example2.py` | Independence check, Gram-Schmidt, null space, Cal Housing feature rank |
+| `working_example.ipynb` | Interactive: rank → Gram-Schmidt → null space |
+
+## Quick Reference
+
+```python
+import numpy as np
+
+np.linalg.matrix_rank(A)           # rank (number of independent cols/rows)
+U, s, Vt = np.linalg.svd(A)        # null space = Vt rows with s≈0
+# Gram-Schmidt → Q with orthonormal columns
+```
+
+## Key Concepts
+- **Span**: all linear combos of a set of vectors
+- **Basis**: minimal spanning set (linearly independent)
+- **Null space**: {x : Ax = 0} — reveals redundancy in features
+- **Column space**: range of A — what outputs are reachable
+
+## Learning Resources
+- [3Blue1Brown: Linear algebra playlist](https://www.3blue1brown.com/topics/linear-algebra)
+- **Book:** *Mathematics for Machine Learning* Ch. 2.4–2.6
 
 Explore linear combinations and spans.
 

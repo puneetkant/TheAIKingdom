@@ -1,6 +1,41 @@
-# Phase 3 - CORE MACHINE LEARNING\3.2 Supervised Learning\3.2.2 Logistic Regression
+# 3.2.2 Logistic Regression
 
-**Project:** Learning Project
+Binary classification via sigmoid, log-loss, ROC-AUC, L1/L2 regularisation (C parameter).
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Sigmoid implementation, decision boundary |
+| `working_example2.py` | Cal Housing binary, ROC curve, regularisation sweep |
+| `working_example.ipynb` | Interactive: fit → metrics report → ROC → C sweep |
+
+## Quick Reference
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score, classification_report
+
+pipe = make_pipeline(StandardScaler(), LogisticRegression(C=1.0, max_iter=1000))
+pipe.fit(X_train, y_train)
+
+y_pred = pipe.predict(X_test)
+y_prob = pipe.predict_proba(X_test)[:, 1]
+print(classification_report(y_test, y_pred))
+auc = roc_auc_score(y_test, y_prob)
+```
+
+## Key Equations
+
+- σ(z) = 1/(1+e⁻ᶻ)
+- Loss = -[y log(p) + (1-y) log(1-p)]  (binary cross-entropy)
+- C = 1/λ — smaller C = stronger regularisation
+
+## Learning Resources
+- [StatQuest: Logistic Regression](https://youtu.be/yIYKR4sgzI8)
+- [sklearn LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
 
 Explore this topic with a small practical project or coding exercise.
 

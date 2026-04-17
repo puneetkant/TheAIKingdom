@@ -1,6 +1,47 @@
-# Phase 2 - MATHEMATICS FOUNDATIONS\2.3 Probability and Statistics\2.3.11 Stochastic Processes (Fundamentals)
+# 2.3.11 Stochastic Processes (Fundamentals)
 
-**Project:** Learning Project
+Markov chains, stationary distribution (eigenvector method), random walk ±√t envelope, Brownian motion, Geometric BM.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Markov chain simulation, convergence to stationary |
+| `working_example2.py` | Full Markov chain + stationary, random walk plot, Brownian + Geometric BM |
+| `working_example.ipynb` | Interactive: Markov → random walk → Brownian → Geometric BM |
+
+## Quick Reference
+
+```python
+import numpy as np
+
+# Stationary distribution (left eigenvector for λ=1)
+vals, vecs = np.linalg.eig(P.T)
+stat = np.real(vecs[:, np.argmin(np.abs(vals-1))])
+stat /= stat.sum()
+
+# Verify: P^n converges
+Pk = np.linalg.matrix_power(P, 100)  # rows ≈ stat
+
+# Brownian motion (Wiener process)
+dW = np.random.normal(0, dt**0.5, n)  # W(t+dt) - W(t) ~ N(0, dt)
+W  = np.cumsum(dW)
+
+# Geometric BM: S(t) = S0 * exp((mu - 0.5*sig²)*t + sig*W)
+```
+
+## ML Connections
+- **Hidden Markov Models (HMMs)** — speech recognition, sequence labelling
+- **Markov Decision Processes (MDPs)** — foundation of reinforcement learning
+- **MCMC** — Bayesian sampling via Markov chains (Metropolis-Hastings, NUTS)
+- **Diffusion models** — forward noising is discrete Brownian; reverse is learned
+
+## Learning Resources
+- [StatQuest: Markov Chains](https://youtu.be/i3AkTO9HLXo)
+- **Book:** *Introduction to Probability Models* (Sheldon Ross)
+- [3Blue1Brown: Random walks](https://youtu.be/OkmNXy7er84)
 
 Explore this topic with a small practical project or coding exercise.
 

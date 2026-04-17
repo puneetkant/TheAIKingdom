@@ -1,6 +1,44 @@
-# Phase 3 - CORE MACHINE LEARNING\3.4 Data Preprocessing and Feature Engineering\3.4.3 Encoding Categorical Variables
+# 3.4.3 Encoding Categorical Variables
 
-**Project:** Learning Project
+One-hot encoding, ordinal encoding, target encoding, ColumnTransformer.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | pd.get_dummies, LabelEncoder basics |
+| `working_example2.py` | Manual OHE, ColumnTransformer pipeline, target encoding |
+| `working_example.ipynb` | Interactive: OHE → ColumnTransformer + Ridge → target encoding |
+
+## Quick Reference
+
+```python
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
+preprocessor = ColumnTransformer([
+    ("num", StandardScaler(), num_cols),
+    ("ohe", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cat_cols),
+])
+pipe = Pipeline([("prep", preprocessor), ("model", Ridge())])
+pipe.fit(X_train, y_train)
+```
+
+## Encoding Cheat Sheet
+
+| Method | When to use |
+|--------|-------------|
+| One-Hot | Nominal (no order), few categories (<20) |
+| Ordinal | Ordered categories (small < medium < large) |
+| Target | High-cardinality nominal (with CV to prevent leakage) |
+| Embedding | Very high cardinality (deep learning) |
+
+## Learning Resources
+- [sklearn ColumnTransformer](https://scikit-learn.org/stable/modules/compose.html#columntransformer-for-heterogeneous-data)
+- [category_encoders library](https://contrib.scikit-learn.org/category_encoders/)
 
 Explore this topic with a small practical project or coding exercise.
 

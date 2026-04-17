@@ -1,10 +1,72 @@
-# Phase 1 - PYTHON PROGRAMMING & COMPUTATIONAL THINKING\1.1 Python Language Fundamentals\1.1.12 Testing
+# 1.1.12 Testing
 
-**Project:** Testing Project
+Unit tests, parametrized subTests, mocking, and ML behavioural invariant testing with `unittest`.
 
-Write unit tests for your functions with simple asserts.
+---
 
-## What to build
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | assert, simple unittest, parametrized tests |
+| `working_example2.py` | TestNormalize, TestAccuracy, TestKNN (behavioural), TestDataDownload (mock) |
+| `working_example.ipynb` | Interactive: define + test normalize and accuracy, mock urllib |
+
+## Run
+
+```bash
+python working_example.py
+python working_example2.py                   # unittest verbosity=2
+python -m pytest working_example2.py -v     # with pytest
+jupyter lab working_example.ipynb
+```
+
+## Testing Patterns
+
+```python
+import unittest
+
+class TestNormalize(unittest.TestCase):
+    def setUp(self): ...          # runs before each test
+    def tearDown(self): ...       # runs after each test
+
+    def test_range_zero_to_one(self):
+        result = normalize([1,2,3,4,5])
+        self.assertAlmostEqual(min(result), 0.0)
+        self.assertAlmostEqual(max(result), 1.0)
+
+    def test_parametrized(self):
+        for data in [[0,1],[-10,10],[100,200]]:
+            with self.subTest(data=data):    # reports each case separately
+                r = normalize(data)
+                self.assertAlmostEqual(min(r), 0.0)
+```
+
+## ML Behavioural Tests
+
+```python
+# Monotonicity invariant
+def test_monotonic(self):
+    data = sorted([...])
+    result = transform(data)
+    for i in range(len(result)-1):
+        self.assertLessEqual(result[i], result[i+1])
+
+# Mock external dependencies
+from unittest.mock import patch
+with patch('urllib.request.urlretrieve') as mock:
+    mock.return_value = ('path', {})
+    ...  # test without network
+```
+
+## Learning Resources
+- [unittest docs](https://docs.python.org/3/library/unittest.html)
+- [unittest.mock docs](https://docs.python.org/3/library/unittest.mock.html)
+- [pytest docs](https://docs.pytest.org/)
+- [Real Python: Python Testing](https://realpython.com/python-testing/)
+- [Real Python: pytest tutorial](https://realpython.com/pytest-python-testing/)
+- **Book:** *Python Testing with pytest* (Brian Okken)
+- **Book:** *Python Cookbook* Ch. 14 (testing and debugging)
 
 - Try a small hands-on exercise focused on this topic.
 - Keep the code in `project.py` in this folder.

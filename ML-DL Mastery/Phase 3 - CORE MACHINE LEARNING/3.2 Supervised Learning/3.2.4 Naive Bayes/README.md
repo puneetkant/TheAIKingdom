@@ -1,6 +1,41 @@
-# Phase 3 - CORE MACHINE LEARNING\3.2 Supervised Learning\3.2.4 Naive Bayes
+# 3.2.4 Naive Bayes
 
-**Project:** Learning Project
+Gaussian NB, Bernoulli NB, MultinomialNB, Laplace smoothing, text classification.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | Bayes theorem by hand, class priors/likelihoods |
+| `working_example2.py` | GaussianNB (Cal Housing), Laplace smoothing, MultinomialNB text |
+| `working_example.ipynb` | Interactive: GaussianNB → Laplace → text classification |
+
+## Quick Reference
+
+```python
+from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.pipeline import make_pipeline
+
+# Continuous features
+gnb = GaussianNB()
+gnb.fit(X_train, y_train)
+
+# Text (sparse counts)
+pipe = make_pipeline(TfidfVectorizer(), MultinomialNB(alpha=1.0))  # alpha=Laplace smoothing
+pipe.fit(texts_train, y_train)
+```
+
+## Assumptions
+- Features are **conditionally independent** given class label
+- GaussianNB: features ~ N(μ_k, σ_k²) per class
+- MultinomialNB: word counts follow multinomial distribution
+
+## Learning Resources
+- [StatQuest: Naive Bayes](https://youtu.be/O2L2Uv9pdDA)
+- [sklearn Naive Bayes guide](https://scikit-learn.org/stable/modules/naive_bayes.html)
 
 Explore this topic with a small practical project or coding exercise.
 

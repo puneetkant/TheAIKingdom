@@ -1,6 +1,41 @@
-# Phase 3 - CORE MACHINE LEARNING\3.2 Supervised Learning\3.2.3 K-Nearest Neighbors (KNN)
+# 3.2.3 K-Nearest Neighbors (KNN)
 
-**Project:** Learning Project
+Instance-based learning, k sweep, distance weighting, curse of dimensionality.
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `working_example.py` | KNN from scratch (Euclidean distance, majority vote) |
+| `working_example2.py` | sklearn KNN regression/classification, k sweep, curse of dimensionality |
+| `working_example.ipynb` | Interactive: regression k sweep → classification AUC → CoD table |
+
+## Quick Reference
+
+```python
+from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+# Always scale! KNN is distance-based
+pipe = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=5, weights="distance"))
+pipe.fit(X_train, y_train)
+
+# Choose k via CV
+from sklearn.model_selection import GridSearchCV
+gs = GridSearchCV(pipe, {"kneighborsregressor__n_neighbors": [3,5,10,20]}, cv=5)
+```
+
+## Key Points
+- **Scale features** — mandatory (distance-based)
+- **Large k** → high bias, low variance; **small k** → low bias, high variance
+- **Curse of dimensionality** → distances become uniform in high d → use feature selection/PCA first
+
+## Learning Resources
+- [StatQuest: KNN](https://youtu.be/HVXime0nQeI)
+- [sklearn KNeighborsRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html)
 
 Explore this topic with a small practical project or coding exercise.
 
