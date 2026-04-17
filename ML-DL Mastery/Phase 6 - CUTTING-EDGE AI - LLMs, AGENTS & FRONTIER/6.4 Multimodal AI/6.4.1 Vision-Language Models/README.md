@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.1 Vision-Language Models
+# 6.4.1 Vision-Language Models
 
-**Project:** Learning Project
+Vision-language models (CLIP, BLIP, LLaVA, GPT-4V) align image and text representations into a shared embedding space, enabling zero-shot image classification, visual Q&A, and image captioning. This folder implements CLIP-style contrastive learning with InfoNCE loss and cosine similarity retrieval using numpy.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | CLIP cosine similarity, InfoNCE contrastive loss, temperature sweep, image-text retrieval |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `vision_language.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| CLIP | Contrastive Language-Image Pre-training; dual encoders |
+| InfoNCE loss | Contrastive loss; pull positives, push negatives |
+| Zero-shot classification | Encode class names and compare to image embedding |
+| Projection head | MLP maps vision/text encoders to shared space |
+| Temperature τ | Scales logit sharpness; τ↓ = more peaked |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Radford et al. *CLIP* (2021)
+- Li et al. *BLIP* (2022)
+- Liu et al. *LLaVA* (2023)

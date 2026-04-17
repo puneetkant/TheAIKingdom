@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.7 Neurosymbolic AI
+# 6.5.7 Neurosymbolic AI
 
-**Project:** Neurosymbolic AI
+Neurosymbolic AI combines the pattern-matching power of neural networks with the precision and compositionality of symbolic reasoning. Systems like AlphaGeometry, DreamCoder, and Neural Module Networks route sub-problems to appropriate solvers. This folder implements a hybrid system: a neural digit recogniser (numpy softmax) paired with a symbolic arithmetic engine.
 
-Mix symbolic reasoning with neural models.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Neural digit predictor + symbolic arithmetic solver, noise robustness comparison |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `neurosymbolic.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Neural module networks | Route queries to specialised sub-networks |
+| Symbolic solver | Rule-based exact computation (arithmetic, logic) |
+| Program synthesis | Generate executable programs from examples |
+| DreamCoder | Learn a library of reusable programs via wake-sleep |
+| Hybrid verification | Neural perception + symbolic proof checker |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Andreas et al. *Neural Module Networks* (2016)
+- Trinh et al. *AlphaGeometry* (2024)
+- Ellis et al. *DreamCoder* (2021)

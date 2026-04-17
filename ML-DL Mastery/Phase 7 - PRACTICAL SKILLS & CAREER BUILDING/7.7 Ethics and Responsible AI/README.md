@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.7 Ethics and Responsible AI
+# 7.7 Ethics and Responsible AI
 
-**Project:** Responsible AI Study
+Responsible AI requires proactively auditing systems for fairness, transparency, and safety before deployment. Key fairness metrics include Demographic Parity, Equalized Odds, Calibration, and Disparate Impact Ratio. Mitigations include threshold equalisation, reweighting, and adversarial debiasing. This folder implements a loan approval fairness audit with all four metrics and a model card template.
 
-Explore bias, fairness, and AI governance.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Demographic Parity, Equalized Odds, calibration curves, Disparate Impact, model card |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `responsible_ai.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Demographic Parity | Equal positive prediction rates across groups |
+| Equalized Odds | Equal TPR and FPR across groups |
+| Disparate Impact | Ratio of positive rates; threshold ≥ 0.8 (4/5 rule) |
+| Calibration | Model confidence matches empirical frequencies |
+| Model Card | Structured documentation of model purpose, limits, risks |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Barocas, Hardt & Narayanan *Fairness and Machine Learning* (fairmlbook.org)
+- Mitchell et al. *Model Cards* (2019)
+- Mehrabi et al. *A Survey on Bias and Fairness in ML* (2021)

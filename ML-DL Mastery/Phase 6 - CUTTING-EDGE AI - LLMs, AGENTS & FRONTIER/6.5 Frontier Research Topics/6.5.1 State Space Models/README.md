@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.1 State Space Models
+# 6.5.1 State Space Models
 
-**Project:** State Space Models
+State Space Models (SSMs) such as Mamba and S4 are linear recurrent systems that achieve transformer-level language modelling with linear (rather than quadratic) sequence complexity. The continuous SSM x'(t) = Ax(t) + Bu(t), y(t) = Cx(t) + Du(t) is discretised via Zero-Order Hold (ZOH) or bilinear methods. This folder implements SSM forward pass, impulse response, and eigenvalue stability analysis.
 
-Explore sequence modeling beyond transformers.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Linear SSM A/B/C/D matrices, bilinear discretisation (Tustin), impulse response, eigenvalue plot |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `state_space.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| State space | x'=Ax+Bu, y=Cx+Du; continuous linear system |
+| HiPPO matrix | Structured A that projects input onto orthogonal polynomials |
+| Selective SSM | Mamba's input-dependent Δt, B, C parameters |
+| Bilinear (Tustin) | Discretisation method: (I+ΔA/2)^{-1}(I−ΔA/2) |
+| Linear complexity | O(L) inference vs O(L²) for attention |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Gu et al. *S4* (2021)
+- Gu & Dao *Mamba* (2023)
+- Gu et al. *HiPPO* (2020)

@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.2 Fine-Tuning and Alignment\6.2.4 Direct Alignment Methods
+# 6.2.4 Direct Alignment Methods
 
-**Project:** AI Safety Study
+Direct Preference Optimisation (DPO) and its variants (IPO, KTO, ORPO) eliminate the need for a separate reward model by re-framing the RLHF objective as a supervised loss directly on (chosen, rejected) pairs. This folder implements the DPO loss derivation, preference margin analysis, and compares convergence with RLHF baselines.
 
-Explore alignment methods and safe ML practices.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | DPO loss surface, preference margin training curve, comparison with reward model baseline |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `dpo_demo.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| DPO | Closed-form solution that subsumes the reward model |
+| Preference margin | log π(chosen)/π(ref) − log π(rejected)/π(ref) |
+| IPO | Identity Preference Optimisation; regularised version |
+| KTO | Kahneman-Tversky Optimisation; uses prospect theory |
+| ORPO | Odds Ratio Preference Optimisation; no reference model |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Rafailov et al. *DPO* (2023)
+- Azar et al. *IPO* (2023)
+- Ethayarajh et al. *KTO* (2024)

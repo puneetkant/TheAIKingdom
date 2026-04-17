@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.3 AI Agents and Tool Use\6.3.4 Memory for Agents
+# 6.3.4 Memory for Agents
 
-**Project:** AI Agents
+Long-running agents need structured memory: in-context (conversation history), external (vector store retrieval), episodic (event logs), and semantic (knowledge summaries). This folder implements a simple memory manager that stores, retrieves, and forgets memories based on recency and relevance scores.
 
-Design a simple agent architecture.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Memory store with recency decay, relevance scoring, retrieval simulation, memory utilisation chart |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `memory_agents.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| In-context memory | Conversation window; limited by context length |
+| Vector store | External long-term memory via embedding search |
+| Episodic memory | Time-stamped event log; retrieved by recency |
+| Semantic memory | Distilled facts and summaries |
+| Forgetting curve | Ebbinghaus decay: retention ∝ e^(−t/s) |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Park et al. *Generative Agents* (2023)
+- Zhong et al. *MemGPT* (2023)
+- Langchain Memory documentation

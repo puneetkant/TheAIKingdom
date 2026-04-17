@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.1 Large Language Models (LLMs)\6.1.3 Pre-training LLMs
+# 6.1.3 Pre-training LLMs
 
-**Project:** LLM Exploration
+Pre-training is the large-scale unsupervised phase that gives LLMs their world knowledge. A causal language model learns to predict the next token over trillions of tokens, building up a rich internal representation of language, facts, and reasoning patterns. This folder explores bigram statistics, loss curves, perplexity, and scaling dynamics from scratch.
 
-Inspect tokenization and sampling.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Bigram language model, perplexity tracking, loss-curve simulation, heatmap of bigram co-occurrences |
+| `working_example.ipynb` | Interactive notebook version with step-by-step cells |
+| `output/` | `pretraining_curves.png`, `bigram_heatmap.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Causal LM objective | Predict next token; minimise cross-entropy loss |
+| Perplexity | Exponentiated average NLL; lower = better model |
+| Bigram statistics | Character/token co-occurrence counts |
+| Scaling laws | Loss ∝ N^-α · D^-β (Chinchilla) |
+| Training dynamics | Learning-rate warmup → decay |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Karpathy "makemore" series
+- Hoffmann et al. *Chinchilla* (2022)
+- Brown et al. *GPT-3* (2020)

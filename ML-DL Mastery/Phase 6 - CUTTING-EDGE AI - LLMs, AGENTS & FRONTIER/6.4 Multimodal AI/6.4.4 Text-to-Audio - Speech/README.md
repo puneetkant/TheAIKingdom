@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.4 Text-to-Audio - Speech
+# 6.4.4 Text-to-Audio and Speech
 
-**Project:** Learning Project
+Text-to-speech (TTS) and audio generation models (Whisper, Bark, MusicGen, VoiceBox) convert text or prompts into natural speech or music. Core components include mel-filterbank extraction, vocoder synthesis, and prosody modelling. This folder implements mel filterbanks from scratch, STFT, log-mel spectrograms, and formant frequency analysis.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | STFT, mel filterbank construction, log-mel spectrogram, formant FFT analysis |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `mel_spectrogram.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Mel filterbank | Perceptually-scaled frequency bins |
+| STFT | Short-Time Fourier Transform; time-frequency representation |
+| Vocoder | Converts mel spectrograms to waveforms (HiFi-GAN) |
+| Prosody | Pitch, rhythm, and emphasis in speech |
+| Codec model | Encodec-style discrete audio tokens |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Radford et al. *Whisper* (2023)
+- Shen et al. *Natural TTS Synthesis* / Tacotron (2018)
+- Copet et al. *MusicGen* (2023)

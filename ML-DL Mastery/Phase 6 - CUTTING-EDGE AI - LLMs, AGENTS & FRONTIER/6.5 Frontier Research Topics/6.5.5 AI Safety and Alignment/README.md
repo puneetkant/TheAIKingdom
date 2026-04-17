@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.5 AI Safety and Alignment
+# 6.5.5 AI Safety and Alignment
 
-**Project:** AI Safety Study
+AI safety research ensures advanced AI systems remain beneficial, honest, and corrigible as capabilities scale. Key concerns include reward hacking (Goodhart’s Law), deceptive alignment, power-seeking, and sycophancy. Mitigations include RLHF, constitutional AI, debate, and interpretability-based oversight. This folder simulates reward hacking, KL divergence tracking, and constitutional filtering.
 
-Explore alignment methods and safe ML practices.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Reward hacking simulation, KL divergence tracking, constitutional AI filtering, β penalty sweep |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `ai_safety.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Goodhart’s Law | When a measure becomes a target, it ceases to be a good measure |
+| KL regularisation | Penalise deviation from reference policy during RLHF |
+| Constitutional AI | Self-critique using a set of principles |
+| Corrigibility | Model accepts human correction and shutdown |
+| Scalable oversight | Use AI assistance to evaluate AI outputs |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Bai et al. *Constitutional AI* (2022)
+- Hadfield-Menell et al. *The Off-Switch Game* (2016)
+- Anthropic alignment research (2023–2024)

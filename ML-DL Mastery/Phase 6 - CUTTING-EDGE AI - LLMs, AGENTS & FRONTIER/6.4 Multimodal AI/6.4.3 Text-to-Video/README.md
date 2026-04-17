@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.3 Text-to-Video
+# 6.4.3 Text-to-Video
 
-**Project:** Learning Project
+Text-to-video generation (Sora, Runway Gen-2, Pika) extends image diffusion to temporal sequences, requiring temporal consistency, motion modelling, and efficient 3D attention. Key challenges include maintaining subject identity and smooth motion across frames. This folder simulates temporal consistency metrics, linear frame interpolation, and SSIM proxy analysis.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Temporal consistency MSE, linear frame interpolation, SSIM proxy across frame pairs |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `text_to_video.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Temporal consistency | Adjacent frames should be visually smooth |
+| 3D attention | Self-attention across (T, H, W); expensive but powerful |
+| Frame interpolation | Generate in-between frames for smooth video |
+| SSIM | Structural Similarity Index; perceived image quality |
+| Latent video diffusion | Compress video to latent space before diffusion |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Ho et al. *Video Diffusion Models* (2022)
+- OpenAI *Sora* technical report (2024)
+- Brooks et al. *InstructPix2Pix* (2023)

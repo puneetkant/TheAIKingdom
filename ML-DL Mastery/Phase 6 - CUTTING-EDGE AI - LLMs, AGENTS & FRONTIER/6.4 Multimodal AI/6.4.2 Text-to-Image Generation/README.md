@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.2 Text-to-Image Generation
+# 6.4.2 Text-to-Image Generation
 
-**Project:** Learning Project
+Text-to-image models (Stable Diffusion, DALL-E, Imagen, Flux) use diffusion processes to iteratively denoise random noise conditioned on text embeddings. The forward process adds Gaussian noise across T timesteps; the reverse learns to denoise. This folder implements the forward diffusion process, noise schedules, and SNR curves from scratch.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Forward diffusion on 8×8 image, linear vs cosine β schedules, SNR curve, denoised frame grid |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `diffusion_forward.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| DDPM | Denoising Diffusion Probabilistic Models; T-step Markov chain |
+| Noise schedule | β_t controls how much noise is added at each step |
+| Cosine schedule | Smoother noise schedule; avoids abrupt noising |
+| SNR | Signal-to-noise ratio: α_t / (1−α_t); governs difficulty |
+| CFG | Classifier-free guidance; sharpens text conditioning |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Ho et al. *DDPM* (2020)
+- Nichol & Dhariwal *Improved DDPM* (2021)
+- Rombach et al. *Stable Diffusion / LDM* (2022)

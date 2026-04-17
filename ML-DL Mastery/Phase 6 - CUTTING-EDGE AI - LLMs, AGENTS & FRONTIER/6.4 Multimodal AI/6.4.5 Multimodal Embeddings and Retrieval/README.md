@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.5 Multimodal Embeddings and Retrieval
+# 6.4.5 Multimodal Embeddings and Retrieval
 
-**Project:** Multimodal Project
+Multimodal embeddings project images, text, audio, and video into a shared vector space enabling cross-modal retrieval (text query → image results, image query → text results). Key metrics include Recall@k, MRR, and nDCG. This folder builds a cross-modal retrieval benchmark with PCA visualisation and cosine similarity matrices.
 
-Combine text and image data pipelines.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Cross-modal retrieval sim, Recall@k, MRR, PCA 2D scatter, cosine similarity heatmap |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `multimodal_retrieval.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Cross-modal retrieval | Query one modality, retrieve another |
+| Recall@k | Fraction of queries where correct item is in top-k |
+| MRR | Mean Reciprocal Rank of first correct result |
+| Alignment | Training to pull matching pairs together in embed space |
+| FAISS | Approximate nearest-neighbour library for large indexes |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Radford et al. *CLIP* (2021)
+- ImageBind (Meta, 2023)
+- Johnson et al. *FAISS* (2019)

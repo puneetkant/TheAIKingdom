@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.2 Fine-Tuning and Alignment\6.2.2 Parameter-Efficient Fine-Tuning (PEFT)
+# 6.2.2 Parameter-Efficient Fine-Tuning (PEFT)
 
-**Project:** Fine-Tuning Project
+PEFT techniques adapt large models by updating only a small fraction of parameters — enabling fine-tuning on consumer GPUs. LoRA (Low-Rank Adaptation) injects trainable rank-decomposition matrices into frozen weight layers. This folder demonstrates LoRA forward passes, rank sensitivity, and parameter-count comparisons.
 
-Adapt a model to a custom dataset.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | LoRA matrix decomposition demo, rank vs quality trade-off, param count comparison chart |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `peft_lora.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| LoRA | W ≈ W₀ + BA; train only B and A (rank r ≪ d) |
+| Adapter layers | Small MLP modules inserted between transformer layers |
+| Prefix tuning | Prepend soft trainable tokens to input |
+| QLoRA | Quantise base model to 4-bit, fine-tune LoRA adapters |
+| Rank r | Controls capacity vs parameter budget |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Hu et al. *LoRA* (2021)
+- Dettmers et al. *QLoRA* (2023)
+- HuggingFace PEFT library

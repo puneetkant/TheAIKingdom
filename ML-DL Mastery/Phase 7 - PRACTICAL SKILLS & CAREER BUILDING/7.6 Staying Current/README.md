@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.6 Staying Current
+# 7.6 Staying Current
 
-**Project:** Learning Plan
+The AI field moves faster than any individual can fully track — arXiv sees hundreds of new ML papers daily. Effective strategies include curated digest subscriptions (Papers With Code, Arxiv Sanity), weekly deep-reads, Twitter/X follows, Discord communities (Eleuther, Alignment Forum), and implementation-first learning. This folder simulates arXiv volume growth, topic trend tracking, and weekly reading budget analysis.
 
-Follow papers, blogs, and community resources.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | arXiv volume growth (2015–2024), topic trend curves, reading budget pie, published vs readable |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `staying_current.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Digest subscriptions | Papers With Code, Arxiv Sanity Preserver |
+| Weekly deep-read | 1–2 papers fully read and understood per week |
+| Topic monitoring | Google Scholar alerts, Semantic Scholar feeds |
+| Implementation | Reproducing a paper cements understanding |
+| Community | Twitter/X, Discord, LessWrong, Alignment Forum |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Papers With Code (paperswithcode.com)
+- Arxiv Sanity Preserver (arxiv-sanity.com)
+- The Batch newsletter (deeplearning.ai)

@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.2 Mixture of Experts (MoE)
+# 6.5.2 Mixture of Experts (MoE)
 
-**Project:** Mixture of Experts
+Mixture-of-Experts models (Mixtral, Switch Transformer, GPT-4) use learned sparse routing to activate only a subset of N expert FFN sub-networks per token, achieving massive parameter counts at constant inference compute. Top-k gating with load-balance loss prevents expert collapse. This folder implements top-k gating, load-balance loss, and expert utilisation analysis.
 
-Create a router/expert-style pattern.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Top-k gating with softmax, load balance loss, expert utilisation bar chart, gate weight heatmap |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `moe_gating.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Top-k routing | Each token routed to k of N experts; k=2 is common |
+| Load balance loss | Penalises routing all tokens to same expert |
+| Expert parallelism | Different experts on different GPUs |
+| Switch Transformer | k=1 routing; simpler but less expressive |
+| Expert capacity | Max tokens per expert per batch; overflow dropped |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Shazeer et al. *Outrageously Large NNs* (2017)
+- Fedus et al. *Switch Transformer* (2021)
+- Jiang et al. *Mixtral of Experts* (2024)

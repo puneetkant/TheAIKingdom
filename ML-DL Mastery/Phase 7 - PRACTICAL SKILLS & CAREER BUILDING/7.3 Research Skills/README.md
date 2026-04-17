@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.3 Research Skills
+# 7.3 Research Skills
 
-**Project:** Research Project
+Effective ML research requires systematic paper reading (abstract → conclusion → figures → methods), critical analysis, ablation study design, and reproducibility. Tools like Connected Papers, Semantic Scholar, and Zotero help manage literature. This folder implements a paper tracker, citation network analysis, and ablation study template.
 
-Read papers and reproduce results.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Paper tracker, citation DAG, ablation study scorer, reading progress tracker |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `research_skills.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Ablation study | Remove one component at a time; measure impact |
+| Citation network | Graph of paper citations; find influential ancestors |
+| Reproducibility | Code + data + hyperparams to replicate results |
+| Peer review | Evaluate novelty, soundness, significance, clarity |
+| Paper tracker | Prioritise reading by relevance and citation count |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Karpathy *How to Read a Paper* (3-pass method)
+- Connected Papers (connectedpapers.com)
+- Semantic Scholar API

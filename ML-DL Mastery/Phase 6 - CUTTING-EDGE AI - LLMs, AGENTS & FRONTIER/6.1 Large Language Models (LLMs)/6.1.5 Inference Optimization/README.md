@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.1 Large Language Models (LLMs)\6.1.5 Inference Optimization
+# 6.1.5 Inference Optimization
 
-**Project:** Learning Project
+Deploying large language models efficiently requires techniques that reduce memory and latency without degrading quality. Key strategies include KV-cache reuse, quantisation (INT8/INT4), speculative decoding, and continuous batching. This folder benchmarks throughput, memory savings, and quality trade-offs across these methods.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | KV-cache speedup model, quantisation memory curves, speculative decoding acceptance-rate simulation |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `inference_optimization.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| KV-Cache | Reuse attention keys/values across steps; avoids recomputation |
+| Quantisation | INT8/INT4 weights; 2-4× memory reduction |
+| Speculative decoding | Draft model + verifier; speeds up sampling |
+| Continuous batching | Dynamic request batching for higher GPU utilisation |
+| FlashAttention | IO-aware exact attention; up to 3× faster |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Leviathan et al. *Speculative Decoding* (2023)
+- Dao et al. *FlashAttention* (2022)
+- HuggingFace TGI documentation

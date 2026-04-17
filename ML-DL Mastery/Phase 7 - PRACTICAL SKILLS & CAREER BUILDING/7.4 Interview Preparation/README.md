@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.4 Interview Preparation
+# 7.4 Interview Preparation
 
-**Project:** Interview Prep
+ML engineering interviews test conceptual depth (bias-variance, optimisation, model architectures), coding ability (data structures, algorithms), and system design (scalable ML pipelines). Consistent practice with flashcards, mock interviews, and competitive programming builds the speed and fluency required. This folder provides a Q&A quiz scorer, algorithm complexity table, and simulated practice-round performance tracker.
 
-Practice ML and coding interview questions.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | ML Q&A quiz scorer, algorithm complexity table, accuracy-by-difficulty, practice-round progress |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `interview_prep.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| ML theory Q&A | Bias-variance, regularisation, gradient descent, attention |
+| Algorithm complexity | Big-O time/space for search, sort, graph algorithms |
+| System design | Feature stores, serving, data pipelines, A/B testing |
+| Coding round | LeetCode Medium; focus on arrays, trees, DP |
+| Behavioural | STAR format; project impact, collaboration, conflict |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Chip Huyen *Machine Learning Interviews* book
+- LeetCode and NeetCode
+- *Designing Machine Learning Systems* (Chip Huyen)

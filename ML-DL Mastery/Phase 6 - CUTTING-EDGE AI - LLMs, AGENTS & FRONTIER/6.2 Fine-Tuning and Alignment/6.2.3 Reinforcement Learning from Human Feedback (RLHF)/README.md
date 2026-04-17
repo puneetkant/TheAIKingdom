@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.2 Fine-Tuning and Alignment\6.2.3 Reinforcement Learning from Human Feedback (RLHF)
+# 6.2.3 Reinforcement Learning from Human Feedback (RLHF)
 
-**Project:** Reinforcement Learning
+RLHF is the three-stage pipeline that aligns LLMs with human preferences: (1) supervised fine-tuning, (2) reward model training from pairwise comparisons, and (3) PPO optimisation against the reward model with a KL penalty to prevent reward hacking. This folder simulates reward model training, PPO reward curves, and KL-divergence tracking.
 
-Implement a basic RL agent or environment.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Reward model training simulation, PPO reward accumulation, KL penalty sweep |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `rlhf_demo.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Reward model | Scores responses; trained from human pairwise preferences |
+| PPO | Proximal Policy Optimisation; clips policy update ratio |
+| KL penalty | Prevents policy deviating too far from reference model |
+| Bradley-Terry model | Pairwise preference → reward probability |
+| Reward hacking | Policy exploits flaws in learned reward model |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Ouyang et al. *InstructGPT* (2022)
+- Stiennon et al. *Learning to summarise* (2020)
+- Schulman et al. *PPO* (2017)

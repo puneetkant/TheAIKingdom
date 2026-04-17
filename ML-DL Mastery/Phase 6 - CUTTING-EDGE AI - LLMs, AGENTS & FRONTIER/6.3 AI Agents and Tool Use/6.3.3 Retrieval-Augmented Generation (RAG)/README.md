@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.3 AI Agents and Tool Use\6.3.3 Retrieval-Augmented Generation (RAG)
+# 6.3.3 Retrieval-Augmented Generation (RAG)
 
-**Project:** Learning Project
+RAG augments LLM generation with dynamically retrieved documents, reducing hallucination and enabling up-to-date knowledge without retraining. A retriever (dense or sparse) fetches relevant chunks; the generator conditions on them. This folder builds a miniature RAG pipeline with TF-IDF retrieval, cosine similarity, and end-to-end generation simulation.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | TF-IDF document index, cosine retrieval, retrieved context grounding, BLEU vs no-RAG |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `rag_retrieval.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Dense retrieval | FAISS + bi-encoder embeddings (DPR, ColBERT) |
+| Sparse retrieval | BM25 / TF-IDF keyword matching |
+| Chunking | Split docs into overlapping windows for indexing |
+| Re-ranking | Cross-encoder re-orders top-k candidates |
+| Hybrid RAG | Combine dense + sparse scores (RRF) |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Lewis et al. *RAG* (2020)
+- Karpukhin et al. *DPR* (2020)
+- LangChain / LlamaIndex documentation

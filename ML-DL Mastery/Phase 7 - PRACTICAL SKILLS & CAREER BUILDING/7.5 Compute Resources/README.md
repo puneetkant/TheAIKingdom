@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.5 Compute Resources
+# 7.5 Compute Resources
 
-**Project:** Compute Resource Guide
+Understanding compute economics is essential for practical ML: FLOPs per forward pass, GPU memory footprint, training time, and cost. Chinchilla scaling laws prescribe compute-optimal token budgets (D ≈ 20N). This folder implements a FLOP estimator, GPU memory calculator, Chinchilla scaling visualisation, and training-time vs MFU analysis.
 
-Track compute options and experiment setups.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | FLOP estimator, GPU memory by model size, Chinchilla D=20N curve, MFU vs training hours |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `compute_resources.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| FLOPs | 6ND per training run (N=params, D=tokens) |
+| MFU | Model FLOP Utilisation: actual vs theoretical peak |
+| Chinchilla | Compute-optimal: D ≈ 20N; both scale together |
+| GPU memory | Weights + gradients + optimizer states + activations |
+| Cloud costs | H100 ~$3/hr; A100 ~$2/hr; spot pricing |  
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Hoffmann et al. *Chinchilla* (2022)
+- Narayanan et al. *Megatron-LM* (2021)
+- *Transformer Math 101* (EleutherAI blog)

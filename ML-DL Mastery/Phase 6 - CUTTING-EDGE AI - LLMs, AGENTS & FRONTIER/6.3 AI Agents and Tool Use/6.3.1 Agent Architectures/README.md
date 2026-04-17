@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.3 AI Agents and Tool Use\6.3.1 Agent Architectures
+# 6.3.1 Agent Architectures
 
-**Project:** AI Agents
+AI agents combine an LLM reasoning core with memory, tools, and an action loop. Key architectures include ReAct (Reason + Act), Reflexion (self-reflection), Plan-and-Execute, and Tree-of-Thought. This folder implements a minimal ReAct-style loop in pure Python, simulating thought-action-observation traces and success rates.
 
-Design a simple agent architecture.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | ReAct trace simulator, action success heatmap, architecture comparison bar chart |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `agent_architectures.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| ReAct | Interleave reasoning traces with tool actions |
+| Reflexion | Agent critiques its own outputs and retries |
+| Plan-and-Execute | Planner decomposes task; executor runs sub-tasks |
+| Tree-of-Thought | Explore branching reasoning paths with search |
+| Observation loop | Thought → Action → Observation → repeat |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Yao et al. *ReAct* (2022)
+- Shinn et al. *Reflexion* (2023)
+- Wei et al. *Chain-of-Thought* (2022)

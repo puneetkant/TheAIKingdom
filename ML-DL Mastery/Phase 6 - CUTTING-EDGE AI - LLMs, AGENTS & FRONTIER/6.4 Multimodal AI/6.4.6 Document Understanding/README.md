@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.4 Multimodal AI\6.4.6 Document Understanding
+# 6.4.6 Document Understanding
 
-**Project:** Learning Project
+Document understanding models (LayoutLM, Donut, Nougat) parse complex documents by combining text, spatial layout, and visual features. Applications include invoice extraction, form parsing, and scientific paper digitisation. This folder implements bounding box IoU scoring, reading-order detection, and element-type classification from layout features.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Bounding box layout extraction, IoU matrix, reading order algorithm, element area chart |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `document_understanding.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| LayoutLM | Transformer with 2D positional embeddings for layout |
+| Bounding box | (x, y, w, h) spatial location of document elements |
+| IoU | Intersection over Union; overlap metric for boxes |
+| Reading order | Top-to-bottom, left-to-right reconstruction |
+| OCR | Optical Character Recognition; text extraction from images |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Xu et al. *LayoutLM* (2020)
+- Kim et al. *Donut* (2022)
+- Blecher et al. *Nougat* (2023)

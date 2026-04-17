@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.1 Kaggle and Competitions
+# 7.1 Kaggle and Competitions
 
-**Project:** Kaggle Project
+Kaggle competitions are the fastest way to build practical ML intuition — you get real datasets, a leaderboard, and a community of top practitioners sharing notebooks. Key skills include cross-validation strategy, feature engineering, ensembling (stacking, blending), and avoiding public leaderboard overfitting. This folder implements K-fold CV, ensemble stacking, and a leaderboard shake-up simulation.
 
-Create a Kaggle-ready notebook and dataset pipeline.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | 5-fold CV, meta-learner stacking, public vs private LB shake-up scatter |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `kaggle_competition.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Cross-validation | Estimate generalisation error; stratified K-fold |
+| Ensemble stacking | Train meta-learner on base model OOF predictions |
+| LB shake-up | Public/private split → public rank ≠ private rank |
+| Feature engineering | Domain-specific transformations; biggest impact |
+| Target encoding | Replace category with target mean (CV-safe) |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Kaggle Learn courses
+- Kaggle Grandmaster notebooks
+- *Feature Engineering for Machine Learning* (Zheng & Casari)

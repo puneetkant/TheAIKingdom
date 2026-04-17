@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.8 Embodied AI and Robotics
+# 6.5.8 Embodied AI and Robotics
 
-**Project:** Embodied AI Project
+Embodied AI agents act in physical or simulated environments — perceiving sensory inputs, planning actions, and learning from interaction. Policy learning methods (REINFORCE, PPO, SAC) train agents on reward signals from the environment. This folder implements a 6×6 GridWorld environment with a REINFORCE policy gradient agent that learns to navigate to a goal.
 
-Work with action, perception, and robotics concepts.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | GridWorld 6×6, REINFORCE policy gradient 200 episodes, learned policy arrow grid |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `embodied_ai.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| REINFORCE | Policy gradient: ∇J = E[∇logπ(a|s)·R] |
+| Actor-critic | Baseline V(s) reduces variance in policy gradient |
+| Sim-to-real | Transfer policy from simulation to real hardware |
+| RT-2 | Vision-language-action model for robot control |
+| Reward shaping | Dense rewards guide learning in sparse environments |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Sutton & Barto *Reinforcement Learning* (2018)
+- Brohan et al. *RT-2* (2023)
+- OpenAI *Gym* documentation

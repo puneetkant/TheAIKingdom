@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.3 AI Agents and Tool Use\6.3.6 Agent Frameworks
+# 6.3.6 Agent Frameworks
 
-**Project:** AI Agents
+Agent frameworks (LangChain, LlamaIndex, AutoGen, CrewAI, LangGraph) provide abstractions for building production-grade agentic pipelines with routing, memory, tool integration, and multi-agent coordination. This folder benchmarks framework design patterns: single-agent, hierarchical, and collaborative multi-agent task decomposition.
 
-Design a simple agent architecture.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Agent framework pattern simulator, task decomposition tree, framework latency comparison |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `agent_frameworks.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| LangChain | Chains, agents, and tool integrations |
+| LangGraph | Graph-based stateful agent workflows |
+| AutoGen | Multi-agent conversation framework |
+| CrewAI | Role-based collaborative agent teams |
+| DAG orchestration | Directed acyclic graph of agent tasks |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- LangChain documentation
+- Microsoft AutoGen (2023)
+- LangGraph state machine docs

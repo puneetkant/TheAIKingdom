@@ -1,22 +1,33 @@
-# Phase 7 - PRACTICAL SKILLS & CAREER BUILDING\7.2 Portfolio Building
+# 7.2 Portfolio Building
 
-**Project:** Portfolio Project
+A strong ML portfolio demonstrates practical skill, communication ability, and depth of understanding. Each project should have a clear problem statement, reproducible code, visualised results, and a polished README. This folder implements a project scoring rubric across five dimensions (documentation, code, tests, completeness, community engagement) and visualises improvement impact.
 
-Build a polished code project with README and results.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Portfolio project scorer, component breakdown, improvement impact, stars vs score scatter |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `portfolio_building.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Project README | Clear problem, method, results, and how to reproduce |
+| Reproducibility | requirements.txt / environment.yml + seed fixed |
+| Demo / space | HuggingFace Space or Streamlit app for interactivity |
+| Documentation score | README length, docstrings, inline comments |
+| Community engagement | GitHub stars, forks, issues, discussion |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- HuggingFace Spaces documentation
+- *Building a Data Science Portfolio* (Vik Paruchuri)
+- fast.ai course project showcase

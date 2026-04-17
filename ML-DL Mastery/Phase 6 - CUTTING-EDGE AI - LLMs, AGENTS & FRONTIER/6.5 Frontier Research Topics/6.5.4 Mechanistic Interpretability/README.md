@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.4 Mechanistic Interpretability
+# 6.5.4 Mechanistic Interpretability
 
-**Project:** Interpretability Project
+Mechanistic interpretability (MI) reverse-engineers how neural networks implement algorithms internally. Key techniques include attention head analysis, activation patching (causal tracing), logit lens, and sparse autoencoders for finding interpretable features. This folder implements causal attention pattern analysis, activation patching, and logit-lens layer-by-layer prediction tracking.
 
-Inspect model internals and activations.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Causal attention patterns, attention entropy, logit lens simulation, activation patching |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `mechanistic_interp.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Attention head analysis | What does each head attend to? induction, copying, etc. |
+| Activation patching | Swap activations between runs; locate responsible components |
+| Logit lens | Read off model’s predictions at each intermediate layer |
+| Sparse autoencoder | Learn interpretable features from dense activations |
+| Superposition | Model encodes more features than dimensions via interference |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Elhage et al. *A Mathematical Framework for Transformer Circuits* (2021)
+- Meng et al. *ROME* (2022)
+- Anthropic *Scaling Monosemanticity* (2024)

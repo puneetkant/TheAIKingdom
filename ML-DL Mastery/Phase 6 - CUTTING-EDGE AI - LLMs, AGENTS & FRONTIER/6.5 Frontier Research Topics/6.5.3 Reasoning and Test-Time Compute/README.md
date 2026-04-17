@@ -1,22 +1,33 @@
-# Phase 6 - CUTTING-EDGE AI - LLMs, AGENTS & FRONTIER\6.5 Frontier Research Topics\6.5.3 Reasoning and Test-Time Compute
+# 6.5.3 Reasoning and Test-Time Compute
 
-**Project:** Learning Project
+Test-time compute scaling (OpenAI o1, DeepSeek-R1) trades inference FLOPs for accuracy by generating extended reasoning chains before answering. Strategies include majority voting (self-consistency), best-of-N sampling, and beam search over reasoning paths. This folder simulates accuracy vs N-samples and compute-budget trade-offs.
 
-Explore this topic with a small practical project or coding exercise.
+## Files
 
-## What to build
+| File | Description |
+|------|-------------|
+| `working_example2.py` | Majority voting, best-of-N sampling, accuracy vs N, compute budget curve |
+| `working_example.ipynb` | Interactive notebook version |
+| `output/` | `reasoning_compute.png` |
 
-- Try a small hands-on exercise focused on this topic.
-- Keep the code in `project.py` in this folder.
-- Add notes, examples, or results inside this directory.
+## Quick Start
 
-## Suggestions
+```bash
+python working_example2.py
+```
 
-1. Read the checklist topic and identify one practice task.
-2. Write code in `project.py` that illustrates the main concept.
-3. Run your code and iterate until it works.
+## Key Concepts
 
-## Notes
+| Concept | Description |
+|---------|-------------|
+| Self-consistency | Sample multiple CoT answers; majority vote |
+| Best-of-N | Generate N solutions; score with verifier; return best |
+| Process Reward Model | Score intermediate reasoning steps |
+| MCTS | Monte Carlo Tree Search over reasoning steps |
+| Scaling curve | Accuracy ~ log(N) for independent samples |
 
-- Use Python and standard libraries when possible.
-- For data topics, install `numpy`, `pandas`, `matplotlib` as needed.
+## Learning Resources
+
+- Wang et al. *Self-Consistency* (2022)
+- Lightman et al. *Let’s Verify Step by Step* (2023)
+- OpenAI *o1 system card* (2024)
