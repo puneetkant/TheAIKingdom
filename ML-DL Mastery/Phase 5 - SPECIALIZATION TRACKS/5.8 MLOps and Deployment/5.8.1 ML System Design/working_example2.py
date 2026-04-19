@@ -1,7 +1,7 @@
 """
 Working Example 2: ML System Design — training pipeline, data validation, serving interface
 ============================================================================================
-End-to-end skeleton: preprocess → train → evaluate → serve.
+End-to-end skeleton: preprocess -> train -> evaluate -> serve.
 
 Run:  python working_example2.py
 """
@@ -17,7 +17,7 @@ except ImportError:
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
-# ── Data validation ────────────────────────────────────────────────────────────
+# -- Data validation ------------------------------------------------------------
 def validate_schema(X, y, min_samples=10, n_features=4):
     assert X.ndim == 2, "X must be 2D"
     assert len(X) == len(y), "X/y length mismatch"
@@ -26,7 +26,7 @@ def validate_schema(X, y, min_samples=10, n_features=4):
     assert not np.isnan(X).any(), "NaN in X"
     return True
 
-# ── Simple preprocessing pipeline ─────────────────────────────────────────────
+# -- Simple preprocessing pipeline ---------------------------------------------
 class Pipeline:
     def __init__(self):
         self.mean_ = None; self.std_ = None
@@ -41,7 +41,7 @@ class Pipeline:
     def fit_transform(self, X):
         return self.fit(X).transform(X)
 
-# ── Logistic regression model ─────────────────────────────────────────────────
+# -- Logistic regression model -------------------------------------------------
 class LogisticModel:
     def __init__(self, lr=0.1, n_iter=100):
         self.lr = lr; self.n_iter = n_iter; self.W = None; self.losses = []
@@ -63,7 +63,7 @@ class LogisticModel:
     def predict(self, X):
         return (self.predict_proba(X) >= 0.5).astype(int)
 
-# ── Serving interface ─────────────────────────────────────────────────────────
+# -- Serving interface ---------------------------------------------------------
 class ModelServer:
     def __init__(self, pipeline, model):
         self.pipeline = pipeline; self.model = model

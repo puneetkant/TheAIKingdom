@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_pooling")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Generic pooling helper ────────────────────────────────────────────────────
+# -- Generic pooling helper ----------------------------------------------------
 def _pool2d(X, pool_size, stride, fn):
     H, W = X.shape
     pH, pW = pool_size
@@ -35,11 +35,11 @@ def l2_pool2d(X, pool_size=2, stride=2):
     return _pool2d(X, (pool_size, pool_size), stride, lambda r: np.sqrt((r**2).mean()))
 
 
-# ── 1. Max pooling ────────────────────────────────────────────────────────────
+# -- 1. Max pooling ------------------------------------------------------------
 def max_pooling_demo():
     print("=== Max Pooling ===")
     print("  Output[i,j] = max of pool_size window")
-    print("  Retains strongest activations → translation invariance")
+    print("  Retains strongest activations -> translation invariance")
 
     X = np.array([
         [1, 3, 2, 4, 1, 0],
@@ -57,7 +57,7 @@ def max_pooling_demo():
     print(f"\n  MaxPool(3,s=3) output:\n{out3}")
 
 
-# ── 2. Average pooling ────────────────────────────────────────────────────────
+# -- 2. Average pooling --------------------------------------------------------
 def average_pooling_demo():
     print("\n=== Average Pooling ===")
     print("  Output[i,j] = mean of pool_size window")
@@ -75,14 +75,14 @@ def average_pooling_demo():
     print(f"\n  Input:\n{X}")
     print(f"\n  Max Pool 2×2:\n{max_out}")
     print(f"\n  Avg Pool 2×2:\n{avg_out}")
-    print(f"\n  Note: checkerboard pattern → avg=2.0 everywhere; max=4.0 everywhere")
+    print(f"\n  Note: checkerboard pattern -> avg=2.0 everywhere; max=4.0 everywhere")
 
 
-# ── 3. Global pooling ─────────────────────────────────────────────────────────
+# -- 3. Global pooling ---------------------------------------------------------
 def global_pooling_demo():
     print("\n=== Global Pooling ===")
     print("  Reduces each feature map to a single value (global max or avg)")
-    print("  Common use: replace Flatten → Dense at end of CNN")
+    print("  Common use: replace Flatten -> Dense at end of CNN")
     print("  Benefits: fewer parameters, spatial invariance, handles variable input size")
 
     rng  = np.random.default_rng(42)
@@ -98,11 +98,11 @@ def global_pooling_demo():
     print(f"  GMP output shape:   {gmp.shape}")
     print(f"\n  GAP first 5 values: {gap[:5].round(3)}")
     print(f"  GMP first 5 values: {gmp[:5].round(3)}")
-    print(f"\n  Instead of Flatten({H*W*C}) → Dense, use GAP → Dense({C})")
-    print(f"  Parameter savings: {H*W*C} → {C} input to classifier")
+    print(f"\n  Instead of Flatten({H*W*C}) -> Dense, use GAP -> Dense({C})")
+    print(f"  Parameter savings: {H*W*C} -> {C} input to classifier")
 
 
-# ── 4. Strided convolution vs pooling ─────────────────────────────────────────
+# -- 4. Strided convolution vs pooling -----------------------------------------
 def strided_vs_pooling():
     print("\n=== Strided Convolution vs Pooling ===")
     print("  Both downsample spatial dimensions")
@@ -121,7 +121,7 @@ def strided_vs_pooling():
     print("  Modern trend: replace pooling with strided convolution (All-CNN, ResNet v2)")
 
 
-# ── 5. Pooling and translation invariance ─────────────────────────────────────
+# -- 5. Pooling and translation invariance -------------------------------------
 def translation_invariance():
     print("\n=== Translation Invariance via Pooling ===")
 
@@ -142,7 +142,7 @@ def translation_invariance():
     print(f"\n  Small shifts (< pool_size) produce identical pool outputs")
 
 
-# ── 6. L2 pooling ─────────────────────────────────────────────────────────────
+# -- 6. L2 pooling -------------------------------------------------------------
 def l2_pooling_demo():
     print("\n=== L2 Pooling ===")
     print("  Output = sqrt(mean(x²)) over window — energy-based pooling")
@@ -154,7 +154,7 @@ def l2_pooling_demo():
     print(f"  L2 Pool 2×2:\n{out.round(3)}")
 
 
-# ── 7. Visualise pooling effect ───────────────────────────────────────────────
+# -- 7. Visualise pooling effect -----------------------------------------------
 def visualise_pooling():
     rng = np.random.default_rng(7)
     X   = rng.standard_normal((16, 16))
@@ -170,9 +170,9 @@ def visualise_pooling():
     fig, axes = plt.subplots(1, 4, figsize=(14, 4))
     vmin, vmax = X.min(), X.max()
     for ax, (title, img) in zip(axes, [("Original 16×16", X),
-                                        ("Max Pool 2×2→8×8", max_out),
-                                        ("Avg Pool 2×2→8×8", avg_out),
-                                        ("Max Pool 4×4→4×4", max4)]):
+                                        ("Max Pool 2x2->8x8", max_out),
+                                        ("Avg Pool 2x2->8x8", avg_out),
+                                        ("Max Pool 4x4->4x4", max4)]):
         im = ax.imshow(img, cmap='viridis', vmin=vmin, vmax=vmax)
         ax.set_title(f"{title}\n{img.shape[0]}×{img.shape[1]}", fontsize=9)
         plt.colorbar(im, ax=ax)

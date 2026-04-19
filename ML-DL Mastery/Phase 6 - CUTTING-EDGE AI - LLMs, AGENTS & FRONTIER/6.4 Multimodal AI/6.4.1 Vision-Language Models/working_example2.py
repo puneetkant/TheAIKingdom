@@ -79,8 +79,8 @@ def demo():
     temps = np.linspace(0.01, 0.5, 100)
     losses = [contrastive_loss(sim_matrix, t) for t in temps]
     axes[1].plot(temps, losses, color="steelblue", lw=2)
-    axes[1].axvline(0.07, color="red", linestyle="--", label="τ=0.07")
-    axes[1].set(xlabel="Temperature τ", ylabel="InfoNCE Loss",
+    axes[1].axvline(0.07, color="red", linestyle="--", label="tau=0.07")
+    axes[1].set(xlabel="Temperature tau", ylabel="InfoNCE Loss",
                 title="Contrastive Loss vs Temperature")
     axes[1].legend()
     axes[1].grid(True, alpha=0.3)
@@ -90,7 +90,7 @@ def demo():
     correct = sum(1 for i, t in enumerate(top1) if t == i)
     axes[2].bar(["Correct", "Wrong"], [correct, 6 - correct],
                 color=["mediumseagreen", "tomato"])
-    axes[2].set(ylabel="Count", title=f"Text→Image Retrieval Accuracy ({correct}/6)")
+    axes[2].set(ylabel="Count", title=f"Text->Image Retrieval Accuracy ({correct}/6)")
     axes[2].grid(True, axis="y", alpha=0.3)
 
     plt.tight_layout()

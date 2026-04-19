@@ -25,7 +25,7 @@ def unit_embed(seed, dim=64):
 
 
 def recall_at_k(sim_matrix, k):
-    """Recall@k for text→image retrieval. Diagonal is ground truth."""
+    """Recall@k for text->image retrieval. Diagonal is ground truth."""
     n = sim_matrix.shape[0]
     hits = 0
     for i in range(n):

@@ -45,7 +45,7 @@ def demo_ridge(X_train, X_test, y_train, y_test):
         pipe = make_pipeline(StandardScaler(), Ridge(alpha=alpha))
         pipe.fit(X_train, y_train)
         rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
-        print(f"  α={alpha:>6}: RMSE={rmse:.4f}")
+        print(f"  alpha={alpha:>6}: RMSE={rmse:.4f}")
 
 def demo_gd_from_scratch(X_train, X_test, y_train, y_test):
     print("\n=== Gradient Descent from Scratch ===")

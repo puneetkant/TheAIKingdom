@@ -7,7 +7,7 @@ import numpy as np
 import math
 
 
-# ── Pure Python vector (for conceptual clarity) ───────────────────────────────
+# -- Pure Python vector (for conceptual clarity) -------------------------------
 def pure_python_vectors():
     print("=== Vectors — Pure Python ===")
 
@@ -28,7 +28,7 @@ def pure_python_vectors():
     print(f"  ||u||     = {norm(u):.4f}")
 
 
-# ── NumPy vectors ─────────────────────────────────────────────────────────────
+# -- NumPy vectors -------------------------------------------------------------
 def numpy_vectors():
     print("\n=== Vectors — NumPy ===")
     u = np.array([1, 2, 3], dtype=float)
@@ -43,10 +43,10 @@ def numpy_vectors():
     print(f"  u · v (einsum) = {np.einsum('i,i->', u, v)}")
     print(f"  ||u|| (L2)     = {np.linalg.norm(u):.4f}")
     print(f"  ||u|| (L1)     = {np.linalg.norm(u, ord=1):.4f}")
-    print(f"  ||u|| (L∞)     = {np.linalg.norm(u, ord=np.inf):.4f}")
+    print(f"  ||u|| (Linf)     = {np.linalg.norm(u, ord=np.inf):.4f}")
 
 
-# ── Cross product (3D only) ───────────────────────────────────────────────────
+# -- Cross product (3D only) ---------------------------------------------------
 def cross_product():
     print("\n=== Cross Product (3D) ===")
     u = np.array([1, 0, 0])   # x-axis
@@ -61,7 +61,7 @@ def cross_product():
     print(f"  ||a × b|| = {area}  (area of parallelogram with sides {a}, {b})")
 
 
-# ── Angle between vectors ─────────────────────────────────────────────────────
+# -- Angle between vectors -----------------------------------------------------
 def angle_between():
     print("\n=== Angle Between Vectors ===")
     pairs = [
@@ -77,7 +77,7 @@ def angle_between():
         print(f"  angle({u}, {v}) = {theta_deg:.2f}°")
 
 
-# ── Unit vector and projection ────────────────────────────────────────────────
+# -- Unit vector and projection ------------------------------------------------
 def unit_and_projection():
     print("\n=== Unit Vectors & Projection ===")
     v = np.array([3.0, 4.0])
@@ -96,10 +96,10 @@ def unit_and_projection():
     # Orthogonal decomposition
     perpendicular = u - vector_proj
     print(f"  u = proj + perp: {vector_proj} + {perpendicular}")
-    print(f"  perpendicular · v = {np.dot(perpendicular, v):.10f}  (≈ 0)")
+    print(f"  perpendicular · v = {np.dot(perpendicular, v):.10f}  (~= 0)")
 
 
-# ── Linear (in)dependence ─────────────────────────────────────────────────────
+# -- Linear (in)dependence -----------------------------------------------------
 def linear_dependence():
     print("\n=== Linear (In)dependence ===")
     # 3 vectors in R³ — rank tells us about dependence
@@ -115,7 +115,7 @@ def linear_dependence():
         print(f"  rank={rank}/{n}  {dep}  vectors={M.tolist()}")
 
 
-# ── Practical: cosine similarity ─────────────────────────────────────────────
+# -- Practical: cosine similarity ---------------------------------------------
 def cosine_similarity():
     print("\n=== Cosine Similarity (NLP use-case) ===")
     docs = {
@@ -130,7 +130,7 @@ def cosine_similarity():
         for j in range(i+1, len(names)):
             u, v = vecs[i], vecs[j]
             sim = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v) + 1e-9)
-            print(f"    {names[i][:25]:<28} ↔ {names[j][:25]:<28}  sim={sim:.3f}")
+            print(f"    {names[i][:25]:<28} <-> {names[j][:25]:<28}  sim={sim:.3f}")
 
 
 if __name__ == "__main__":

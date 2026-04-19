@@ -11,7 +11,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_agent_memory")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Memory taxonomy ────────────────────────────────────────────────────────
+# -- 1. Memory taxonomy --------------------------------------------------------
 def memory_taxonomy():
     print("=== Memory for AI Agents ===")
     print()
@@ -29,7 +29,7 @@ def memory_taxonomy():
     print("  When each type is needed:")
     use_cases = [
         ("Short task",       "In-context only; everything fits in window"),
-        ("Long conversation","Summarise old turns → re-inject key facts"),
+        ("Long conversation","Summarise old turns -> re-inject key facts"),
         ("Repeat user",      "User profile in semantic memory; retrieve on query"),
         ("Multi-session",    "Episodic: remember 'last time user asked about...'"),
         ("Factual tasks",    "RAG from semantic memory; grounded answers"),
@@ -38,7 +38,7 @@ def memory_taxonomy():
         print(f"  {uc:<18} {d}")
 
 
-# ── 2. Sliding window memory (in-context) ─────────────────────────────────────
+# -- 2. Sliding window memory (in-context) -------------------------------------
 class ConversationMemory:
     """Sliding window with summarisation."""
     def __init__(self, max_turns=10):
@@ -93,7 +93,7 @@ def demo_conversation_memory():
     print(f"  Summary: {mem.summary[:100]}")
 
 
-# ── 3. Vector memory ──────────────────────────────────────────────────────────
+# -- 3. Vector memory ----------------------------------------------------------
 class VectorMemory:
     """Simple vector store for agent memory."""
     def __init__(self, dim=8):
@@ -145,7 +145,7 @@ def demo_vector_memory():
         print(f"    [sim={sim:.3f}] {text}")
 
 
-# ── 4. Memory management ──────────────────────────────────────────────────────
+# -- 4. Memory management ------------------------------------------------------
 def memory_management():
     print("\n=== Memory Management Strategies ===")
     print()

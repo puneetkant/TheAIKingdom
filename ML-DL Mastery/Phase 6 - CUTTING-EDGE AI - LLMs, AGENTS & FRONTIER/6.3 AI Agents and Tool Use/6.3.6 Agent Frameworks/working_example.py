@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_frameworks")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Framework comparison ───────────────────────────────────────────────────
+# -- 1. Framework comparison ---------------------------------------------------
 def framework_comparison():
     print("=== Agent Frameworks Comparison ===")
     print()
@@ -28,7 +28,7 @@ def framework_comparison():
         print(f"  {f:<18} {d}")
 
 
-# ── 2. LangGraph pattern ──────────────────────────────────────────────────────
+# -- 2. LangGraph pattern ------------------------------------------------------
 def langgraph_pattern():
     print("\n=== LangGraph: Stateful Agent Graphs ===")
     print()
@@ -88,7 +88,7 @@ result = app.invoke({
         print(f"  • {s}")
 
 
-# ── 3. CrewAI pattern ─────────────────────────────────────────────────────────
+# -- 3. CrewAI pattern ---------------------------------------------------------
 def crewai_pattern():
     print("\n=== CrewAI: Role-Based Crews ===")
     print()
@@ -139,7 +139,7 @@ result = crew.kickoff(inputs={"topic": "LLM reasoning"})
     print(code)
 
 
-# ── 4. Building production agents ─────────────────────────────────────────────
+# -- 4. Building production agents ---------------------------------------------
 def production_agents():
     print("=== Production Agent Best Practices ===")
     print()

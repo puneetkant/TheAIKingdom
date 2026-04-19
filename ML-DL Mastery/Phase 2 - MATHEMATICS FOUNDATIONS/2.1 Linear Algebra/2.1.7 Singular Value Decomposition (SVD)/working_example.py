@@ -14,9 +14,9 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_svd")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. SVD decomposition ──────────────────────────────────────────────────────
+# -- 1. SVD decomposition ------------------------------------------------------
 def svd_basics():
-    print("=== SVD Basics: A = U Σ Vᵀ ===")
+    print("=== SVD Basics: A = U Sigma Vᵀ ===")
     A = np.array([[1, 2, 3],
                   [4, 5, 6],
                   [7, 8, 9],
@@ -31,7 +31,7 @@ def svd_basics():
     Sigma = np.zeros_like(A)
     Sigma[:len(s), :len(s)] = np.diag(s)
     A_reconstructed = U @ Sigma @ Vt
-    print(f"  ||A - UΣVᵀ|| = {np.linalg.norm(A - A_reconstructed):.2e}")
+    print(f"  ||A - USigmaVᵀ|| = {np.linalg.norm(A - A_reconstructed):.2e}")
 
     # Properties
     print(f"\n  U orthogonal: UᵀU = I? {np.allclose(U.T @ U, np.eye(U.shape[1]))}")
@@ -40,7 +40,7 @@ def svd_basics():
     print(f"  non-zero singular values: {(s > 1e-10).sum()}")
 
 
-# ── 2. Economy (thin) SVD ─────────────────────────────────────────────────────
+# -- 2. Economy (thin) SVD -----------------------------------------------------
 def thin_svd():
     print("\n=== Thin (Economy) SVD ===")
     m, n = 6, 4
@@ -52,7 +52,7 @@ def thin_svd():
     print(f"  singular values: {np.round(s, 4)}")
 
 
-# ── 3. Low-rank approximation ─────────────────────────────────────────────────
+# -- 3. Low-rank approximation -------------------------------------------------
 def low_rank_approx():
     print("\n=== Low-Rank Approximation (Eckart-Young theorem) ===")
     rng = np.random.default_rng(42)
@@ -67,7 +67,7 @@ def low_rank_approx():
         print(f"  rank-{k}: error={error:.4f}  explained variance={explained:.1f}%")
 
 
-# ── 4. Image compression ──────────────────────────────────────────────────────
+# -- 4. Image compression ------------------------------------------------------
 def image_compression():
     print("\n=== Image Compression via SVD ===")
     rng = np.random.default_rng(0)
@@ -97,7 +97,7 @@ def image_compression():
         print(f"  rank-{k:2d}: stores {frac:.2%} of original")
 
 
-# ── 5. PCA via SVD ───────────────────────────────────────────────────────────
+# -- 5. PCA via SVD -----------------------------------------------------------
 def pca_via_svd():
     print("\n=== PCA via SVD ===")
     rng  = np.random.default_rng(5)
@@ -117,13 +117,13 @@ def pca_via_svd():
     print(f"  projected to 2D: {X_pc.shape}  std={np.round(X_pc.std(axis=0),4)}")
 
 
-# ── 6. Pseudo-inverse via SVD ─────────────────────────────────────────────────
+# -- 6. Pseudo-inverse via SVD -------------------------------------------------
 def pseudo_inverse():
     print("\n=== Pseudoinverse via SVD ===")
     A = np.array([[1, 2, 3], [4, 5, 6]], dtype=float)   # non-square
     U, s, Vt = np.linalg.svd(A, full_matrices=False)
 
-    # A⁺ = V Σ⁺ Uᵀ
+    # A⁺ = V Sigma⁺ Uᵀ
     s_inv = 1 / s
     Aplus  = Vt.T @ np.diag(s_inv) @ U.T
     np_Aplus = np.linalg.pinv(A)

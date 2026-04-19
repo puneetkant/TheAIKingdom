@@ -59,7 +59,7 @@ def demo():
     # Laplacian
     D = np.diag(degree); L = D - A
     eigvals = np.linalg.eigvalsh(L)
-    print(f"  Algebraic connectivity (λ₂): {eigvals[1]:.4f}")
+    print(f"  Algebraic connectivity (lambda2): {eigvals[1]:.4f}")
 
     fig, axes = plt.subplots(1, 2, figsize=(9, 3))
     axes[0].imshow(A, cmap="Blues"); axes[0].set_title("Adjacency Matrix")

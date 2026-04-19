@@ -8,9 +8,9 @@ from scipy import linalg, sparse
 from scipy.sparse.linalg import spsolve, cg
 
 
-# ── 1. Condition number and numerical stability ───────────────────────────────
+# -- 1. Condition number and numerical stability -------------------------------
 def condition_numbers():
-    print("=== Condition Numbers κ(A) = ||A|| · ||A⁻¹|| ===")
+    print("=== Condition Numbers kappa(A) = ||A|| · ||A^-1|| ===")
 
     # Well-conditioned
     A_good = np.array([[2., 1.], [1., 2.]])
@@ -22,7 +22,7 @@ def condition_numbers():
                     (f"Hilbert matrix {n}×{n}", A_bad)]:
         kappa = np.linalg.cond(A)
         print(f"\n  {name}:")
-        print(f"    κ(A) = {kappa:.3e}")
+        print(f"    kappa(A) = {kappa:.3e}")
         print(f"    ~{int(np.log10(kappa))} digits of precision lost")
         # Compare solve accuracy
         x_true = np.ones(A.shape[0])
@@ -32,7 +32,7 @@ def condition_numbers():
         print(f"    ||x_computed - x_true|| = {err:.3e}")
 
 
-# ── 2. Floating-point pitfalls ────────────────────────────────────────────────
+# -- 2. Floating-point pitfalls ------------------------------------------------
 def floating_point_issues():
     print("\n=== Floating-Point Issues ===")
 
@@ -41,7 +41,7 @@ def floating_point_issues():
     eps = 1e-10
     a = (x + eps)**2 - x**2
     b = 2*x*eps + eps**2       # algebraically equivalent
-    print(f"  Cancellation: (x+ε)²-x² = {a:.6e}   2xε+ε² = {b:.6e}  differ by {abs(a-b):.2e}")
+    print(f"  Cancellation: (x+epsilon)²-x² = {a:.6e}   2xepsilon+epsilon² = {b:.6e}  differ by {abs(a-b):.2e}")
 
     # Machine epsilon
     eps_machine = np.finfo(float).eps
@@ -54,7 +54,7 @@ def floating_point_issues():
     print(f"\n  (a+b)+c = {(a+b)+c}   a+(b+c) = {a+(b+c)}  (should both be 1.23)")
 
 
-# ── 3. Iterative solvers ──────────────────────────────────────────────────────
+# -- 3. Iterative solvers ------------------------------------------------------
 def iterative_solvers():
     print("\n=== Iterative Solvers (Conjugate Gradient) ===")
     # Build large sparse positive definite system
@@ -73,7 +73,7 @@ def iterative_solvers():
     print(f"  ||r|| = ||Ax-b||    = {np.linalg.norm(A_sp @ x_cg - b):.2e}")
 
 
-# ── 4. Jacobi and Gauss-Seidel iteration ─────────────────────────────────────
+# -- 4. Jacobi and Gauss-Seidel iteration -------------------------------------
 def jacobi_method(A, b, max_iter=100, tol=1e-8):
     n = len(b)
     x = np.zeros(n)
@@ -103,15 +103,15 @@ def iterative_classic():
     print(f"  x (direct) = {np.round(x_direct, 6)}")
     print(f"  ||diff||   = {np.linalg.norm(x_jacobi - x_direct):.2e}")
 
-    # Convergence condition: spectral radius of D⁻¹R < 1
+    # Convergence condition: spectral radius of D^-1R < 1
     D = np.diag(np.diag(A))
     R = A - D
     iteration_matrix = np.linalg.inv(D) @ R
     rho = max(abs(np.linalg.eigvals(iteration_matrix)))
-    print(f"  Spectral radius ρ(D⁻¹R) = {rho:.4f}  < 1? {rho < 1}  (convergence condition)")
+    print(f"  Spectral radius rho(D^-1R) = {rho:.4f}  < 1? {rho < 1}  (convergence condition)")
 
 
-# ── 5. Sparse matrix storage ──────────────────────────────────────────────────
+# -- 5. Sparse matrix storage --------------------------------------------------
 def sparse_matrices():
     print("\n=== Sparse Matrices ===")
     n = 1000
@@ -137,7 +137,7 @@ def sparse_matrices():
     print(f"    {'DOK':<6}: dict of keys — random access during build")
 
 
-# ── 6. Numerical rank and pivoting ────────────────────────────────────────────
+# -- 6. Numerical rank and pivoting --------------------------------------------
 def numerical_rank():
     print("\n=== Numerical Rank & Pivoting ===")
     A = np.array([[1., 2., 3.],

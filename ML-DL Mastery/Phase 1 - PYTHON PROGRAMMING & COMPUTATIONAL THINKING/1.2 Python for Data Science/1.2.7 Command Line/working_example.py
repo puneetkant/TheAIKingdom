@@ -12,7 +12,7 @@ import argparse
 from pathlib import Path
 
 
-# ── 1. Running shell commands with subprocess ─────────────────────────────────
+# -- 1. Running shell commands with subprocess ---------------------------------
 def subprocess_demo():
     print("=== 1. subprocess — Running Shell Commands ===")
 
@@ -53,7 +53,7 @@ def subprocess_demo():
             print(f"    got: {line.rstrip()}")
 
 
-# ── 2. os module — environment and process ────────────────────────────────────
+# -- 2. os module — environment and process ------------------------------------
 def os_demo():
     print("\n=== 2. os Module ===")
     print(f"  cwd           : {os.getcwd()}")
@@ -79,7 +79,7 @@ def os_demo():
     shutil.rmtree(tmp)
 
 
-# ── 3. pathlib ────────────────────────────────────────────────────────────────
+# -- 3. pathlib ----------------------------------------------------------------
 def pathlib_demo():
     print("\n=== 3. pathlib ===")
     p = Path.cwd()
@@ -103,7 +103,7 @@ def pathlib_demo():
     shutil.rmtree(tmp)
 
 
-# ── 4. shutil — file & directory operations ───────────────────────────────────
+# -- 4. shutil — file & directory operations -----------------------------------
 def shutil_demo():
     print("\n=== 4. shutil ===")
     tmp = Path(tempfile.mkdtemp())
@@ -113,7 +113,7 @@ def shutil_demo():
     # copy
     dst = tmp / "backup.txt"
     shutil.copy2(str(src), str(dst))
-    print(f"  copy2 → {dst.name} exists: {dst.exists()}")
+    print(f"  copy2 -> {dst.name} exists: {dst.exists()}")
 
     # copytree
     src_dir = tmp / "src_dir"
@@ -125,7 +125,7 @@ def shutil_demo():
 
     # move
     shutil.move(str(dst), str(tmp / "moved.txt"))
-    print(f"  moved backup.txt → moved.txt: {(tmp / 'moved.txt').exists()}")
+    print(f"  moved backup.txt -> moved.txt: {(tmp / 'moved.txt').exists()}")
 
     # disk usage
     usage = shutil.disk_usage(tmp)
@@ -138,7 +138,7 @@ def shutil_demo():
     shutil.rmtree(tmp)
 
 
-# ── 5. argparse — building CLI tools ─────────────────────────────────────────
+# -- 5. argparse — building CLI tools -----------------------------------------
 def argparse_demo():
     print("\n=== 5. argparse (CLI argument parsing) ===")
     parser = argparse.ArgumentParser(
@@ -167,9 +167,9 @@ def argparse_demo():
     parser.print_help()
 
 
-# ── 6. Useful shell commands mapped to Python ─────────────────────────────────
+# -- 6. Useful shell commands mapped to Python ---------------------------------
 def command_mapping():
-    print("\n=== 6. Shell → Python Equivalents ===")
+    print("\n=== 6. Shell -> Python Equivalents ===")
     mapping = [
         ("ls / dir",         "Path('.').iterdir()  or  os.listdir('.')"),
         ("mkdir -p",         "Path('a/b/c').mkdir(parents=True)"),
@@ -187,7 +187,7 @@ def command_mapping():
         ("python script.py", "subprocess.run(['python','script.py'])"),
     ]
     for shell, python in mapping:
-        print(f"  {shell:<25} ↔  {python}")
+        print(f"  {shell:<25} <->  {python}")
 
 
 if __name__ == "__main__":

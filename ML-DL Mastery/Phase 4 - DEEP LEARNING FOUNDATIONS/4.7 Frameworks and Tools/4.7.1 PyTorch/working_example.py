@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 import os
 
 
-# ── 1. Tensors ────────────────────────────────────────────────────────────────
+# -- 1. Tensors ----------------------------------------------------------------
 def tensor_basics():
     print("=== PyTorch Tensors ===")
     if not HAS_TORCH:
@@ -53,7 +53,7 @@ def tensor_basics():
     print(f"  CUDA available: {torch.cuda.is_available()}")
 
 
-# ── 2. Autograd ───────────────────────────────────────────────────────────────
+# -- 2. Autograd ---------------------------------------------------------------
 def autograd_demo():
     print("\n=== Autograd — Automatic Differentiation ===")
     if not HAS_TORCH:
@@ -81,7 +81,7 @@ def autograd_demo():
     loss = (x**2).sum()
     loss.backward()
     print(f"\n  x = {x.data}")
-    print(f"  loss = Σx²")
+    print(f"  loss = Sigmax²")
     print(f"  dloss/dx = 2x = {x.grad}")
 
     # No-grad
@@ -90,7 +90,7 @@ def autograd_demo():
     print(f"\n  no_grad context: val.requires_grad = {val.requires_grad}")
 
 
-# ── 3. nn.Module ──────────────────────────────────────────────────────────────
+# -- 3. nn.Module --------------------------------------------------------------
 def nn_module_demo():
     print("\n=== nn.Module — Building Neural Networks ===")
     if not HAS_TORCH:
@@ -134,10 +134,10 @@ def nn_module_demo():
     print(f"\n  Total parameters: {n:,}")
     x = torch.randn(8, 64)
     y = model(x)
-    print(f"  Forward: {x.shape} → {y.shape}")
+    print(f"  Forward: {x.shape} -> {y.shape}")
 
 
-# ── 4. Training loop ──────────────────────────────────────────────────────────
+# -- 4. Training loop ----------------------------------------------------------
 def training_loop():
     print("\n=== Standard PyTorch Training Loop ===")
     if not HAS_TORCH:
@@ -220,7 +220,7 @@ def training_loop_pseudocode():
     print(code)
 
 
-# ── 5. GPU usage ──────────────────────────────────────────────────────────────
+# -- 5. GPU usage --------------------------------------------------------------
 def gpu_patterns():
     print("\n=== GPU Usage Patterns ===")
     print("""
@@ -247,7 +247,7 @@ def gpu_patterns():
     """)
 
 
-# ── 6. Common patterns ────────────────────────────────────────────────────────
+# -- 6. Common patterns --------------------------------------------------------
 def common_patterns():
     print("=== Common PyTorch Patterns ===")
     patterns = [

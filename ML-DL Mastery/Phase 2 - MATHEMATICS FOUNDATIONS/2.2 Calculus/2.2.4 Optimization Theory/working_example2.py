@@ -23,12 +23,12 @@ def demo_convexity():
     # f(x,y) = x^2 + xy + 2y^2  -> H = [[2,1],[1,4]]
     H = np.array([[2., 1.], [1., 4.]])
     eigs = np.linalg.eigvalsh(H)
-    print(f"  f(x,y) = x²+xy+2y²  H eigenvalues: {eigs}  → {'CONVEX' if all(eigs>=0) else 'NOT CONVEX'}")
+    print(f"  f(x,y) = x²+xy+2y²  H eigenvalues: {eigs}  -> {'CONVEX' if all(eigs>=0) else 'NOT CONVEX'}")
 
     # Saddle: f(x,y) = x^2 - y^2  -> H = [[2,0],[0,-2]]
     H2 = np.array([[2., 0.], [0., -2.]])
     eigs2 = np.linalg.eigvalsh(H2)
-    print(f"  f(x,y) = x²-y²  H eigenvalues: {eigs2}  → SADDLE POINT")
+    print(f"  f(x,y) = x²-y²  H eigenvalues: {eigs2}  -> SADDLE POINT")
 
 def optimise_all():
     print("\n=== Optimizer Comparison on Ridge Regression ===")
@@ -98,7 +98,7 @@ def optimise_all():
 
 def demo_newton():
     print("\n=== Newton's Method (1D) ===")
-    # Minimise f(x) = x^4 - 4x^2 + x  → one of two local minima
+    # Minimise f(x) = x^4 - 4x^2 + x  -> one of two local minima
     f   = lambda x: x**4 - 4*x**2 + x
     df  = lambda x: 4*x**3 - 8*x + 1
     d2f = lambda x: 12*x**2 - 8

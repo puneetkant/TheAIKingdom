@@ -17,7 +17,7 @@ import platform
 import hashlib
 from pathlib import Path
 
-# ── Config ────────────────────────────────────────────────────────────────────
+# -- Config --------------------------------------------------------------------
 PROJECT_ROOT = Path(__file__).parent
 DATA_DIR     = PROJECT_ROOT / "data"
 LOGS_DIR     = PROJECT_ROOT / "logs"
@@ -32,7 +32,7 @@ REQUIRED_PACKAGES = {
 }
 
 
-# ── 1. Auto-install missing packages ──────────────────────────────────────────
+# -- 1. Auto-install missing packages ------------------------------------------
 def ensure_packages(required: dict[str, str]) -> None:
     """Install any missing packages programmatically."""
     print("=== Checking / Installing Required Packages ===")
@@ -40,20 +40,20 @@ def ensure_packages(required: dict[str, str]) -> None:
     for import_name, pip_name in required.items():
         try:
             importlib.import_module(import_name)
-            print(f"  ✓  {pip_name}")
+            print(f"  [OK]  {pip_name}")
         except ImportError:
-            print(f"  ⬇  Installing {pip_name} …")
+            print(f"  [v]  Installing {pip_name} …")
             result = subprocess.run(
                 [sys.executable, "-m", "pip", "install", pip_name, "-q"],
                 capture_output=True, text=True
             )
             if result.returncode == 0:
-                print(f"  ✓  {pip_name} installed")
+                print(f"  [OK]  {pip_name} installed")
             else:
-                print(f"  ✗  Failed to install {pip_name}: {result.stderr[:200]}")
+                print(f"  [X]  Failed to install {pip_name}: {result.stderr[:200]}")
 
 
-# ── 2. Download sample dataset from Hugging Face Hub (raw URL) ────────────────
+# -- 2. Download sample dataset from Hugging Face Hub (raw URL) ----------------
 def download_iris_from_hf() -> Path:
     """
     Download the Iris dataset CSV from Hugging Face Hub datasets.
@@ -73,10 +73,10 @@ def download_iris_from_hf() -> Path:
     print(f"  URL : {url}")
     try:
         urllib.request.urlretrieve(url, dest)
-        print(f"  ✓  Saved to {dest}  ({dest.stat().st_size / 1024:.1f} KB)")
+        print(f"  [OK]  Saved to {dest}  ({dest.stat().st_size / 1024:.1f} KB)")
     except Exception as e:
         # Fallback: generate synthetic Iris-like data
-        print(f"  ✗  Download failed ({e}). Generating synthetic fallback …")
+        print(f"  [X]  Download failed ({e}). Generating synthetic fallback …")
         import numpy as np
         import pandas as pd
         rng = np.random.default_rng(0)
@@ -90,11 +90,11 @@ def download_iris_from_hf() -> Path:
             "Species":       species,
         })
         data.to_csv(dest, index=False)
-        print(f"  ✓  Synthetic dataset saved to {dest}")
+        print(f"  [OK]  Synthetic dataset saved to {dest}")
     return dest
 
 
-# ── 3. Explore the dataset ────────────────────────────────────────────────────
+# -- 3. Explore the dataset ----------------------------------------------------
 def explore_dataset(csv_path: Path) -> None:
     import pandas as pd
     import numpy as np
@@ -114,7 +114,7 @@ def explore_dataset(csv_path: Path) -> None:
     print(df.select_dtypes("number").describe().round(2).to_string(index=True))
 
 
-# ── 4. Train a simple model and log results ───────────────────────────────────
+# -- 4. Train a simple model and log results -----------------------------------
 def train_and_evaluate(csv_path: Path) -> None:
     import pandas as pd
     import numpy as np
@@ -146,7 +146,7 @@ def train_and_evaluate(csv_path: Path) -> None:
     return results
 
 
-# ── 5. Log environment + results to JSON artifact ─────────────────────────────
+# -- 5. Log environment + results to JSON artifact -----------------------------
 def save_run_artifact(model_results: dict) -> None:
     import importlib
 
@@ -170,11 +170,11 @@ def save_run_artifact(model_results: dict) -> None:
     }
     out = LOGS_DIR / "run_artifact.json"
     out.write_text(json.dumps(artifact, indent=2))
-    print(f"  ✓  Artifact saved to {out}")
+    print(f"  [OK]  Artifact saved to {out}")
     print(f"  Env hash: {hashlib.md5(json.dumps(artifact).encode()).hexdigest()[:8]}")
 
 
-# ── 6. Dependency conflict check ──────────────────────────────────────────────
+# -- 6. Dependency conflict check ----------------------------------------------
 def check_dependency_conflicts() -> None:
     print("\n=== Dependency Conflict Check ===")
     result = subprocess.run(
@@ -183,14 +183,14 @@ def check_dependency_conflicts() -> None:
     )
     output = result.stdout.strip() or result.stderr.strip()
     if "No broken requirements" in output or result.returncode == 0:
-        print("  ✓  No dependency conflicts detected")
+        print("  [OK]  No dependency conflicts detected")
     else:
-        print("  ⚠  Issues found:")
+        print("  [!]  Issues found:")
         for line in output.splitlines()[:10]:
             print(f"    {line}")
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# -- Entry point ---------------------------------------------------------------
 if __name__ == "__main__":
     ensure_packages(REQUIRED_PACKAGES)
     csv_path     = download_iris_from_hf()

@@ -21,9 +21,9 @@ def check_python_version():
     print(f"Executable   : {sys.executable}")
     required = (3, 10)
     if sys.version_info >= required:
-        print(f"✓ Python {required[0]}.{required[1]}+ requirement met")
+        print(f"[OK] Python {required[0]}.{required[1]}+ requirement met")
     else:
-        print(f"✗ Please upgrade to Python {required[0]}.{required[1]}+")
+        print(f"[X] Please upgrade to Python {required[0]}.{required[1]}+")
 
 
 def show_sys_path():
@@ -64,9 +64,9 @@ def venv_guidance():
     print("\n=== Virtual Environment Guidance ===")
     in_venv = sys.prefix != sys.base_prefix
     if in_venv:
-        print(f"  ✓ Running inside a virtual environment: {sys.prefix}")
+        print(f"  [OK] Running inside a virtual environment: {sys.prefix}")
     else:
-        print("  ✗ Not inside a virtual environment.")
+        print("  [X] Not inside a virtual environment.")
         print("  To create one:")
         print("    python -m venv .venv")
         print("  To activate (Windows):")
@@ -105,14 +105,14 @@ def check_key_ml_packages():
         ("datasets",   "datasets"),
     ]
     print(f"  {'Package':<16} {'Status':<10} {'Version'}")
-    print(f"  {'─'*50}")
+    print(f"  {'-'*50}")
     for pkg, _ in packages:
         try:
             mod = importlib.import_module(pkg)
             version = getattr(mod, "__version__", "?")
-            print(f"  {pkg:<16} {'✓ installed':<10} {version}")
+            print(f"  {pkg:<16} {'[OK] installed':<10} {version}")
         except ImportError:
-            print(f"  {pkg:<16} {'✗ missing':<10} run: pip install {pkg}")
+            print(f"  {pkg:<16} {'[X] missing':<10} run: pip install {pkg}")
 
 
 def detect_gpu():

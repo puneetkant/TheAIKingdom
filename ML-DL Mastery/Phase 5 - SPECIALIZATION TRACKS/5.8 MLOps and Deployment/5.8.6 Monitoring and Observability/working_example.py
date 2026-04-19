@@ -19,7 +19,7 @@ except ImportError:
     pass
 
 
-# ── 1. Monitoring concepts ────────────────────────────────────────────────────
+# -- 1. Monitoring concepts ----------------------------------------------------
 def monitoring_concepts():
     print("=== ML Monitoring and Observability ===")
     print()
@@ -46,7 +46,7 @@ def monitoring_concepts():
         print(f"  {s:<20} {d}")
 
 
-# ── 2. Data drift detection ───────────────────────────────────────────────────
+# -- 2. Data drift detection ---------------------------------------------------
 def drift_detection():
     print("\n=== Data Drift Detection ===")
     print()
@@ -61,7 +61,7 @@ def drift_detection():
     print("  Current:    mean={:.3f}  std={:.3f}".format(cur.mean(), cur.std()))
     print()
 
-    # ── KS Test ──────────────────────────────────────────────────────────────
+    # -- KS Test --------------------------------------------------------------
     try:
         from scipy.stats import ks_2samp
         stat, p_val = ks_2samp(ref, cur)
@@ -77,7 +77,7 @@ def drift_detection():
         ks_stat = np.max(np.abs(ref_cdf - cur_cdf))
         print(f"  Approx KS stat: {ks_stat:.4f}")
 
-    # ── PSI (Population Stability Index) ─────────────────────────────────────
+    # -- PSI (Population Stability Index) -------------------------------------
     def psi(expected, actual, n_bins=10):
         breaks = np.percentile(expected, np.linspace(0, 100, n_bins+1))
         breaks[0] -= 1e-9; breaks[-1] += 1e-9
@@ -92,9 +92,9 @@ def drift_detection():
     print(f"  PSI (Population Stability Index):")
     print(f"    PSI = {psi_val:.4f}")
     print(f"    Interpretation: <0.1 stable | 0.1–0.2 warning | >0.2 significant shift")
-    print(f"    Status: {'⚠ Warning' if psi_val > 0.1 else 'OK'}")
+    print(f"    Status: {'[!] Warning' if psi_val > 0.1 else 'OK'}")
 
-    # ── CUSUM (online drift detection) ───────────────────────────────────────
+    # -- CUSUM (online drift detection) ---------------------------------------
     print()
     print("  CUSUM (Cumulative Sum) — online drift detection:")
     mu_0 = 0.0; k = 0.5
@@ -134,7 +134,7 @@ def drift_detection():
         print(f"\n  Plot saved: {path}")
 
 
-# ── 3. Monitoring tools ───────────────────────────────────────────────────────
+# -- 3. Monitoring tools -------------------------------------------------------
 def monitoring_tools():
     print("\n=== Monitoring Tools and Dashboards ===")
     print()

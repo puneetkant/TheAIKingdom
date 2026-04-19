@@ -48,7 +48,7 @@ def demo_entropy():
 
 def demo_kl_divergence():
     print("\n=== KL Divergence ===")
-    # KL(P||Q) = Σ p * log(p/q)  — not symmetric
+    # KL(P||Q) = Sigma p * log(p/q)  — not symmetric
     P = np.array([0.4, 0.3, 0.2, 0.1])
     Q_close = np.array([0.35, 0.3, 0.25, 0.1])
     Q_far   = np.array([0.1, 0.1, 0.1, 0.7])
@@ -98,7 +98,7 @@ def demo_mutual_information():
         return max(0, h_y - h_y_given_x)
 
     print(f"  MI(X, Y_dependent)  = {mi_binary(X, Y_dep):.4f} bits")
-    print(f"  MI(X, Y_independent) = {mi_binary(X, Y_ind):.4f} bits  (≈0 expected)")
+    print(f"  MI(X, Y_independent) = {mi_binary(X, Y_ind):.4f} bits  (~=0 expected)")
 
 if __name__ == "__main__":
     demo_entropy()

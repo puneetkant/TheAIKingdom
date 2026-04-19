@@ -14,22 +14,22 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Chain rule primer ─────────────────────────────────────────────────────
+# -- 1. Chain rule primer -----------------------------------------------------
 def chain_rule():
     print("=== Chain Rule Primer ===")
     print("  If L = f(g(x)) then dL/dx = (dL/dg)(dg/dx)")
     print()
     print("  Neural net: L(ŷ(A2(Z2(A1(Z1(x,W1,b1),W2,b2))))")
     print()
-    print("  ∂L/∂W1 = ∂L/∂A2 · ∂A2/∂Z2 · ∂Z2/∂A1 · ∂A1/∂Z1 · ∂Z1/∂W1")
+    print("  dL/dW1 = dL/dA2 · dA2/dZ2 · dZ2/dA1 · dA1/dZ1 · dZ1/dW1")
     print()
     print("  Gradient flows BACKWARDS through the computation graph")
     print("  Each layer receives upstream gradient and passes downstream gradient")
 
 
-# ── 2. Full 2-layer MLP with forward + backward ───────────────────────────────
+# -- 2. Full 2-layer MLP with forward + backward -------------------------------
 class MLP2:
-    """2-layer MLP: input → hidden(ReLU) → output(Sigmoid), BCE loss."""
+    """2-layer MLP: input -> hidden(ReLU) -> output(Sigmoid), BCE loss."""
 
     def __init__(self, d_in, d_h, d_out, seed=0):
         rng = np.random.default_rng(seed)
@@ -62,7 +62,7 @@ class MLP2:
         db2 = dZ2.sum(axis=0)                         # (d_out,)
         # Hidden layer
         dA1 = dZ2 @ self.W2.T                         # (n, d_h)
-        dZ1 = dA1 * relu_d(self.Z1)                  # (n, d_h)  ← ReLU gradient
+        dZ1 = dA1 * relu_d(self.Z1)                  # (n, d_h)  <- ReLU gradient
         dW1 = self.X.T @ dZ1                          # (d_in, d_h)
         db1 = dZ1.sum(axis=0)                         # (d_h,)
         return {"dW1": dW1, "db1": db1, "dW2": dW2, "db2": db2}
@@ -74,28 +74,28 @@ class MLP2:
         self.b2 -= lr * grads["db2"]
 
 
-# ── 3. Manual gradient derivation trace ──────────────────────────────────────
+# -- 3. Manual gradient derivation trace --------------------------------------
 def gradient_trace():
     print("\n=== Backward Pass Gradient Derivation ===")
-    print("  Loss: L = BCE = -[y log(σ(Z2)) + (1-y)log(1-σ(Z2))] / n")
+    print("  Loss: L = BCE = -[y log(sigma(Z2)) + (1-y)log(1-sigma(Z2))] / n")
     print()
     print("  OUTPUT LAYER:")
-    print("  ∂L/∂Z2 = A2 - y      (elegant! sigmoid cancels BCE denominator)")
-    print("  ∂L/∂W2 = A1ᵀ · δ2    (δ2 = ∂L/∂Z2)")
-    print("  ∂L/∂b2 = Σ δ2")
+    print("  dL/dZ2 = A2 - y      (elegant! sigmoid cancels BCE denominator)")
+    print("  dL/dW2 = A1ᵀ · delta2    (delta2 = dL/dZ2)")
+    print("  dL/db2 = Sigma delta2")
     print()
     print("  HIDDEN LAYER:")
-    print("  ∂L/∂A1 = δ2 · W2ᵀ    (propagate error back through W2)")
-    print("  ∂L/∂Z1 = ∂L/∂A1 ⊙ relu'(Z1)   (element-wise, relu'=0 or 1)")
-    print("  ∂L/∂W1 = Xᵀ · δ1    (δ1 = ∂L/∂Z1)")
-    print("  ∂L/∂b1 = Σ δ1")
+    print("  dL/dA1 = delta2 · W2ᵀ    (propagate error back through W2)")
+    print("  dL/dZ1 = dL/dA1 ⊙ relu'(Z1)   (element-wise, relu'=0 or 1)")
+    print("  dL/dW1 = Xᵀ · delta1    (delta1 = dL/dZ1)")
+    print("  dL/db1 = Sigma delta1")
 
 
-# ── 4. Gradient checking ─────────────────────────────────────────────────────
+# -- 4. Gradient checking -----------------------------------------------------
 def gradient_check():
     print("\n=== Gradient Checking (Numerical Verification) ===")
-    print("  Numerical gradient: ∂L/∂θ ≈ [L(θ+ε) - L(θ-ε)] / 2ε")
-    print("  Compare with analytical gradient; rel error < 1e-5 → correct")
+    print("  Numerical gradient: dL/dtheta ~= [L(theta+epsilon) - L(theta-epsilon)] / 2epsilon")
+    print("  Compare with analytical gradient; rel error < 1e-5 -> correct")
 
     rng = np.random.default_rng(5)
     X   = rng.standard_normal((8, 3))
@@ -128,10 +128,10 @@ def gradient_check():
             param.ravel()[:] = param_flat
 
         diff = np.abs(grad_analytical - grad_numerical).max()
-        print(f"  {param_name:<4}: max abs diff = {diff:.2e}  {'✓ OK' if diff < 1e-4 else '✗ ERROR'}")
+        print(f"  {param_name:<4}: max abs diff = {diff:.2e}  {'[OK] OK' if diff < 1e-4 else '[X] ERROR'}")
 
 
-# ── 5. Full training loop ─────────────────────────────────────────────────────
+# -- 5. Full training loop -----------------------------------------------------
 def training_loop():
     print("\n=== Full Training Loop ===")
     from sklearn.datasets import make_moons
@@ -157,10 +157,10 @@ def training_loop():
             print(f"  Epoch {ep:>4}: loss={L:.4f}  acc={acc:.4f}")
 
 
-# ── 6. Backprop for softmax + CCE ────────────────────────────────────────────
+# -- 6. Backprop for softmax + CCE --------------------------------------------
 def softmax_backprop():
     print("\n=== Softmax + Categorical Cross-Entropy Gradient ===")
-    print("  ∂L/∂Z = ŷ - one_hot(y)    (same elegant form as sigmoid + BCE!)")
+    print("  dL/dZ = ŷ - one_hot(y)    (same elegant form as sigmoid + BCE!)")
     print()
     rng  = np.random.default_rng(6)
     n, K = 4, 3
@@ -174,10 +174,10 @@ def softmax_backprop():
     eps   = 1e-15
     L     = -np.mean(np.sum(y_ohe * np.log(yhat + eps), axis=1))
     print(f"  Loss = {L:.4f}")
-    print(f"  ∂L/∂Z (first sample):")
+    print(f"  dL/dZ (first sample):")
     print(f"    ŷ    = {yhat[0].round(4)}")
     print(f"    y    = {y_ohe[0]}")
-    print(f"    ∂L/∂Z= {dZ[0].round(6)}")
+    print(f"    dL/dZ= {dZ[0].round(6)}")
 
 
 if __name__ == "__main__":

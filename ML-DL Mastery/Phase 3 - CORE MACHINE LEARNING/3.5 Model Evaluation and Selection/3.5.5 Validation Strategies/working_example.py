@@ -21,7 +21,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_validation")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Hold-out validation ────────────────────────────────────────────────────
+# -- 1. Hold-out validation ----------------------------------------------------
 def holdout():
     print("=== Hold-out Validation ===")
     X, y = make_classification(n_samples=1000, n_features=10, n_informative=5, random_state=0)
@@ -39,7 +39,7 @@ def holdout():
     print(f"\n  Pros: Fast; Cons: High variance (single evaluation)")
 
 
-# ── 2. K-Fold cross-validation ────────────────────────────────────────────────
+# -- 2. K-Fold cross-validation ------------------------------------------------
 def kfold_cv():
     print("\n=== K-Fold Cross-Validation ===")
     X, y = make_classification(n_samples=500, n_features=10, n_informative=5, random_state=0)
@@ -60,7 +60,7 @@ def kfold_cv():
         print(f"    Fold {fold}: train={len(tr_idx)}  test={len(te_idx)}  acc={acc:.4f}")
 
 
-# ── 3. Stratified K-Fold ──────────────────────────────────────────────────────
+# -- 3. Stratified K-Fold ------------------------------------------------------
 def stratified_kfold():
     print("\n=== Stratified K-Fold ===")
     print("  Preserves class proportion in each fold (essential for imbalanced)")
@@ -77,7 +77,7 @@ def stratified_kfold():
         print(f"  {' ':<6} {pct1:>24.4f} {pct2:>26.4f}")
 
 
-# ── 4. Leave-One-Out (LOO) ────────────────────────────────────────────────────
+# -- 4. Leave-One-Out (LOO) ----------------------------------------------------
 def loo_cv():
     print("\n=== Leave-One-Out Cross-Validation ===")
     print("  k = n; each sample is a test set once")
@@ -92,10 +92,10 @@ def loo_cv():
     print(f"  (LOO has high variance; prefer 5-10 fold for n>100)")
 
 
-# ── 5. Repeated K-Fold ────────────────────────────────────────────────────────
+# -- 5. Repeated K-Fold --------------------------------------------------------
 def repeated_kfold():
     print("\n=== Repeated K-Fold ===")
-    print("  Repeat k-fold R times with different shuffles → more stable estimate")
+    print("  Repeat k-fold R times with different shuffles -> more stable estimate")
     X, y = make_classification(n_samples=300, n_features=10, n_informative=5, random_state=0)
     pipe  = Pipeline([("sc", StandardScaler()), ("lr", LogisticRegression(max_iter=500))])
 
@@ -109,7 +109,7 @@ def repeated_kfold():
         print(f"  {name:<30} {sc.mean():>12.4f} {sc.std():>10.4f}")
 
 
-# ── 6. Time Series CV ─────────────────────────────────────────────────────────
+# -- 6. Time Series CV ---------------------------------------------------------
 def time_series_cv():
     print("\n=== Time Series Cross-Validation ===")
     print("  No future data leakage: test always after training period")
@@ -129,7 +129,7 @@ def time_series_cv():
     print(f"  Mean R²: {sc.mean():.4f}")
 
 
-# ── 7. Group K-Fold ───────────────────────────────────────────────────────────
+# -- 7. Group K-Fold -----------------------------------------------------------
 def group_kfold():
     print("\n=== Group K-Fold ===")
     print("  Ensures all samples from a group are in the same fold")
@@ -146,7 +146,7 @@ def group_kfold():
         print(f"    Fold {fold}: test_groups={sorted(te_groups)}  overlap={overlap or 'none'}")
 
 
-# ── 8. Nested CV (hyperparameter + model selection) ──────────────────────────
+# -- 8. Nested CV (hyperparameter + model selection) --------------------------
 def nested_cv():
     print("\n=== Nested Cross-Validation ===")
     print("  Outer loop: unbiased performance estimate")

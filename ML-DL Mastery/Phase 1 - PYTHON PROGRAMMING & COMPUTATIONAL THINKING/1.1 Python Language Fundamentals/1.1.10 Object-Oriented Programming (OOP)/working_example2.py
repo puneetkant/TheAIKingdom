@@ -26,7 +26,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── Utility ───────────────────────────────────────────────────────────────────
+# -- Utility -------------------------------------------------------------------
 def download_iris() -> Path:
     dest = DATA / "iris.csv"
     if not dest.exists():
@@ -71,7 +71,7 @@ def train_test_split(X, y, test_size=0.2, seed=42):
     return [X[i] for i in tr], [X[i] for i in te], [y[i] for i in tr], [y[i] for i in te]
 
 
-# ── Mixins ────────────────────────────────────────────────────────────────────
+# -- Mixins --------------------------------------------------------------------
 class ReprMixin:
     def __repr__(self) -> str:
         params = ", ".join(f"{k}={v!r}" for k, v in self.get_params().items())
@@ -92,7 +92,7 @@ class SerializableMixin:
             return pickle.load(f)
 
 
-# ── Abstract base ─────────────────────────────────────────────────────────────
+# -- Abstract base -------------------------------------------------------------
 class BaseEstimator(ABC, ReprMixin, SerializableMixin):
     """Abstract base — defines the fit/predict/score API."""
     _is_fitted: bool = False
@@ -116,7 +116,7 @@ class BaseEstimator(ABC, ReprMixin, SerializableMixin):
             raise RuntimeError(f"{type(self).__name__} not fitted — call fit() first")
 
 
-# ── KNN Classifier ────────────────────────────────────────────────────────────
+# -- KNN Classifier ------------------------------------------------------------
 class KNNClassifier(BaseEstimator):
     """k-Nearest Neighbours (pure Python, Euclidean distance)."""
 
@@ -149,7 +149,7 @@ class KNNClassifier(BaseEstimator):
         return preds
 
 
-# ── Naive Bayes ───────────────────────────────────────────────────────────────
+# -- Naive Bayes ---------------------------------------------------------------
 class GaussianNaiveBayes(BaseEstimator):
     """Gaussian Naive Bayes for continuous features (pure Python)."""
 
@@ -189,7 +189,7 @@ class GaussianNaiveBayes(BaseEstimator):
         return [max(self._classes, key=lambda c: self._log_likelihood(x, c)) for x in X]
 
 
-# ── Pipeline (composition) ────────────────────────────────────────────────────
+# -- Pipeline (composition) ----------------------------------------------------
 class Pipeline:
     """Chain of (name, estimator) steps — sklearn-inspired."""
 
@@ -197,7 +197,7 @@ class Pipeline:
         self.steps = steps
 
     def __repr__(self) -> str:
-        names = " → ".join(name for name, _ in self.steps)
+        names = " -> ".join(name for name, _ in self.steps)
         return f"Pipeline([{names}])"
 
     def __len__(self) -> int:
@@ -224,7 +224,7 @@ class Pipeline:
         return self.final_estimator.score(X, y)
 
 
-# ── Demo ──────────────────────────────────────────────────────────────────────
+# -- Demo ----------------------------------------------------------------------
 def demo():
     iris_path = download_iris()
     X, y = load_iris(iris_path)

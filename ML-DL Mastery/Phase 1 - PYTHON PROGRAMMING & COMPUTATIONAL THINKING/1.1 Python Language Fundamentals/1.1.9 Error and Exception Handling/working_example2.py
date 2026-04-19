@@ -22,7 +22,7 @@ import random
 from pathlib import Path
 from typing import Any, Callable
 
-# ── Configure logging (not bare print) ────────────────────────────────────────
+# -- Configure logging (not bare print) ----------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -35,7 +35,7 @@ DATA = BASE / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── 1. Custom Exception Hierarchy ─────────────────────────────────────────────
+# -- 1. Custom Exception Hierarchy ---------------------------------------------
 class PipelineError(Exception):
     """Base class for all data-pipeline errors."""
 
@@ -56,7 +56,7 @@ class ModelTrainingError(PipelineError):
     """Raised when model training encounters a numerical issue."""
 
 
-# ── 2. Retry decorator with exponential back-off ──────────────────────────────
+# -- 2. Retry decorator with exponential back-off ------------------------------
 def retry(max_attempts: int = 3, base_delay: float = 1.0, exceptions=(Exception,)):
     """Decorator: retry a function up to max_attempts with exponential back-off."""
     def decorator(func: Callable) -> Callable:
@@ -79,7 +79,7 @@ def retry(max_attempts: int = 3, base_delay: float = 1.0, exceptions=(Exception,
     return decorator
 
 
-# ── 3. Data download with graceful fallback ───────────────────────────────────
+# -- 3. Data download with graceful fallback -----------------------------------
 @retry(max_attempts=2, base_delay=0.5, exceptions=(urllib.error.URLError, OSError))
 def _attempt_download(url: str, dest: Path) -> None:
     urllib.request.urlretrieve(url, dest)
@@ -105,7 +105,7 @@ def download_dataset(url: str, dest: Path) -> Path:
     return dest
 
 
-# ── 4. Data validation with custom exceptions ─────────────────────────────────
+# -- 4. Data validation with custom exceptions ---------------------------------
 REQUIRED_COLUMNS = {"PassengerId", "Survived", "Pclass", "Age", "Fare"}
 
 def validate_row(row: dict, row_num: int) -> dict:
@@ -150,7 +150,7 @@ def demo_validation(path: Path) -> list[dict]:
     return records
 
 
-# ── 5. Context manager for pipeline resources ──────────────────────────────────
+# -- 5. Context manager for pipeline resources ----------------------------------
 class PipelineSession:
     """Context manager: tracks pipeline state, ensures cleanup on error."""
     def __init__(self, name: str):

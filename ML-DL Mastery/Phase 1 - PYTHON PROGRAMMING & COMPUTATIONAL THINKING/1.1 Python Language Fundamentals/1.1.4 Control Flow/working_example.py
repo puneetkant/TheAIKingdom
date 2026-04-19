@@ -17,14 +17,14 @@ def if_elif_else():
             grade = "C"
         else:
             grade = "F"
-        print(f"  score={score} → grade={grade}")
+        print(f"  score={score} -> grade={grade}")
 
 
 def ternary():
     print("\n=== Ternary (Conditional Expression) ===")
     for n in [-3, 0, 7]:
         label = "positive" if n > 0 else ("zero" if n == 0 else "negative")
-        print(f"  {n:3d} → {label}")
+        print(f"  {n:3d} -> {label}")
 
 
 def for_loops():
@@ -49,7 +49,7 @@ def for_loops():
     print("\n  dict iteration:")
     data = {"a": 1, "b": 2, "c": 3}
     for key, val in data.items():
-        print(f"    {key} → {val}")
+        print(f"    {key} -> {val}")
 
 
 def while_loops():
@@ -120,7 +120,7 @@ def match_case():
                     action = "Looking around."
                 case _:
                     action = f"Unknown command: '{cmd}'"
-            print(f"  '{cmd}' → {action}")
+            print(f"  '{cmd}' -> {action}")
     else:
         print("  match/case requires Python 3.10+")
 

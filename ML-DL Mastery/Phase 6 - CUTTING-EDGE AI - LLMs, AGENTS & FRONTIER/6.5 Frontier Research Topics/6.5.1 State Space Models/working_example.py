@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ssm")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Motivation ─────────────────────────────────────────────────────────────
+# -- 1. Motivation -------------------------------------------------------------
 def ssm_motivation():
     print("=== State Space Models (SSMs) ===")
     print()
@@ -38,7 +38,7 @@ def ssm_motivation():
         print(f"  {m:<10} {d}")
 
 
-# ── 2. SSM mechanics ──────────────────────────────────────────────────────────
+# -- 2. SSM mechanics ----------------------------------------------------------
 def ssm_mechanics():
     print("\n=== SSM Mechanics ===")
     print()
@@ -47,9 +47,9 @@ def ssm_mechanics():
     print("    y(t)  = C h(t) + D x(t)")
     print("    h: hidden state; x: input; y: output; A,B,C,D: learnable")
     print()
-    print("  Discrete-time (for sequences with step size Δ):")
-    print("    A_bar = exp(Δ * A)")
-    print("    B_bar = (Δ * A)^-1 (exp(Δ * A) - I) * Δ * B")
+    print("  Discrete-time (for sequences with step size Delta):")
+    print("    A_bar = exp(Delta * A)")
+    print("    B_bar = (Delta * A)^-1 (exp(Delta * A) - I) * Delta * B")
     print("    h_t   = A_bar * h_{t-1} + B_bar * x_t")
     print("    y_t   = C * h_t")
     print()
@@ -76,21 +76,21 @@ def ssm_mechanics():
     print(f"  Output: {' '.join(f'{v:+.2f}' for v in outputs[:10])} ...")
 
 
-# ── 3. Mamba: selective SSM ───────────────────────────────────────────────────
+# -- 3. Mamba: selective SSM ---------------------------------------------------
 def mamba_architecture():
     print("\n=== Mamba: Selective State Space ===")
     print()
-    print("  Key insight: make B, C, Δ input-dependent (selective)")
+    print("  Key insight: make B, C, Delta input-dependent (selective)")
     print("  Unlike S4: constant A,B,C,D cannot focus on relevant tokens")
-    print("  Mamba: Δ, B, C = linear projections of input x_t")
-    print("         → model chooses what to remember/forget per token")
+    print("  Mamba: Delta, B, C = linear projections of input x_t")
+    print("         -> model chooses what to remember/forget per token")
     print()
     print("  Mamba block:")
-    print("    Input (D_model) ──────────────────────────────────────┐")
-    print("    → linear expand (2x) → split:")
-    print("      Branch 1: Conv1D → SSM (selective scan) → gate")
-    print("      Branch 2: SiLU activation                  ↓")
-    print("    → elementwise multiply → linear project → output")
+    print("    Input (D_model) --------------------------------------+")
+    print("    -> linear expand (2x) -> split:")
+    print("      Branch 1: Conv1D -> SSM (selective scan) -> gate")
+    print("      Branch 2: SiLU activation                  v")
+    print("    -> elementwise multiply -> linear project -> output")
     print()
     print("  Advantages over transformers at inference:")
     advantages = [
@@ -102,7 +102,7 @@ def mamba_architecture():
         print(f"  {a:<18} {d}")
     print()
     print("  Mamba-2 / SSD:")
-    print("    Restricts A to scalar matrix → enables tensor parallelism")
+    print("    Restricts A to scalar matrix -> enables tensor parallelism")
     print("    8x faster than Mamba-1; theoretical connection to linear attention")
     print()
     print("  Hybrid models (best of both):")
@@ -115,7 +115,7 @@ def mamba_architecture():
         print(f"  {h:<12} {d}")
 
 
-# ── 4. Benchmark comparison ───────────────────────────────────────────────────
+# -- 4. Benchmark comparison ---------------------------------------------------
 def ssm_benchmarks():
     print("\n=== SSM vs Transformer Benchmarks ===")
     print()

@@ -8,7 +8,7 @@ import pandas as pd
 from contextlib import closing
 
 
-# ── Setup: create an in-memory SQLite database ────────────────────────────────
+# -- Setup: create an in-memory SQLite database --------------------------------
 def get_connection():
     return sqlite3.connect(":memory:")
 
@@ -64,7 +64,7 @@ def run_query(conn, sql, label=""):
     return df
 
 
-# ── DDL / DML ─────────────────────────────────────────────────────────────────
+# -- DDL / DML -----------------------------------------------------------------
 def dml_demo(conn):
     print("=== DML — INSERT / UPDATE / DELETE ===")
     with closing(conn.cursor()) as cur:
@@ -84,7 +84,7 @@ def dml_demo(conn):
     run_query(conn, "SELECT * FROM employees ORDER BY emp_id", "employees table")
 
 
-# ── Basic SELECT ──────────────────────────────────────────────────────────────
+# -- Basic SELECT --------------------------------------------------------------
 def select_demo(conn):
     print("=== SELECT ===")
     run_query(conn, "SELECT name, age, salary FROM employees ORDER BY salary DESC LIMIT 5",
@@ -97,7 +97,7 @@ def select_demo(conn):
               "DISTINCT dept_ids")
 
 
-# ── Aggregation ───────────────────────────────────────────────────────────────
+# -- Aggregation ---------------------------------------------------------------
 def aggregation_demo(conn):
     print("=== Aggregation & GROUP BY ===")
     run_query(conn, """
@@ -111,10 +111,10 @@ def aggregation_demo(conn):
         GROUP BY dept_id
         HAVING COUNT(*) >= 2
         ORDER BY avg_salary DESC
-    """, "dept stats (headcount≥2)")
+    """, "dept stats (headcount>=2)")
 
 
-# ── JOINs ────────────────────────────────────────────────────────────────────
+# -- JOINs --------------------------------------------------------------------
 def joins_demo(conn):
     print("=== JOINs ===")
     run_query(conn, """
@@ -130,10 +130,10 @@ def joins_demo(conn):
         LEFT JOIN employees e ON d.dept_id = e.dept_id
         LEFT JOIN projects  p ON e.emp_id  = p.emp_id
         ORDER BY d.dept_name, e.name
-    """, "LEFT JOIN departments → employees → projects")
+    """, "LEFT JOIN departments -> employees -> projects")
 
 
-# ── Subqueries ────────────────────────────────────────────────────────────────
+# -- Subqueries ----------------------------------------------------------------
 def subquery_demo(conn):
     print("=== Subqueries ===")
     run_query(conn, """
@@ -149,7 +149,7 @@ def subquery_demo(conn):
     """, "employees who have at least one project (IN subquery)")
 
 
-# ── Window functions ──────────────────────────────────────────────────────────
+# -- Window functions ----------------------------------------------------------
 def window_functions_demo(conn):
     print("=== Window Functions ===")
     run_query(conn, """
@@ -167,11 +167,11 @@ def window_functions_demo(conn):
     """, "window: RANK, AVG per dept, ROW_NUMBER")
 
 
-# ── pandas + SQL ──────────────────────────────────────────────────────────────
+# -- pandas + SQL --------------------------------------------------------------
 def pandas_sql_integration(conn):
-    print("=== pandas ↔ SQLite ===")
+    print("=== pandas <-> SQLite ===")
     df = pd.read_sql_query("SELECT * FROM employees", conn)
-    print(f"  pd.read_sql_query → DataFrame shape: {df.shape}")
+    print(f"  pd.read_sql_query -> DataFrame shape: {df.shape}")
     print(df.head(3).to_string(index=False))
 
     # Write a new DataFrame to SQL

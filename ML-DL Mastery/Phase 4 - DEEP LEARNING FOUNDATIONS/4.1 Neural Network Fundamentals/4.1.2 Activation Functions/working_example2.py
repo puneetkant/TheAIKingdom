@@ -17,7 +17,7 @@ except ImportError:
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
-# ── Activations ──────────────────────────────────────────────────────────────
+# -- Activations --------------------------------------------------------------
 def sigmoid(x):   return 1 / (1 + np.exp(-x))
 def sigmoid_d(x): s = sigmoid(x); return s * (1 - s)
 
@@ -39,7 +39,7 @@ def softmax(z):
     return e / e.sum()
 
 def demo_values():
-    print("=== Activation Values at z ∈ {-2, -1, 0, 1, 2} ===")
+    print("=== Activation Values at z in {-2, -1, 0, 1, 2} ===")
     z = np.array([-2., -1., 0., 1., 2.])
     print(f"  {'z':>6}  {'sigmoid':>10}  {'tanh':>10}  {'relu':>10}  {'gelu':>10}")
     for zi in z:
@@ -47,9 +47,9 @@ def demo_values():
               f"{relu(zi):10.4f}  {gelu(zi):10.4f}")
 
 def demo_gradients():
-    print("\n=== Gradients at z ∈ {-2, 0, 2} ===")
+    print("\n=== Gradients at z in {-2, 0, 2} ===")
     z = np.array([-2., 0., 2.])
-    print(f"  {'z':>6}  {'σ\'':>10}  {'tanh\'':>10}  {'ReLU\'':>10}")
+    print(f"  {'z':>6}  {'sigma\'':>10}  {'tanh\'':>10}  {'ReLU\'':>10}")
     for zi in z:
         print(f"  {zi:6.1f}  {sigmoid_d(zi):10.4f}  {tanh_d(zi):10.4f}  {relu_d(zi):10.4f}")
 
@@ -69,7 +69,7 @@ def demo_softmax():
     print("\n=== Softmax (3-class logits) ===")
     logits = np.array([2.0, 1.0, 0.5])
     probs  = softmax(logits)
-    print(f"  Logits: {logits}  → Probs: {probs.round(4)}  (sum={probs.sum():.6f})")
+    print(f"  Logits: {logits}  -> Probs: {probs.round(4)}  (sum={probs.sum():.6f})")
 
 if __name__ == "__main__":
     demo_values()

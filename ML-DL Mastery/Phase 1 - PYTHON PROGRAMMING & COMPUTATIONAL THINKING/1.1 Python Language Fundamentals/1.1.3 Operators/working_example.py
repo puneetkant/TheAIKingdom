@@ -12,7 +12,7 @@ def arithmetic_operators():
         ('+',  a + b),
         ('-',  a - b),
         ('*',  a * b),
-        ('/',  a / b),    # true division → float
+        ('/',  a / b),    # true division -> float
         ('//', a // b),   # floor division
         ('%',  a % b),    # modulo
         ('**', a ** b),   # exponentiation
@@ -37,8 +37,8 @@ def logical_operators():
 
     # Short-circuit evaluation
     print("\n  Short-circuit:")
-    print(f"  0 and (1/0) → no ZeroDivisionError = {0 and (1/0) if False else 0 and 'skipped'}")
-    print(f"  1 or  (1/0) → no ZeroDivisionError = {1 or 'skipped'}")
+    print(f"  0 and (1/0) -> no ZeroDivisionError = {0 and (1/0) if False else 0 and 'skipped'}")
+    print(f"  1 or  (1/0) -> no ZeroDivisionError = {1 or 'skipped'}")
 
 
 def bitwise_operators():
@@ -54,7 +54,7 @@ def bitwise_operators():
     print(f"  a >> 1 = {a >> 1:04b} ({a >> 1})   right shift")
     print("\n  Practical: check if number is even")
     for n in [0, 1, 2, 3, 8, 9]:
-        print(f"    {n} & 1 = {n & 1}  → {'odd' if n & 1 else 'even'}")
+        print(f"    {n} & 1 = {n & 1}  -> {'odd' if n & 1 else 'even'}")
 
 
 def assignment_operators():
@@ -64,7 +64,7 @@ def assignment_operators():
     print(f"  start x = {x}")
     for op, val in steps:
         exec(f"x {op} {val}")
-        print(f"  x {op} {val}  → x = {eval('x', {'x': x})}", end='')
+        print(f"  x {op} {val}  -> x = {eval('x', {'x': x})}", end='')
         if op == '+=':   x += val
         elif op == '-=': x -= val
         elif op == '*=': x *= val
@@ -96,7 +96,7 @@ def operator_precedence():
     exprs = [
         "2 + 3 * 4",       # * before +
         "(2 + 3) * 4",     # parens override
-        "2 ** 3 ** 2",     # ** is right-associative → 2**(3**2)
+        "2 ** 3 ** 2",     # ** is right-associative -> 2**(3**2)
         "not True or True",# not binds tighter than or
         "10 - 3 - 2",      # left-associative
     ]

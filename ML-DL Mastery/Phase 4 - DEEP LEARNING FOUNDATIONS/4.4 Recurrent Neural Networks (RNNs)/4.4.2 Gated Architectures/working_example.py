@@ -16,7 +16,7 @@ def sigmoid(z): return 1 / (1 + np.exp(-z.clip(-500, 500)))
 def tanh(z):    return np.tanh(z)
 
 
-# ── LSTM cell (single step) ───────────────────────────────────────────────────
+# -- LSTM cell (single step) ---------------------------------------------------
 class LSTMCell:
     """
     Long Short-Term Memory cell.
@@ -64,7 +64,7 @@ class LSTMCell:
         return np.array(hs), np.array(cs)
 
 
-# ── GRU cell (single step) ────────────────────────────────────────────────────
+# -- GRU cell (single step) ----------------------------------------------------
 class GRUCell:
     """
     Gated Recurrent Unit cell.
@@ -105,14 +105,14 @@ class GRUCell:
         return np.array(hs)
 
 
-# ── 1. LSTM mechanics ─────────────────────────────────────────────────────────
+# -- 1. LSTM mechanics ---------------------------------------------------------
 def lstm_mechanics():
     print("=== LSTM Cell Mechanics ===")
     print("  LSTM = 4 gates running in parallel:")
-    print("    Forget gate f:  σ(W_f·[h,x]+b_f) — what to discard from cell")
-    print("    Input gate i:   σ(W_i·[h,x]+b_i) — what new info to store")
+    print("    Forget gate f:  sigma(W_f·[h,x]+b_f) — what to discard from cell")
+    print("    Input gate i:   sigma(W_i·[h,x]+b_i) — what new info to store")
     print("    Cell gate g:    tanh(W_g·[h,x]+b_g) — candidate new content")
-    print("    Output gate o:  σ(W_o·[h,x]+b_o) — what to expose as h")
+    print("    Output gate o:  sigma(W_o·[h,x]+b_o) — what to expose as h")
     print()
     print("  Cell state update:")
     print("    c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t")
@@ -129,14 +129,14 @@ def lstm_mechanics():
     print(f"  h norm: {np.linalg.norm(h):.4f}   c norm: {gates['c_norm']:.4f}")
 
 
-# ── 2. GRU mechanics ──────────────────────────────────────────────────────────
+# -- 2. GRU mechanics ----------------------------------------------------------
 def gru_mechanics():
     print("\n=== GRU Cell Mechanics ===")
     print("  GRU simplifies LSTM: merges forget+input into one update gate")
-    print("  Update gate z:  σ(W_z·[x,h])  — balance between past and new")
-    print("  Reset gate r:   σ(W_r·[x,h])  — how much past to use for candidate")
+    print("  Update gate z:  sigma(W_z·[x,h])  — balance between past and new")
+    print("  Reset gate r:   sigma(W_r·[x,h])  — how much past to use for candidate")
     print("  Candidate:      tanh(W_h·[x, r⊙h])")
-    print("  h_t = (1-z)⊙h_{t-1} + z⊙h̃_t")
+    print("  h_t = (1-z)⊙h_{t-1} + z⊙h_t")
     print()
     print("  Fewer parameters than LSTM (no separate cell state)")
 
@@ -147,7 +147,7 @@ def gru_mechanics():
     print(f"\n  Single step: z={gates['z']:.3f}  r={gates['r']:.3f}  h_norm={np.linalg.norm(h):.4f}")
 
 
-# ── 3. Long-term dependency capture ───────────────────────────────────────────
+# -- 3. Long-term dependency capture -------------------------------------------
 def long_term_dependency():
     print("\n=== Long-Term Dependency: LSTM vs Vanilla RNN ===")
     rng = np.random.default_rng(3)
@@ -159,7 +159,7 @@ def long_term_dependency():
     grad_norms_rnn = []
     grad = np.eye(8)
     for _ in range(T):
-        dW = 0.5 * W_rnn[input_size:].T   # tanh' ≈ 0.5
+        dW = 0.5 * W_rnn[input_size:].T   # tanh' ~= 0.5
         grad = dW @ grad
         grad_norms_rnn.append(np.linalg.norm(grad))
 
@@ -183,11 +183,11 @@ def long_term_dependency():
     print(f"  Plot saved: {path}")
 
 
-# ── 4. Bidirectional RNN ──────────────────────────────────────────────────────
+# -- 4. Bidirectional RNN ------------------------------------------------------
 def bidirectional_rnn():
     print("\n=== Bidirectional RNN ===")
-    print("  Process sequence left→right AND right→left; concatenate hidden states")
-    print("  h̃_t = [h_forward_t; h_backward_t]  (size = 2 × hidden_size)")
+    print("  Process sequence left->right AND right->left; concatenate hidden states")
+    print("  h_t = [h_forward_t; h_backward_t]  (size = 2 x hidden_size)")
     print()
     print("  Use cases: NLP (see full sentence context), not suitable for forecasting")
 
@@ -210,7 +210,7 @@ def bidirectional_rnn():
     print(f"  BiDir out:  {hs_bidir.shape} (2×H per time step)")
 
 
-# ── 5. Stacked LSTM ───────────────────────────────────────────────────────────
+# -- 5. Stacked LSTM -----------------------------------------------------------
 def stacked_lstm():
     print("\n=== Stacked (Deep) LSTM ===")
     print("  Stack multiple LSTM layers; output h of layer l is input to layer l+1")
@@ -227,12 +227,12 @@ def stacked_lstm():
         lstm   = LSTMCell(in_sz, out_sz, rng)
         hs, _  = lstm.forward_seq(h_seq)
         h_seq  = hs
-        print(f"  Layer {layer_idx+1} ({in_sz}→{out_sz}): output shape {hs.shape}")
+        print(f"  Layer {layer_idx+1} ({in_sz}->{out_sz}): output shape {hs.shape}")
 
     print(f"\n  Final representation: shape {h_seq.shape}")
 
 
-# ── 6. LSTM vs GRU comparison ────────────────────────────────────────────────
+# -- 6. LSTM vs GRU comparison ------------------------------------------------
 def lstm_gru_comparison():
     print("\n=== LSTM vs GRU Comparison ===")
     print(f"  {'Aspect':<25} {'LSTM':<35} {'GRU'}")

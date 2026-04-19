@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_context_ext")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. The long-context problem ───────────────────────────────────────────────
+# -- 1. The long-context problem -----------------------------------------------
 def long_context_problem():
     print("=== Context Length Extension ===")
     print()
@@ -31,12 +31,12 @@ def long_context_problem():
         print(f"  {c:<22} {d}")
 
 
-# ── 2. RoPE and its extensions ────────────────────────────────────────────────
+# -- 2. RoPE and its extensions ------------------------------------------------
 def rope_extensions():
     print("\n=== RoPE and Context Extension ===")
     print()
     print("  Rotary Position Embedding (RoPE):")
-    print("    Multiply Q, K by complex rotation: e^{iθm}  where θ_i = base^{-2i/d}")
+    print("    Multiply Q, K by complex rotation: e^{ithetam}  where theta_i = base^{-2i/d}")
     print("    Relative position encoded in dot product: <q_m, k_n> = f(m-n)")
     print()
 
@@ -53,12 +53,12 @@ def rope_extensions():
     print()
     print("  Context extension methods for RoPE:")
     methods = [
-        ("Position interpolation", "Linear scale positions: m → m × (L_orig/L_new); Meta"),
+        ("Position interpolation", "Linear scale positions: m -> m x (L_orig/L_new); Meta"),
         ("YaRN",                   "Non-uniform scaling; scale high-freq less; LLaMA-3"),
         ("LongRoPE",               "Search optimal per-dimension scale; 2M tokens"),
         ("NTK-aware scaling",      "Change RoPE base to extrapolate naturally"),
         ("Dynamic NTK",            "Adjust scale per batch based on actual seq length"),
-        ("Code Llama (PI)",        "4k → 100k via position interpolation + fine-tuning"),
+        ("Code Llama (PI)",        "4k -> 100k via position interpolation + fine-tuning"),
     ]
     for m, d in methods:
         print(f"  {m:<26} {d}")
@@ -68,10 +68,10 @@ def rope_extensions():
     print("    new_base = old_base × (new_len / old_len)^(d/(d-2))")
     old_base = 10_000; old_len = 4_096; new_len = 128_000; d = 128
     new_base = old_base * (new_len / old_len) ** (d / (d - 2))
-    print(f"    base: {old_base} → {new_base:.0f}")
+    print(f"    base: {old_base} -> {new_base:.0f}")
 
 
-# ── 3. Efficient long-context attention ───────────────────────────────────────
+# -- 3. Efficient long-context attention ---------------------------------------
 def efficient_attention():
     print("\n=== Efficient Long-Context Attention ===")
     print()
@@ -99,7 +99,7 @@ def efficient_attention():
         print(f"  T={T:>9}: standard={std_gb:.1f}GB  flashattn={flash_gb:.3f}GB")
 
 
-# ── 4. Long-context models ────────────────────────────────────────────────────
+# -- 4. Long-context models ----------------------------------------------------
 def long_context_models():
     print("\n=== Long-Context Model Landscape ===")
     print()

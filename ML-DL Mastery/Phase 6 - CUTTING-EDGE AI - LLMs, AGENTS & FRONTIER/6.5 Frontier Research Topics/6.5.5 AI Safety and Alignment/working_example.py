@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ai_safety")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Alignment overview ─────────────────────────────────────────────────────
+# -- 1. Alignment overview -----------------------------------------------------
 def alignment_overview():
     print("=== AI Safety and Alignment ===")
     print()
@@ -39,7 +39,7 @@ def alignment_overview():
         print(f"  {a:<20} {d}")
 
 
-# ── 2. Goodhart's law and reward hacking ─────────────────────────────────────
+# -- 2. Goodhart's law and reward hacking -------------------------------------
 def reward_hacking_demo():
     print("\n=== Reward Hacking (Goodhart's Law) ===")
     print()
@@ -59,11 +59,11 @@ def reward_hacking_demo():
 
     # Simulate KL divergence penalty in RLHF
     print("  KL penalty prevents reward hacking in RLHF:")
-    print("  J(θ) = E[r(x,y)] - β * KL[π_θ(y|x) || π_ref(y|x)]")
+    print("  J(theta) = E[r(x,y)] - beta * KL[pi_theta(y|x) || pi_ref(y|x)]")
     print()
     betas = [0.0, 0.01, 0.05, 0.1, 0.5]
     rng   = np.random.default_rng(0)
-    print(f"  {'β':>8} {'Reward':>10} {'KL div':>10} {'Sycophancy%':>14}")
+    print(f"  {'beta':>8} {'Reward':>10} {'KL div':>10} {'Sycophancy%':>14}")
     for beta in betas:
         reward = 8.0 - beta * 15 + rng.normal(0, 0.2)
         kl     = max(0.0, 5.0 - beta * 40 + rng.normal(0, 0.3))
@@ -71,7 +71,7 @@ def reward_hacking_demo():
         print(f"  {beta:>8.2f} {reward:>10.2f} {kl:>10.2f} {sycoph:>13.1f}%")
 
 
-# ── 3. Constitutional AI ──────────────────────────────────────────────────────
+# -- 3. Constitutional AI ------------------------------------------------------
 def constitutional_ai():
     print("\n=== Constitutional AI (CAI) ===")
     print()
@@ -81,7 +81,7 @@ def constitutional_ai():
     print("    a. Generate harmful response to red-team prompt")
     print("    b. Critique using constitutional principles")
     print("    c. Revise to fix violation")
-    print("    d. Repeat N times → fine-tune on final revision")
+    print("    d. Repeat N times -> fine-tune on final revision")
     print()
     print("  Example constitutional principles:")
     principles = [
@@ -100,7 +100,7 @@ def constitutional_ai():
     print("    • Key insight: AI preferences track constitution better than humans")
 
 
-# ── 4. Scalable oversight ─────────────────────────────────────────────────────
+# -- 4. Scalable oversight -----------------------------------------------------
 def scalable_oversight():
     print("\n=== Scalable Oversight ===")
     print()
@@ -119,11 +119,11 @@ def scalable_oversight():
         print(f"  {a:<22} {d}")
     print()
     print("  OpenAI weak-to-strong (2024):")
-    print("  GPT-2 supervising GPT-4 → GPT-4 inherits much GPT-4 knowledge")
+    print("  GPT-2 supervising GPT-4 -> GPT-4 inherits much GPT-4 knowledge")
     print("  Naive fine-tuning: 61%, ceil: 82%, weak-to-strong: 78%")
 
 
-# ── 5. Red teaming ────────────────────────────────────────────────────────────
+# -- 5. Red teaming ------------------------------------------------------------
 def red_teaming():
     print("\n=== Red Teaming and Evaluation ===")
     print()

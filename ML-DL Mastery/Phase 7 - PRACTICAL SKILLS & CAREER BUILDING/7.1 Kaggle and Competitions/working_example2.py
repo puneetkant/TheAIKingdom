@@ -152,7 +152,7 @@ def demo():
     axes[1][0].plot([min(public_scores), max(public_scores)],
                      [min(public_scores), max(public_scores)], "k--", alpha=0.4)
     axes[1][0].set(xlabel="Public LB Score", ylabel="Private LB Score",
-                   title=f"Leaderboard Shake-up (ρ={rank_corr:.2f})")
+                   title=f"Leaderboard Shake-up (rho={rank_corr:.2f})")
     axes[1][0].grid(True, alpha=0.3)
 
     # Ensemble weights

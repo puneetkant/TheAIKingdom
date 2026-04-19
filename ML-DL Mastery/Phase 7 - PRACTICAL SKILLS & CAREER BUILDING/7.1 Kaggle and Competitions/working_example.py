@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_kaggle")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Competition strategy ───────────────────────────────────────────────────
+# -- 1. Competition strategy ---------------------------------------------------
 def competition_strategy():
     print("=== Kaggle and ML Competitions ===")
     print()
@@ -41,7 +41,7 @@ def competition_strategy():
         print(f"  {t:<16} {d}")
 
 
-# ── 2. Cross-validation strategy ─────────────────────────────────────────────
+# -- 2. Cross-validation strategy ---------------------------------------------
 def cv_strategy():
     print("\n=== Cross-Validation Strategy ===")
     print()
@@ -83,7 +83,7 @@ def cv_strategy():
         print(f"  {s:<26} {d}")
 
 
-# ── 3. Feature engineering ────────────────────────────────────────────────────
+# -- 3. Feature engineering ----------------------------------------------------
 def feature_engineering():
     print("\n=== Feature Engineering Tips ===")
     print()
@@ -102,7 +102,7 @@ def feature_engineering():
     corr = np.corrcoef(interaction, target)[0, 1]
     print(f"  num_B alone corr with target:         {np.corrcoef(num_B, target)[0,1]:.3f}")
     print(f"  num_C alone corr with target:         {np.corrcoef(num_C, target)[0,1]:.3f}")
-    print(f"  (num_B - num_C) corr with target:     {corr:.3f}  ← interaction feature")
+    print(f"  (num_B - num_C) corr with target:     {corr:.3f}  <- interaction feature")
     print()
     print("  Key feature engineering patterns:")
     patterns = [
@@ -110,7 +110,7 @@ def feature_engineering():
         ("Count encoding",       "Frequency of each category value"),
         ("Interactions",         "Multiply/divide numeric pairs"),
         ("Polynomial features",  "x², x*y; sklearn PolynomialFeatures"),
-        ("Aggregations",         "GroupBy → mean/std/max per entity"),
+        ("Aggregations",         "GroupBy -> mean/std/max per entity"),
         ("Rolling features",     "Time-series window stats"),
         ("Text TF-IDF",          "Term frequency for string columns"),
         ("Date decomposition",   "Year/month/day/hour/weekday/is_holiday"),
@@ -119,7 +119,7 @@ def feature_engineering():
         print(f"  {p:<22} {d}")
 
 
-# ── 4. Ensembling ─────────────────────────────────────────────────────────────
+# -- 4. Ensembling -------------------------------------------------------------
 def ensembling():
     print("\n=== Ensembling Methods ===")
     print()

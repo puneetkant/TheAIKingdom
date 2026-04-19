@@ -82,7 +82,7 @@ def demo():
         fc = int(f == true_label)
         zero_shot_correct += zc
         few_shot_correct += fc
-        print(f"  '{text[:35]}...' → true={true_label}, zs={z}, fs={f}")
+        print(f"  '{text[:35]}...' -> true={true_label}, zs={z}, fs={f}")
 
     zs_acc = zero_shot_correct / len(test_texts)
     fs_acc = few_shot_correct / len(test_texts)
@@ -108,9 +108,9 @@ def demo():
     cot = cot_template(
         "Is 17 a prime number?",
         ["17 is not divisible by 2 (17/2 = 8.5)",
-         "17 is not divisible by 3 (17/3 ≈ 5.67)",
-         "17 is not divisible by 4, 5, 6, ..., √17 ≈ 4.1",
-         "No divisor found → 17 is prime"]
+         "17 is not divisible by 3 (17/3 ~= 5.67)",
+         "17 is not divisible by 4, 5, 6, ..., sqrt17 ~= 4.1",
+         "No divisor found -> 17 is prime"]
     )
     print("\n  CoT Template:\n" + cot)
 

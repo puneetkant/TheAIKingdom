@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_cloud_ml")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Platform comparison ────────────────────────────────────────────────────
+# -- 1. Platform comparison ----------------------------------------------------
 def platform_comparison():
     print("=== Cloud ML Platforms Comparison ===")
     print()
@@ -43,12 +43,12 @@ def platform_comparison():
         },
     }
     for platform, features in platforms.items():
-        print(f"\n  ── {platform} ──────────────────────────────────────────────")
+        print(f"\n  -- {platform} ----------------------------------------------")
         for k, v in features.items():
             print(f"    {k:<16} {v}")
 
 
-# ── 2. SageMaker training job pattern ─────────────────────────────────────────
+# -- 2. SageMaker training job pattern -----------------------------------------
 def sagemaker_pattern():
     print("\n=== AWS SageMaker: Key Patterns ===")
     print()
@@ -103,7 +103,7 @@ asg.register_scalable_target(
     print(sm_deploy)
 
 
-# ── 3. Vertex AI pattern ──────────────────────────────────────────────────────
+# -- 3. Vertex AI pattern ------------------------------------------------------
 def vertex_ai_pattern():
     print("=== Google Vertex AI: Key Patterns ===")
     print()
@@ -143,7 +143,7 @@ response = endpoint.predict(instances=[{"input": [0.5, 1.2, 3.4]}])
     print(vertex_training)
 
 
-# ── 4. Cost optimisation ──────────────────────────────────────────────────────
+# -- 4. Cost optimisation ------------------------------------------------------
 def cost_optimisation():
     print("=== Cloud ML Cost Optimisation ===")
     print()

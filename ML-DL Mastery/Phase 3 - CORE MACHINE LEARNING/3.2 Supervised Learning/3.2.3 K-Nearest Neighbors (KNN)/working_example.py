@@ -18,7 +18,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_knn")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. KNN from scratch ───────────────────────────────────────────────────────
+# -- 1. KNN from scratch -------------------------------------------------------
 def knn_from_scratch():
     print("=== KNN From Scratch ===")
 
@@ -50,7 +50,7 @@ def knn_from_scratch():
         print(f"  k={k:<3}: test acc={acc:.4f}")
 
 
-# ── 2. Distance metrics ───────────────────────────────────────────────────────
+# -- 2. Distance metrics -------------------------------------------------------
 def distance_metrics():
     print("\n=== Distance Metrics ===")
     a = np.array([1.0, 2.0, 3.0])
@@ -66,19 +66,19 @@ def distance_metrics():
 
     print(f"  Euclidean (L2): {euclidean:.4f}")
     print(f"  Manhattan (L1): {manhattan:.4f}")
-    print(f"  Chebyshev (L∞): {chebyshev:.4f}")
+    print(f"  Chebyshev (Linf): {chebyshev:.4f}")
     print(f"  Cosine sim:     {cosine_sim:.4f}")
     print(f"  Minkowski p=2:  {minkowski2:.4f}")
     print(f"  Minkowski p=3:  {minkowski3:.4f}")
     print()
     print("  Choice guide:")
-    print("    Euclidean  → continuous, similar scale features")
-    print("    Manhattan  → robust to outliers, high-dim")
-    print("    Cosine     → text, angle matters more than magnitude")
-    print("    Hamming    → binary/categorical features")
+    print("    Euclidean  -> continuous, similar scale features")
+    print("    Manhattan  -> robust to outliers, high-dim")
+    print("    Cosine     -> text, angle matters more than magnitude")
+    print("    Hamming    -> binary/categorical features")
 
 
-# ── 3. Choosing k via cross-validation ───────────────────────────────────────
+# -- 3. Choosing k via cross-validation ---------------------------------------
 def choose_k():
     print("\n=== Choosing k via Cross-Validation ===")
     X, y = make_moons(n_samples=400, noise=0.25, random_state=1)
@@ -91,14 +91,14 @@ def choose_k():
         model   = KNeighborsClassifier(n_neighbors=k)
         cv_accs = cross_val_score(model, X_s, y, cv=5)
         mean, std = cv_accs.mean(), cv_accs.std()
-        marker = " ← best" if mean > best_acc else ""
+        marker = " <- best" if mean > best_acc else ""
         if mean > best_acc:
             best_k, best_acc = k, mean
         if k <= 15 or k == best_k:   # only print first 15 and best
             print(f"  {k:<6} {mean:.4f} ± {std:.4f}{marker}")
 
 
-# ── 4. Weighted KNN ───────────────────────────────────────────────────────────
+# -- 4. Weighted KNN -----------------------------------------------------------
 def weighted_knn():
     print("\n=== Weighted KNN (inverse distance) ===")
     X, y = make_moons(n_samples=400, noise=0.25, random_state=2)
@@ -113,7 +113,7 @@ def weighted_knn():
         print(f"  weights={weights:<10}: acc={acc:.4f}")
 
 
-# ── 5. KNN Regression ────────────────────────────────────────────────────────
+# -- 5. KNN Regression --------------------------------------------------------
 def knn_regression():
     print("\n=== KNN Regression ===")
     rng = np.random.default_rng(3)
@@ -132,7 +132,7 @@ def knn_regression():
         print(f"  {k:<6} {rmse:.4f}")
 
 
-# ── 6. Curse of dimensionality ───────────────────────────────────────────────
+# -- 6. Curse of dimensionality -----------------------------------------------
 def curse_of_dimensionality():
     print("\n=== Curse of Dimensionality ===")
     print("  In high dimensions, all points become equidistant.")
@@ -145,10 +145,10 @@ def curse_of_dimensionality():
         dmin  = dists[dists > 0].reshape(10,-1).min(axis=1)
         ratio = (dmax - dmin) / (dmin + 1e-10)
         print(f"  d={d:>4}: mean(d_max/d_min - 1) = {ratio.mean():.4f}  "
-              f"(→ 0 means less informative nearest neighbour)")
+              f"(-> 0 means less informative nearest neighbour)")
 
 
-# ── 7. Decision boundary visualisation ───────────────────────────────────────
+# -- 7. Decision boundary visualisation ---------------------------------------
 def plot_boundaries():
     X, y = make_moons(n_samples=400, noise=0.25, random_state=5)
     scaler = StandardScaler().fit(X)

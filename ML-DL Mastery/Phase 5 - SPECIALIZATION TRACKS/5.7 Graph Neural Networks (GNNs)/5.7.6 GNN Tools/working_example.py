@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_gnn_tools")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Library overview ───────────────────────────────────────────────────────
+# -- 1. Library overview -------------------------------------------------------
 def library_overview():
     print("=== GNN Libraries Overview ===")
     print()
@@ -27,7 +27,7 @@ def library_overview():
         print(f"  {l:<30} {d}")
 
 
-# ── 2. PyG patterns ───────────────────────────────────────────────────────────
+# -- 2. PyG patterns -----------------------------------------------------------
 def pyg_patterns():
     print("\n=== PyG (PyTorch Geometric) Patterns ===")
     print()
@@ -81,7 +81,7 @@ loader = NeighborLoader(dataset[0],
         print(f"  {m:<20} {d}")
 
 
-# ── 3. OGB benchmark pattern ──────────────────────────────────────────────────
+# -- 3. OGB benchmark pattern --------------------------------------------------
 def ogb_patterns():
     print("\n=== OGB (Open Graph Benchmark) ===")
     print()
@@ -114,7 +114,7 @@ print(result['acc'])
     print(code)
 
 
-# ── 4. NetworkX for graph analysis ────────────────────────────────────────────
+# -- 4. NetworkX for graph analysis --------------------------------------------
 def networkx_patterns():
     print("=== NetworkX Graph Analysis ===")
     try:

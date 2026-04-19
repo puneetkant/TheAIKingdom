@@ -65,13 +65,13 @@ def demo():
     r_eps  = eps_greedy_agent(env)
 
     plt.figure(figsize=(8, 4))
-    plt.plot(r_ucb, label="UCB (c=2)"); plt.plot(r_eps, label="ε-greedy (ε=0.1)")
+    plt.plot(r_ucb, label="UCB (c=2)"); plt.plot(r_eps, label="epsilon-greedy (epsilon=0.1)")
     plt.axhline(env.q_star.max(), ls="--", color="gray", label="Optimal")
     plt.xlabel("Step"); plt.ylabel("Avg reward"); plt.legend()
-    plt.title("k-Armed Bandit: UCB vs ε-Greedy")
+    plt.title("k-Armed Bandit: UCB vs epsilon-Greedy")
     plt.tight_layout(); plt.savefig(OUTPUT / "rl_environments.png"); plt.close()
     print(f"  UCB  final avg: {r_ucb[-1]:.3f}")
-    print(f"  ε-gr final avg: {r_eps[-1]:.3f}")
+    print(f"  epsilon-gr final avg: {r_eps[-1]:.3f}")
     print("  Saved rl_environments.png")
 
 if __name__ == "__main__":

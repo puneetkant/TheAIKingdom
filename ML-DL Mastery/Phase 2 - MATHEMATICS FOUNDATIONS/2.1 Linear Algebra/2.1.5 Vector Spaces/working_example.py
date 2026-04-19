@@ -6,21 +6,21 @@ row space, change of basis, and coordinate representations.
 import numpy as np
 
 
-# ── Checking subspace axioms ──────────────────────────────────────────────────
+# -- Checking subspace axioms --------------------------------------------------
 def subspace_checks():
     print("=== Subspace Axioms ===")
     print("  A subset W of Rⁿ is a subspace if:")
-    print("    1. Zero vector 0 ∈ W")
-    print("    2. Closed under addition: u,v ∈ W → u+v ∈ W")
-    print("    3. Closed under scalar multiplication: c∈R, v∈W → cv ∈ W\n")
+    print("    1. Zero vector 0 in W")
+    print("    2. Closed under addition: u,v in W -> u+v in W")
+    print("    3. Closed under scalar multiplication: cinR, vinW -> cv in W\n")
 
     def is_subspace(name, check_zero, check_add, check_scalar):
         all_ok = check_zero and check_add and check_scalar
         status = "IS a subspace" if all_ok else "NOT a subspace"
         print(f"  {name}: {status}")
-        if not check_zero:   print("    ✗ fails: zero vector not included")
-        if not check_add:    print("    ✗ fails: not closed under addition")
-        if not check_scalar: print("    ✗ fails: not closed under scalar mult")
+        if not check_zero:   print("    [X] fails: zero vector not included")
+        if not check_add:    print("    [X] fails: not closed under addition")
+        if not check_scalar: print("    [X] fails: not closed under scalar mult")
 
     # Span of a set of vectors — always a subspace
     is_subspace("span({v1,v2}) in R³",      True, True, True)
@@ -28,11 +28,11 @@ def subspace_checks():
     is_subspace("vectors with all x_i > 0", False, False, False)
     # Plane through origin
     is_subspace("plane ax+by+cz=0",         True, True, True)
-    # Plane NOT through origin (ax+by+cz=d, d≠0)
+    # Plane NOT through origin (ax+by+cz=d, d!=0)
     is_subspace("plane ax+by+cz=1",         False, False, True)
 
 
-# ── Span and linear independence ──────────────────────────────────────────────
+# -- Span and linear independence ----------------------------------------------
 def span_and_independence():
     print("\n=== Span & Linear Independence ===")
     v1 = np.array([1, 2, 3], dtype=float)
@@ -54,7 +54,7 @@ def span_and_independence():
         print(f"  {label:<22}: rank={rank}/{n}  {dep}")
 
 
-# ── Finding a basis ───────────────────────────────────────────────────────────
+# -- Finding a basis -----------------------------------------------------------
 def find_basis():
     print("\n=== Finding a Basis (Column Space) ===")
     A = np.array([
@@ -65,7 +65,7 @@ def find_basis():
     ], dtype=float)
     print(f"  A:\n{A}")
     rank = np.linalg.matrix_rank(A)
-    print(f"  rank(A) = {rank}  → basis of column space has {rank} vectors")
+    print(f"  rank(A) = {rank}  -> basis of column space has {rank} vectors")
 
     # Use QR to extract basis
     Q, R = np.linalg.qr(A)
@@ -79,7 +79,7 @@ def find_basis():
         print(f"    {np.round(U[:, i], 4)}")
 
 
-# ── Four fundamental subspaces ────────────────────────────────────────────────
+# -- Four fundamental subspaces ------------------------------------------------
 def four_subspaces():
     print("\n=== Four Fundamental Subspaces ===")
     A = np.array([[1, 2, 3],
@@ -97,16 +97,16 @@ def four_subspaces():
     # Null space via SVD
     U, s, Vt = np.linalg.svd(A)
     tol = max(A.shape) * np.finfo(float).eps * s[0]
-    null_vecs = Vt[s < tol]   # rows of Vt where singular value ≈ 0
+    null_vecs = Vt[s < tol]   # rows of Vt where singular value ~= 0
     print(f"\n  Null space basis vectors:")
     for v in null_vecs:
-        print(f"    {np.round(v, 6)}  → A @ v = {np.round(A @ v, 10)}")
+        print(f"    {np.round(v, 6)}  -> A @ v = {np.round(A @ v, 10)}")
 
 
-# ── Change of basis ───────────────────────────────────────────────────────────
+# -- Change of basis -----------------------------------------------------------
 def change_of_basis():
     print("\n=== Change of Basis ===")
-    # Standard basis e1, e2 → new basis b1, b2
+    # Standard basis e1, e2 -> new basis b1, b2
     b1 = np.array([1, 1], dtype=float)
     b2 = np.array([1, -1], dtype=float)
     P  = np.column_stack([b1, b2])    # columns = new basis vectors
@@ -126,7 +126,7 @@ def change_of_basis():
     print(f"  A in new basis:\n{np.round(A_new, 4)}")
 
 
-# ── Gram-Schmidt orthogonalisation ────────────────────────────────────────────
+# -- Gram-Schmidt orthogonalisation --------------------------------------------
 def gram_schmidt(vecs):
     Q = []
     for v in vecs:
@@ -146,7 +146,7 @@ def gram_schmidt_demo():
             np.array([0, 1, 1.])]
     Q = gram_schmidt(vecs)
     print(f"  orthonormal basis Q:\n{np.round(Q, 4)}")
-    print(f"  Q @ Q.T ≈ I: {np.allclose(Q @ Q.T, np.eye(3))}")
+    print(f"  Q @ Q.T ~= I: {np.allclose(Q @ Q.T, np.eye(3))}")
 
 
 if __name__ == "__main__":

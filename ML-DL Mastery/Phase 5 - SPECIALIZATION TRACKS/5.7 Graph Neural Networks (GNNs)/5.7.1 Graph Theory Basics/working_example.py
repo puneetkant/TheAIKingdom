@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_graph_theory")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Graph representations ──────────────────────────────────────────────────
+# -- 1. Graph representations --------------------------------------------------
 def graph_representations():
     print("=== Graph Theory Basics ===")
     print()
@@ -51,7 +51,7 @@ def graph_representations():
         print(f"    {node}: {sorted(nbrs)}")
 
 
-# ── 2. Graph properties ───────────────────────────────────────────────────────
+# -- 2. Graph properties -------------------------------------------------------
 def graph_properties():
     print("\n=== Key Graph Properties ===")
     N = 5
@@ -99,14 +99,14 @@ def graph_properties():
     print(f"  Global clustering coefficient: {cc_g := 3*triangles_global/(triples+1e-9):.3f}")
 
 
-# ── 3. Graph types ────────────────────────────────────────────────────────────
+# -- 3. Graph types ------------------------------------------------------------
 def graph_types():
     print("\n=== Graph Types ===")
     types = [
         ("Undirected",    "Edges have no direction; A = A^T"),
-        ("Directed",      "Edges have direction (digraph); A ≠ A^T"),
+        ("Directed",      "Edges have direction (digraph); A != A^T"),
         ("Weighted",      "Each edge has a weight w_{ij}"),
-        ("Bipartite",     "V = U ∪ V; edges only between U and V (e.g. user-item)"),
+        ("Bipartite",     "V = U u V; edges only between U and V (e.g. user-item)"),
         ("Heterogeneous", "Multiple node/edge types (e.g. user, item, category)"),
         ("Temporal",      "Edge timestamps; dynamic graph"),
         ("Hypergraph",    "Edges can connect >2 nodes"),
@@ -128,7 +128,7 @@ def graph_types():
         print(f"  {s:<12} {d}")
 
 
-# ── 4. Spectral graph theory ──────────────────────────────────────────────────
+# -- 4. Spectral graph theory --------------------------------------------------
 def spectral_graph_theory():
     print("\n=== Spectral Graph Theory ===")
     N = 5
@@ -154,11 +154,11 @@ def spectral_graph_theory():
     eigvals, eigvecs = np.linalg.eigh(L)
     print()
     print(f"  Eigenvalues of L: {np.round(eigvals, 4)}")
-    print(f"  λ_1=0 always (multiplicity = number of connected components)")
-    print(f"  λ_2 (Fiedler value): {eigvals[1]:.4f}  (larger → better connected)")
+    print(f"  lambda_1=0 always (multiplicity = number of connected components)")
+    print(f"  lambda_2 (Fiedler value): {eigvals[1]:.4f}  (larger -> better connected)")
     print()
     print("  Relationship to GCN:")
-    print("    GCN propagation: Ã·H·W  where Ã = D̃^{-1/2}(A+I)D̃^{-1/2}")
+    print("    GCN propagation: Ã·H·W  where Ã = D^{-1/2}(A+I)D^{-1/2}")
     print("    Adds self-loops (A+I) for stability; renormalisation trick")
 
 

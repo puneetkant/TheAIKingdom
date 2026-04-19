@@ -35,7 +35,7 @@ def spectral_embedding(A, k=2):
     D = np.diag(A.sum(axis=1))
     L = D - A
     eigvals, eigvecs = np.linalg.eigh(L)
-    # Skip trivial eigenvector (λ=0), take next k
+    # Skip trivial eigenvector (lambda=0), take next k
     return eigvecs[:, 1:k+1]
 
 def gcn_layer(A, X, W):

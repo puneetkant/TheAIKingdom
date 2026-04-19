@@ -19,7 +19,7 @@ OUTPUT.mkdir(exist_ok=True)
 
 def gcn_layer(A, X, W):
     """
-    GCN: H = σ( D̃^{-1/2} Ã D̃^{-1/2} X W )
+    GCN: H = sigma( D^{-1/2} Ã D^{-1/2} X W )
     A: (N,N) adjacency  X: (N,F_in)  W: (F_in,F_out)
     """
     N = A.shape[0]

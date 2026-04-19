@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_hybrid_rec")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Hybrid combination strategies ─────────────────────────────────────────
+# -- 1. Hybrid combination strategies -----------------------------------------
 def hybrid_strategies():
     print("=== Hybrid Recommender Approaches ===")
     print()
@@ -21,7 +21,7 @@ def hybrid_strategies():
     print()
     print("  Combination strategies:")
     strategies = [
-        ("Weighted",      "s = α·s_CF + (1-α)·s_CB  (α tuned on validation)"),
+        ("Weighted",      "s = alpha·s_CF + (1-alpha)·s_CB  (alpha tuned on validation)"),
         ("Switching",     "Use CB for cold users; switch to CF after enough data"),
         ("Mixed",         "Display both lists side by side"),
         ("Feature combo", "Item features as input to CF model"),
@@ -34,17 +34,17 @@ def hybrid_strategies():
 
     print()
     print("  Modern production systems typically use cascade (funnel):")
-    print("    Retrieval (ANN) → Filtering → Ranking → Re-ranking → Presentation")
+    print("    Retrieval (ANN) -> Filtering -> Ranking -> Re-ranking -> Presentation")
 
 
-# ── 2. LightFM hybrid model ───────────────────────────────────────────────────
+# -- 2. LightFM hybrid model ---------------------------------------------------
 def lightfm_hybrid():
     print("\n=== LightFM: Hybrid Embedding Model ===")
     print("  Kula (2015)")
     print()
     print("  User and item representations:")
-    print("    User embedding e_u = Σ_{f ∈ user_features} e_f")
-    print("    Item embedding e_i = Σ_{f ∈ item_features} e_f")
+    print("    User embedding e_u = Sigma_{f in user_features} e_f")
+    print("    Item embedding e_i = Sigma_{f in item_features} e_f")
     print()
     print("  Score: ŷ_{ui} = e_u^T e_i + b_u + b_i")
     print("  Loss:  BPR or WARP (Weighted Approximate Rank Pairwise)")
@@ -74,7 +74,7 @@ def lightfm_hybrid():
     print(f"  BPR objective contribution: {np.log(1/(1+np.exp(s_neg-s_pos))):.4f}")
 
 
-# ── 3. Knowledge graph recommendations ────────────────────────────────────────
+# -- 3. Knowledge graph recommendations ----------------------------------------
 def knowledge_graph_rec():
     print("\n=== Knowledge Graph-Enhanced Recommendations ===")
     print()
@@ -85,12 +85,12 @@ def knowledge_graph_rec():
     print()
     print("  Why KG for RecSys?")
     print("    Rich item semantics beyond user-item interactions")
-    print("    Multi-hop reasoning: user liked Nolan film → Nolan → other films")
+    print("    Multi-hop reasoning: user liked Nolan film -> Nolan -> other films")
     print("    Explainability: 'because you liked X (same director as Y)'")
     print()
     print("  Approaches:")
     approaches = [
-        ("TransE",          "Relation r: h + r ≈ t; entity embedding; h,r,t ∈ R^K"),
+        ("TransE",          "Relation r: h + r ~= t; entity embedding; h,r,t in R^K"),
         ("KGCN",            "KG-aware graph conv; aggregate neighbour entity feats"),
         ("KGAT",            "Attention-based KG propagation for RecSys"),
         ("RippleNet",       "User preference propagation over KG ripples"),
@@ -108,10 +108,10 @@ def knowledge_graph_rec():
     t = rng.normal(0,1,K); t/=np.linalg.norm(t)
     t_pred = h + r
     dist = np.linalg.norm(t_pred - t)
-    print(f"  TransE ||h + r - t|| = {dist:.4f}  (low → valid triple)")
+    print(f"  TransE ||h + r - t|| = {dist:.4f}  (low -> valid triple)")
 
 
-# ── 4. Contextual bandits ─────────────────────────────────────────────────────
+# -- 4. Contextual bandits -----------------------------------------------------
 def contextual_bandits():
     print("\n=== Contextual Bandits for Recommendations ===")
     print()
@@ -120,7 +120,7 @@ def contextual_bandits():
     print("    Action a_t: recommended item (one of K items)")
     print("    Reward r_t: click / purchase / rating")
     print()
-    print("  Goal: maximise Σ_t r_t = minimise regret")
+    print("  Goal: maximise Sigma_t r_t = minimise regret")
     print()
     print("  Exploration-exploitation trade-off:")
     print("    Exploit: recommend item with best estimated reward")

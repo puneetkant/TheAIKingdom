@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_robotics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Embodied AI overview ───────────────────────────────────────────────────
+# -- 1. Embodied AI overview ---------------------------------------------------
 def embodied_ai_overview():
     print("=== Embodied AI and Robotics ===")
     print()
@@ -30,17 +30,17 @@ def embodied_ai_overview():
         print(f"  {t:<24} {d}")
 
 
-# ── 2. Foundation models for robotics ─────────────────────────────────────────
+# -- 2. Foundation models for robotics -----------------------------------------
 def robot_foundation_models():
     print("\n=== Foundation Models for Robotics ===")
     print()
     models = [
         ("RT-1",     "Google; 130k real demos; 97% success; transformer action model"),
-        ("RT-2",     "Google; VLM (PaLM-E); VQA → robot actions; web knowledge"),
+        ("RT-2",     "Google; VLM (PaLM-E); VQA -> robot actions; web knowledge"),
         ("OpenVLA",  "Open; LLaMA-2 + SigLIP; visual language action model"),
-        ("π0",       "Physical Intelligence; flow matching; dexterous manipulation"),
-        ("π0.5",     "Physical Intelligence; 7B VLA + low-level expert policies"),
-        ("GROOT",    "NVIDIA; video prediction → generalised manipulation"),
+        ("pi0",       "Physical Intelligence; flow matching; dexterous manipulation"),
+        ("pi0.5",     "Physical Intelligence; 7B VLA + low-level expert policies"),
+        ("GROOT",    "NVIDIA; video prediction -> generalised manipulation"),
         ("GR-1",     "Video-to-action; predict future frames; goal-conditioned"),
         ("UniSim",   "Real-world simulator; learn from video; no robot needed"),
         ("SayCan",   "Google; LLM affordance-grounded task planning"),
@@ -51,18 +51,18 @@ def robot_foundation_models():
         print(f"  {m:<12} {d}")
 
 
-# ── 3. Sim-to-real transfer ───────────────────────────────────────────────────
+# -- 3. Sim-to-real transfer ---------------------------------------------------
 def sim_to_real():
     print("\n=== Sim-to-Real Transfer ===")
     print()
-    print("  Simulation gap: simulator physics ≠ real world")
+    print("  Simulation gap: simulator physics != real world")
     print()
     techniques = [
         ("Domain randomisation","Vary simulator parameters at train time; robust policy"),
-        ("Domain adaptation",   "Match sim→real distribution; pixel-level adaptation"),
+        ("Domain adaptation",   "Match sim->real distribution; pixel-level adaptation"),
         ("Photo-realistic sim", "USD/NVIDIA Omniverse; physically accurate rendering"),
-        ("Privileged learning", "Teacher (access sim state) → Student (only observations)"),
-        ("Real2Sim2Real",       "Scan real object → sim asset → train → deploy"),
+        ("Privileged learning", "Teacher (access sim state) -> Student (only observations)"),
+        ("Real2Sim2Real",       "Scan real object -> sim asset -> train -> deploy"),
         ("Residual learning",   "Learn delta from sim policy to compensate real offset"),
     ]
     print(f"  {'Technique':<24} {'Description'}")
@@ -82,7 +82,7 @@ def sim_to_real():
         print(f"  {s:<18} {d}")
 
 
-# ── 4. Imitation and RL for robots ────────────────────────────────────────────
+# -- 4. Imitation and RL for robots --------------------------------------------
 def robot_learning():
     print("\n=== Robot Learning Algorithms ===")
     print()
@@ -104,7 +104,7 @@ def robot_learning():
         ("PPO",        "On-policy; locomotion; stable but sample-hungry"),
         ("DDPG/TD3",   "Deterministic policy; continuous control"),
         ("Dreamer",    "World model; dream rollouts; efficient real-world RL"),
-        ("Foundation+RL","Pre-train on demos (BC); fine-tune with RL (π0 flow)"),
+        ("Foundation+RL","Pre-train on demos (BC); fine-tune with RL (pi0 flow)"),
     ]
     for m, d in rl_methods:
         print(f"  {m:<18} {d}")
@@ -113,12 +113,12 @@ def robot_learning():
     # Simulate a simple Diffusion Policy concept
     print("  Diffusion Policy concept:")
     print("    Action a_0 = start from noise a_T")
-    print("    Denoise: a_{t-1} = ε_θ(a_t, obs, t)  (conditioned on observation)")
-    print("    T denoising steps → smooth, multi-modal action distribution")
+    print("    Denoise: a_{t-1} = epsilon_theta(a_t, obs, t)  (conditioned on observation)")
+    print("    T denoising steps -> smooth, multi-modal action distribution")
     print("    Advantages: handles ambiguous demonstrations naturally")
 
 
-# ── 5. Benchmark environments ─────────────────────────────────────────────────
+# -- 5. Benchmark environments -------------------------------------------------
 def robot_benchmarks():
     print("\n=== Robot Benchmarks ===")
     print()

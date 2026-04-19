@@ -25,11 +25,11 @@ OUTPUT.mkdir(exist_ok=True)
 def demo_hoeffding():
     print("=== Hoeffding Bound (Generalisation) ===")
     import math
-    # With n samples and δ confidence, generalisation error ≤ train_error + sqrt(log(2/δ)/(2n))
+    # With n samples and delta confidence, generalisation error <= train_error + sqrt(log(2/delta)/(2n))
     delta = 0.05
     for n in [100, 500, 1000, 5000, 10000]:
         bound = math.sqrt(math.log(2/delta) / (2*n))
-        print(f"  n={n:>6}: gen gap ≤ {bound:.4f}  (95% confidence)")
+        print(f"  n={n:>6}: gen gap <= {bound:.4f}  (95% confidence)")
 
 def demo_regularisation_path():
     print("\n=== Regularisation Path (Ridge vs Lasso) ===")
@@ -53,15 +53,15 @@ def demo_regularisation_path():
 
     best_ridge = alphas[np.argmin(ridge_mse)]
     best_lasso = alphas[np.nanargmin(lasso_mse)]
-    print(f"  Best Ridge α: {best_ridge:.4f}  MSE: {min(ridge_mse):.4f}")
-    print(f"  Best Lasso α: {best_lasso:.4f}  MSE: {np.nanmin(lasso_mse):.4f}")
+    print(f"  Best Ridge alpha: {best_ridge:.4f}  MSE: {min(ridge_mse):.4f}")
+    print(f"  Best Lasso alpha: {best_lasso:.4f}  MSE: {np.nanmin(lasso_mse):.4f}")
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.semilogx(alphas, ridge_mse, "o-", label="Ridge")
     ax.semilogx(alphas, lasso_mse, "s-", label="Lasso")
     ax.axvline(best_ridge, ls="--", color="C0", alpha=0.5)
     ax.axvline(best_lasso, ls="--", color="C1", alpha=0.5)
-    ax.set_xlabel("α (regularisation strength)"); ax.set_ylabel("Test MSE")
+    ax.set_xlabel("alpha (regularisation strength)"); ax.set_ylabel("Test MSE")
     ax.set_title("Regularisation Path"); ax.legend()
     fig.savefig(OUTPUT / "regularisation_path.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: regularisation_path.png")

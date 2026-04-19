@@ -47,7 +47,7 @@ def demo():
     for inst, price in INSTANCE_PRICES.items():
         cost = estimate_training_cost(inst, 30)
         spot = estimate_training_cost(inst, 30, spot_discount=0.7)
-        print(f"    {inst:30s}  on-demand=${cost:7.2f}  spot≈${spot:6.2f}")
+        print(f"    {inst:30s}  on-demand=${cost:7.2f}  spot~=${spot:6.2f}")
 
     print("\n  Inference Cost (1M req/day, 50ms latency):")
     daily_cost, n_instances = estimate_inference_cost(1_000_000, 50, instance="aws_g4dn.xlarge")

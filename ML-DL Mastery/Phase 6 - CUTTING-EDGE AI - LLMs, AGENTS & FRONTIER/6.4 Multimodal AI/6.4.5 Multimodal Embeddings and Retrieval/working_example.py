@@ -16,7 +16,7 @@ def cosine_sim_matrix(A, B):
     return A @ B.T
 
 
-# ── 1. Multimodal embedding overview ─────────────────────────────────────────
+# -- 1. Multimodal embedding overview -----------------------------------------
 def mm_embedding_overview():
     print("=== Multimodal Embeddings ===")
     print()
@@ -38,7 +38,7 @@ def mm_embedding_overview():
         print(f"  {m:<16} {d}")
 
 
-# ── 2. Cross-modal retrieval demo ─────────────────────────────────────────────
+# -- 2. Cross-modal retrieval demo ---------------------------------------------
 def cross_modal_retrieval():
     print("\n=== Cross-Modal Retrieval Demo ===")
     print()
@@ -68,8 +68,8 @@ def cross_modal_retrieval():
     text_embeds  = base_embeds + rng.normal(0, 0.1, base_embeds.shape)
     image_embeds = base_embeds + rng.normal(0, 0.1, base_embeds.shape)
 
-    # Text → Image retrieval
-    print("  Text → Image retrieval:")
+    # Text -> Image retrieval
+    print("  Text -> Image retrieval:")
     query_text = text_embeds[2]   # "a scientist..."
     sims = cosine_sim_matrix(query_text[None], image_embeds)[0]
     ranked = np.argsort(-sims)
@@ -78,7 +78,7 @@ def cross_modal_retrieval():
         print(f"    {rank+1}. [sim={sims[idx]:.3f}] {images[idx]}{marker}")
 
     print()
-    print("  Image → Text retrieval:")
+    print("  Image -> Text retrieval:")
     query_image = image_embeds[4]  # chef kitchen
     sims = cosine_sim_matrix(query_image[None], text_embeds)[0]
     ranked = np.argsort(-sims)
@@ -89,10 +89,10 @@ def cross_modal_retrieval():
     print()
     # Compute retrieval recall@k
     correct_at_1 = int(np.argmax(sims) == 4)
-    print(f"  Recall@1 (image→text): {correct_at_1}")
+    print(f"  Recall@1 (image->text): {correct_at_1}")
 
 
-# ── 3. ImageBind: 6 modalities ───────────────────────────────────────────────
+# -- 3. ImageBind: 6 modalities -----------------------------------------------
 def imagebind_demo():
     print("\n=== ImageBind: 6-Modality Embedding ===")
     print()
@@ -102,7 +102,7 @@ def imagebind_demo():
     modalities = [
         ("Image",  "ViT-H/14 patch embeddings"),
         ("Text",   "Transformer (CLIP-style)"),
-        ("Audio",  "Spectrogram patches → ViT"),
+        ("Audio",  "Spectrogram patches -> ViT"),
         ("Video",  "SpaceTime ViT (image frames)"),
         ("Depth",  "Single-channel image patches"),
         ("IMU",    "Accelerometer/gyro: 1D conv + transformer"),
@@ -111,11 +111,11 @@ def imagebind_demo():
         print(f"  {m:<8} {d}")
     print()
     print("  Emergent cross-modal zero-shot:")
-    print("    Audio of dog barking → retrieve dog images (no audio-image pairs trained)")
-    print("    Because audio ↔ image ↔ text alignment generalises")
+    print("    Audio of dog barking -> retrieve dog images (no audio-image pairs trained)")
+    print("    Because audio <-> image <-> text alignment generalises")
 
 
-# ── 4. Multimodal RAG ─────────────────────────────────────────────────────────
+# -- 4. Multimodal RAG ---------------------------------------------------------
 def multimodal_rag():
     print("\n=== Multimodal RAG ===")
     print()
@@ -123,7 +123,7 @@ def multimodal_rag():
     print()
     approaches = [
         ("Late fusion",    "Separate text/image vectorstores; fuse retrieved results"),
-        ("Caption-based",  "Caption images → treat as text; store text embeddings"),
+        ("Caption-based",  "Caption images -> treat as text; store text embeddings"),
         ("Multi-vector",   "Store image embedding + text embedding separately"),
         ("ColPali",        "ViT patch embeddings for PDF pages; no OCR needed"),
         ("RAGatouille",    "ColBERT for text retrieval; late interaction"),
@@ -133,8 +133,8 @@ def multimodal_rag():
         print(f"  {a:<18} {d}")
     print()
     print("  ColPali (2024) key insight:")
-    print("    Embed entire PDF page as image → multi-vector using ViT patches")
-    print("    Query: embed text → late interaction score with page patches")
+    print("    Embed entire PDF page as image -> multi-vector using ViT patches")
+    print("    Query: embed text -> late interaction score with page patches")
     print("    Handles figures, charts, tables without OCR preprocessing")
 
 

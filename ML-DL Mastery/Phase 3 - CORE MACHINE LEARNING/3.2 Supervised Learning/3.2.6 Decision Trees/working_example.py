@@ -18,7 +18,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_dt")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Impurity measures ──────────────────────────────────────────────────────
+# -- 1. Impurity measures ------------------------------------------------------
 def impurity_measures():
     print("=== Impurity Measures ===")
 
@@ -53,7 +53,7 @@ def impurity_measures():
     print(f"  Split2 {split2}: IG={info_gain(parent, split2):.4f}")
 
 
-# ── 2. Decision tree from scratch ────────────────────────────────────────────
+# -- 2. Decision tree from scratch --------------------------------------------
 def decision_tree_scratch():
     print("\n=== Decision Tree From Scratch ===")
 
@@ -111,7 +111,7 @@ def decision_tree_scratch():
     print(f"  sklearn DecisionTree accuracy:  {sk.score(X_te, y_te):.4f}")
 
 
-# ── 3. sklearn Decision Tree ─────────────────────────────────────────────────
+# -- 3. sklearn Decision Tree -------------------------------------------------
 def sklearn_decision_tree():
     print("\n=== sklearn Decision Tree ===")
     iris = load_iris()
@@ -139,7 +139,7 @@ def sklearn_decision_tree():
     print(f"\n  Tree visualisation saved: {path}")
 
 
-# ── 4. Feature importance ────────────────────────────────────────────────────
+# -- 4. Feature importance ----------------------------------------------------
 def feature_importance():
     print("\n=== Feature Importance ===")
     X, y = make_classification(n_samples=500, n_features=10, n_informative=4,
@@ -153,7 +153,7 @@ def feature_importance():
         print(f"  feature_{i:<4}  {importances[i]:.4f}")
 
 
-# ── 5. Pruning (max_depth, min_samples_split, ccp_alpha) ─────────────────────
+# -- 5. Pruning (max_depth, min_samples_split, ccp_alpha) ---------------------
 def pruning_demo():
     print("\n=== Decision Tree Pruning ===")
     X, y = make_classification(n_samples=300, n_features=10, random_state=2)
@@ -170,7 +170,7 @@ def pruning_demo():
         print(f"  {alpha:<14.6f} {model.score(X_tr,y_tr):<14.4f} {model.score(X_te,y_te):.4f}")
 
 
-# ── 6. Decision Tree Regression ──────────────────────────────────────────────
+# -- 6. Decision Tree Regression ----------------------------------------------
 def regression_tree():
     print("\n=== Regression Tree ===")
     rng = np.random.default_rng(3)

@@ -23,7 +23,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── Module under test (inline for self-contained demo) ────────────────────────
+# -- Module under test (inline for self-contained demo) ------------------------
 def normalize(data: list[float]) -> list[float]:
     lo, hi = min(data), max(data)
     span = hi - lo or 1e-8
@@ -55,7 +55,7 @@ def train_knn(X_tr, y_tr, X_te, k=3) -> list:
     return preds
 
 
-# ── Test Cases ────────────────────────────────────────────────────────────────
+# -- Test Cases ----------------------------------------------------------------
 class TestNormalize(unittest.TestCase):
     """Tests for the normalize() preprocessing function."""
 

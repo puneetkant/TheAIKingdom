@@ -74,7 +74,7 @@ def demo_loss_curves():
     axes[1].plot(r, np.abs(r), label="MAE", lw=2, ls="--")
     delta = 1.0
     huber_r = np.where(np.abs(r)<=delta, .5*r**2, delta*(np.abs(r)-.5*delta))
-    axes[1].plot(r, huber_r, label=f"Huber(δ={delta})", lw=2, ls=":")
+    axes[1].plot(r, huber_r, label=f"Huber(delta={delta})", lw=2, ls=":")
     axes[1].set_title("Regression Losses"); axes[1].legend(); axes[1].set_ylim(0, 4)
 
     plt.tight_layout(); plt.savefig(OUTPUT / "loss_functions.png"); plt.close()

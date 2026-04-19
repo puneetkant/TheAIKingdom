@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 import math
 
 
-# ── Basic class ───────────────────────────────────────────────────────────────
+# -- Basic class ---------------------------------------------------------------
 class Circle:
     """Represents a circle — demonstrates properties and dunder methods."""
     _instances_created = 0      # class variable
@@ -16,10 +16,10 @@ class Circle:
     def __init__(self, radius):
         if radius < 0:
             raise ValueError("Radius cannot be negative")
-        self._radius = radius   # name-mangled via single underscore → "private by convention"
+        self._radius = radius   # name-mangled via single underscore -> "private by convention"
         Circle._instances_created += 1
 
-    # ── Properties ────────────────────────────────────────────────────────────
+    # -- Properties ------------------------------------------------------------
     @property
     def radius(self):
         return self._radius
@@ -27,7 +27,7 @@ class Circle:
     @radius.setter
     def radius(self, value):
         if value < 0:
-            raise ValueError("Radius must be ≥ 0")
+            raise ValueError("Radius must be >= 0")
         self._radius = value
 
     @property
@@ -38,7 +38,7 @@ class Circle:
     def circumference(self):
         return 2 * math.pi * self._radius
 
-    # ── Class & static methods ────────────────────────────────────────────────
+    # -- Class & static methods ------------------------------------------------
     @classmethod
     def from_diameter(cls, diameter):
         """Alternative constructor."""
@@ -53,7 +53,7 @@ class Circle:
     def instances_created(cls):
         return cls._instances_created
 
-    # ── Dunder methods ────────────────────────────────────────────────────────
+    # -- Dunder methods --------------------------------------------------------
     def __repr__(self):
         return f"Circle(radius={self._radius})"
 
@@ -97,7 +97,7 @@ def demo_basic_class():
     print(f"  after setter: {c1}")
 
 
-# ── Inheritance ───────────────────────────────────────────────────────────────
+# -- Inheritance ---------------------------------------------------------------
 class Animal:
     def __init__(self, name, sound):
         self.name  = name
@@ -148,7 +148,7 @@ def demo_inheritance():
     sd   = ServiceDog("Buddy", "Golden Retriever", "John")
 
     for a in [dog, cat, sd]:
-        print(f"  {a!r}  → speak: {a.speak()}")
+        print(f"  {a!r}  -> speak: {a.speak()}")
 
     print(f"  Dog.fetch: {dog.fetch('ball')}")
     print(f"  Cat.purr : {cat.purr()}")
@@ -158,7 +158,7 @@ def demo_inheritance():
     print(f"  issubclass(Dog, Animal) = {issubclass(Dog, Animal)}")
 
 
-# ── Abstract Base Class ───────────────────────────────────────────────────────
+# -- Abstract Base Class -------------------------------------------------------
 class Shape(ABC):
     @abstractmethod
     def area(self) -> float: ...
@@ -201,7 +201,7 @@ def demo_abc():
             print(f"  {s}: area={s.area:.2f}")   # Circle uses property
 
 
-# ── Dataclass ────────────────────────────────────────────────────────────────
+# -- Dataclass ----------------------------------------------------------------
 @dataclass(order=True)
 class Point:
     x: float
@@ -219,7 +219,7 @@ def demo_dataclass():
     p3 = Point(6, 8)
     print(f"  {p1}")
     print(f"  {p2}")
-    print(f"  distance p1→p2 = {p1.distance_to(p2):.2f}")
+    print(f"  distance p1->p2 = {p1.distance_to(p2):.2f}")
     print(f"  p1 < p2 (by x then y) = {p1 < p2}")
     print(f"  sorted: {sorted([p3, p2, p1])}")
 

@@ -7,7 +7,7 @@ import numpy as np
 from scipy import linalg
 
 
-# ── 1. Manual Gaussian elimination ───────────────────────────────────────────
+# -- 1. Manual Gaussian elimination -------------------------------------------
 def gaussian_elimination(A, b):
     """Solve Ax = b via Gaussian elimination with partial pivoting."""
     n = len(b)
@@ -44,7 +44,7 @@ def demo_gaussian():
     print(f"  numpy verify       = {np.linalg.solve(A, b)}")
 
 
-# ── 2. np.linalg.solve ────────────────────────────────────────────────────────
+# -- 2. np.linalg.solve --------------------------------------------------------
 def demo_numpy_solve():
     print("\n=== np.linalg.solve ===")
     systems = [
@@ -60,7 +60,7 @@ def demo_numpy_solve():
         print(f"  {label}: x = {x}  residual={residual:.2e}")
 
 
-# ── 3. LU decomposition ───────────────────────────────────────────────────────
+# -- 3. LU decomposition -------------------------------------------------------
 def demo_lu():
     print("\n=== LU Decomposition ===")
     A = np.array([[2, 1, 1],
@@ -71,7 +71,7 @@ def demo_lu():
     print(f"  P (permutation):\n{P.astype(int)}")
     print(f"  L (lower):\n{np.round(L, 4)}")
     print(f"  U (upper):\n{np.round(U, 4)}")
-    print(f"  P @ L @ U ≈ A: {np.allclose(P @ L @ U, A)}")
+    print(f"  P @ L @ U ~= A: {np.allclose(P @ L @ U, A)}")
 
     # Solve using LU
     lu_piv = linalg.lu_factor(A)
@@ -80,7 +80,7 @@ def demo_lu():
     print(f"  solve Ax=b via LU: x={x}  check: {np.round(A@x,4)}")
 
 
-# ── 4. Least squares (overdetermined systems) ─────────────────────────────────
+# -- 4. Least squares (overdetermined systems) ---------------------------------
 def demo_least_squares():
     print("\n=== Least Squares (Overdetermined System) ===")
     # Fit y = a + b*x to noisy data
@@ -101,7 +101,7 @@ def demo_least_squares():
     print(f"  matrix rank     : {rank}")
 
 
-# ── 5. Underdetermined system (infinite solutions) ────────────────────────────
+# -- 5. Underdetermined system (infinite solutions) ----------------------------
 def demo_underdetermined():
     print("\n=== Underdetermined System (infinite solutions) ===")
     A = np.array([[1, 2, 3], [4, 5, 6]], dtype=float)
@@ -112,11 +112,11 @@ def demo_underdetermined():
     print(f"  A (2×3, more unknowns than equations):\n{A}")
     print(f"  b: {b}")
     print(f"  min-norm solution x = {x_min_norm}")
-    print(f"  ||x||₂             = {np.linalg.norm(x_min_norm):.4f}")
+    print(f"  ||x||2             = {np.linalg.norm(x_min_norm):.4f}")
     print(f"  check Ax           = {np.round(A @ x_min_norm, 6)}")
 
 
-# ── 6. Checking existence and uniqueness ──────────────────────────────────────
+# -- 6. Checking existence and uniqueness --------------------------------------
 def demo_solution_analysis():
     print("\n=== Solution Existence & Uniqueness ===")
     cases = [
@@ -131,11 +131,11 @@ def demo_solution_analysis():
         n       = A.shape[1]
         print(f"  {label:<24}: rank(A)={rank_A}, rank([A|b])={rank_Ab}, n={n}")
         if rank_A == rank_Ab == n:
-            print(f"    → Unique solution: {np.round(np.linalg.solve(A, b), 4)}")
+            print(f"    -> Unique solution: {np.round(np.linalg.solve(A, b), 4)}")
         elif rank_A == rank_Ab < n:
-            print(f"    → Infinitely many solutions (underdetermined)")
+            print(f"    -> Infinitely many solutions (underdetermined)")
         else:
-            print(f"    → No solution (inconsistent)")
+            print(f"    -> No solution (inconsistent)")
 
 
 if __name__ == "__main__":

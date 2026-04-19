@@ -26,7 +26,7 @@ def softmax(z):
 def relu(z): return np.maximum(0, z)
 
 
-# ── 1. Dataset overview ───────────────────────────────────────────────────────
+# -- 1. Dataset overview -------------------------------------------------------
 def dataset_overview():
     print("=== Image Classification Datasets ===")
     datasets = [
@@ -37,12 +37,12 @@ def dataset_overview():
         ("iNaturalist","859K variable",      "8000+ species",             "Challenging fine-grained"),
     ]
     print(f"  {'Dataset':<12} {'Size':<20} {'Description':<30} Sota")
-    print(f"  {'─'*12} {'─'*20} {'─'*30} {'─'*20}")
+    print(f"  {'-'*12} {'-'*20} {'-'*30} {'-'*20}")
     for d, s, desc, sota in datasets:
         print(f"  {d:<12} {s:<20} {desc:<30} {sota}")
 
 
-# ── 2. Linear classifier (softmax regression) ─────────────────────────────────
+# -- 2. Linear classifier (softmax regression) ---------------------------------
 def linear_classifier():
     print("\n=== Linear Classifier on Digits ===")
     digits = load_digits()
@@ -66,16 +66,16 @@ def linear_classifier():
     for idx in top_pairs:
         i, j = divmod(idx, 10)
         if cm[i,j] > 0:
-            print(f"    True={i} → Pred={j}: {cm[i,j]} mistakes")
+            print(f"    True={i} -> Pred={j}: {cm[i,j]} mistakes")
 
 
-# ── 3. CNN from scratch ───────────────────────────────────────────────────────
+# -- 3. CNN from scratch -------------------------------------------------------
 class SimpleConvNet:
     """
     Minimal 2-layer CNN for 8×8 images (Digits dataset).
-    Layer 1: Conv 3×3, 8 filters → ReLU → MaxPool 2×2
-    Layer 2: Dense 200 → ReLU
-    Output:  Dense 10 → Softmax
+    Layer 1: Conv 3x3, 8 filters -> ReLU -> MaxPool 2x2
+    Layer 2: Dense 200 -> ReLU
+    Output:  Dense 10 -> Softmax
     """
     def __init__(self, rng=None):
         rng = rng or np.random.default_rng(0)
@@ -83,14 +83,14 @@ class SimpleConvNet:
         # Conv layer: 8 filters, 3×3, single channel
         self.F  = rng.standard_normal((8, 1, 3, 3)) * s   # (nf, 1, kH, kW)
         self.bf = np.zeros(8)
-        # FC layers (input: 8×3×3 = 72 after pool from 8×8 → 3×3 per filter)
+        # FC layers (input: 8x3x3 = 72 after pool from 8x8 -> 3x3 per filter)
         self.W1 = rng.standard_normal((72, 32)) * s   # flattened after pool
         self.b1 = np.zeros(32)
         self.W2 = rng.standard_normal((32, 10)) * s
         self.b2 = np.zeros(10)
 
     def conv_pool(self, X):
-        """X: (B, 8, 8)  → (B, 8, 3, 3) after conv+maxpool"""
+        """X: (B, 8, 8)  -> (B, 8, 3, 3) after conv+maxpool"""
         B, H, W = X.shape
         nf = self.F.shape[0]; kH, kW = 3, 3
         out_H, out_W = H - kH + 1, W - kW + 1   # 6×6
@@ -160,11 +160,11 @@ def cnn_demo():
     acc_ts = (probs_ts.argmax(1) == yts).mean()
 
     print(f"  Train: {len(Xtr)}  Test: {len(Xts)}")
-    print(f"  Loss: {losses[0]:.4f} → {losses[-1]:.4f}")
+    print(f"  Loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
     print(f"  Train acc: {acc_tr:.4f}  Test acc: {acc_ts:.4f}")
 
 
-# ── 4. Top-k accuracy ─────────────────────────────────────────────────────────
+# -- 4. Top-k accuracy ---------------------------------------------------------
 def topk_accuracy():
     print("\n=== Top-k Accuracy ===")
     print("  Top-1: correct class is the argmax prediction")
@@ -185,7 +185,7 @@ def topk_accuracy():
     print(f"  Simulated model (n={n}, C={C}):")
     for k in [1, 5, 10]:
         print(f"    Top-{k} accuracy: {topk(logits, labels, k):.4f}  "
-              f"(random baseline ≈ {min(k/C, 1):.4f})")
+              f"(random baseline ~= {min(k/C, 1):.4f})")
 
     print()
     print("  ImageNet historical top-5 accuracy:")
@@ -202,7 +202,7 @@ def topk_accuracy():
         print(f"    {m:<22} {acc:.1f}%")
 
 
-# ── 5. Common evaluation metrics ─────────────────────────────────────────────
+# -- 5. Common evaluation metrics ---------------------------------------------
 def evaluation_metrics():
     print("\n=== Image Classification Metrics ===")
     metrics = [

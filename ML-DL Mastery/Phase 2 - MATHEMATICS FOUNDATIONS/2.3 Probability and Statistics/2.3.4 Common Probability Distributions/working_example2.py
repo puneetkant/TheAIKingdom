@@ -27,21 +27,21 @@ def demo_ml_distributions():
     # 1. Gaussian
     for mu, sig in [(0, 1), (0, 2), (2, 0.5)]:
         y = np.exp(-0.5*((x-mu)/sig)**2) / (sig * math.sqrt(2*math.pi))
-        axes[0].plot(x, y, label=f"μ={mu},σ={sig}")
-    axes[0].set_title("Gaussian N(μ,σ²)"); axes[0].legend(fontsize=7)
+        axes[0].plot(x, y, label=f"mu={mu},sigma={sig}")
+    axes[0].set_title("Gaussian N(mu,sigma²)"); axes[0].legend(fontsize=7)
 
     # 2. Log-Normal
     xs = np.linspace(0.01, 6, 300)
     for mu, sig in [(0, 0.5), (0.5, 0.5), (0, 1)]:
         y = np.exp(-0.5*((np.log(xs)-mu)/sig)**2) / (xs * sig * math.sqrt(2*math.pi))
-        axes[1].plot(xs, y, label=f"μ={mu},σ={sig}")
+        axes[1].plot(xs, y, label=f"mu={mu},sigma={sig}")
     axes[1].set_title("Log-Normal"); axes[1].legend(fontsize=7)
 
     # 3. Laplace (double-exponential) — used for L1 regularisation
     for b in [0.5, 1, 2]:
         y = np.exp(-np.abs(x) / b) / (2*b)
         axes[2].plot(x, y, label=f"b={b}")
-    axes[2].set_title("Laplace (→ L1 reg)"); axes[2].legend(fontsize=7)
+    axes[2].set_title("Laplace (-> L1 reg)"); axes[2].legend(fontsize=7)
 
     # 4. Beta — conjugate prior for Bernoulli
     xb = np.linspace(0.001, 0.999, 300)
@@ -50,7 +50,7 @@ def demo_ml_distributions():
         B = math.lgamma(a) + math.lgamma(b) - math.lgamma(a+b)
         return np.exp((a-1)*np.log(x) + (b-1)*np.log(1-x) - B)
     for a, b in [(2,2), (5,2), (0.5,0.5)]:
-        axes[3].plot(xb, beta_pdf(xb,a,b), label=f"α={a},β={b}")
+        axes[3].plot(xb, beta_pdf(xb,a,b), label=f"alpha={a},beta={b}")
     axes[3].set_title("Beta (prior for p)"); axes[3].legend(fontsize=7)
 
     # 5. Binomial PMF
@@ -65,12 +65,12 @@ def demo_ml_distributions():
     ks = np.arange(0, 16)
     pmf = np.array([math.exp(-lam) * lam**k / math.factorial(k) for k in ks])
     axes[5].bar(ks, pmf, color="coral", alpha=0.7)
-    axes[5].set_title(f"Poisson(λ={lam})")
+    axes[5].set_title(f"Poisson(lambda={lam})")
 
     # 7. Student-t (used for heavy tails)
     for df in [1, 2, 5, 30]:
         y = (1 + x**2/df)**(-0.5*(df+1)) * math.exp(math.lgamma((df+1)/2) - math.lgamma(df/2)) / math.sqrt(df*math.pi)
-        axes[6].plot(x, y, label=f"ν={df}")
+        axes[6].plot(x, y, label=f"nu={df}")
     axes[6].set_title("Student-t"); axes[6].legend(fontsize=7)
 
     # 8. Chi-squared

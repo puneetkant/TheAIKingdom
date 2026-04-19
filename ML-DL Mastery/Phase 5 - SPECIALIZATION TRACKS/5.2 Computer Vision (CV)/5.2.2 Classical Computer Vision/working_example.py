@@ -34,7 +34,7 @@ def convolve2d(img, kernel):
     return out
 
 
-# ── 1. Edge Detection ─────────────────────────────────────────────────────────
+# -- 1. Edge Detection ---------------------------------------------------------
 def edge_detection():
     print("=== Edge Detection ===")
     img = make_test_image()
@@ -86,15 +86,15 @@ def edge_detection():
     print(f"  Plot: {path}")
 
 
-# ── 2. Corner Detection (Harris) ─────────────────────────────────────────────
+# -- 2. Corner Detection (Harris) ---------------------------------------------
 def corner_detection():
     print("\n=== Harris Corner Detection ===")
     print("  Principle: corners have large gradients in all directions")
-    print("  M = [Σ Ix², Σ IxIy ; Σ IxIy, Σ Iy²]  (structure tensor)")
+    print("  M = [Sigma Ix², Sigma IxIy ; Sigma IxIy, Sigma Iy²]  (structure tensor)")
     print("  R = det(M) - k·trace(M)²")
-    print("     R >> 0 → corner")
-    print("     R < 0  → edge")
-    print("     R ≈ 0  → flat")
+    print("     R >> 0 -> corner")
+    print("     R < 0  -> edge")
+    print("     R ~= 0  -> flat")
     print()
 
     img = make_test_image()
@@ -132,7 +132,7 @@ def corner_detection():
     print(f"  Plot: {path}")
 
 
-# ── 3. SIFT overview ──────────────────────────────────────────────────────────
+# -- 3. SIFT overview ----------------------------------------------------------
 def sift_overview():
     print("\n=== SIFT (Scale-Invariant Feature Transform) ===")
     print("  Authors: Lowe (2004)  — patented, now open (2020)")
@@ -161,7 +161,7 @@ def sift_overview():
     print("  Related: SURF (faster), ORB (free, binary), BRISK, AKAZE")
 
 
-# ── 4. Histogram of Oriented Gradients (HoG) ─────────────────────────────────
+# -- 4. Histogram of Oriented Gradients (HoG) ---------------------------------
 def hog_demo():
     print("\n=== HOG (Histogram of Oriented Gradients) ===")
     img = make_test_image(32, 32)
@@ -188,20 +188,20 @@ def hog_demo():
 
     print(f"  Cell HOG histogram (9 bins, 0-180°):")
     for bi in range(n_bins):
-        bar = "█" * int(hist[bi] / (hist.max()+1e-9) * 12)
+        bar = "#" * int(hist[bi] / (hist.max()+1e-9) * 12)
         print(f"    Bin {bi*20:>3}-{(bi+1)*20:>3}°: {bar} ({hist[bi]:.3f})")
 
     H, W = img.shape
     cells_h, cells_w = H // 8, W // 8
     print(f"\n  Full image {H}×{W}: {cells_h}×{cells_w} cells × 9 bins = "
           f"{cells_h * cells_w * 9} features")
-    print(f"  With 2×2 block normalisation → {(cells_h-1)*(cells_w-1)*4*9} features")
+    print(f"  With 2x2 block normalisation -> {(cells_h-1)*(cells_w-1)*4*9} features")
     print()
     print("  HOG for pedestrian detection (Dalal & Triggs 2005):")
-    print("    64×128 window → 3780-dim HOG → Linear SVM → state-of-art in 2005")
+    print("    64x128 window -> 3780-dim HOG -> Linear SVM -> state-of-art in 2005")
 
 
-# ── 5. Image segmentation ─────────────────────────────────────────────────────
+# -- 5. Image segmentation -----------------------------------------------------
 def image_segmentation():
     print("\n=== Image Segmentation ===")
     print("  Semantic:  assign a class label to every pixel")

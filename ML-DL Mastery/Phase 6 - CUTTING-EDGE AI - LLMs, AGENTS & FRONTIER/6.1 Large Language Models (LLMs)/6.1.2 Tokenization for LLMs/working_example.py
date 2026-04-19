@@ -11,12 +11,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_tokenization")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Why tokenisation matters ───────────────────────────────────────────────
+# -- 1. Why tokenisation matters -----------------------------------------------
 def tokenization_intro():
     print("=== Tokenisation for LLMs ===")
     print()
     print("  LLMs operate on token sequences, not raw text or characters.")
-    print("  Tokeniser maps strings ↔ integer IDs (vocabulary).")
+    print("  Tokeniser maps strings <-> integer IDs (vocabulary).")
     print()
     print("  Tokeniser comparison:")
     info = [
@@ -32,14 +32,14 @@ def tokenization_intro():
         print(f"  {m:<14} {tok:<16} {alg:<12} {vocab:<10,} {notes}")
 
 
-# ── 2. Byte-Pair Encoding (BPE) ───────────────────────────────────────────────
+# -- 2. Byte-Pair Encoding (BPE) -----------------------------------------------
 def bpe_demo():
     print("\n=== Byte-Pair Encoding (BPE) ===")
     print()
     print("  Algorithm:")
     print("    1. Start with character-level vocabulary")
     print("    2. Count all adjacent pair frequencies")
-    print("    3. Merge most frequent pair → new token")
+    print("    3. Merge most frequent pair -> new token")
     print("    4. Repeat for N merge steps")
     print()
 
@@ -79,20 +79,20 @@ def bpe_demo():
             break
         best = max(pairs, key=pairs.get)
         vocab = merge_vocab(best, vocab)
-        print(f"  Merge {i+1}: {best!r} → {''.join(best)!r}  (freq={pairs[best]})")
+        print(f"  Merge {i+1}: {best!r} -> {''.join(best)!r}  (freq={pairs[best]})")
 
     print()
     print("  Final vocab segments:", list(vocab.keys()))
 
 
-# ── 3. WordPiece tokenisation ─────────────────────────────────────────────────
+# -- 3. WordPiece tokenisation -------------------------------------------------
 def wordpiece_demo():
     print("\n=== WordPiece Tokenisation ===")
     print()
     print("  Used by BERT.  Key difference from BPE:")
     print("    BPE:       merges most frequent pair")
     print("    WordPiece: merges pair maximising likelihood of corpus")
-    print("               ≈ maximise log P(corpus) = Σ log P(token)")
+    print("               ~= maximise log P(corpus) = Sigma log P(token)")
     print()
     # Simple illustrative tokenisation
     vocab = {"[UNK]", "un", "##happy", "##ness", "happy", "ness", "unhappy", "good"}
@@ -109,7 +109,7 @@ def wordpiece_demo():
     print("  [CLS] and [SEP] are special tokens added at sequence level")
 
 
-# ── 4. Tokenisation effects ───────────────────────────────────────────────────
+# -- 4. Tokenisation effects ---------------------------------------------------
 def tokenization_effects():
     print("\n=== Tokenisation Effects and Gotchas ===")
     print()
@@ -118,9 +118,9 @@ def tokenization_effects():
         ("Arithmetic",     "'9.11 > 9.9'  — tokens split badly: '9', '.', '11'"),
         ("Code indentation","Python: 4 spaces vs 1 tab token; affects continuation"),
         ("Non-English",    "Non-latin scripts use far more tokens; 'efficiency gap'"),
-        ("Numbers",        "Large numbers tokenised digit-by-digit → poor maths"),
-        ("Repeated chars", "'aaaaaaa' → n separate tokens; no compression"),
-        ("Leading spaces", "' hello' ≠ 'hello'; whitespace matters"),
+        ("Numbers",        "Large numbers tokenised digit-by-digit -> poor maths"),
+        ("Repeated chars", "'aaaaaaa' -> n separate tokens; no compression"),
+        ("Leading spaces", "' hello' != 'hello'; whitespace matters"),
     ]
     for issue, desc in issues:
         print(f"  {issue:<20} {desc}")
@@ -142,13 +142,13 @@ def tokenization_effects():
         tokens = int(chars / ratio)
         print(f"  {name:<22} {chars:<8} {tokens:<10} ~{ratio:.1f}")
     print()
-    print("  Rule of thumb: 1 token ≈ 4 chars English ≈ ¾ word")
+    print("  Rule of thumb: 1 token ~= 4 chars English ~= ¾ word")
 
     print()
     print("  Context window cost:")
     print("    GPT-4o: 1M tokens input = ~$5.00")
     print("    LLaMA-3-8B (self-hosted): ~$0.10/1M tokens")
-    print("    → Tokenisation efficiency directly affects operational cost")
+    print("    -> Tokenisation efficiency directly affects operational cost")
 
 
 if __name__ == "__main__":

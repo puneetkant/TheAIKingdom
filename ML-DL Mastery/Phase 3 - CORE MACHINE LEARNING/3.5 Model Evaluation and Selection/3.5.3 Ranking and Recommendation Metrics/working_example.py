@@ -6,7 +6,7 @@ filtering evaluation.
 import numpy as np
 
 
-# ── 1. Introduction to ranking metrics ───────────────────────────────────────
+# -- 1. Introduction to ranking metrics ---------------------------------------
 def intro():
     print("=== Ranking and Recommendation Metrics ===")
     print("  Evaluate ordered lists, not just set membership")
@@ -16,7 +16,7 @@ def intro():
     print("    - How precisely are the top-K items relevant?")
 
 
-# ── 2. Precision@K, Recall@K, F1@K ──────────────────────────────────────────
+# -- 2. Precision@K, Recall@K, F1@K ------------------------------------------
 def precision_recall_at_k():
     print("\n=== Precision@K, Recall@K, F1@K ===")
     # Recommended items (order matters for P@K)
@@ -36,10 +36,10 @@ def precision_recall_at_k():
         print(f"  {k:<5} {prec:<18.4f} {rec:<18.4f} {f1:.4f}")
 
 
-# ── 3. Average Precision (AP) and MAP ────────────────────────────────────────
+# -- 3. Average Precision (AP) and MAP ----------------------------------------
 def map_score():
     print("\n=== MAP (Mean Average Precision) ===")
-    print("  AP = Σ (P@k × rel(k)) / |relevant|")
+    print("  AP = Sigma (P@k x rel(k)) / |relevant|")
     print("  MAP = mean AP over all users/queries")
 
     def avg_precision(recommended, relevant_set):
@@ -64,11 +64,11 @@ def map_score():
     print(f"\n  MAP = {np.mean(aps):.4f}")
 
 
-# ── 4. NDCG (Normalised Discounted Cumulative Gain) ──────────────────────────
+# -- 4. NDCG (Normalised Discounted Cumulative Gain) --------------------------
 def ndcg():
     print("\n=== NDCG (Normalised DCG) ===")
     print("  Rewards relevant items at higher ranks (position-aware)")
-    print("  DCG = Σ (2^rel_i - 1) / log2(i+2)")
+    print("  DCG = Sigma (2^rel_i - 1) / log2(i+2)")
     print("  NDCG = DCG / IDCG  (IDCG = DCG of perfect ranking)")
 
     def dcg(gains, k=None):
@@ -101,7 +101,7 @@ def ndcg():
         print(f"  NDCG@{k} = {score:.4f}")
 
 
-# ── 5. MRR (Mean Reciprocal Rank) ────────────────────────────────────────────
+# -- 5. MRR (Mean Reciprocal Rank) --------------------------------------------
 def mrr_score():
     print("\n=== MRR (Mean Reciprocal Rank) ===")
     print("  RR = 1 / rank_of_first_relevant_item")
@@ -109,9 +109,9 @@ def mrr_score():
     print("  Useful when user only cares about the FIRST relevant result")
 
     queries = [
-        ([5, 3, 1, 8, 2], {1, 7}),   # first hit at rank 3 → RR = 1/3
-        ([2, 4, 6, 8, 10], {2}),      # first hit at rank 1 → RR = 1
-        ([9, 8, 7, 6, 5],  {3}),      # no hit in top-5  → RR = 0
+        ([5, 3, 1, 8, 2], {1, 7}),   # first hit at rank 3 -> RR = 1/3
+        ([2, 4, 6, 8, 10], {2}),      # first hit at rank 1 -> RR = 1
+        ([9, 8, 7, 6, 5],  {3}),      # no hit in top-5  -> RR = 0
     ]
     rrs = []
     for i, (rec, rel) in enumerate(queries):
@@ -126,7 +126,7 @@ def mrr_score():
     print(f"\n  MRR = {np.mean(rrs):.4f}")
 
 
-# ── 6. Hit Rate (HR@K) and Coverage ──────────────────────────────────────────
+# -- 6. Hit Rate (HR@K) and Coverage ------------------------------------------
 def hit_rate():
     print("\n=== Hit Rate@K and Coverage ===")
     print("  HR@K = fraction of users for whom at least one relevant item")
@@ -148,11 +148,11 @@ def hit_rate():
 
     hr       = hits / n_user
     coverage = len(all_recommended) / n_item
-    print(f"  HR@{K}    = {hr:.4f}  ({hits}/{n_user} users had ≥1 hit)")
+    print(f"  HR@{K}    = {hr:.4f}  ({hits}/{n_user} users had >=1 hit)")
     print(f"  Catalog coverage = {coverage:.4f}  ({len(all_recommended)}/{n_item} items recommended)")
 
 
-# ── 7. Collaborative filtering evaluation ─────────────────────────────────────
+# -- 7. Collaborative filtering evaluation -------------------------------------
 def collaborative_filtering_eval():
     print("\n=== Collaborative Filtering Evaluation ===")
     print("  Offline: hold-out last interaction per user, measure ranking metrics")

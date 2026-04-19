@@ -13,7 +13,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_embeddings")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── toy corpus ────────────────────────────────────────────────────────────────
+# -- toy corpus ----------------------------------------------------------------
 CORPUS_RAW = """
 the king rules the kingdom and the queen also rules
 the man is a prince and the woman is a princess
@@ -37,7 +37,7 @@ def build_vocab(corpus: str, min_freq=1):
 def sigmoid(x): return 1 / (1 + np.exp(-x.clip(-10, 10)))
 
 
-# ── Word2Vec Skip-gram (negative sampling) ────────────────────────────────────
+# -- Word2Vec Skip-gram (negative sampling) ------------------------------------
 class Word2Vec:
     """Simplified Skip-gram with negative sampling."""
     def __init__(self, vocab_size, dim=10, rng=None):
@@ -105,7 +105,7 @@ def word2vec_demo():
     model = Word2Vec(len(vocab), dim=15, rng=rng)
     losses = model.train(token_ids, window=2, n_neg=4, lr=0.02, epochs=60, rng=rng)
 
-    print(f"  Loss: {losses[0]:.4f} → {losses[-1]:.4f}")
+    print(f"  Loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
     print()
 
     # Most similar words
@@ -116,7 +116,7 @@ def word2vec_demo():
         words = [(idx2w[i], f"{s:.3f}") for i, s in sims]
         print(f"  Similar to '{query}': {words}")
 
-    # Word analogy: king - man + woman ≈ queen
+    # Word analogy: king - man + woman ~= queen
     if all(w in vocab for w in ["king", "man", "woman", "queen"]):
         v_king  = model.embedding(vocab["king"])
         v_man   = model.embedding(vocab["man"])
@@ -151,29 +151,29 @@ def word2vec_demo():
     print(f"\n  2D embedding plot: {path}")
 
 
-# ── GloVe theory ──────────────────────────────────────────────────────────────
+# -- GloVe theory --------------------------------------------------------------
 def glove_theory():
     print("\n=== GloVe (Global Vectors for Word Representation) ===")
     print("  Key insight: exploit global word co-occurrence statistics")
     print()
-    print("  Objective: minimise  Σ f(X_ij) · (w_i · w̃_j + b_i + b̃_j - log X_ij)²")
+    print("  Objective: minimise  Sigma f(X_ij) · (w_i · w_j + b_i + b_j - log X_ij)²")
     print("             i,j")
     print()
     print("  where X_ij  = co-occurrence count of words i and j")
     print("        w_i   = centre word vector")
-    print("        w̃_j   = context word vector")
+    print("        w_j   = context word vector")
     print("        f(x)  = weighting function  (caps very common pairs)")
     print()
-    print("  Weighting:  f(x) = (x/x_max)^α  if x < x_max,  else 1")
-    print("                     α = 0.75, x_max = 100 (typical)")
+    print("  Weighting:  f(x) = (x/x_max)^alpha  if x < x_max,  else 1")
+    print("                     alpha = 0.75, x_max = 100 (typical)")
     print()
-    print("  Final embedding: w + w̃  (average of both vectors)")
+    print("  Final embedding: w + w  (average of both vectors)")
     print()
     print("  Pre-trained GloVe: glove.6B (6B tokens, dim 50/100/200/300)")
-    print("  Usage: np.load('glove.6B.100d.txt') → dict {word: vector}")
+    print("  Usage: np.load('glove.6B.100d.txt') -> dict {word: vector}")
 
 
-# ── fastText ──────────────────────────────────────────────────────────────────
+# -- fastText ------------------------------------------------------------------
 def fasttext_overview():
     print("\n=== fastText (Subword Embeddings) ===")
     print("  Problem with Word2Vec: OOV (out-of-vocabulary) words get no vector")
@@ -190,7 +190,7 @@ def fasttext_overview():
     print("  OOV handling: compose from subword n-grams (no lookup needed)")
     print("  Better for morphologically rich languages (Finnish, Turkish)")
     print()
-    print("  Pre-trained: fasttext.cc/en → 2M words, 300-dim")
+    print("  Pre-trained: fasttext.cc/en -> 2M words, 300-dim")
 
     # Simulate OOV robustness
     known   = "learn"
@@ -202,13 +202,13 @@ def fasttext_overview():
     print(f"  Shared subwords: {sorted(shared)}")
 
 
-# ── Embedding comparison ───────────────────────────────────────────────────────
+# -- Embedding comparison -------------------------------------------------------
 def embedding_comparison():
     print("\n=== Word Embedding Comparison ===")
     rows = [
         ("Method",        "Training",      "OOV", "Dim",       "Context"),
-        ("Word2Vec CBoW", "Context→word",  "No",  "50-300",    "Fixed window"),
-        ("Word2Vec SG",   "Word→context",  "No",  "50-300",    "Fixed window"),
+        ("Word2Vec CBoW", "Context->word",  "No",  "50-300",    "Fixed window"),
+        ("Word2Vec SG",   "Word->context",  "No",  "50-300",    "Fixed window"),
         ("GloVe",         "Global co-occ", "No",  "50-300",    "Global matrix"),
         ("fastText",      "Subword SG",    "Yes", "300",       "Fixed window"),
         ("ELMo",          "Bi-LSTM LM",    "Yes", "1024",      "Full sentence"),
@@ -217,7 +217,7 @@ def embedding_comparison():
     ]
     w = [14, 16, 5, 10, 14]
     print(f"  {'Method':<14} {'Training':<16} {'OOV':<5} {'Dim':<10} Context")
-    print(f"  {'─'*14} {'─'*16} {'─'*5} {'─'*10} {'─'*14}")
+    print(f"  {'-'*14} {'-'*16} {'-'*5} {'-'*10} {'-'*14}")
     for r in rows[1:]:
         print(f"  {r[0]:<14} {r[1]:<16} {r[2]:<5} {r[3]:<10} {r[4]}")
 

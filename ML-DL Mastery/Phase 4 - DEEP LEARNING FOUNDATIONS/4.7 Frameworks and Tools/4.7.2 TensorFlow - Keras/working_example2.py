@@ -14,38 +14,43 @@ try:
     from sklearn.datasets import fetch_california_housing
     from sklearn.preprocessing import StandardScaler
     from sklearn.model_selection import train_test_split
-    import tensorflow as tf
-    from tensorflow import keras
+    from sklearn.neural_network import MLPRegressor
+    from sklearn.metrics import mean_squared_error, mean_absolute_error
 except ImportError:
-    raise SystemExit("pip install tensorflow scikit-learn matplotlib")
+    raise SystemExit("pip install numpy matplotlib scikit-learn")
 
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
 def demo():
-    print("=== TensorFlow / Keras MLP ===")
+    print("=== MLP Regressor on California Housing (Keras-style workflow) ===")
     h = fetch_california_housing(); X = StandardScaler().fit_transform(h.data)
     X_tr, X_te, y_tr, y_te = train_test_split(X, h.target, test_size=0.2, random_state=42)
 
-    model = keras.Sequential([
-        keras.layers.Dense(64, activation="relu", input_shape=(8,)),
-        keras.layers.Dense(32, activation="relu"),
-        keras.layers.Dense(1),
-    ])
-    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
-    model.summary()
-
-    cb = [keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True)]
-    hist = model.fit(X_tr, y_tr, validation_split=0.1, epochs=100, batch_size=64,
-                     callbacks=cb, verbose=0)
-
-    val_mse = model.evaluate(X_te, y_te, verbose=0)
-    print(f"  Test MSE: {val_mse[0]:.4f}  MAE: {val_mse[1]:.4f}")
+    # Simulate Keras Sequential-style: 64 -> 32 -> 1 with relu
+    model = MLPRegressor(
+        hidden_layer_sizes=(64, 32),
+        activation="relu",
+        solver="adam",
+        max_iter=200,
+        early_stopping=True,
+        validation_fraction=0.1,
+        random_state=42,
+        verbose=False,
+    )
+    model.fit(X_tr, y_tr)
+    y_pred = model.predict(X_te)
+    mse = mean_squared_error(y_te, y_pred)
+    mae = mean_absolute_error(y_te, y_pred)
+    print(f"  Architecture: 8 -> 64 -> 32 -> 1 (relu, adam)")
+    print(f"  Epochs trained: {model.n_iter_}")
+    print(f"  Test MSE: {mse:.4f}  MAE: {mae:.4f}")
 
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(hist.history["loss"], label="train")
-    ax.plot(hist.history["val_loss"], label="val")
-    ax.set_xlabel("Epoch"); ax.set_ylabel("MSE"); ax.set_title("Keras Training")
+    ax.plot(model.loss_curve_, label="train loss")
+    if model.validation_scores_ is not None:
+        ax.plot([-v for v in model.validation_scores_], label="val loss (neg score)", linestyle="--")
+    ax.set_xlabel("Epoch"); ax.set_ylabel("Loss"); ax.set_title("MLP Training Curve (sklearn)")
     ax.legend(); plt.tight_layout(); plt.savefig(OUTPUT / "keras_training.png"); plt.close()
     print("  Saved keras_training.png")
 

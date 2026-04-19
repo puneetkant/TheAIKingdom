@@ -11,7 +11,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def llm_families():
     print("=== Key LLM Families ===")
     print()
-    print("  ── OpenAI GPT Family ─────────────────────────────────────────────")
+    print("  -- OpenAI GPT Family ---------------------------------------------")
     gpt = [
         ("GPT-1",   "2018", "117M",   "Decoder-only; first large language model"),
         ("GPT-2",   "2019", "1.5B",   "Trained on WebText; zero-shot capabilities"),
@@ -26,7 +26,7 @@ def llm_families():
         print(f"  {m:<10} {y}  {s:<10} {d}")
 
     print()
-    print("  ── Meta LLaMA Family ─────────────────────────────────────────────")
+    print("  -- Meta LLaMA Family ---------------------------------------------")
     llama = [
         ("LLaMA-1",   "2023", "7–65B",  "Open weights; RoPE; RMSNorm; SwiGLU"),
         ("LLaMA-2",   "2023", "7–70B",  "GQA; RLHF chat; 4k context"),
@@ -40,7 +40,7 @@ def llm_families():
         print(f"  {m:<12} {y}  {s:<12} {d}")
 
     print()
-    print("  ── Mistral / Mixtral Family ──────────────────────────────────────")
+    print("  -- Mistral / Mixtral Family --------------------------------------")
     mistral = [
         ("Mistral-7B",  "2023", "7B",    "Sliding window attention; fast; best 7B at launch"),
         ("Mixtral-8×7B","2023", "46.7B","Sparse MoE; 8 experts, top-2 active; 56 active params"),
@@ -52,7 +52,7 @@ def llm_families():
         print(f"  {m:<16} {y}  {s:<8} {d}")
 
     print()
-    print("  ── Google / DeepMind Family ──────────────────────────────────────")
+    print("  -- Google / DeepMind Family --------------------------------------")
     google = [
         ("PaLM",      "2022", "540B",  "Pathways; 780B tokens; few-shot SOTA"),
         ("PaLM-2",    "2023", "340B?", "Multilingual; efficient; powers Bard"),
@@ -66,7 +66,7 @@ def llm_families():
         print(f"  {m:<14} {y}  {s:<8} {d}")
 
     print()
-    print("  ── Anthropic Claude Family ───────────────────────────────────────")
+    print("  -- Anthropic Claude Family ---------------------------------------")
     claude = [
         ("Claude-1",    "2023", "?",    "Constitutional AI; RLHF; helpful, harmless"),
         ("Claude-2",    "2023", "?",    "100k context; better coding and analysis"),
@@ -79,7 +79,7 @@ def llm_families():
         print(f"  {m:<14} {y}  {s:<6} {d}")
 
     print()
-    print("  ── Other Notable Models ──────────────────────────────────────────")
+    print("  -- Other Notable Models ------------------------------------------")
     others = [
         ("Falcon",        "TII UAE; 180B; open; 1T tokens"),
         ("Qwen-2.5",      "Alibaba; 0.5B–72B; multilingual; excellent coding"),

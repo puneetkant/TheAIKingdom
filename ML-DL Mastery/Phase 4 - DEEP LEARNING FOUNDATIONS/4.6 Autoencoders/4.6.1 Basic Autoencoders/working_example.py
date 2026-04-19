@@ -21,9 +21,9 @@ def relu(z):    return np.maximum(0, z)
 def relu_d(z):  return (z > 0).astype(float)
 
 
-# ── Basic Autoencoder ─────────────────────────────────────────────────────────
+# -- Basic Autoencoder ---------------------------------------------------------
 class Autoencoder:
-    """3-layer AE: encoder (d→h) + decoder (h→d) with SGD."""
+    """3-layer AE: encoder (d->h) + decoder (h->d) with SGD."""
     def __init__(self, input_dim, hidden_dim, activation="sigmoid", rng=None, tied=False):
         rng = rng or np.random.default_rng(0)
         s   = np.sqrt(2 / (input_dim + hidden_dim))
@@ -92,18 +92,18 @@ class Autoencoder:
         return losses
 
 
-# ── 1. Architecture overview ──────────────────────────────────────────────────
+# -- 1. Architecture overview --------------------------------------------------
 def architecture_overview():
     print("=== Autoencoder Architecture ===")
-    print("  Input X → Encoder → Bottleneck z → Decoder → Reconstruction X̂")
+    print("  Input X -> Encoder -> Bottleneck z -> Decoder -> Reconstruction X")
     print()
-    print("  Encoder: f_θ: X → Z    (compress)")
-    print("  Decoder: g_φ: Z → X̂   (reconstruct)")
-    print("  Loss: L(X, X̂) = ||X - X̂||²  (MSE) or BCE for binary inputs")
+    print("  Encoder: f_theta: X -> Z    (compress)")
+    print("  Decoder: g_phi: Z -> X   (reconstruct)")
+    print("  Loss: L(X, X) = ||X - X||²  (MSE) or BCE for binary inputs")
     print()
     print("  Goal: learn a compact representation z (latent code)")
-    print("  z dimension < input dimension → undercomplete AE")
-    print("  z dimension ≥ input dimension → overcomplete AE (needs regularisation)")
+    print("  z dimension < input dimension -> undercomplete AE")
+    print("  z dimension >= input dimension -> overcomplete AE (needs regularisation)")
     print()
     print("  Applications:")
     apps = [
@@ -111,14 +111,14 @@ def architecture_overview():
         ("Anomaly detection",        "high reconstruction error = anomaly"),
         ("Denoising",                "learn to remove noise"),
         ("Feature learning",         "pre-training initialisation"),
-        ("Data compression",         "encode → transmit → decode"),
-        ("Generation (VAE/VQVAE)",   "sample z → decode → new data"),
+        ("Data compression",         "encode -> transmit -> decode"),
+        ("Generation (VAE/VQVAE)",   "sample z -> decode -> new data"),
     ]
     for name, desc in apps:
         print(f"    {name:<26}: {desc}")
 
 
-# ── 2. Undercomplete AE on digits ────────────────────────────────────────────
+# -- 2. Undercomplete AE on digits --------------------------------------------
 def undercomplete_ae():
     print("\n=== Undercomplete Autoencoder (8×8 Digits) ===")
     digits = load_digits()
@@ -153,7 +153,7 @@ def undercomplete_ae():
     return results, Xts
 
 
-# ── 3. Tied weights ───────────────────────────────────────────────────────────
+# -- 3. Tied weights -----------------------------------------------------------
 def tied_weights_demo():
     print("\n=== Tied Weights Autoencoder ===")
     print("  W_decoder = W_encoder^T  (share parameters)")
@@ -180,7 +180,7 @@ def tied_weights_demo():
     print(f"  Untied weights | params={params_untied:>5} | test MSE={mse_untied:.5f}")
 
 
-# ── 4. Denoising AE ──────────────────────────────────────────────────────────
+# -- 4. Denoising AE ----------------------------------------------------------
 def denoising_ae():
     print("\n=== Denoising Autoencoder (DAE) ===")
     print("  Train: input = X + noise,  target = X_clean")
@@ -201,7 +201,7 @@ def denoising_ae():
     # Standard AE
     ae_clean._fit_custom(Xtr, Xtr, epochs=50, lr=0.1, rng=rng) if hasattr(ae_clean, '_fit_custom') else ae_clean.fit(Xtr, epochs=50, lr=0.1, rng=rng)
 
-    # DAE: train on noisy → clean
+    # DAE: train on noisy -> clean
     Xtr_noisy = add_noise(Xtr, sigma=0.3, rng=rng)
     Xts_noisy = add_noise(Xts, sigma=0.3, rng=rng)
     ae_denoise.fit(Xtr, epochs=50, lr=0.1, rng=rng)   # simplified (full DAE needs custom loop)
@@ -213,7 +213,7 @@ def denoising_ae():
     print(f"  Baseline (output noisy input):      MSE={np.mean((Xts_noisy-Xts)**2):.5f}")
 
 
-# ── 5. Visualise reconstructions ─────────────────────────────────────────────
+# -- 5. Visualise reconstructions ---------------------------------------------
 def visualise_reconstructions():
     digits = load_digits()
     X      = MinMaxScaler().fit_transform(digits.data.astype(float))

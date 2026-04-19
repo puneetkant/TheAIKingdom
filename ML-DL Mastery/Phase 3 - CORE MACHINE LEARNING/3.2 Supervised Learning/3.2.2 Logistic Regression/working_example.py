@@ -20,25 +20,25 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_logreg")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Sigmoid and odds ───────────────────────────────────────────────────────
+# -- 1. Sigmoid and odds -------------------------------------------------------
 def sigmoid_demo():
     print("=== Sigmoid Function and Log-Odds ===")
     z = np.array([-5, -2, -1, 0, 1, 2, 5], dtype=float)
     p = expit(z)
     odds   = p / (1 - p)
     logodds = np.log(odds)
-    print(f"  {'z':>6}  {'σ(z)':>8}  {'odds':>10}  {'log-odds':>10}")
+    print(f"  {'z':>6}  {'sigma(z)':>8}  {'odds':>10}  {'log-odds':>10}")
     for zi, pi, oi, li in zip(z, p, odds, logodds):
         print(f"  {zi:>6.1f}  {pi:>8.4f}  {oi:>10.4f}  {li:>10.4f}")
     print()
     print("  Interpretation: log(p/(1-p)) = wᵀx   (linear in log-odds space)")
 
 
-# ── 2. Binary cross-entropy and MLE ──────────────────────────────────────────
+# -- 2. Binary cross-entropy and MLE ------------------------------------------
 def binary_cross_entropy():
     print("\n=== Binary Cross-Entropy (log-loss) ===")
-    print("  L(w) = -Σ [y_i log(p_i) + (1-y_i) log(1-p_i)]")
-    print("  ∂L/∂w = Σ (p_i - y_i) x_i   (gradient)")
+    print("  L(w) = -Sigma [y_i log(p_i) + (1-y_i) log(1-p_i)]")
+    print("  dL/dw = Sigma (p_i - y_i) x_i   (gradient)")
     print()
 
     # Example
@@ -67,7 +67,7 @@ def binary_cross_entropy():
     print(f"  Accuracy: {acc:.4f}")
 
 
-# ── 3. Logistic regression with sklearn ──────────────────────────────────────
+# -- 3. Logistic regression with sklearn --------------------------------------
 def sklearn_logistic():
     print("\n=== sklearn Logistic Regression ===")
     rng  = np.random.default_rng(1)
@@ -87,10 +87,10 @@ def sklearn_logistic():
         auc   = roc_auc_score(y_te, proba)
         acc   = model.score(X_te_s, y_te)
         print(f"  {penalty.upper()}, C={C:<6}: acc={acc:.4f}  AUC={auc:.4f}  "
-              f"||w||₂={np.linalg.norm(model.coef_):.4f}")
+              f"||w||2={np.linalg.norm(model.coef_):.4f}")
 
 
-# ── 4. Multi-class: OvR and Softmax ─────────────────────────────────────────
+# -- 4. Multi-class: OvR and Softmax -----------------------------------------
 def multiclass_logistic():
     print("\n=== Multi-class Logistic Regression ===")
     iris = load_iris()
@@ -110,13 +110,13 @@ def multiclass_logistic():
         print(f"  {mc_str:<30}: acc={acc:.4f}")
 
     # Softmax function
-    print("\n  Softmax: P(y=k|x) = exp(wₖᵀx) / Σ_j exp(wⱼᵀx)")
+    print("\n  Softmax: P(y=k|x) = exp(wₖᵀx) / Sigma_j exp(wⱼᵀx)")
     z   = np.array([2.0, 1.0, 0.5])
     sm  = np.exp(z - z.max()) / np.exp(z - z.max()).sum()  # numerically stable
-    print(f"  z={z} → softmax={sm.round(4)}")
+    print(f"  z={z} -> softmax={sm.round(4)}")
 
 
-# ── 5. Decision boundary visualisation ───────────────────────────────────────
+# -- 5. Decision boundary visualisation ---------------------------------------
 def decision_boundary():
     rng   = np.random.default_rng(2)
     X, y  = make_classification(n_samples=300, n_features=2, n_redundant=0,
@@ -130,7 +130,7 @@ def decision_boundary():
     fig, ax = plt.subplots(figsize=(7,5))
     ax.contourf(xx, yy, Z, alpha=0.3, cmap="RdBu")
     ax.scatter(X[:,0], X[:,1], c=y, cmap="RdBu", edgecolors='k', s=20, lw=0.4)
-    ax.set(xlabel="x₁", ylabel="x₂", title="Logistic Regression Decision Boundary")
+    ax.set(xlabel="x1", ylabel="x2", title="Logistic Regression Decision Boundary")
     ax.grid(True, alpha=0.3)
     plt.tight_layout()
     path = os.path.join(OUTPUT_DIR, "decision_boundary.png")
@@ -138,7 +138,7 @@ def decision_boundary():
     print(f"\n  Decision boundary saved: {path}")
 
 
-# ── 6. ROC curve and AUC ────────────────────────────────────────────────────
+# -- 6. ROC curve and AUC ----------------------------------------------------
 def roc_auc_demo():
     print("\n=== ROC Curve and AUC ===")
     rng  = np.random.default_rng(3)

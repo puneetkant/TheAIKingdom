@@ -13,7 +13,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_detection")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Bounding box formats ───────────────────────────────────────────────────
+# -- 1. Bounding box formats ---------------------------------------------------
 def bounding_box_formats():
     print("=== Bounding Box Formats ===")
     print("  [x1, y1, x2, y2] — xyxy: top-left, bottom-right corners")
@@ -29,15 +29,15 @@ def bounding_box_formats():
 
     box_xyxy = [50, 30, 150, 100]
     print(f"  xyxy:    {box_xyxy}")
-    print(f"  → xywh:  {xyxy_to_xywh(box_xyxy)}")
-    print(f"  → cxcywh:{xyxy_to_cxcywh(box_xyxy)}")
+    print(f"  -> xywh:  {xyxy_to_xywh(box_xyxy)}")
+    print(f"  -> cxcywh:{xyxy_to_cxcywh(box_xyxy)}")
 
     box_xywh = [50, 30, 100, 70]
     print(f"\n  xywh:   {box_xywh}")
-    print(f"  → xyxy: {xywh_to_xyxy(box_xywh)}")
+    print(f"  -> xyxy: {xywh_to_xyxy(box_xywh)}")
 
 
-# ── 2. IoU (Intersection over Union) ──────────────────────────────────────────
+# -- 2. IoU (Intersection over Union) ------------------------------------------
 def compute_iou(b1, b2):
     """Both boxes in xyxy format."""
     xi1 = max(b1[0], b2[0]); yi1 = max(b1[1], b2[1])
@@ -51,7 +51,7 @@ def compute_iou(b1, b2):
 
 def iou_demo():
     print("\n=== Intersection over Union (IoU) ===")
-    print("  IoU = |A ∩ B| / |A ∪ B|  (ranges 0 to 1)")
+    print("  IoU = |A n B| / |A u B|  (ranges 0 to 1)")
     print()
     cases = [
         ("Perfect match",     [50, 50, 150, 150], [50, 50, 150, 150]),
@@ -83,7 +83,7 @@ def iou_demo():
         print(f"    {v:<6} {d}")
 
 
-# ── 3. NMS (Non-Maximum Suppression) ──────────────────────────────────────────
+# -- 3. NMS (Non-Maximum Suppression) ------------------------------------------
 def nms(boxes, scores, iou_threshold=0.5):
     """
     boxes  : list of [x1,y1,x2,y2]
@@ -128,7 +128,7 @@ def nms_demo():
         print(f"    {v:<12} {d}")
 
 
-# ── 4. Anchor boxes ───────────────────────────────────────────────────────────
+# -- 4. Anchor boxes -----------------------------------------------------------
 def anchor_boxes():
     print("\n=== Anchor Boxes ===")
     print("  Motivation: pre-define boxes at each spatial location; regress offsets")
@@ -151,16 +151,16 @@ def anchor_boxes():
 
     print()
     print("  YOLO anchors: learned via k-means on training set bounding boxes")
-    print("  Feature Pyramid Network (FPN): multi-scale feature maps → multi-scale anchors")
+    print("  Feature Pyramid Network (FPN): multi-scale feature maps -> multi-scale anchors")
 
 
-# ── 5. Detection architectures ───────────────────────────────────────────────
+# -- 5. Detection architectures -----------------------------------------------
 def detection_architectures():
     print("\n=== Object Detection Architectures ===")
     two_stage = [
-        ("R-CNN (2014)",        "Region proposal (SS) → CNN per crop → SVM; slow"),
+        ("R-CNN (2014)",        "Region proposal (SS) -> CNN per crop -> SVM; slow"),
         ("Fast R-CNN (2015)",   "Single forward pass; RoI pooling; faster"),
-        ("Faster R-CNN (2015)", "Region Proposal Network (RPN) → end-to-end"),
+        ("Faster R-CNN (2015)", "Region Proposal Network (RPN) -> end-to-end"),
         ("Mask R-CNN (2017)",   "Faster R-CNN + mask head; instance seg too"),
         ("Cascade R-CNN (2018)","Multi-stage refinement with increasing IoU thresholds"),
     ]
@@ -179,7 +179,7 @@ def detection_architectures():
     for m, d in one_stage: print(f"    {m:<25} {d}")
 
 
-# ── 6. Detection metrics ──────────────────────────────────────────────────────
+# -- 6. Detection metrics ------------------------------------------------------
 def detection_metrics():
     print("\n=== Detection Metrics ===")
     print("  mAP — mean Average Precision")

@@ -108,12 +108,12 @@ def demo():
     im2 = axes[1][0].imshow(logit_matrix.T, cmap="RdYlGn", aspect="auto",
                               vmin=logit_matrix.min(), vmax=logit_matrix.max())
     axes[1][0].set(xlabel="Position", ylabel="Vocab Token",
-                   title="Logit Lens: Residual → Vocab Logits")
+                   title="Logit Lens: Residual -> Vocab Logits")
     plt.colorbar(im2, ax=axes[1][0])
 
     # Patching effect across vocab
     axes[1][1].bar(range(min(20, n_vocab)), patch_effect[:20], color="tomato")
-    axes[1][1].set(xlabel="Vocab Token (first 20)", ylabel="|Δ Logit|",
+    axes[1][1].set(xlabel="Vocab Token (first 20)", ylabel="|Delta Logit|",
                    title=f"Activation Patching Effect (pos {patch_pos})")
     axes[1][1].grid(True, axis="y", alpha=0.3)
 

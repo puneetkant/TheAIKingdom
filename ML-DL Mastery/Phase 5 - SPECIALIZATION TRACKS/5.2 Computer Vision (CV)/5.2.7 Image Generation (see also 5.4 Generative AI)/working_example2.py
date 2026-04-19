@@ -24,7 +24,7 @@ relu_d = lambda x: (x > 0).astype(float)
 sigmoid = lambda x: 1 / (1 + np.exp(-np.clip(x, -50, 50)))
 
 def train_vae_sketch(X, n_z=2, n_h=32, lr=0.002, epochs=150, seed=42):
-    """Simplified VAE: encoder → mu/logvar → z → decoder (MSE + KL)."""
+    """Simplified VAE: encoder -> mu/logvar -> z -> decoder (MSE + KL)."""
     rng = np.random.default_rng(seed)
     d = X.shape[1]
     We = rng.standard_normal((d, n_h)) * 0.05; be = np.zeros(n_h)

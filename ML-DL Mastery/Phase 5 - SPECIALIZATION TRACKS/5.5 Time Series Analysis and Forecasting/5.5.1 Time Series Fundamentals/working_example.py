@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ts_fundamentals")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Time series types ──────────────────────────────────────────────────────
+# -- 1. Time series types ------------------------------------------------------
 def ts_types():
     print("=== Time Series Fundamentals ===")
     print()
@@ -22,7 +22,7 @@ def ts_types():
     types = [
         ("Univariate",   "Single variable over time (e.g. daily temperature)"),
         ("Multivariate", "Multiple co-evolving variables (e.g. sensor array)"),
-        ("Hierarchical", "Nested series (country → state → city sales)"),
+        ("Hierarchical", "Nested series (country -> state -> city sales)"),
         ("Panel",        "Multiple similar series (different products' sales)"),
         ("Irregular",    "Non-uniform timestamps (event logs, transactions)"),
     ]
@@ -45,7 +45,7 @@ def ts_types():
     print("    Log-additive:     log(x_t) = log(T_t) + log(S_t) + log(R_t)")
 
 
-# ── 2. Generate and decompose a time series ───────────────────────────────────
+# -- 2. Generate and decompose a time series -----------------------------------
 def generate_and_decompose():
     print("\n=== Series Generation and Decomposition ===")
     rng = np.random.default_rng(42)
@@ -59,7 +59,7 @@ def generate_and_decompose():
 
     print(f"  Synthetic series: T={T} months")
     print(f"    Trend:       0.5·t + 50")
-    print(f"    Seasonality: 10·sin(2π·t/12) (period=12)")
+    print(f"    Seasonality: 10·sin(2pi·t/12) (period=12)")
     print(f"    Noise:       N(0, 2)")
     print()
 
@@ -101,13 +101,13 @@ def generate_and_decompose():
     return series
 
 
-# ── 3. Stationarity ───────────────────────────────────────────────────────────
+# -- 3. Stationarity -----------------------------------------------------------
 def stationarity(series):
     print("\n=== Stationarity ===")
     print("  A series is (weakly) stationary if:")
-    print("    E[x_t] = μ             (constant mean)")
-    print("    Var[x_t] = σ²          (constant variance)")
-    print("    Cov[x_t, x_{t-k}] = γ_k  (covariance depends only on lag k)")
+    print("    E[x_t] = mu             (constant mean)")
+    print("    Var[x_t] = sigma²          (constant variance)")
+    print("    Cov[x_t, x_{t-k}] = gamma_k  (covariance depends only on lag k)")
     print()
 
     # Simple test: compare first and second half statistics
@@ -116,25 +116,25 @@ def stationarity(series):
     m2, s2 = series[half:].mean(), series[half:].std()
     print(f"  First half:  mean={m1:.2f}  std={s1:.2f}")
     print(f"  Second half: mean={m2:.2f}  std={s2:.2f}")
-    print(f"  → Non-stationary (trend changes mean)")
+    print(f"  -> Non-stationary (trend changes mean)")
     print()
 
     # First-difference
     diff1 = np.diff(series)
     m1d, s1d = diff1[:half].mean(), diff1[:half].std()
     m2d, s2d = diff1[half:].mean(), diff1[half:].std()
-    print(f"  First difference Δx_t = x_t - x_{'{t-1}'}:")
+    print(f"  First difference Deltax_t = x_t - x_{'{t-1}'}:")
     print(f"  First half:  mean={m1d:.2f}  std={s1d:.2f}")
     print(f"  Second half: mean={m2d:.2f}  std={s2d:.2f}")
-    print(f"  → Closer to stationary")
+    print(f"  -> Closer to stationary")
     print()
     print("  Common transformations to achieve stationarity:")
     transformations = [
-        ("Differencing",     "Δx_t = x_t - x_{t-1}  (removes trend)"),
-        ("Seasonal diff",    "Δ_s x_t = x_t - x_{t-s}  (removes seasonality)"),
+        ("Differencing",     "Deltax_t = x_t - x_{t-1}  (removes trend)"),
+        ("Seasonal diff",    "Delta_s x_t = x_t - x_{t-s}  (removes seasonality)"),
         ("Log transform",    "log(x_t)  (stabilises multiplicative variance)"),
-        ("Box-Cox",          "y_t = (x_t^λ - 1)/λ  (generalises log)"),
-        ("Z-score norm",     "(x_t - μ)/σ  (standardise)"),
+        ("Box-Cox",          "y_t = (x_t^lambda - 1)/lambda  (generalises log)"),
+        ("Z-score norm",     "(x_t - mu)/sigma  (standardise)"),
         ("Power transform",  "sqrt(x_t), x_t^(1/3)"),
     ]
     for tr, d in transformations:
@@ -144,7 +144,7 @@ def stationarity(series):
     print("  ADF test (Augmented Dickey-Fuller):")
     print("    H0: unit root (non-stationary)")
     print("    H1: stationary")
-    print("    p < 0.05 → reject H0 → stationary")
+    print("    p < 0.05 -> reject H0 -> stationary")
 
     try:
         from scipy.stats import ttest_1samp
@@ -155,11 +155,11 @@ def stationarity(series):
         print("    (scipy not available)")
 
 
-# ── 4. ACF and PACF ───────────────────────────────────────────────────────────
+# -- 4. ACF and PACF -----------------------------------------------------------
 def autocorrelation(series):
     print("\n=== ACF and PACF ===")
     print("  ACF (Autocorrelation Function):")
-    print("    ρ_k = Cov(x_t, x_{t-k}) / Var(x_t)  = γ_k / γ_0")
+    print("    rho_k = Cov(x_t, x_{t-k}) / Var(x_t)  = gamma_k / gamma_0")
     print()
 
     T   = len(series)
@@ -176,10 +176,10 @@ def autocorrelation(series):
     # Confidence bounds ±1.96/sqrt(T)
     ci = 1.96 / np.sqrt(T)
     sig_lags = [k for k in range(1, max_lag+1) if abs(acf[k]) > ci]
-    print(f"  Significant lags (|ρ| > {ci:.3f}): {sig_lags}")
+    print(f"  Significant lags (|rho| > {ci:.3f}): {sig_lags}")
     print()
     print("  PACF (Partial ACF):")
-    print("    φ_{kk} = correlation between x_t and x_{t-k} after removing")
+    print("    phi_{kk} = correlation between x_t and x_{t-k} after removing")
     print("    linear influence of intermediate lags")
     print()
     print("  Model identification heuristics:")

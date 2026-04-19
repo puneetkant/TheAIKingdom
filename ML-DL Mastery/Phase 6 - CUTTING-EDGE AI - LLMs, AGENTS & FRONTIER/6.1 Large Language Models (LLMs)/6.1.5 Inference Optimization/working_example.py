@@ -10,12 +10,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_inference_opt")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. KV cache ───────────────────────────────────────────────────────────────
+# -- 1. KV cache ---------------------------------------------------------------
 def kv_cache():
     print("=== KV Cache Optimisation ===")
     print()
-    print("  Without KV cache: recompute all K,V for every new token → O(T²)")
-    print("  With KV cache:    store K,V of past tokens → O(T) per new token")
+    print("  Without KV cache: recompute all K,V for every new token -> O(T²)")
+    print("  With KV cache:    store K,V of past tokens -> O(T) per new token")
     print()
     print("  Memory usage (LLaMA-3-70B, BF16):")
     print("    Layers=80, KV heads=8 (GQA), head_dim=128")
@@ -32,13 +32,13 @@ def kv_cache():
         ("Multi-query (MQA)",      "Share 1 K,V head across all query heads; 8× less KV"),
         ("Grouped-query (GQA)",    "G shared K,V heads; balance memory vs accuracy"),
         ("KV quantisation",        "INT8 KV cache; 2× memory reduction; small quality hit"),
-        ("StreamingLLM",           "Attention sinks + sliding window; ∞ context"),
+        ("StreamingLLM",           "Attention sinks + sliding window; inf context"),
     ]
     for o, d in opts:
         print(f"  {o:<28} {d}")
 
 
-# ── 2. Speculative decoding ───────────────────────────────────────────────────
+# -- 2. Speculative decoding ---------------------------------------------------
 def speculative_decoding():
     print("\n=== Speculative Decoding ===")
     print()
@@ -73,7 +73,7 @@ def speculative_decoding():
     for p in p_accept:
         E_tokens += p
     print(f"\n  Expected tokens accepted per target call: {E_tokens:.2f}")
-    print(f"  Effective speedup ≈ {E_tokens:.2f}× (ignoring draft model cost)")
+    print(f"  Effective speedup ~= {E_tokens:.2f}x (ignoring draft model cost)")
     print()
     print("  Variants:")
     variants = [
@@ -86,7 +86,7 @@ def speculative_decoding():
         print(f"  {v:<16} {d}")
 
 
-# ── 3. Quantisation ───────────────────────────────────────────────────────────
+# -- 3. Quantisation -----------------------------------------------------------
 def quantisation():
     print("\n=== LLM Quantisation ===")
     print()
@@ -121,16 +121,16 @@ def quantisation():
 
     print()
     print("  Quantisation-Aware Training (QAT):")
-    print("    Simulate quantisation during training → better accuracy")
+    print("    Simulate quantisation during training -> better accuracy")
     print("    Expensive but best quality; used in Phi-1, Phi-2 (partially)")
 
 
-# ── 4. Continuous batching and vLLM ──────────────────────────────────────────
+# -- 4. Continuous batching and vLLM ------------------------------------------
 def continuous_batching():
     print("\n=== Continuous Batching (vLLM) ===")
     print()
-    print("  Traditional serving: static batch → wait for all to finish")
-    print("  Continuous batching: add new requests as slots free → higher throughput")
+    print("  Traditional serving: static batch -> wait for all to finish")
+    print("  Continuous batching: add new requests as slots free -> higher throughput")
     print()
     print("  PagedAttention (vLLM, Kwon et al. 2023):")
     print("    - KV cache managed as pages (like OS virtual memory)")

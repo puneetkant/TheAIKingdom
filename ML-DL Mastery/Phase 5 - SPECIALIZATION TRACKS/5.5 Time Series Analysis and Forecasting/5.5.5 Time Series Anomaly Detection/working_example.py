@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ts_anomaly")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Helper: synthetic anomalous series ───────────────────────────────────────
+# -- Helper: synthetic anomalous series ---------------------------------------
 def gen_anomalous_series(T=300, seed=0):
     rng = np.random.default_rng(seed)
     t   = np.arange(T)
@@ -28,7 +28,7 @@ def gen_anomalous_series(T=300, seed=0):
     return y, labels
 
 
-# ── 1. Anomaly types ──────────────────────────────────────────────────────────
+# -- 1. Anomaly types ----------------------------------------------------------
 def anomaly_types():
     print("=== Time Series Anomaly Detection ===")
     print()
@@ -55,7 +55,7 @@ def anomaly_types():
         print(f"  • {a}")
 
 
-# ── 2. Statistical methods ────────────────────────────────────────────────────
+# -- 2. Statistical methods ----------------------------------------------------
 def statistical_methods():
     print("\n=== Statistical Anomaly Detection Methods ===")
     y, labels = gen_anomalous_series()
@@ -120,7 +120,7 @@ def statistical_methods():
     print(f"  Plot: {path}")
 
 
-# ── 3. ML methods ─────────────────────────────────────────────────────────────
+# -- 3. ML methods -------------------------------------------------------------
 def ml_methods():
     print("\n=== ML-Based Anomaly Detection ===")
     y, labels = gen_anomalous_series()
@@ -152,7 +152,7 @@ def ml_methods():
     print()
     print("  Local Outlier Factor (LOF):")
     print("    LOF_k(p) = E[lrd_k(o)] / lrd_k(p)  for o in N_k(p)")
-    print("    LOF >> 1: outlier;  LOF ≈ 1: inlier")
+    print("    LOF >> 1: outlier;  LOF ~= 1: inlier")
 
     print()
     print("  One-Class SVM:")
@@ -170,12 +170,12 @@ def ml_methods():
         print(f"  {m:<18} {d}")
 
 
-# ── 4. Deep learning methods ──────────────────────────────────────────────────
+# -- 4. Deep learning methods --------------------------------------------------
 def dl_methods():
     print("\n=== Deep Learning Anomaly Detection ===")
     print()
     print("  Autoencoder-based:")
-    print("    Train on normal data → high reconstruction error = anomaly")
+    print("    Train on normal data -> high reconstruction error = anomaly")
     print("    Threshold on MSE or Mahalanobis distance in latent space")
     print()
 

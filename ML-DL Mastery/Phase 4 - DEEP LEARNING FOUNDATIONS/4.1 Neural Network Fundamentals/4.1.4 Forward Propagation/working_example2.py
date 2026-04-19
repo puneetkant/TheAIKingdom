@@ -58,7 +58,7 @@ def demo_matrix_dimensions():
     print(f"  Input:  ({n}, {d})")
     cur = n
     for i, (fin, fout) in enumerate(zip(layers[:-1], layers[1:])):
-        print(f"  Layer {i+1}: W({fin},{fout})  z=X@W+b → ({cur},{fout})")
+        print(f"  Layer {i+1}: W({fin},{fout})  z=X@W+b -> ({cur},{fout})")
 
 if __name__ == "__main__":
     demo_forward()

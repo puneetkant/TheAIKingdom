@@ -29,7 +29,7 @@ DATA.mkdir(exist_ok=True)
 OUTPUT.mkdir(exist_ok=True)
 
 
-# ── Download ───────────────────────────────────────────────────────────────────
+# -- Download -------------------------------------------------------------------
 def download(url: str, dest: Path) -> Path:
     if dest.exists(): return dest
     try:
@@ -52,7 +52,7 @@ def load_csv_numeric(path: Path, cols: list[str]) -> np.ndarray:
     return np.array(rows)
 
 
-# ── 1. Distribution plots ──────────────────────────────────────────────────────
+# -- 1. Distribution plots ------------------------------------------------------
 def plot_distributions(X: np.ndarray, feature_names: list[str]) -> None:
     n = len(feature_names)
     ncols = 4; nrows = math.ceil(n / ncols)
@@ -75,7 +75,7 @@ def plot_distributions(X: np.ndarray, feature_names: list[str]) -> None:
     plt.close(fig)
 
 
-# ── 2. Correlation heatmap ─────────────────────────────────────────────────────
+# -- 2. Correlation heatmap -----------------------------------------------------
 def plot_correlation(X: np.ndarray, feature_names: list[str]) -> None:
     corr = np.corrcoef(X.T)
     n = len(feature_names)
@@ -95,7 +95,7 @@ def plot_correlation(X: np.ndarray, feature_names: list[str]) -> None:
     plt.close(fig)
 
 
-# ── 3. Learning curves ─────────────────────────────────────────────────────────
+# -- 3. Learning curves ---------------------------------------------------------
 def plot_learning_curves() -> None:
     import random; random.seed(42)
     epochs     = list(range(1, 51))
@@ -122,7 +122,7 @@ def plot_learning_curves() -> None:
     plt.close(fig)
 
 
-# ── 4. Confusion matrix ────────────────────────────────────────────────────────
+# -- 4. Confusion matrix --------------------------------------------------------
 def plot_confusion_matrix() -> None:
     # Simulated 3-class confusion matrix (Iris-like)
     classes = ["Setosa", "Versicolor", "Virginica"]
@@ -155,12 +155,10 @@ def plot_confusion_matrix() -> None:
 
 
 if __name__ == "__main__":
-    cal = download(
-        "https://huggingface.co/datasets/scikit-learn/california-housing/resolve/main/cal_housing.csv",
-        DATA / "cal_housing.csv"
-    )
-    feature_cols = ["MedInc", "HouseAge", "AveRooms", "AveBedrms", "Population", "AveOccup"]
-    X = load_csv_numeric(cal, feature_cols)
+    from sklearn.datasets import fetch_california_housing
+    _data = fetch_california_housing()
+    feature_cols = list(_data.feature_names)
+    X = _data.data
     print(f"Loaded California Housing: {X.shape}")
 
     print("\n=== Generating Charts ===")

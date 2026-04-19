@@ -11,7 +11,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_experiment_tracking
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Experiment tracking concepts ───────────────────────────────────────────
+# -- 1. Experiment tracking concepts -------------------------------------------
 def tracking_concepts():
     print("=== Experiment Tracking and Versioning ===")
     print()
@@ -31,7 +31,7 @@ def tracking_concepts():
         print(f"  {i:<14} {d}")
 
 
-# ── 2. MLflow patterns ────────────────────────────────────────────────────────
+# -- 2. MLflow patterns --------------------------------------------------------
 def mlflow_patterns():
     print("\n=== MLflow Patterns ===")
     print()
@@ -75,7 +75,7 @@ client.transition_model_version_stage(
     components = [
         ("Tracking Server", "Stores runs; SQLite or PostgreSQL backend"),
         ("Artifact Store",  "S3/GCS/Azure Blob for model files"),
-        ("Model Registry",  "Stage: None → Staging → Production → Archived"),
+        ("Model Registry",  "Stage: None -> Staging -> Production -> Archived"),
         ("Projects",        "Reproducible packaging with MLproject file"),
         ("Evaluate",        "Dataset-aware evaluation with custom metrics"),
     ]
@@ -83,7 +83,7 @@ client.transition_model_version_stage(
         print(f"  {c:<18} {d}")
 
 
-# ── 3. W&B patterns ───────────────────────────────────────────────────────────
+# -- 3. W&B patterns -----------------------------------------------------------
 def wandb_patterns():
     print("\n=== Weights & Biases (W&B) Patterns ===")
     print()
@@ -123,7 +123,7 @@ wandb.agent(sweep_id, function=train, count=20)
     print(wandb_code)
 
 
-# ── 4. Minimal experiment logger (pure Python) ────────────────────────────────
+# -- 4. Minimal experiment logger (pure Python) --------------------------------
 class SimpleExperimentLogger:
     """Lightweight experiment tracker that saves JSON logs."""
     def __init__(self, name, output_dir):

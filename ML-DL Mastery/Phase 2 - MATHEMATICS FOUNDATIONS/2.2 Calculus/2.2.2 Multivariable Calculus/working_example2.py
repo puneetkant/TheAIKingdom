@@ -61,12 +61,12 @@ def demo_gradient():
     print(f"  Max error: {np.max(np.abs(g_num - g_true)):.2e}")
 
 def demo_jacobian():
-    print("\n=== Jacobian of F: R²→R³ ===")
+    print("\n=== Jacobian of F: R²->R³ ===")
     # F(x,y) = [x², sin(x+y), e^x]
     F = lambda v: np.array([v[0]**2, np.sin(v[0]+v[1]), np.exp(v[0])])
     x0 = np.array([1.0, 2.0])
     J = numerical_jacobian(F, x0)
-    print(f"  J(1,2) ≈\n{J.round(4)}")
+    print(f"  J(1,2) ~=\n{J.round(4)}")
     # Analytic: [[2x, 0], [cos(x+y), cos(x+y)], [e^x, 0]]
     J_true = np.array([[2*x0[0], 0],
                        [np.cos(x0.sum()), np.cos(x0.sum())],
@@ -83,7 +83,7 @@ def demo_hessian():
     print(f"  Numerical H:\n{H.round(4)}")
     print(f"  Analytic H:\n{H_true}")
     eigs = np.linalg.eigvalsh(H_true)
-    print(f"  Eigenvalues: {eigs}  → {'min' if all(eigs>0) else 'saddle'}")
+    print(f"  Eigenvalues: {eigs}  -> {'min' if all(eigs>0) else 'saddle'}")
 
 def demo_contour_gd():
     print("\n=== Gradient Descent on 2D Surface ===")

@@ -55,8 +55,8 @@ def demo_random_walk():
     fig, ax = plt.subplots(figsize=(8, 4))
     for p in paths[:5]: ax.plot(p, lw=0.6, alpha=0.7)
     ax.fill_between(range(n), -np.sqrt(np.arange(n)), np.sqrt(np.arange(n)),
-                    alpha=0.15, color="grey", label="±√t envelope")
-    ax.legend(); ax.set_title("Random walks with ±√t envelope")
+                    alpha=0.15, color="grey", label="+/-sqrtt envelope")
+    ax.legend(); ax.set_title("Random walks with +/-sqrtt envelope")
     fig.savefig(OUTPUT / "random_walk.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: random_walk.png")
 
@@ -72,7 +72,7 @@ def demo_brownian_motion():
         dW = np.random.normal(0, dt**0.5, n)
         W  = np.concatenate([[0], np.cumsum(dW)])
         axes[0].plot(t, W, lw=0.7, alpha=0.7)
-    axes[0].fill_between(t, -t**0.5, t**0.5, alpha=0.15, color="grey", label="±√t")
+    axes[0].fill_between(t, -t**0.5, t**0.5, alpha=0.15, color="grey", label="+/-sqrtt")
     axes[0].legend(); axes[0].set_title("Brownian motion paths")
 
     # Geometric Brownian Motion (GBM): S(t) = S0 * exp((mu-0.5*sig^2)*t + sig*W)
@@ -82,7 +82,7 @@ def demo_brownian_motion():
         W  = np.cumsum(dW)
         S  = S0 * np.exp((mu - 0.5*sig**2)*t[1:] + sig*W)
         axes[1].plot(t[1:], S, lw=0.7, alpha=0.7)
-    axes[1].set_title(f"Geometric BM  μ={mu}  σ={sig}")
+    axes[1].set_title(f"Geometric BM  mu={mu}  sigma={sig}")
 
     fig.savefig(OUTPUT / "brownian_motion.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: brownian_motion.png")

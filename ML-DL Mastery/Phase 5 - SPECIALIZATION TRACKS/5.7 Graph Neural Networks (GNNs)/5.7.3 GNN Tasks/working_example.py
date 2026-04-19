@@ -17,7 +17,7 @@ def softmax(z):
     return e / e.sum(-1, keepdims=True)
 
 
-# ── Shared graph fixture ──────────────────────────────────────────────────────
+# -- Shared graph fixture ------------------------------------------------------
 def make_graph():
     N = 8; F_in = 4
     rng = np.random.default_rng(0)
@@ -37,7 +37,7 @@ def gcn_layer(X, A, W):
     return relu(A_norm @ X @ W)
 
 
-# ── 1. Node classification ────────────────────────────────────────────────────
+# -- 1. Node classification ----------------------------------------------------
 def node_classification():
     print("=== Node Classification ===")
     print("  Predict class label for each node")
@@ -63,7 +63,7 @@ def node_classification():
     mask   = labels >= 0
     acc    = (preds[mask] == labels[mask]).mean()
 
-    print(f"  2-layer GCN: F_in={F_in} → 8 → 3 classes")
+    print(f"  2-layer GCN: F_in={F_in} -> 8 -> 3 classes")
     print(f"  Predicted classes: {preds}")
     print(f"  True labels:       {labels}")
     print(f"  Train accuracy (4 labelled nodes): {acc:.2%}")
@@ -80,7 +80,7 @@ def node_classification():
         print(f"  {d:<16} {desc}")
 
 
-# ── 2. Link prediction ────────────────────────────────────────────────────────
+# -- 2. Link prediction --------------------------------------------------------
 def link_prediction():
     print("\n=== Link Prediction ===")
     print("  Predict whether an edge exists between two nodes")
@@ -123,10 +123,10 @@ def link_prediction():
     print("    Dot product:   h_u^T h_v")
     print("    Bilinear:      h_u^T R h_v  (TransE/DistMult/RotatE for KGs)")
     print("    MLP:           MLP([h_u || h_v])")
-    print("    Hadamard:      h_u ⊙ h_v → MLP")
+    print("    Hadamard:      h_u ⊙ h_v -> MLP")
 
 
-# ── 3. Graph classification ───────────────────────────────────────────────────
+# -- 3. Graph classification ---------------------------------------------------
 def graph_classification():
     print("\n=== Graph Classification ===")
     print("  Predict a single label for an entire graph")
@@ -134,8 +134,8 @@ def graph_classification():
     print()
     print("  Readout functions:")
     readouts = [
-        ("Global mean",   "ĥ = (1/N) Σ h_v"),
-        ("Global sum",    "ĥ = Σ h_v  (used in GIN; more expressive)"),
+        ("Global mean",   "ĥ = (1/N) Sigma h_v"),
+        ("Global sum",    "ĥ = Sigma h_v  (used in GIN; more expressive)"),
         ("Global max",    "ĥ = max_v h_v  (element-wise)"),
         ("Hierarchical",  "DiffPool, MinCutPool: learn to cluster nodes"),
         ("Set2Vec",       "LSTM-based attention over node set"),

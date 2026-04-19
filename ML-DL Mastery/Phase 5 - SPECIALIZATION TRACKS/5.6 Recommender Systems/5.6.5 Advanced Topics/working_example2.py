@@ -76,7 +76,7 @@ def demo():
     for i in top_k_mmr:
         ax.scatter(i, scores[i]+0.06, marker="o", color="red", s=80)
     ax.set_xticks(range(len(titles))); ax.set_xticklabels(titles, rotation=30, ha="right", fontsize=8)
-    ax.set_title("Naive (▲) vs MMR (●) top-5")
+    ax.set_title("Naive (^) vs MMR (●) top-5")
     plt.tight_layout(); plt.savefig(OUTPUT / "recsys_diversity.png"); plt.close()
     print("  Saved recsys_diversity.png")
 

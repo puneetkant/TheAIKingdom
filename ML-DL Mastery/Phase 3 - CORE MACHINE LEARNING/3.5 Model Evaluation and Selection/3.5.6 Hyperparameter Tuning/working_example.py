@@ -17,7 +17,7 @@ from scipy.stats import loguniform, randint, uniform
 import os, time
 
 
-# ── 1. Why hyperparameter tuning ──────────────────────────────────────────────
+# -- 1. Why hyperparameter tuning ----------------------------------------------
 def intro():
     print("=== Hyperparameter Tuning ===")
     print("  Hyperparameters: parameters set BEFORE training (not learned from data)")
@@ -29,7 +29,7 @@ def intro():
     print("    3. Balance accuracy vs compute cost")
 
 
-# ── 2. Manual / grid search intuition ────────────────────────────────────────
+# -- 2. Manual / grid search intuition ----------------------------------------
 def manual_search():
     print("\n=== Manual Parameter Sweep ===")
     X, y = make_classification(n_samples=400, n_features=10, n_informative=5, random_state=0)
@@ -41,14 +41,14 @@ def manual_search():
         pipe  = Pipeline([("sc", StandardScaler()),
                           ("lr", LogisticRegression(C=C, max_iter=500))])
         acc   = cross_val_score(pipe, X, y, cv=cv).mean()
-        marker = " ← best" if acc > best_acc else ""
+        marker = " <- best" if acc > best_acc else ""
         print(f"    C={C:<8} acc={acc:.4f}{marker}")
         if acc > best_acc:
             best_acc, best_c = acc, C
     print(f"  Best: C={best_c}  CV acc={best_acc:.4f}")
 
 
-# ── 3. Grid Search ────────────────────────────────────────────────────────────
+# -- 3. Grid Search ------------------------------------------------------------
 def grid_search():
     print("\n=== Grid Search (GridSearchCV) ===")
     X, y  = make_classification(n_samples=400, n_features=10, n_informative=5, random_state=1)
@@ -75,10 +75,10 @@ def grid_search():
     idx = np.argsort(res["mean_test_score"])[::-1]
     print(f"\n  Top 5 results:")
     for i in idx[:5]:
-        print(f"    {res['params'][i]}  → acc={res['mean_test_score'][i]:.4f}")
+        print(f"    {res['params'][i]}  -> acc={res['mean_test_score'][i]:.4f}")
 
 
-# ── 4. Random Search ─────────────────────────────────────────────────────────
+# -- 4. Random Search ---------------------------------------------------------
 def random_search():
     print("\n=== Random Search (RandomizedSearchCV) ===")
     print("  Samples randomly from distributions — efficient for large spaces")
@@ -113,7 +113,7 @@ def random_search():
     print(f"  Improvement: {(rs.best_score_ - cv_default)*100:+.2f}%")
 
 
-# ── 5. Halving Search (successive halving) ───────────────────────────────────
+# -- 5. Halving Search (successive halving) -----------------------------------
 def halving_search():
     print("\n=== Halving Search (Successive Halving) ===")
     print("  Allocates more compute to promising configurations iteratively")
@@ -136,7 +136,7 @@ def halving_search():
     print(f"  Best CV acc:  {hgs.best_score_:.4f}")
 
 
-# ── 6. Bayesian Optimisation (conceptual + optuna if available) ───────────────
+# -- 6. Bayesian Optimisation (conceptual + optuna if available) ---------------
 def bayesian_optimisation():
     print("\n=== Bayesian Optimisation ===")
     print("  Models the objective function as a Gaussian Process surrogate")
@@ -168,13 +168,13 @@ def bayesian_optimisation():
     except ImportError:
         print("  optuna not installed. Install: pip install optuna")
         print("  Algorithm:")
-        print("    1. Fit GP on (params → score) observations")
+        print("    1. Fit GP on (params -> score) observations")
         print("    2. Use acquisition function to pick next params")
         print("    3. Evaluate; update GP; repeat")
         print("    4. Return params with highest predicted score")
 
 
-# ── 7. Early stopping in ensembles ───────────────────────────────────────────
+# -- 7. Early stopping in ensembles -------------------------------------------
 def early_stopping_gbm():
     print("\n=== Early Stopping (Gradient Boosting) ===")
     X, y = make_classification(n_samples=500, n_features=10, n_informative=5, random_state=5)
@@ -196,7 +196,7 @@ def early_stopping_gbm():
     print(f"  Final (500):  {staged[-1]:.4f}")
 
 
-# ── 8. Tuning tips ───────────────────────────────────────────────────────────
+# -- 8. Tuning tips -----------------------------------------------------------
 def tuning_tips():
     print("\n=== Practical Tuning Tips ===")
     tips = [

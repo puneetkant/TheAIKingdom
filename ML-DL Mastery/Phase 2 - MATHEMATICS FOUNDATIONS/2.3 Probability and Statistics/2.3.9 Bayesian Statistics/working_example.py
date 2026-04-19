@@ -7,11 +7,11 @@ import numpy as np
 from scipy import stats
 
 
-# ── 1. Bayes' theorem in action ───────────────────────────────────────────────
+# -- 1. Bayes' theorem in action -----------------------------------------------
 def bayes_theorem_classic():
     print("=== Bayes' Theorem: P(H|D) ∝ P(D|H)·P(H) ===")
     # Coin flipping: is the coin fair?
-    # H₀: p=0.5 (fair), H₁: p=0.8 (biased)
+    # H0: p=0.5 (fair), H1: p=0.8 (biased)
     prior = {0.5: 0.8, 0.8: 0.2}   # P(H)
     # Observe 7 heads in 10 flips
     k, n = 7, 10
@@ -30,17 +30,17 @@ def bayes_theorem_classic():
         print(f"    Posterior P(H|D):  {posterior[p]:.4f}")
 
 
-# ── 2. Beta-Binomial conjugate model ─────────────────────────────────────────
+# -- 2. Beta-Binomial conjugate model -----------------------------------------
 def beta_binomial():
     print("\n=== Beta-Binomial Conjugate Model ===")
-    print("  Prior: p ~ Beta(α,β)  →  Posterior: p | data ~ Beta(α+k, β+n-k)")
+    print("  Prior: p ~ Beta(alpha,beta)  ->  Posterior: p | data ~ Beta(alpha+k, beta+n-k)")
 
     alpha0, beta0 = 2.0, 2.0   # prior belief: slightly above 0.5
     rng = np.random.default_rng(0)
     p_true = 0.65
 
     print(f"  Prior: Beta({alpha0},{beta0})  mean={alpha0/(alpha0+beta0):.4f}")
-    print(f"\n  {'Flips':<8} {'Heads':<8} {'Post α':<10} {'Post β':<10} {'Post mean':<12} {'95% CI'}")
+    print(f"\n  {'Flips':<8} {'Heads':<8} {'Post alpha':<10} {'Post beta':<10} {'Post mean':<12} {'95% CI'}")
 
     alpha, beta = alpha0, beta0
     total_n, total_k = 0, 0
@@ -57,12 +57,12 @@ def beta_binomial():
     print(f"\n  True p = {p_true}")
 
 
-# ── 3. Normal-Normal conjugate model ─────────────────────────────────────────
+# -- 3. Normal-Normal conjugate model -----------------------------------------
 def normal_normal():
-    print("\n=== Normal-Normal Conjugate (unknown μ, known σ) ===")
-    # Prior: μ ~ N(μ₀, τ₀²)
-    # Likelihood: X | μ ~ N(μ, σ²)
-    # Posterior: μ | x ~ N(μₙ, τₙ²)
+    print("\n=== Normal-Normal Conjugate (unknown mu, known sigma) ===")
+    # Prior: mu ~ N(mu0, tau0²)
+    # Likelihood: X | mu ~ N(mu, sigma²)
+    # Posterior: mu | x ~ N(mun, taun²)
     mu0, tau0 = 0.0, 10.0     # weak prior
     sigma     = 3.0            # known likelihood std
     mu_true   = 7.0
@@ -76,30 +76,30 @@ def normal_normal():
     tau_n_sq = 1 / (1/tau0**2 + n/sigma**2)
     mu_n     = tau_n_sq * (mu0/tau0**2 + n*xbar/sigma**2)
 
-    print(f"  Prior: μ ~ N({mu0},{tau0}²)")
-    print(f"  Data: n={n}  x̄={xbar:.4f}  σ_known={sigma}")
-    print(f"  Posterior: μ|data ~ N({mu_n:.4f},{tau_n_sq:.4f})")
+    print(f"  Prior: mu ~ N({mu0},{tau0}²)")
+    print(f"  Data: n={n}  x={xbar:.4f}  sigma_known={sigma}")
+    print(f"  Posterior: mu|data ~ N({mu_n:.4f},{tau_n_sq:.4f})")
     lo = mu_n - 1.96*np.sqrt(tau_n_sq)
     hi = mu_n + 1.96*np.sqrt(tau_n_sq)
     print(f"  95% Credible Interval: [{lo:.4f}, {hi:.4f}]")
-    print(f"  True μ = {mu_true}  inside CI? {lo <= mu_true <= hi}")
+    print(f"  True mu = {mu_true}  inside CI? {lo <= mu_true <= hi}")
 
     # Posterior precision = prior precision + data precision
     print(f"\n  Posterior precision = prior prec + data prec")
     print(f"    {1/tau_n_sq:.4f} = {1/tau0**2:.4f} + {n/sigma**2:.4f}")
 
 
-# ── 4. Posterior predictive distribution ─────────────────────────────────────
+# -- 4. Posterior predictive distribution -------------------------------------
 def posterior_predictive():
     print("\n=== Posterior Predictive Distribution ===")
-    # Beta-Binomial: P(X̃=k | data) = ∫ Binom(k|p)·Beta_post(p) dp
+    # Beta-Binomial: P(X=k | data) = integral Binom(k|p)·Beta_post(p) dp
     alpha_post, beta_post = 12, 8   # after seeing 10 heads, 6 tails with Beta(2,2) prior
     n_pred = 10   # predict next 10 flips
 
     from scipy.special import comb as scomb, betaln
 
     def predictive_pmf(k, n, a, b):
-        """P(X̃=k | n trials, posterior Beta(a,b))"""
+        """P(X=k | n trials, posterior Beta(a,b))"""
         log_p = (np.log(scomb(n, k, exact=True)) +
                  betaln(k+a, n-k+b) -
                  betaln(a, b))
@@ -111,11 +111,11 @@ def posterior_predictive():
     for k in range(n_pred+1):
         p = predictive_pmf(k, n_pred, alpha_post, beta_post)
         total += p
-        print(f"    P(X̃={k:2d}) = {p:.4f}")
+        print(f"    P(X={k:2d}) = {p:.4f}")
     print(f"  Sum = {total:.6f}")
 
 
-# ── 5. Metropolis-Hastings MCMC ───────────────────────────────────────────────
+# -- 5. Metropolis-Hastings MCMC -----------------------------------------------
 def metropolis_hastings():
     print("\n=== Metropolis-Hastings MCMC ===")
     # Target: Beta(3,5) distribution sampled via MH
@@ -148,11 +148,11 @@ def metropolis_hastings():
     print(f"  True 95% CI: [{true_dist.ppf(0.025):.4f}, {true_dist.ppf(0.975):.4f}]")
 
 
-# ── 6. Bayesian vs Frequentist comparison ────────────────────────────────────
+# -- 6. Bayesian vs Frequentist comparison ------------------------------------
 def bayes_vs_frequentist():
     print("\n=== Bayesian vs Frequentist Comparison ===")
     comparison = [
-        ("Question",       "What is P(H₀|data)?",        "What is P(data|H₀)?"),
+        ("Question",       "What is P(H0|data)?",        "What is P(data|H0)?"),
         ("Parameters",     "Random variables with priors","Fixed unknown constants"),
         ("Inference",      "Posterior distribution",      "Point estimates + CIs"),
         ("Interval",       "Credible interval (direct)",  "Confidence interval (indirect)"),

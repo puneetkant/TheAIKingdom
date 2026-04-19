@@ -13,7 +13,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_convolution")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Manual 2D convolution ─────────────────────────────────────────────────────
+# -- Manual 2D convolution -----------------------------------------------------
 def conv2d(X, K, stride=1, padding=0):
     """2D cross-correlation (standard 'convolution' in DL)."""
     if padding > 0:
@@ -29,10 +29,10 @@ def conv2d(X, K, stride=1, padding=0):
     return out
 
 
-# ── 1. Basic convolution ──────────────────────────────────────────────────────
+# -- 1. Basic convolution ------------------------------------------------------
 def basic_convolution():
     print("=== Basic 2D Convolution ===")
-    print("  Output[i,j] = Σ Σ Input[i+m, j+n] · Kernel[m,n]")
+    print("  Output[i,j] = Sigma Sigma Input[i+m, j+n] · Kernel[m,n]")
     print("  DL uses cross-correlation (no kernel flip); called 'convolution' by convention")
 
     # 5×5 input, 3×3 kernel
@@ -56,7 +56,7 @@ def basic_convolution():
         print(f"  Output:\n{out.round(2)}")
 
 
-# ── 2. Padding and stride ─────────────────────────────────────────────────────
+# -- 2. Padding and stride -----------------------------------------------------
 def padding_and_stride():
     print("\n=== Padding and Stride ===")
     print("  Output size: floor((H + 2P - kH) / S) + 1")
@@ -65,11 +65,11 @@ def padding_and_stride():
     for S in [1, 2]:
         for P in [0, 1]:
             outH = (H + 2*P - kH) // S + 1
-            print(f"  H={H}  k={kH}  P={P}  S={S}  →  output={outH}")
+            print(f"  H={H}  k={kH}  P={P}  S={S}  ->  output={outH}")
 
     print()
-    print("  'same' padding: P = (kH-1)/2  → output same spatial size as input")
-    print("  'valid' padding: P = 0        → no padding (output shrinks)")
+    print("  'same' padding: P = (kH-1)/2  -> output same spatial size as input")
+    print("  'valid' padding: P = 0        -> no padding (output shrinks)")
 
     X = np.ones((6, 6)) * 3
     K = np.ones((3, 3))
@@ -81,7 +81,7 @@ def padding_and_stride():
         print(f"  {desc:<30}: output={out.shape}")
 
 
-# ── 3. Multiple channels ──────────────────────────────────────────────────────
+# -- 3. Multiple channels ------------------------------------------------------
 def multi_channel_conv():
     print("\n=== Multi-Channel Convolution ===")
     print("  Input:  (H, W, C_in)")
@@ -89,7 +89,7 @@ def multi_channel_conv():
     print("  Output: (H', W', C_out)")
     print()
     print("  For each output channel:")
-    print("    out[..., c] = bias[c] + Σ_cin conv2d(in[...,cin], K[...,cin,c])")
+    print("    out[..., c] = bias[c] + Sigma_cin conv2d(in[...,cin], K[...,cin,c])")
 
     rng    = np.random.default_rng(0)
     H, W   = 8, 8
@@ -115,7 +115,7 @@ def multi_channel_conv():
     print(f"  Parameters: k²·Cin·Cout + Cout = {params}")
 
 
-# ── 4. Dilated (atrous) convolution ──────────────────────────────────────────
+# -- 4. Dilated (atrous) convolution ------------------------------------------
 def dilated_convolution():
     print("\n=== Dilated Convolution ===")
     print("  Expands receptive field without increasing kernel size or parameters")
@@ -147,12 +147,12 @@ def dilated_convolution():
         print(f"  Dilation d={d}: effective kernel={eff}×{eff}  output={out.shape}")
 
 
-# ── 5. Depthwise separable convolution ────────────────────────────────────────
+# -- 5. Depthwise separable convolution ----------------------------------------
 def depthwise_separable():
     print("\n=== Depthwise Separable Convolution ===")
     print("  Standard conv: k²·Cin·Cout parameters")
     print("  DSConv: k²·Cin (depthwise) + Cin·Cout (pointwise 1×1)")
-    print("  Reduction factor: 1/Cout + 1/k²  ≈ 8-9× fewer params for k=3")
+    print("  Reduction factor: 1/Cout + 1/k²  ~= 8-9x fewer params for k=3")
     print()
 
     H, W   = 16, 16
@@ -170,11 +170,11 @@ def depthwise_separable():
     print(f"  Used in:       MobileNet, Xception, EfficientNet")
 
 
-# ── 6. Receptive field ────────────────────────────────────────────────────────
+# -- 6. Receptive field --------------------------------------------------------
 def receptive_field():
     print("\n=== Receptive Field ===")
     print("  RF: region of input that influences a single output unit")
-    print("  Stacking conv layers grows RF: RF_L = 1 + Σ (k_l - 1) · Πs_i")
+    print("  Stacking conv layers grows RF: RF_L = 1 + Sigma (k_l - 1) · Pis_i")
     print()
     # k=3, s=1, no padding
     for n_layers in range(1, 7):
@@ -186,7 +186,7 @@ def receptive_field():
     print(f"  Layer1(s=1): RF=3  Layer2(s=2): RF increases faster")
 
 
-# ── 7. Visualise kernels ──────────────────────────────────────────────────────
+# -- 7. Visualise kernels ------------------------------------------------------
 def visualise_kernels():
     rng = np.random.default_rng(1)
     # Classic image processing kernels

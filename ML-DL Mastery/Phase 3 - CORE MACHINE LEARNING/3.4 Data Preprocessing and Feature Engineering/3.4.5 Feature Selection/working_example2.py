@@ -66,14 +66,14 @@ def demo_embedded():
         coefs = pipe.named_steps["lasso"].coef_
         nonzero = (coefs != 0).sum()
         rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
-        print(f"  Lasso(α={alpha:.2f}): {nonzero}/8 features kept  RMSE={rmse:.4f}")
+        print(f"  Lasso(alpha={alpha:.2f}): {nonzero}/8 features kept  RMSE={rmse:.4f}")
 
 def demo_permutation():
     print("\n=== Permutation Importance (RF) ===")
     h = fetch_california_housing()
     X, y = h.data, h.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    rf = RandomForestRegressor(50, random_state=42, n_jobs=-1)
+    rf = RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1)
     rf.fit(X_train, y_train)
     result = permutation_importance(rf, X_test, y_test, n_repeats=10, random_state=42)
     order = result.importances_mean.argsort()[::-1]

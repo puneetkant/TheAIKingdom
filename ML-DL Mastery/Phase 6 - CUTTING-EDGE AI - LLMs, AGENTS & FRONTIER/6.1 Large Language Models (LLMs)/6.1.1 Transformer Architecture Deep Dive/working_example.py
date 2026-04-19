@@ -20,11 +20,11 @@ def layer_norm(x, eps=1e-5):
     return (x - mu) / np.sqrt(var + eps)
 
 
-# ── 1. Scaled dot-product attention ──────────────────────────────────────────
+# -- 1. Scaled dot-product attention ------------------------------------------
 def scaled_dot_product_attention():
     print("=== Scaled Dot-Product Attention ===")
     print()
-    print("  Attention(Q, K, V) = softmax(QK^T / √d_k) V")
+    print("  Attention(Q, K, V) = softmax(QK^T / sqrtd_k) V")
     print()
     rng = np.random.default_rng(0)
     T = 5; d_k = 8; d_v = 8
@@ -45,13 +45,13 @@ def scaled_dot_product_attention():
         print("  ", " ".join(f"{w:.3f}" for w in row))
     print(f"  Output shape: {out.shape}")
     print()
-    print("  Why scale by √d_k?")
-    print("    Dot products grow in magnitude with d_k → softmax saturates")
+    print("  Why scale by sqrtd_k?")
+    print("    Dot products grow in magnitude with d_k -> softmax saturates")
     print("    Scaling keeps gradients healthy; originally from 'Attention is All You Need'")
     return weights
 
 
-# ── 2. Multi-head attention ───────────────────────────────────────────────────
+# -- 2. Multi-head attention ---------------------------------------------------
 def multi_head_attention():
     print("\n=== Multi-Head Attention ===")
     print()
@@ -90,7 +90,7 @@ def multi_head_attention():
     print("    Head 4: positional relationships")
 
 
-# ── 3. Positional encoding ────────────────────────────────────────────────────
+# -- 3. Positional encoding ----------------------------------------------------
 def positional_encoding():
     print("\n=== Positional Encoding ===")
     print()
@@ -113,7 +113,7 @@ def positional_encoding():
     variants = [
         ("Sinusoidal",  "Fixed; extrapolates poorly"),
         ("Learned abs.","Trainable; BERT, GPT-2; no extrapolation"),
-        ("RoPE",        "Rotary; LLaMA, GPT-NeoX; relative by construction; ∞ context"),
+        ("RoPE",        "Rotary; LLaMA, GPT-NeoX; relative by construction; inf context"),
         ("ALiBi",       "Add linear bias; MPT, BLOOM; no positional params"),
         ("xPos",        "Extended RoPE; better long context; length generalisation"),
     ]
@@ -121,19 +121,19 @@ def positional_encoding():
         print(f"  {v:<14} {d}")
 
 
-# ── 4. LLM architecture variants ─────────────────────────────────────────────
+# -- 4. LLM architecture variants ---------------------------------------------
 def architecture_variants():
     print("\n=== LLM Architecture Variants ===")
     print()
     print("  Normalisation placement:")
-    print("    Post-LN (original): X → MHA → Add+Norm → FFN → Add+Norm")
-    print("    Pre-LN (GPT-3+):    X → Norm → MHA → Add → Norm → FFN → Add")
+    print("    Post-LN (original): X -> MHA -> Add+Norm -> FFN -> Add+Norm")
+    print("    Pre-LN (GPT-3+):    X -> Norm -> MHA -> Add -> Norm -> FFN -> Add")
     print("    RMSNorm: variance-only norm; LLaMA; cheaper; often better")
     print()
     print("  FFN variants:")
     ffn_vars = [
-        ("Standard FFN",  "Linear(4d) → GELU → Linear(d); GPT-2"),
-        ("SwiGLU",        "Linear(8d/3) × σ(Linear(8d/3)) → Linear(d); LLaMA"),
+        ("Standard FFN",  "Linear(4d) -> GELU -> Linear(d); GPT-2"),
+        ("SwiGLU",        "Linear(8d/3) x sigma(Linear(8d/3)) -> Linear(d); LLaMA"),
         ("GeGLU",         "GELU gating; PaLM; similar to SwiGLU"),
         ("Mixture of Exp.","Sparse FFN; only top-k experts active; Mixtral"),
     ]

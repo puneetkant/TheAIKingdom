@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_synthetic")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Why synthetic data ─────────────────────────────────────────────────────
+# -- 1. Why synthetic data -----------------------------------------------------
 def synthetic_data_overview():
     print("=== Synthetic Data and Self-Improvement ===")
     print()
@@ -39,11 +39,11 @@ def synthetic_data_overview():
         print(f"  {p:<14} {d}")
 
 
-# ── 2. Instruction evolution ──────────────────────────────────────────────────
+# -- 2. Instruction evolution --------------------------------------------------
 def instruction_evolution():
     print("\n=== Instruction Evolution (Evol-Instruct) ===")
     print()
-    print("  WizardLM: take simple instructions → evolve into harder, more complex ones")
+    print("  WizardLM: take simple instructions -> evolve into harder, more complex ones")
     print()
     print("  Evolution operations:")
     ops = [
@@ -68,7 +68,7 @@ def instruction_evolution():
         print(f"  v{i}: {ver[:100]}")
 
 
-# ── 3. Self-play and iterative self-improvement ───────────────────────────────
+# -- 3. Self-play and iterative self-improvement -------------------------------
 def self_improvement():
     print("\n=== Self-Play and Iterative Self-Improvement ===")
     print()
@@ -78,9 +78,9 @@ def self_improvement():
     print("    Both improve iteratively without new human labels")
     print()
     print("  STaR (Self-Taught Reasoner):")
-    print("    1. Generate reasoning trace → check answer")
-    print("    2. Correct: add to training; Incorrect: provide hint → re-try")
-    print("    3. Fine-tune on correct traces → stronger model for next round")
+    print("    1. Generate reasoning trace -> check answer")
+    print("    2. Correct: add to training; Incorrect: provide hint -> re-try")
+    print("    3. Fine-tune on correct traces -> stronger model for next round")
     print()
 
     # Simulate STaR improvement curve
@@ -88,7 +88,7 @@ def self_improvement():
     rounds = 6
     base_acc = 0.30
     print(f"  Simulated STaR accuracy over iterations:")
-    print(f"  {'Round':<8} {'Accuracy':>10} {'Δ':>8}")
+    print(f"  {'Round':<8} {'Accuracy':>10} {'Delta':>8}")
     prev = 0.0
     for r in range(rounds):
         gain = (0.70 - base_acc) * (1 - np.exp(-0.7 * r)) + rng.normal(0, 0.01)
@@ -102,7 +102,7 @@ def self_improvement():
     print("    Fine-tune on correct solutions; iterate")
 
 
-# ── 4. Distillation pipelines ─────────────────────────────────────────────────
+# -- 4. Distillation pipelines -------------------------------------------------
 def distillation_pipelines():
     print("\n=== Distillation and Data Pipelines ===")
     print()
@@ -112,7 +112,7 @@ def distillation_pipelines():
     print("    Often beats same-size model trained on human data alone")
     print()
     pipelines = [
-        ("φ-1, Phi-2, Phi-3",    "Microsoft; textbook quality + ChatGPT outputs"),
+        ("phi-1, Phi-2, Phi-3",    "Microsoft; textbook quality + ChatGPT outputs"),
         ("Gemma-2",              "Google; knowledge distilled from Gemini Pro"),
         ("Zephyr",               "dDPO + UltraFeedback (GPT-4 preferences)"),
         ("OpenHermes",           "Teknium; GPT-4 tool-use + reasoning traces"),
@@ -131,7 +131,7 @@ def distillation_pipelines():
         "Response length distribution normalisation",
     ]
     for f in filters:
-        print(f"  ✓ {f}")
+        print(f"  [OK] {f}")
 
 
 if __name__ == "__main__":

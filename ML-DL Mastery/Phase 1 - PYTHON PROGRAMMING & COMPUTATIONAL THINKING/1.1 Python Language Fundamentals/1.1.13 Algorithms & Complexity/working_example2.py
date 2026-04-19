@@ -23,7 +23,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── Utility ────────────────────────────────────────────────────────────────────
+# -- Utility --------------------------------------------------------------------
 def timed(label: str, fn, *args) -> tuple:
     t0 = time.perf_counter()
     result = fn(*args)
@@ -32,7 +32,7 @@ def timed(label: str, fn, *args) -> tuple:
     return result, elapsed
 
 
-# ── 1. Sorting comparison ──────────────────────────────────────────────────────
+# -- 1. Sorting comparison ------------------------------------------------------
 def merge_sort(arr: list) -> list:
     if len(arr) <= 1:
         return arr
@@ -82,11 +82,11 @@ def demo_sorting():
             print(f"  {'insertion_sort() [O(n²)]':<40} {'skipped (too slow)':>12}")
 
 
-# ── 2. Binary search for hyperparameter tuning ────────────────────────────────
+# -- 2. Binary search for hyperparameter tuning --------------------------------
 def binary_search_range(target: float, lo: float, hi: float,
                          fn, tol: float = 1e-6, max_iter: int = 100) -> float:
     """
-    Find x in [lo, hi] such that fn(x) ≈ target using binary search.
+    Find x in [lo, hi] such that fn(x) ~= target using binary search.
     fn must be monotonically increasing.
     """
     for _ in range(max_iter):
@@ -108,7 +108,7 @@ def demo_binary_search():
         return 1.0 - math.sqrt(lr) * 0.9
 
     target_loss = 0.5
-    # loss = 1 - 0.9*sqrt(lr) → sqrt(lr) = (1-loss)/0.9 → lr = ((1-0.5)/0.9)^2 ≈ 0.309
+    # loss = 1 - 0.9*sqrt(lr) -> sqrt(lr) = (1-loss)/0.9 -> lr = ((1-0.5)/0.9)^2 ~= 0.309
     found_lr = binary_search_range(
         target=target_loss,
         lo=0.0001, hi=1.0,
@@ -120,7 +120,7 @@ def demo_binary_search():
     print(f"  Achieved loss   : {simulated_loss(found_lr):.8f}")
 
 
-# ── 3. Top-K selection (heap vs sort) ─────────────────────────────────────────
+# -- 3. Top-K selection (heap vs sort) -----------------------------------------
 def top_k_heap(values: list, k: int) -> list:
     """O(n log k) — efficient for small k, large n."""
     return heapq.nlargest(k, values)
@@ -143,7 +143,7 @@ def demo_top_k():
     print(f"  Speedup       : {t_sort/t_heap:.2f}x")
 
 
-# ── 4. Dynamic programming: Edit distance ─────────────────────────────────────
+# -- 4. Dynamic programming: Edit distance -------------------------------------
 def edit_distance(s1: str, s2: str) -> int:
     """Levenshtein distance — O(m*n) DP."""
     m, n = len(s1), len(s2)
@@ -172,7 +172,7 @@ def demo_edit_distance():
         print(f"  edit_distance({s1!r:12}, {s2!r:12}) = {d}")
 
 
-# ── 5. Complexity benchmarks on real data ─────────────────────────────────────
+# -- 5. Complexity benchmarks on real data -------------------------------------
 def download_ratings() -> Path:
     dest = DATA / "ratings.csv"
     if not dest.exists():

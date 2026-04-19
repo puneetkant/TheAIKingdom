@@ -19,7 +19,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_cluster_metrics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. External metrics (require ground truth) ───────────────────────────────
+# -- 1. External metrics (require ground truth) -------------------------------
 def external_metrics():
     print("=== External Clustering Metrics (require ground truth) ===")
     X, y_true = make_blobs(n_samples=300, centers=4, cluster_std=0.8, random_state=0)
@@ -40,12 +40,12 @@ def external_metrics():
         print(f"  {name:<38} {c4:>14.4f} {c2:>12.4f}")
 
     print(f"\n  Note:")
-    print(f"    ARI ∈ [-1,1]: 1=perfect, 0=random, negative=worse than random")
-    print(f"    NMI ∈ [0,1]:  1=perfect agreement, 0=independent")
+    print(f"    ARI in [-1,1]: 1=perfect, 0=random, negative=worse than random")
+    print(f"    NMI in [0,1]:  1=perfect agreement, 0=independent")
     print(f"    ARI is adjusted for chance (unbiased); NMI is not adjusted")
 
 
-# ── 2. Internal metrics (no ground truth needed) ─────────────────────────────
+# -- 2. Internal metrics (no ground truth needed) -----------------------------
 def internal_metrics():
     print("\n=== Internal Clustering Metrics (no ground truth needed) ===")
     X, y_true = make_blobs(n_samples=300, centers=4, cluster_std=0.8, random_state=0)
@@ -58,22 +58,22 @@ def internal_metrics():
         db  = davies_bouldin_score(X, labels)
         ch  = calinski_harabasz_score(X, labels)
         ine = km.inertia_
-        arrow = " ← best" if k == 4 else ""
+        arrow = " <- best" if k == 4 else ""
         print(f"  {k:<5} {sil:>14.4f} {db:>18.4f} {ch:>14.2f} {ine:>12.2f}{arrow}")
 
-    print(f"\n  Silhouette: closer to 1 is better (↑)")
-    print(f"  Davies-Bouldin: closer to 0 is better (↓)")
-    print(f"  Calinski-Harabasz: higher is better (↑)")
+    print(f"\n  Silhouette: closer to 1 is better (^)")
+    print(f"  Davies-Bouldin: closer to 0 is better (v)")
+    print(f"  Calinski-Harabasz: higher is better (^)")
     print(f"  Inertia: elbow in inertia vs k curve")
 
 
-# ── 3. Silhouette analysis ───────────────────────────────────────────────────
+# -- 3. Silhouette analysis ---------------------------------------------------
 def silhouette_analysis():
     print("\n=== Silhouette Analysis ===")
     print("  s(i) = (b-a) / max(a,b)")
     print("  a = mean dist to same-cluster points (cohesion)")
     print("  b = mean dist to nearest other cluster (separation)")
-    print("  s ≈ 1: well clustered   s ≈ 0: borderline   s < 0: misclassified")
+    print("  s ~= 1: well clustered   s ~= 0: borderline   s < 0: misclassified")
 
     X, _ = make_blobs(n_samples=200, centers=3, cluster_std=0.6, random_state=1)
     km   = KMeans(n_clusters=3, n_init=10, random_state=0).fit(X)
@@ -108,7 +108,7 @@ def silhouette_analysis():
     print(f"\n  Silhouette plot saved: {path}")
 
 
-# ── 4. Choosing k: elbow and silhouette ──────────────────────────────────────
+# -- 4. Choosing k: elbow and silhouette --------------------------------------
 def choosing_k():
     print("\n=== Choosing k: Elbow + Silhouette ===")
     X, _ = make_blobs(n_samples=400, centers=5, cluster_std=0.9, random_state=2)
@@ -139,7 +139,7 @@ def choosing_k():
     print(f"\n  Elbow/silhouette plots saved: {path}")
 
 
-# ── 5. Algorithm comparison with metrics ─────────────────────────────────────
+# -- 5. Algorithm comparison with metrics -------------------------------------
 def algorithm_metric_comparison():
     print("\n=== Algorithm × Metric Comparison ===")
     X, y_true = make_blobs(n_samples=300, centers=4, cluster_std=0.9, random_state=3)

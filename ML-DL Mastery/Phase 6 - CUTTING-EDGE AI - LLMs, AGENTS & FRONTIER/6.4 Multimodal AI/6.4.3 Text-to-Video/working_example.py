@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_t2v")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. T2V landscape ──────────────────────────────────────────────────────────
+# -- 1. T2V landscape ----------------------------------------------------------
 def t2v_landscape():
     print("=== Text-to-Video Generation ===")
     print()
@@ -29,7 +29,7 @@ def t2v_landscape():
         print(f"  {m:<18} {d}")
 
 
-# ── 2. Architecture ───────────────────────────────────────────────────────────
+# -- 2. Architecture -----------------------------------------------------------
 def video_architecture():
     print("\n=== Video Diffusion Architectures ===")
     print()
@@ -38,7 +38,7 @@ def video_architecture():
     print()
     print("  Architecture families:")
     arches = [
-        ("Inflate UNet",   "2D Conv → 3D Conv; temporal layers; AnimateDiff, ModelScopeT2V"),
+        ("Inflate UNet",   "2D Conv -> 3D Conv; temporal layers; AnimateDiff, ModelScopeT2V"),
         ("Video DiT",      "Diffusion Transformer over spacetime patches; Sora, CogVideoX"),
         ("U-Net + temporal","Spatial UNet + temporal attention blocks; Runway, Stable Video"),
         ("Autoregressive", "Generate frame-by-frame; VILM; slow but long videos"),
@@ -58,15 +58,15 @@ def video_architecture():
         print(f"  {s:<22} {d}")
 
 
-# ── 3. Sora architecture ──────────────────────────────────────────────────────
+# -- 3. Sora architecture ------------------------------------------------------
 def sora_architecture():
     print("\n=== Sora (Video DiT) Architecture ===")
     print()
     print("  Key innovations:")
-    print("  1. Spacetime patches: videos → 3D patch tokens (any resolution/duration)")
-    print("  2. Vision encoder: compress video → latents with 3D VAE")
+    print("  1. Spacetime patches: videos -> 3D patch tokens (any resolution/duration)")
+    print("  2. Vision encoder: compress video -> latents with 3D VAE")
     print("  3. DiT backbone: transformer over spacetime tokens")
-    print("  4. Text conditioning: CLIP/T5 → cross-attention throughout")
+    print("  4. Text conditioning: CLIP/T5 -> cross-attention throughout")
     print("  5. Flexible tokens: handles variable length/resolution natively")
     print()
     print("  Why DiT beats UNet for video:")
@@ -80,11 +80,11 @@ def sora_architecture():
         print(f"  + {r}")
     print()
     print("  Scaling laws for video generation:")
-    print("    More compute → better temporal coherence and motion quality")
+    print("    More compute -> better temporal coherence and motion quality")
     print("    Estimated Sora training: ~4000+ A100 GPU days")
 
 
-# ── 4. Evaluation ─────────────────────────────────────────────────────────────
+# -- 4. Evaluation -------------------------------------------------------------
 def t2v_evaluation():
     print("\n=== Video Generation Evaluation ===")
     print()

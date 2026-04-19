@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_vlm")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. VLM landscape ──────────────────────────────────────────────────────────
+# -- 1. VLM landscape ----------------------------------------------------------
 def vlm_landscape():
     print("=== Vision-Language Models (VLMs) ===")
     print()
@@ -33,7 +33,7 @@ def vlm_landscape():
         print(f"  {m:<24} {d}")
 
 
-# ── 2. CLIP architecture ──────────────────────────────────────────────────────
+# -- 2. CLIP architecture ------------------------------------------------------
 def clip_architecture():
     print("\n=== CLIP Architecture ===")
     print()
@@ -43,7 +43,7 @@ def clip_architecture():
     print("  Architecture:")
     print("    Image encoder: ViT-B/32, ViT-L/14, ViT-L/14@336px")
     print("    Text encoder:  Transformer (63M params; 77 token max)")
-    print("    Projection:    Both → shared embedding space (512d / 768d)")
+    print("    Projection:    Both -> shared embedding space (512d / 768d)")
     print()
 
     # Simulate CLIP similarity
@@ -71,7 +71,7 @@ def clip_architecture():
     probs = np.exp(sims * 10)
     probs /= probs.sum()
     for t, p in sorted(zip(texts, probs), key=lambda x: -x[1]):
-        bar = "█" * int(p * 40)
+        bar = "#" * int(p * 40)
         print(f"    {t:<28} {p:.3f} {bar}")
 
     print()
@@ -87,14 +87,14 @@ def clip_architecture():
         print(f"  • {a}")
 
 
-# ── 3. LLaVA architecture ─────────────────────────────────────────────────────
+# -- 3. LLaVA architecture -----------------------------------------------------
 def llava_architecture():
     print("\n=== LLaVA Architecture ===")
     print()
     print("  LLaVA = Large Language and Vision Assistant")
     print("  Components:")
     components = [
-        ("Vision encoder",  "CLIP ViT-L/14 → 256 visual tokens (14x14 grid)"),
+        ("Vision encoder",  "CLIP ViT-L/14 -> 256 visual tokens (14x14 grid)"),
         ("Projection",      "MLP (LLaVA-1.5) or Q-Former (InstructBLIP)"),
         ("LLM",             "LLaMA-2 / Mistral / Vicuna; receives projected tokens"),
         ("Training",        "Stage 1: alignment (freeze LLM); Stage 2: instruction tuning"),
@@ -115,7 +115,7 @@ def llava_architecture():
     print()
     print("  Visual token strategies:")
     strategies = [
-        ("Naive",       "Flatten all ViT patches → token sequence"),
+        ("Naive",       "Flatten all ViT patches -> token sequence"),
         ("High-res",    "LLaVA-1.6: dynamic resolution; slice + encode tiles"),
         ("Anyres",      "Adaptive tiling; preserve aspect ratio"),
         ("StreamingLLM","Attention sinks; process video frames sequentially"),
@@ -124,7 +124,7 @@ def llava_architecture():
         print(f"  {s:<12} {d}")
 
 
-# ── 4. VLM evaluation ─────────────────────────────────────────────────────────
+# -- 4. VLM evaluation ---------------------------------------------------------
 def vlm_evaluation():
     print("\n=== VLM Evaluation Benchmarks ===")
     print()

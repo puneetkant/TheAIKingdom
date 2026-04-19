@@ -1,7 +1,7 @@
 """
 Working Example 2: CNN Architectures — LeNet-style numpy demo + architecture comparison
 =========================================================================================
-Demonstrates LeNet architecture (conv→pool→fc) on synthetic image classification.
+Demonstrates LeNet architecture (conv->pool->fc) on synthetic image classification.
 
 Run:  python working_example2.py
 """
@@ -26,11 +26,11 @@ def demo_lenet_description():
     """Print the LeNet architecture topology."""
     print("=== CNN Architectures (Historical Evolution) ===")
     architectures = [
-        ("LeNet-5 (1998)",    "Input(32²,1) → Conv(6,5) → Pool → Conv(16,5) → Pool → FC120 → FC84 → 10"),
-        ("AlexNet (2012)",    "Input(224²,3) → Conv(96,11,s4) → ... → FC4096 → FC4096 → 1000"),
-        ("VGG-16 (2014)",     "Input(224²,3) → 13×Conv(3×3) → 3×FC → 1000"),
-        ("GoogLeNet (2014)",  "Input → Inception modules (parallel convs) → GlobalAvgPool → 1000"),
-        ("ResNet-50 (2015)",  "Input → Conv → 16×Residual Blocks → GlobalAvgPool → 1000"),
+        ("LeNet-5 (1998)",    "Input(32²,1) -> Conv(6,5) -> Pool -> Conv(16,5) -> Pool -> FC120 -> FC84 -> 10"),
+        ("AlexNet (2012)",    "Input(224²,3) -> Conv(96,11,s4) -> ... -> FC4096 -> FC4096 -> 1000"),
+        ("VGG-16 (2014)",     "Input(224²,3) -> 13xConv(3x3) -> 3xFC -> 1000"),
+        ("GoogLeNet (2014)",  "Input -> Inception modules (parallel convs) -> GlobalAvgPool -> 1000"),
+        ("ResNet-50 (2015)",  "Input -> Conv -> 16xResidual Blocks -> GlobalAvgPool -> 1000"),
     ]
     for name, arch in architectures:
         print(f"\n  {name}")

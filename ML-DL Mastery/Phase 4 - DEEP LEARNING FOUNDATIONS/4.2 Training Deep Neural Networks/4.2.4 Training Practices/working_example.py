@@ -17,10 +17,10 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Mini-batch gradient descent ───────────────────────────────────────────
+# -- 1. Mini-batch gradient descent -------------------------------------------
 def mini_batch_gd():
     print("=== Mini-Batch Gradient Descent ===")
-    print("  Trade-off: batch_size ↑ → noisier but faster per epoch")
+    print("  Trade-off: batch_size ^ -> noisier but faster per epoch")
 
     rng = np.random.default_rng(0)
     n, d = 1000, 10
@@ -45,7 +45,7 @@ def mini_batch_gd():
     print(f"  - Always shuffle data each epoch")
 
 
-# ── 2. Gradient clipping ─────────────────────────────────────────────────────
+# -- 2. Gradient clipping -----------------------------------------------------
 def gradient_clipping():
     print("\n=== Gradient Clipping ===")
     print("  Prevents exploding gradients (common in RNNs)")
@@ -66,14 +66,14 @@ def gradient_clipping():
         print(f"  ||g||={g_norm:>8.2f}  norm_clip={g_norm_clipped:>6.4f}  val_clip_norm={g_val_norm:>8.4f}")
 
 
-# ── 3. Data pipeline and shuffling ───────────────────────────────────────────
+# -- 3. Data pipeline and shuffling -------------------------------------------
 def data_pipeline():
     print("\n=== Data Pipeline Best Practices ===")
     print("  1. Shuffle:        randomise order each epoch (prevents cycle bias)")
     print("  2. Normalize:      fit on train only; transform train+val+test")
     print("  3. Augmentation:   apply on-the-fly during training only")
     print("  4. Prefetch:       load next batch while GPU processes current")
-    print("  5. Pin memory:     CPU→GPU transfer without copy (PyTorch)")
+    print("  5. Pin memory:     CPU->GPU transfer without copy (PyTorch)")
     print()
 
     # Simulate data generator
@@ -99,7 +99,7 @@ def data_pipeline():
         print(f"  Batch {i}: X={Xb.shape}  y_dist={dict(zip(*np.unique(yb, return_counts=True)))}")
 
 
-# ── 4. Gradient accumulation ─────────────────────────────────────────────────
+# -- 4. Gradient accumulation -------------------------------------------------
 def gradient_accumulation():
     print("\n=== Gradient Accumulation ===")
     print("  Simulate large batch without large GPU memory:")
@@ -121,10 +121,10 @@ def gradient_accumulation():
         g = rng.standard_normal(5)  # gradient from micro-batch
         total_grads += g / accum_steps  # normalise!
         print(f"  Step {step+1}: accumulated gradient = {total_grads.round(4)}")
-    print(f"  → Apply update after {accum_steps} steps")
+    print(f"  -> Apply update after {accum_steps} steps")
 
 
-# ── 5. Checkpointing ─────────────────────────────────────────────────────────
+# -- 5. Checkpointing ---------------------------------------------------------
 def checkpointing():
     print("\n=== Model Checkpointing ===")
     print("  Save model state (weights + optimizer state) periodically")
@@ -141,21 +141,21 @@ def checkpointing():
     for ep, vl in enumerate(val_losses, 1):
         if vl < best_loss:
             best_loss = vl
-            action    = f"✓ SAVED (best={vl:.4f})"
+            action    = f"[OK] SAVED (best={vl:.4f})"
         else:
             action    = "— skipped"
         print(f"  {ep:<8} {vl:<12} {action}")
 
 
-# ── 6. Mixed precision training ───────────────────────────────────────────────
+# -- 6. Mixed precision training -----------------------------------------------
 def mixed_precision():
     print("\n=== Mixed Precision Training (FP16/BF16) ===")
     print("  FP32: 32-bit float (standard); FP16: 16-bit float (2× memory, faster)")
     print()
     print("  Strategy:")
-    print("  1. Forward pass in FP16 → faster matrix ops on GPU")
-    print("  2. Loss in FP32         → numerical stability")
-    print("  3. Gradient in FP16     → scaled by loss_scale to avoid underflow")
+    print("  1. Forward pass in FP16 -> faster matrix ops on GPU")
+    print("  2. Loss in FP32         -> numerical stability")
+    print("  3. Gradient in FP16     -> scaled by loss_scale to avoid underflow")
     print("  4. Update weights in FP32 master copy")
     print()
     print("  Loss scaling: multiply loss by S before backward; divide gradients by S")
@@ -165,7 +165,7 @@ def mixed_precision():
     print("  Supported by: PyTorch autocast, TF/Keras mixed_float16 policy")
 
 
-# ── 7. Debugging training ─────────────────────────────────────────────────────
+# -- 7. Debugging training -----------------------------------------------------
 def debugging_training():
     print("\n=== Debugging Deep Learning Training ===")
     print()

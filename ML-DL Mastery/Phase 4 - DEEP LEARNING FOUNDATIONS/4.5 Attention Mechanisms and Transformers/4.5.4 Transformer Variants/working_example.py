@@ -6,27 +6,27 @@ Vision Transformer (ViT), and key architectural differences.
 import numpy as np
 
 
-# ── 1. The Transformer Family Tree ───────────────────────────────────────────
+# -- 1. The Transformer Family Tree -------------------------------------------
 def family_tree():
     print("=== Transformer Family Tree ===")
     print()
     print("  Original Transformer (Vaswani 2017)")
-    print("    ├── Encoder-only")
-    print("    │     BERT (Devlin 2018)  → RoBERTa, ALBERT, DeBERTa, ELECTRA")
-    print("    ├── Decoder-only (GPT-style)")
-    print("    │     GPT (OpenAI 2018)   → GPT-2, GPT-3, GPT-4, LLaMA, Mistral")
-    print("    │                            PaLM, Claude, Gemini, Falcon")
-    print("    └── Encoder-Decoder")
-    print("          T5 (Raffel 2020)    → BART, mT5, Flan-T5, UL2")
+    print("    ├-- Encoder-only")
+    print("    |     BERT (Devlin 2018)  -> RoBERTa, ALBERT, DeBERTa, ELECTRA")
+    print("    ├-- Decoder-only (GPT-style)")
+    print("    |     GPT (OpenAI 2018)   -> GPT-2, GPT-3, GPT-4, LLaMA, Mistral")
+    print("    |                            PaLM, Claude, Gemini, Falcon")
+    print("    +-- Encoder-Decoder")
+    print("          T5 (Raffel 2020)    -> BART, mT5, Flan-T5, UL2")
     print()
     print("  Vision variants:")
-    print("    ViT (Dosovitskiy 2020)    → DeiT, Swin, BEiT, MAE")
+    print("    ViT (Dosovitskiy 2020)    -> DeiT, Swin, BEiT, MAE")
     print()
     print("  Multi-modal:")
     print("    CLIP, DALL-E, Flamingo, GPT-4V, LLaVA")
 
 
-# ── 2. BERT ───────────────────────────────────────────────────────────────────
+# -- 2. BERT -------------------------------------------------------------------
 def bert():
     print("\n=== BERT (Bidirectional Encoder Representations from Transformers) ===")
     print("  Architecture: Encoder-only Transformer")
@@ -34,11 +34,11 @@ def bert():
     print()
     print("  Pre-training tasks:")
     print("    1. Masked Language Modelling (MLM):")
-    print("       15% of tokens randomly masked → predict original token")
-    print("       [CLS] The [MASK] sat on the mat → 'cat'")
+    print("       15% of tokens randomly masked -> predict original token")
+    print("       [CLS] The [MASK] sat on the mat -> 'cat'")
     print()
     print("    2. Next Sentence Prediction (NSP):")
-    print("       [CLS] sentence A [SEP] sentence B [SEP] → IsNext or NotNext")
+    print("       [CLS] sentence A [SEP] sentence B [SEP] -> IsNext or NotNext")
     print("       (Later work showed NSP not very helpful)")
     print()
     print("  Fine-tuning: add task-specific head, train all weights end-to-end")
@@ -58,21 +58,21 @@ def bert():
     print()
     print("  Fine-tuning tasks:")
     tasks = [
-        ("Classification",  "[CLS] representation → classification head"),
-        ("NER",             "Each token representation → NER label head"),
+        ("Classification",  "[CLS] representation -> classification head"),
+        ("NER",             "Each token representation -> NER label head"),
         ("QA (SQuAD)",      "Start/end position prediction over passage tokens"),
-        ("NLI",             "[CLS] of [premise][SEP][hypothesis] → 3-way label"),
+        ("NLI",             "[CLS] of [premise][SEP][hypothesis] -> 3-way label"),
     ]
     for task, approach in tasks:
         print(f"    {task:<18}: {approach}")
 
 
-# ── 3. GPT (decoder-only) ─────────────────────────────────────────────────────
+# -- 3. GPT (decoder-only) -----------------------------------------------------
 def gpt():
     print("\n=== GPT Family (Decoder-Only / Autoregressive) ===")
     print("  Architecture: Decoder-only (masked self-attention only, no cross-attn)")
     print("  Pre-training: next token prediction (causal LM)")
-    print("    P(w_1, w_2, ..., w_T) = Π P(w_t | w_1, ..., w_{t-1})")
+    print("    P(w_1, w_2, ..., w_T) = Pi P(w_t | w_1, ..., w_{t-1})")
     print()
     versions = [
         ("GPT-1",   "12",  "768",  "~117M",   "2018", "12-layer decoder"),
@@ -90,13 +90,13 @@ def gpt():
     print()
     print("  Key innovations in modern GPT models:")
     print("    RoPE:  rotary positional embeddings (relative positions)")
-    print("    GQA:   grouped-query attention (fewer KV heads → less memory)")
+    print("    GQA:   grouped-query attention (fewer KV heads -> less memory)")
     print("    SWA:   sliding window attention (Mistral)")
     print("    RLHF:  reinforcement learning from human feedback (GPT-4, Claude)")
     print("    SFT:   supervised fine-tuning on instruction datasets")
 
 
-# ── 4. T5 (encoder-decoder) ──────────────────────────────────────────────────
+# -- 4. T5 (encoder-decoder) --------------------------------------------------
 def t5():
     print("\n=== T5 (Text-to-Text Transfer Transformer) ===")
     print("  Architecture: Encoder-Decoder (original Transformer)")
@@ -127,19 +127,19 @@ def t5():
         print(f"  {name:<14} {L:<8} {d:<10} {p}")
 
 
-# ── 5. Vision Transformer (ViT) ───────────────────────────────────────────────
+# -- 5. Vision Transformer (ViT) -----------------------------------------------
 def vit():
     print("\n=== Vision Transformer (ViT, Dosovitskiy 2020) ===")
     print("  Split image into fixed-size patches; treat each patch as a token")
     print()
     print("  Pipeline:")
-    print("    1. Split 224×224 image into 16×16 patches → 14×14 = 196 patches")
+    print("    1. Split 224x224 image into 16x16 patches -> 14x14 = 196 patches")
     print("    2. Flatten each patch: 16×16×3 = 768 values")
-    print("    3. Linear projection: 768 → d_model (patch embeddings)")
+    print("    3. Linear projection: 768 -> d_model (patch embeddings)")
     print("    4. Prepend learnable [CLS] token (used for classification)")
     print("    5. Add positional embeddings (learnable 1D)")
     print("    6. Pass through Transformer Encoder layers")
-    print("    7. [CLS] output → classification head")
+    print("    7. [CLS] output -> classification head")
     print()
 
     # Compute patch tokens
@@ -173,7 +173,7 @@ def vit():
     print("    MAE:   masked autoencoder (75% masking, reconstruct pixels)")
 
 
-# ── 6. Architectural comparison ───────────────────────────────────────────────
+# -- 6. Architectural comparison -----------------------------------------------
 def architectural_comparison():
     print("\n=== Transformer Variant Comparison ===")
     print(f"  {'Feature':<24} {'BERT':<20} {'GPT':<20} {'T5':<20} {'ViT'}")
@@ -189,7 +189,7 @@ def architectural_comparison():
         print(f"  {name:<24} {bert:<20} {gpt:<20} {t5:<20} {vit}")
 
 
-# ── 7. Key architectural improvements ─────────────────────────────────────────
+# -- 7. Key architectural improvements -----------------------------------------
 def key_improvements():
     print("\n=== Key Architectural Improvements Over Time ===")
     improvements = [

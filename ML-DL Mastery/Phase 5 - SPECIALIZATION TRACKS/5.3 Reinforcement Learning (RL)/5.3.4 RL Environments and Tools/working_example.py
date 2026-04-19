@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_rl_tools")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Gymnasium overview ─────────────────────────────────────────────────────
+# -- 1. Gymnasium overview -----------------------------------------------------
 def gymnasium_overview():
     print("=== Gymnasium (OpenAI Gym) ===")
     print("  Standard interface for RL environments")
@@ -65,7 +65,7 @@ def gymnasium_overview():
         print("  gymnasium not installed; showing code pattern only")
 
 
-# ── 2. Classic control environments ──────────────────────────────────────────
+# -- 2. Classic control environments ------------------------------------------
 def classic_environments():
     print("\n=== Common RL Environments ===")
     print()
@@ -103,13 +103,13 @@ def classic_environments():
         print()
 
 
-# ── 3. Reward shaping ────────────────────────────────────────────────────────
+# -- 3. Reward shaping --------------------------------------------------------
 def reward_shaping():
     print("=== Reward Shaping ===")
-    print("  Sparse rewards are hard to learn from → add additional reward signals")
+    print("  Sparse rewards are hard to learn from -> add additional reward signals")
     print()
     print("  Potential-based shaping (Ng et al.):")
-    print("    R_shaped = R + γΦ(s') - Φ(s)")
+    print("    R_shaped = R + gammaΦ(s') - Φ(s)")
     print("    Guaranteed to preserve optimal policy when Φ is a potential fn")
     print()
 
@@ -118,7 +118,7 @@ def reward_shaping():
         ("Reward clipping",      "Clip to [-1,1] for numerical stability (DQN)"),
         ("Normalisation",        "Running mean/std normalisation of rewards"),
         ("Intrinsic curiosity",  "Bonus for visiting novel states (ICM)"),
-        ("Count-based",          "Bonus ∝ 1/√N(s); tabular exploration"),
+        ("Count-based",          "Bonus ∝ 1/sqrtN(s); tabular exploration"),
         ("RND",                  "Random Network Distillation; neural novelty bonus"),
         ("HER",                  "Hindsight Experience Replay; relabel failed goals"),
         ("RLHF",                 "Reward from human preference comparisons"),
@@ -136,14 +136,14 @@ def reward_shaping():
     print(f"  Shaped  avg (ep 1-10): {np.mean(shaped[:10]):.2f}  (ep 40-50): {np.mean(shaped[40:]):.2f}")
 
 
-# ── 4. RL evaluation best practices ──────────────────────────────────────────
+# -- 4. RL evaluation best practices ------------------------------------------
 def evaluation_best_practices():
     print("\n=== RL Evaluation Best Practices ===")
     print("  Common pitfalls and how to avoid them:")
     print()
     practices = [
-        ("Use multiple seeds",       "Report mean ± std over ≥5 seeds; single seed misleading"),
-        ("Evaluation episodes",      "Evaluate with no exploration (ε=0 or deterministic)"),
+        ("Use multiple seeds",       "Report mean +/- std over >=5 seeds; single seed misleading"),
+        ("Evaluation episodes",      "Evaluate with no exploration (epsilon=0 or deterministic)"),
         ("Report learning curves",   "Plot return vs environment steps, not wall time"),
         ("Confidence intervals",     "95% CI or interquartile mean (IQM) across seeds"),
         ("Normalised scores",        "Score = (agent - random) / (expert - random)"),
@@ -155,7 +155,7 @@ def evaluation_best_practices():
         print(f"  {p:<22} {d}")
 
 
-# ── 5. RL libraries ───────────────────────────────────────────────────────────
+# -- 5. RL libraries -----------------------------------------------------------
 def rl_libraries():
     print("\n=== RL Libraries ===")
     libs = [
@@ -169,7 +169,7 @@ def rl_libraries():
         ("TorchRL",            "torchrl","PyTorch official; modular; composable"),
     ]
     print(f"  {'Library':<18} {'Install':<22} {'Notes'}")
-    print(f"  {'─'*18} {'─'*22} {'─'*40}")
+    print(f"  {'-'*18} {'-'*22} {'-'*40}")
     for name, install, desc in libs:
         print(f"  {name:<18} pip install {install:<12} {desc}")
 

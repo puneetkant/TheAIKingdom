@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_rec_eval")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Offline ranking metrics ────────────────────────────────────────────────
+# -- 1. Offline ranking metrics ------------------------------------------------
 def ranking_metrics():
     print("=== Recommender System Evaluation Metrics ===")
     print()
@@ -62,7 +62,7 @@ def ranking_metrics():
     print(f"  MRR = {mrr:.3f}  (reciprocal rank of first hit)")
 
 
-# ── 2. Multi-user evaluation ──────────────────────────────────────────────────
+# -- 2. Multi-user evaluation --------------------------------------------------
 def multi_user_eval():
     print("\n=== Multi-User Evaluation ===")
     print("  Average metrics over all users (macro-average)")
@@ -97,12 +97,12 @@ def multi_user_eval():
     print(f"  Plot: {path}")
 
 
-# ── 3. Online evaluation and A/B testing ─────────────────────────────────────
+# -- 3. Online evaluation and A/B testing -------------------------------------
 def online_evaluation():
     print("\n=== Online Evaluation (A/B Testing) ===")
     print()
-    print("  Problem: offline metrics ≠ online business metrics")
-    print("    NDCG up 2% offline ≠ CTR up 2% online (correlation ≈ 0.4-0.7)")
+    print("  Problem: offline metrics != online business metrics")
+    print("    NDCG up 2% offline != CTR up 2% online (correlation ~= 0.4-0.7)")
     print()
     print("  A/B test design:")
     print("    Control: existing model (A)")
@@ -129,7 +129,7 @@ def online_evaluation():
 
     print(f"  n_A={n_a}  n_B={n_b}")
     print(f"  CTR_A={ctr_a:.4f}  CTR_B={ctr_b:.4f}  Lift={lift:+.2%}")
-    print(f"  z={z:.3f}  p≈{abs(p_val):.4f}  {'SIGNIFICANT (p<0.05)' if abs(p_val) < 0.05 else 'NOT significant'}")
+    print(f"  z={z:.3f}  p~={abs(p_val):.4f}  {'SIGNIFICANT (p<0.05)' if abs(p_val) < 0.05 else 'NOT significant'}")
     print()
     print("  Online metrics to track:")
     online_metrics = [
@@ -144,7 +144,7 @@ def online_evaluation():
         print(f"  {m:<12} {d}")
 
 
-# ── 4. Evaluation pitfalls ────────────────────────────────────────────────────
+# -- 4. Evaluation pitfalls ----------------------------------------------------
 def evaluation_pitfalls():
     print("\n=== Evaluation Pitfalls ===")
     pitfalls = [
@@ -157,7 +157,7 @@ def evaluation_pitfalls():
         ("Offline-online disconnect", "Offline gains don't translate; use interleaving"),
     ]
     print(f"  {'Pitfall':<28} {'Notes'}")
-    print(f"  {'─'*28} {'─'*45}")
+    print(f"  {'-'*28} {'-'*45}")
     for p, d in pitfalls:
         print(f"  {p:<28} {d}")
 

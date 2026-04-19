@@ -11,7 +11,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_tabular_rl")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── GridWorld environment (shared) ───────────────────────────────────────────
+# -- GridWorld environment (shared) -------------------------------------------
 class GridWorld:
     def __init__(self, size=4):
         self.size = size
@@ -41,7 +41,7 @@ class GridWorld:
         return sid, reward, done
 
     def render_policy(self, Q):
-        ARROWS = ["↑","↓","←","→"]
+        ARROWS = ["^","v","<-","->"]
         for r in range(self.size):
             row = ""
             for c in range(self.size):
@@ -54,13 +54,13 @@ class GridWorld:
             print(f"  {row}")
 
 
-# ── 1. Dynamic Programming (Value Iteration) ──────────────────────────────────
+# -- 1. Dynamic Programming (Value Iteration) ----------------------------------
 def value_iteration():
     print("=== Value Iteration (Dynamic Programming) ===")
     print("  Requires full model P(s'|s,a) — model-based")
-    print("  V_{k+1}(s) = max_a Σ_{s'} P(s'|s,a)[R + γV_k(s')]")
+    print("  V_{k+1}(s) = max_a Sigma_{s'} P(s'|s,a)[R + gammaV_k(s')]")
     print()
-    env = GridWorld(4); γ = 0.9; θ = 1e-6
+    env = GridWorld(4); gamma = 0.9; theta = 1e-6
     V   = np.zeros(env.n_s)
     Q   = np.zeros((env.n_s, env.n_a))
 
@@ -74,28 +74,28 @@ def value_iteration():
             for a in range(env.n_a):
                 env.state = s
                 sid2, r, _ = env.step(a)
-                q_vals[a] = r + γ * V[sid2]
+                q_vals[a] = r + gamma * V[sid2]
             v_new = q_vals.max()
             delta = max(delta, abs(V[sid] - v_new))
             V[sid] = v_new; Q[sid] = q_vals
         n_iter += 1
-        if delta < θ: break
+        if delta < theta: break
 
-    print(f"  Converged in {n_iter} iterations  (δ<{θ})")
+    print(f"  Converged in {n_iter} iterations  (delta<{theta})")
     print(f"  V at start (0,0): {V[env._id(env.start)]:.4f}")
     print(f"  V at goal  (3,3): {V[env._id(env.goal)]:.4f}")
-    print("\n  Optimal policy (↑↓←→):")
+    print("\n  Optimal policy (^v<-->):")
     env.render_policy(Q)
     return Q
 
 
-# ── 2. Monte Carlo ────────────────────────────────────────────────────────────
+# -- 2. Monte Carlo ------------------------------------------------------------
 def monte_carlo():
     print("\n=== Monte Carlo Methods ===")
     print("  Model-free; learn from complete episodes")
-    print("  V(s) ← V(s) + α[G_t - V(s)]  (every-visit MC)")
+    print("  V(s) <- V(s) + alpha[G_t - V(s)]  (every-visit MC)")
     print()
-    env = GridWorld(4); γ = 0.9; α = 0.05; eps = 0.3
+    env = GridWorld(4); gamma = 0.9; alpha = 0.05; eps = 0.3
     Q   = np.zeros((env.n_s, env.n_a))
     n_episodes = 2000; returns = []
 
@@ -112,26 +112,26 @@ def monte_carlo():
         # Compute returns and update Q
         G = 0
         for (st, at, rt) in reversed(traj):
-            G = rt + γ * G
-            Q[st, at] += α * (G - Q[st, at])
+            G = rt + gamma * G
+            Q[st, at] += alpha * (G - Q[st, at])
         returns.append(G)
 
     avg10  = np.mean(returns[-100:])
-    print(f"  Episodes: {n_episodes}  ε={eps}  α={α}")
+    print(f"  Episodes: {n_episodes}  epsilon={eps}  alpha={alpha}")
     print(f"  Avg return (last 100): {avg10:.4f}")
-    print(f"  Q[start, →]: {Q[env._id(env.start)].round(4)}")
+    print(f"  Q[start, ->]: {Q[env._id(env.start)].round(4)}")
     print("\n  Learned policy:")
     env.render_policy(Q)
 
 
-# ── 3. Temporal Difference — TD(0) ────────────────────────────────────────────
+# -- 3. Temporal Difference — TD(0) --------------------------------------------
 def td_learning():
     print("\n=== TD(0) — Temporal Difference Learning ===")
     print("  Online, model-free; update after each step")
-    print("  V(s) ← V(s) + α[R + γV(s') - V(s)]")
-    print("  TD target: R + γV(s')  (bootstraps from next value estimate)")
+    print("  V(s) <- V(s) + alpha[R + gammaV(s') - V(s)]")
+    print("  TD target: R + gammaV(s')  (bootstraps from next value estimate)")
     print()
-    env = GridWorld(4); γ = 0.9; α = 0.1; eps = 0.3
+    env = GridWorld(4); gamma = 0.9; alpha = 0.1; eps = 0.3
     V   = np.zeros(env.n_s)
     rng = np.random.default_rng(1)
 
@@ -140,7 +140,7 @@ def td_learning():
         for _ in range(100):
             a = rng.integers(env.n_a) if rng.uniform() < eps else 0
             s2, r, done = env.step(a)
-            V[s] += α * (r + γ * V[s2] - V[s])
+            V[s] += alpha * (r + gamma * V[s2] - V[s])
             s = s2
             if done: break
 
@@ -153,13 +153,13 @@ def td_learning():
     print("    TD:  biased (bootstrap), low variance, online (no full episode needed)")
 
 
-# ── 4. SARSA (on-policy TD) ───────────────────────────────────────────────────
+# -- 4. SARSA (on-policy TD) ---------------------------------------------------
 def sarsa():
     print("\n=== SARSA (On-Policy TD Control) ===")
-    print("  Q(s,a) ← Q(s,a) + α[R + γQ(s',a') - Q(s,a)]")
-    print("  a' is chosen under the CURRENT (ε-greedy) policy")
+    print("  Q(s,a) <- Q(s,a) + alpha[R + gammaQ(s',a') - Q(s,a)]")
+    print("  a' is chosen under the CURRENT (epsilon-greedy) policy")
     print()
-    env = GridWorld(4); γ = 0.9; α = 0.1; eps = 0.2
+    env = GridWorld(4); gamma = 0.9; alpha = 0.1; eps = 0.2
     Q   = np.zeros((env.n_s, env.n_a))
     rng = np.random.default_rng(2)
 
@@ -172,7 +172,7 @@ def sarsa():
         for _ in range(100):
             s2, r, done = env.step(a)
             a2 = choose(s2)
-            Q[s, a] += α * (r + γ * Q[s2, a2] - Q[s, a])
+            Q[s, a] += alpha * (r + gamma * Q[s2, a2] - Q[s, a])
             s = s2; a = a2; total += r
             if done: break
         rewards.append(total)
@@ -182,13 +182,13 @@ def sarsa():
     env.render_policy(Q)
 
 
-# ── 5. Q-Learning (off-policy TD) ────────────────────────────────────────────
+# -- 5. Q-Learning (off-policy TD) --------------------------------------------
 def q_learning():
     print("\n=== Q-Learning (Off-Policy TD Control) ===")
-    print("  Q(s,a) ← Q(s,a) + α[R + γ max_{a'} Q(s',a') - Q(s,a)]")
+    print("  Q(s,a) <- Q(s,a) + alpha[R + gamma max_{a'} Q(s',a') - Q(s,a)]")
     print("  a' is always the GREEDY action (regardless of behaviour policy)")
     print()
-    env = GridWorld(4); γ = 0.9; α = 0.1; eps = 0.2
+    env = GridWorld(4); gamma = 0.9; alpha = 0.1; eps = 0.2
     Q   = np.zeros((env.n_s, env.n_a))
     rng = np.random.default_rng(3)
 
@@ -198,7 +198,7 @@ def q_learning():
         for _ in range(100):
             a = rng.integers(env.n_a) if rng.uniform() < eps else Q[s].argmax()
             s2, r, done = env.step(a)
-            Q[s, a] += α * (r + γ * Q[s2].max() - Q[s, a])
+            Q[s, a] += alpha * (r + gamma * Q[s2].max() - Q[s, a])
             s = s2; total += r
             if done: break
         rewards.append(total)
@@ -208,7 +208,7 @@ def q_learning():
     env.render_policy(Q)
     print()
     print("  SARSA vs Q-Learning:")
-    print("    SARSA:      on-policy; safer; learns value under ε-greedy")
+    print("    SARSA:      on-policy; safer; learns value under epsilon-greedy")
     print("    Q-Learning: off-policy; learns optimal Q* regardless of policy")
     print("    Cliff-walk: SARSA prefers safe route; Q-Learning discovers optimal (risky)")
 

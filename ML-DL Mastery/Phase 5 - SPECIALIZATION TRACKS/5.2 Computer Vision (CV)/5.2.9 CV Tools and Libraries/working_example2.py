@@ -31,7 +31,7 @@ def check_libs():
     print("=== CV Library Status ===")
     for lib, desc in libs.items():
         avail = importlib.util.find_spec(lib) is not None
-        print(f"  {'✓' if avail else '✗'} {lib:20s} — {desc}")
+        print(f"  {'[OK]' if avail else '[X]'} {lib:20s} — {desc}")
     print()
 
 def demo_numpy_cv():

@@ -6,7 +6,7 @@ MobileNet, and EfficientNet design principles.
 import numpy as np
 
 
-# ── 1. LeNet-5 (LeCun 1998) ──────────────────────────────────────────────────
+# -- 1. LeNet-5 (LeCun 1998) --------------------------------------------------
 def lenet5():
     print("=== LeNet-5 (LeCun et al., 1998) ===")
     print("  First successful CNN; designed for digit recognition (MNIST)")
@@ -29,7 +29,7 @@ def lenet5():
     print(f"  Activation: tanh   Pooling: average   Loss: MSE")
 
 
-# ── 2. AlexNet (Krizhevsky 2012) ─────────────────────────────────────────────
+# -- 2. AlexNet (Krizhevsky 2012) ---------------------------------------------
 def alexnet():
     print("\n=== AlexNet (Krizhevsky et al., 2012) ===")
     print("  Won ImageNet ILSVRC 2012 (top-5 error 15.3% vs 26.2% runner-up)")
@@ -44,7 +44,7 @@ def alexnet():
         ("Overlapping max pooling", "3×3 pool stride 2 (not 2×2 stride 2)"),
     ]
     for name, desc in innovations:
-        print(f"  ✓ {name:<30}: {desc}")
+        print(f"  [OK] {name:<30}: {desc}")
     print()
     layers = [
         ("Input",      "227×227×3"),
@@ -66,12 +66,12 @@ def alexnet():
     print(f"\n  Total parameters: ~62 million")
 
 
-# ── 3. VGG (Simonyan 2014) ───────────────────────────────────────────────────
+# -- 3. VGG (Simonyan 2014) ---------------------------------------------------
 def vggnet():
     print("\n=== VGGNet (Simonyan & Zisserman, 2014) ===")
     print("  Key insight: depth matters — use small 3×3 kernels stacked")
-    print("  Two 3×3 convs ≡ one 5×5 conv in RF, but fewer params and more nonlinearity")
-    print("  Three 3×3 convs ≡ one 7×7 conv")
+    print("  Two 3x3 convs ≡ one 5x5 conv in RF, but fewer params and more nonlinearity")
+    print("  Three 3x3 convs ≡ one 7x7 conv")
     print()
 
     vgg16_blocks = [
@@ -101,20 +101,20 @@ def vggnet():
     print(f"  Total VGG16:  ~138M parameters")
 
 
-# ── 4. GoogLeNet / Inception (2014) ───────────────────────────────────────────
+# -- 4. GoogLeNet / Inception (2014) -------------------------------------------
 def googlenet_inception():
     print("\n=== GoogLeNet / Inception v1 (Szegedy et al., 2014) ===")
     print("  Winner of ILSVRC 2014 (22 layers, only 5M params vs VGG 138M)")
     print()
     print("  Inception Module: parallel branches at multiple scales")
     print()
-    print("  ┌─────────────────────────────────────────────────────┐")
-    print("  │  Input                                               │")
-    print("  │    │         │              │              │         │")
-    print("  │  1×1       1×1→3×3      1×1→5×5     MaxPool→1×1    │")
-    print("  │    │         │              │              │         │")
-    print("  │           [Concatenate output channels]             │")
-    print("  └─────────────────────────────────────────────────────┘")
+    print("  +-----------------------------------------------------+")
+    print("  |  Input                                               |")
+    print("  |    |         |              |              |         |")
+    print("  |  1x1       1x1->3x3      1x1->5x5     MaxPool->1x1    |")
+    print("  |    |         |              |              |         |")
+    print("  |           [Concatenate output channels]             |")
+    print("  +-----------------------------------------------------+")
     print()
     print("  1×1 convolutions (bottleneck): reduce channels cheaply")
     print("  Auxiliary classifiers at 2 points: vanishing gradient fix")
@@ -122,7 +122,7 @@ def googlenet_inception():
     versions = [
         ("Inception v1", "GoogLeNet (2014)",     "Original inception module"),
         ("Inception v2", "BN-Inception (2015)",  "Batch normalization"),
-        ("Inception v3", "(2015)",               "Factorize 5×5→3×3+3×3; label smoothing"),
+        ("Inception v3", "(2015)",               "Factorize 5x5->3x3+3x3; label smoothing"),
         ("Inception v4", "(2017)",               "Residual connections in inception"),
         ("Xception",     "(Chollet 2017)",       "Depthwise separable conv throughout"),
     ]
@@ -130,7 +130,7 @@ def googlenet_inception():
         print(f"  {name:<16} {year:<18} {note}")
 
 
-# ── 5. ResNet (He 2015) ───────────────────────────────────────────────────────
+# -- 5. ResNet (He 2015) -------------------------------------------------------
 def resnet():
     print("\n=== ResNet (He et al., 2015) ===")
     print("  Problem: deeper networks had higher training error than shallower (degradation)")
@@ -138,14 +138,14 @@ def resnet():
     print()
     print("  H(x) = F(x) + x")
     print("  Network learns residual F(x) = H(x) - x")
-    print("  If identity is optimal, F→0 is easier than learning identity directly")
+    print("  If identity is optimal, F->0 is easier than learning identity directly")
     print()
     print("  Residual Block:")
-    print("    x ──→ [Conv BN ReLU → Conv BN] ──→ (+) → ReLU")
-    print("    │                                    ↑")
-    print("    └────────────────────────────────────┘ (shortcut)")
+    print("    x ---> [Conv BN ReLU -> Conv BN] ---> (+) -> ReLU")
+    print("    |                                    ^")
+    print("    +------------------------------------+ (shortcut)")
     print()
-    print("  Bottleneck Block (ResNet-50+): 1×1 → 3×3 → 1×1")
+    print("  Bottleneck Block (ResNet-50+): 1x1 -> 3x3 -> 1x1")
 
     variants = [
         ("ResNet-18",  18,  "2×(2+2+2+2) basic blocks",    11.7),
@@ -159,16 +159,16 @@ def resnet():
         print(f"  {name:<14} {layers:<8} {desc:<35} {params}")
 
 
-# ── 6. DenseNet (Huang 2017) ──────────────────────────────────────────────────
+# -- 6. DenseNet (Huang 2017) --------------------------------------------------
 def densenet():
     print("\n=== DenseNet (Huang et al., 2017) ===")
     print("  Each layer receives feature maps from ALL preceding layers")
     print("  x_l = H_l([x_0, x_1, ..., x_{l-1}])")
     print()
     print("  Dense Block:")
-    print("    x0 ──→ [BN ReLU Conv] → x1")
-    print("    x0,x1 ──→ [BN ReLU Conv] → x2")
-    print("    x0,x1,x2 ──→ [BN ReLU Conv] → x3")
+    print("    x0 ---> [BN ReLU Conv] -> x1")
+    print("    x0,x1 ---> [BN ReLU Conv] -> x2")
+    print("    x0,x1,x2 ---> [BN ReLU Conv] -> x3")
     print()
     print("  Growth rate k: channels added per layer (typically k=12 or 32)")
     print("  Transition layers: 1×1 conv + avg pool between dense blocks")
@@ -188,21 +188,21 @@ def densenet():
         print(f"  {name:<16} {layers:<8} {desc:<30} {params}")
 
 
-# ── 7. MobileNet / EfficientNet ───────────────────────────────────────────────
+# -- 7. MobileNet / EfficientNet -----------------------------------------------
 def efficient_nets():
     print("\n=== MobileNet & EfficientNet (Efficient Architectures) ===")
     print()
     print("  MobileNet v1 (Howard 2017):")
     print("    Depthwise separable convolutions; 28× fewer multiplications")
-    print("    Width multiplier α, resolution multiplier ρ for scaling")
+    print("    Width multiplier alpha, resolution multiplier rho for scaling")
     print()
     print("  MobileNet v2 (Sandler 2018):")
-    print("    Inverted residuals: expand channels (6×) → depthwise → project")
+    print("    Inverted residuals: expand channels (6x) -> depthwise -> project")
     print("    Linear bottleneck: no ReLU after final 1×1 (preserves information)")
     print()
     print("  EfficientNet (Tan & Le 2019):")
     print("    Compound scaling: jointly scale depth, width, resolution")
-    print("    φ controls total compute: depth=αφ, width=βφ, resolution=γφ")
+    print("    phi controls total compute: depth=alphaphi, width=betaphi, resolution=gammaphi")
     print()
     variants = [
         ("EfficientNet-B0", 5.3,  "224×224",  77.1, "Baseline"),
@@ -214,7 +214,7 @@ def efficient_nets():
         print(f"  {name:<20} {params:<12} {inp:<12} {acc:<10} {note}")
 
 
-# ── 8. Architecture timeline ──────────────────────────────────────────────────
+# -- 8. Architecture timeline --------------------------------------------------
 def timeline():
     print("\n=== CNN Architecture Timeline ===")
     arch = [

@@ -47,7 +47,7 @@ def demo():
         hybrid = (1-alpha) * content_scores + alpha * cf
         ranked = np.argsort(hybrid)[::-1]
         top3 = [titles[r] for r in ranked if r != query][:3]
-        print(f"  α={alpha:.1f} (α*CF + (1-α)*Content): {top3}")
+        print(f"  alpha={alpha:.1f} (alpha*CF + (1-alpha)*Content): {top3}")
 
     fig, ax = plt.subplots(figsize=(7, 3))
     x = np.arange(len(titles))

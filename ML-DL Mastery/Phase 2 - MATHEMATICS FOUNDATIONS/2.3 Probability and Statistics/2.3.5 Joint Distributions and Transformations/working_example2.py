@@ -32,7 +32,7 @@ def demo_bivariate_gaussian():
     print(f"  Sample corr: {np.corrcoef(X.T)[0,1]:.4f}  (theory: {0.8/np.sqrt(2.0):.4f})")
 
     # Marginalisation: X1 ~ N(mu1, sigma11)
-    print(f"\n  Marginal X1: E={X[:,0].mean():.3f}  std={X[:,0].std():.3f}  (theory: μ=1, σ=√2≈{np.sqrt(2):.3f})")
+    print(f"\n  Marginal X1: E={X[:,0].mean():.3f}  std={X[:,0].std():.3f}  (theory: mu=1, sigma=sqrt(2)~={np.sqrt(2):.3f})")
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     axes[0].scatter(X[:,0], X[:,1], s=5, alpha=0.3, c="steelblue")
@@ -44,7 +44,7 @@ def demo_bivariate_gaussian():
     plt.close(fig); print(f"\n  Saved: bivariate_gaussian.png")
 
 def demo_change_of_variables():
-    print("\n=== Box-Muller Transform (Uniform → Gaussian) ===")
+    print("\n=== Box-Muller Transform (Uniform -> Gaussian) ===")
     np.random.seed(1)
     U1 = np.random.uniform(0, 1, 50_000)
     U2 = np.random.uniform(0, 1, 50_000)

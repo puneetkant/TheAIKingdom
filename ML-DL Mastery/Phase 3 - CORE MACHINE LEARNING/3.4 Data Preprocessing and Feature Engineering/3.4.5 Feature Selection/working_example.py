@@ -16,7 +16,7 @@ from sklearn.preprocessing import StandardScaler
 import os
 
 
-# ── 1. Why feature selection ──────────────────────────────────────────────────
+# -- 1. Why feature selection --------------------------------------------------
 def why_feature_selection():
     print("=== Why Feature Selection ===")
     print("  Benefits: reduces overfitting, speeds up training, improves interpretability")
@@ -26,7 +26,7 @@ def why_feature_selection():
     print("    Embedded: regularisation / tree importance during training")
 
 
-# ── 2. Variance threshold (remove near-constant) ─────────────────────────────
+# -- 2. Variance threshold (remove near-constant) -----------------------------
 def variance_threshold():
     print("\n=== Variance Threshold ===")
     rng = np.random.default_rng(0)
@@ -43,7 +43,7 @@ def variance_threshold():
     print(f"  Selected:  {vt.get_support()}")
 
 
-# ── 3. Correlation filter ─────────────────────────────────────────────────────
+# -- 3. Correlation filter -----------------------------------------------------
 def correlation_filter():
     print("\n=== Correlation-Based Filter ===")
     rng = np.random.default_rng(1)
@@ -70,7 +70,7 @@ def correlation_filter():
     print(f"\n  Dropping {len(to_drop)} highly correlated features: {sorted(to_drop)}")
 
 
-# ── 4. Filter: SelectKBest (ANOVA F-test, Chi-squared, MI) ──────────────────
+# -- 4. Filter: SelectKBest (ANOVA F-test, Chi-squared, MI) ------------------
 def select_k_best():
     print("\n=== SelectKBest Filter ===")
     X, y = make_classification(n_samples=400, n_features=20, n_informative=5,
@@ -94,7 +94,7 @@ def select_k_best():
         print(f"    CV acc (k=5): {cv:.4f}")
 
 
-# ── 5. Recursive Feature Elimination (RFE) ────────────────────────────────────
+# -- 5. Recursive Feature Elimination (RFE) ------------------------------------
 def recursive_feature_elimination():
     print("\n=== Recursive Feature Elimination (RFE) ===")
     X, y = make_classification(n_samples=300, n_features=15, n_informative=5, random_state=1)
@@ -116,7 +116,7 @@ def recursive_feature_elimination():
     print(f"  CV acc with RFECV: {rfecv.cv_results_['mean_test_score'][rfecv.n_features_-1]:.4f}")
 
 
-# ── 6. Embedded: L1 (Lasso) selection ────────────────────────────────────────
+# -- 6. Embedded: L1 (Lasso) selection ----------------------------------------
 def lasso_selection():
     print("\n=== L1 (Lasso) Feature Selection ===")
     X, y = make_classification(n_samples=300, n_features=20, n_informative=5, random_state=2)
@@ -133,7 +133,7 @@ def lasso_selection():
         print(f"  {C:<16} {n_sel:<20} {cv:.4f}")
 
 
-# ── 7. Embedded: Tree feature importance ─────────────────────────────────────
+# -- 7. Embedded: Tree feature importance -------------------------------------
 def tree_importance():
     print("\n=== Tree-Based Feature Importance ===")
     X, y = make_classification(n_samples=400, n_features=15, n_informative=5, random_state=3)
@@ -158,7 +158,7 @@ def tree_importance():
         print(f"  f_{i:<9} {perm.importances_mean[i]:.4f} ± {perm.importances_std[i]:.4f}")
 
 
-# ── 8. Feature selection comparison ──────────────────────────────────────────
+# -- 8. Feature selection comparison ------------------------------------------
 def feature_selection_comparison():
     print("\n=== Feature Selection Method Comparison ===")
     cancer = load_breast_cancer()

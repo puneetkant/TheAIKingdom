@@ -48,7 +48,7 @@ def bpe(corpus, n_merges=10):
         best = max(stats, key=stats.get)
         vocab = merge_vocab(best, vocab)
         merges.append(best)
-        print(f"  Merge {i+1}: {best[0]} + {best[1]} → {''.join(best)}")
+        print(f"  Merge {i+1}: {best[0]} + {best[1]} -> {''.join(best)}")
     return vocab, merges
 
 def demo():

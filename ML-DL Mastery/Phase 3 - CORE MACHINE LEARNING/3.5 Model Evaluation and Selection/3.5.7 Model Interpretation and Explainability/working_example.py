@@ -19,7 +19,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_explainability")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Linear model coefficients ─────────────────────────────────────────────
+# -- 1. Linear model coefficients ---------------------------------------------
 def linear_coefficients():
     print("=== Linear Model Coefficients ===")
     cancer = load_breast_cancer()
@@ -37,10 +37,10 @@ def linear_coefficients():
     for i in idx[:10]:
         print(f"  {names[i]:<35} {coefs[i]:>12.4f}")
     print(f"\n  (Coefficients are on standardised scale — comparable)")
-    print(f"  Positive coef → predicts class=1 (malignant=0, benign=1)")
+    print(f"  Positive coef -> predicts class=1 (malignant=0, benign=1)")
 
 
-# ── 2. Tree feature importance (MDI) ─────────────────────────────────────────
+# -- 2. Tree feature importance (MDI) -----------------------------------------
 def mdi_importance():
     print("\n=== Mean Decrease Impurity (MDI) Feature Importance ===")
     print("  Accumulated impurity reduction from splits on each feature")
@@ -58,7 +58,7 @@ def mdi_importance():
         print(f"  {cancer.feature_names[i]:<35} {imp[i]:>12.4f} {std[i]:>8.4f}")
 
 
-# ── 3. Permutation importance ─────────────────────────────────────────────────
+# -- 3. Permutation importance -------------------------------------------------
 def perm_importance():
     print("\n=== Permutation Importance ===")
     print("  Drop in score when a feature is randomly shuffled on HELD-OUT set")
@@ -76,7 +76,7 @@ def perm_importance():
               f" {perm.importances_std[i]:>8.4f}")
 
 
-# ── 4. Partial Dependence Plots (PDP) ────────────────────────────────────────
+# -- 4. Partial Dependence Plots (PDP) ----------------------------------------
 def partial_dependence():
     print("\n=== Partial Dependence Plots (PDP) ===")
     print("  Marginal effect of a feature on prediction (averaged over all other features)")
@@ -101,11 +101,11 @@ def partial_dependence():
     print(f"  Features plotted: {cancer.feature_names[0]}, {cancer.feature_names[2]}")
 
 
-# ── 5. SHAP (SHapley Additive exPlanations) ──────────────────────────────────
+# -- 5. SHAP (SHapley Additive exPlanations) ----------------------------------
 def shap_explanation():
     print("\n=== SHAP Values ===")
     print("  Based on Shapley values from cooperative game theory")
-    print("  φ_i = contribution of feature i to prediction for a single sample")
+    print("  phi_i = contribution of feature i to prediction for a single sample")
     print("  Global: |mean SHAP| per feature    Local: SHAP per instance")
     try:
         import shap
@@ -133,13 +133,13 @@ def shap_explanation():
     except ImportError:
         print("  shap not installed. Install: pip install shap")
         print("  Key properties:")
-        print("    Efficiency:       Σ φ_i = f(x) - E[f(X)]")
+        print("    Efficiency:       Sigma phi_i = f(x) - E[f(X)]")
         print("    Symmetry:         Equal contributors get equal SHAP")
-        print("    Dummy:            Zero-contribution features get φ=0")
+        print("    Dummy:            Zero-contribution features get phi=0")
         print("    Additivity:       SHAP values add across ensemble models")
 
 
-# ── 6. LIME (Local Interpretable Model-agnostic Explanations) ─────────────────
+# -- 6. LIME (Local Interpretable Model-agnostic Explanations) -----------------
 def lime_explanation():
     print("\n=== LIME (Local Interpretable Model-agnostic Explanations) ===")
     print("  Fit a simple (linear) surrogate model around a single prediction")
@@ -171,7 +171,7 @@ def lime_explanation():
         print("    4. Coefficients = local feature attributions")
 
 
-# ── 7. Global vs Local explanations summary ───────────────────────────────────
+# -- 7. Global vs Local explanations summary -----------------------------------
 def explanation_summary():
     print("\n=== Global vs Local Explanations ===")
     print(f"  {'Method':<30} {'Scope':<10} {'Model':<15} {'Notes'}")

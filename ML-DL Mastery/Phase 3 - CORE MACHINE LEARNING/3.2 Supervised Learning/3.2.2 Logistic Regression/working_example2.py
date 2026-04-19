@@ -33,7 +33,7 @@ def demo_sigmoid():
     z = np.array([-4., -2., 0., 2., 4.])
     sig = 1 / (1 + np.exp(-z))
     for zi, si in zip(z, sig):
-        print(f"  z={zi:+.1f}: σ(z)={si:.4f}")
+        print(f"  z={zi:+.1f}: sigma(z)={si:.4f}")
 
 def demo_logistic(X_train, X_test, y_train, y_test):
     print("\n=== Logistic Regression (Cal Housing binary) ===")
@@ -55,7 +55,7 @@ def demo_logistic(X_train, X_test, y_train, y_test):
     return pipe
 
 def demo_regularisation(X_train, X_test, y_train, y_test):
-    print("\n=== Regularisation Strength (C = 1/λ) ===")
+    print("\n=== Regularisation Strength (C = 1/lambda) ===")
     for C in [0.001, 0.01, 0.1, 1.0, 10.0]:
         pipe = make_pipeline(StandardScaler(), LogisticRegression(C=C, max_iter=1000))
         pipe.fit(X_train, y_train)

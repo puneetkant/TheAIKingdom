@@ -7,24 +7,24 @@ import numpy as np
 from scipy import optimize, integrate
 
 
-# ── 1. Partial derivatives ────────────────────────────────────────────────────
+# -- 1. Partial derivatives ----------------------------------------------------
 def partial_derivatives():
     print("=== Partial Derivatives ===")
     # f(x,y) = x²y + sin(xy)
     f    = lambda x, y: x**2 * y + np.sin(x*y)
-    df_x = lambda x, y: 2*x*y + y*np.cos(x*y)   # ∂f/∂x
-    df_y = lambda x, y: x**2   + x*np.cos(x*y)   # ∂f/∂y
+    df_x = lambda x, y: 2*x*y + y*np.cos(x*y)   # df/dx
+    df_y = lambda x, y: x**2   + x*np.cos(x*y)   # df/dy
 
     x0, y0 = 1.0, 2.0
     h = 1e-6
     print(f"  f(x,y) = x²y + sin(xy) at ({x0},{y0})")
-    print(f"  ∂f/∂x  exact   = {df_x(x0,y0):.6f}")
-    print(f"  ∂f/∂x  numeric = {(f(x0+h,y0) - f(x0-h,y0))/(2*h):.6f}")
-    print(f"  ∂f/∂y  exact   = {df_y(x0,y0):.6f}")
-    print(f"  ∂f/∂y  numeric = {(f(x0,y0+h) - f(x0,y0-h))/(2*h):.6f}")
+    print(f"  df/dx  exact   = {df_x(x0,y0):.6f}")
+    print(f"  df/dx  numeric = {(f(x0+h,y0) - f(x0-h,y0))/(2*h):.6f}")
+    print(f"  df/dy  exact   = {df_y(x0,y0):.6f}")
+    print(f"  df/dy  numeric = {(f(x0,y0+h) - f(x0,y0-h))/(2*h):.6f}")
 
 
-# ── 2. Gradient ───────────────────────────────────────────────────────────────
+# -- 2. Gradient ---------------------------------------------------------------
 def gradients():
     print("\n=== Gradient ∇f (direction of steepest ascent) ===")
     # f(x,y,z) = x² + 2y² + 3z²
@@ -43,7 +43,7 @@ def gradients():
     print(f"  ||∇f|| = {np.linalg.norm(g_exact):.4f}")
 
 
-# ── 3. Directional derivative ─────────────────────────────────────────────────
+# -- 3. Directional derivative -------------------------------------------------
 def directional_derivative():
     print("\n=== Directional Derivative D_u f = ∇f · û ===")
     f      = lambda v: v[0]**2 + v[1]**2
@@ -63,10 +63,10 @@ def directional_derivative():
         print(f"  D_{name}: {Duf:.4f}")
 
 
-# ── 4. Jacobian ───────────────────────────────────────────────────────────────
+# -- 4. Jacobian ---------------------------------------------------------------
 def jacobian():
-    print("\n=== Jacobian Matrix J_f (m×n for f: Rⁿ→Rᵐ) ===")
-    # f: R² → R², f(x,y) = [x²+y, x·sin(y)]
+    print("\n=== Jacobian Matrix J_f (mxn for f: Rⁿ->Rᵐ) ===")
+    # f: R² -> R², f(x,y) = [x²+y, x·sin(y)]
     def f(v):
         x, y = v
         return np.array([x**2 + y, x * np.sin(y)])
@@ -92,7 +92,7 @@ def jacobian():
     print(f"  max diff: {np.max(np.abs(J_e - J_n)):.2e}")
 
 
-# ── 5. Hessian ────────────────────────────────────────────────────────────────
+# -- 5. Hessian ----------------------------------------------------------------
 def hessian():
     print("\n=== Hessian Matrix H_f (second-order partial derivatives) ===")
     # f(x,y) = x³ + x·y² - 3y
@@ -122,17 +122,17 @@ def hessian():
 
     eigvals = np.linalg.eigvalsh(H_e)
     print(f"  eigenvalues: {np.round(eigvals, 4)}")
-    if np.all(eigvals > 0):  print("  → positive definite → local minimum")
-    elif np.all(eigvals < 0): print("  → negative definite → local maximum")
-    else:                     print("  → indefinite → saddle point")
+    if np.all(eigvals > 0):  print("  -> positive definite -> local minimum")
+    elif np.all(eigvals < 0): print("  -> negative definite -> local maximum")
+    else:                     print("  -> indefinite -> saddle point")
 
 
-# ── 6. Critical points classification ─────────────────────────────────────────
+# -- 6. Critical points classification -----------------------------------------
 def critical_points():
     print("\n=== Critical Points via Gradient=0 ===")
     # f(x,y) = x⁴ - 4x² + y² - 2y
-    # ∂f/∂x = 4x³ - 8x = 4x(x²-2) = 0  → x=0,±√2
-    # ∂f/∂y = 2y - 2 = 0               → y=1
+    # df/dx = 4x³ - 8x = 4x(x²-2) = 0  -> x=0,+/-sqrt2
+    # df/dy = 2y - 2 = 0               -> y=1
     f = lambda v: v[0]**4 - 4*v[0]**2 + v[1]**2 - 2*v[1]
 
     critical = [np.array([0., 1.]),
@@ -150,28 +150,28 @@ def critical_points():
         eigs   = np.linalg.eigvalsh(Hi)
         nature = ("minimum" if np.all(eigs>0) else
                   "maximum" if np.all(eigs<0) else "saddle")
-        print(f"  ({np.round(cp,4)}) → f={f(cp):.4f}  {nature}  (H eigs={np.round(eigs,4)})")
+        print(f"  ({np.round(cp,4)}) -> f={f(cp):.4f}  {nature}  (H eigs={np.round(eigs,4)})")
 
 
-# ── 7. Double integral (numeric) ──────────────────────────────────────────────
+# -- 7. Double integral (numeric) ----------------------------------------------
 def double_integral():
-    print("\n=== Double Integral ∫∫ f(x,y) dA ===")
-    # ∫₀¹ ∫₀¹ (x²y + y²x) dx dy = 1/3 · 1/2 + 1/2 · 1/3 = 1/3
+    print("\n=== Double Integral integralintegral f(x,y) dA ===")
+    # integral01 integral01 (x²y + y²x) dx dy = 1/3 · 1/2 + 1/2 · 1/3 = 1/3
     f = lambda y, x: x**2 * y + y**2 * x
     result, err = integrate.dblquad(f, 0, 1, 0, 1)
     exact = 1.0 / 3.0
-    print(f"  ∫₀¹∫₀¹ (x²y + xy²) dx dy")
+    print(f"  integral01integral01 (x²y + xy²) dx dy")
     print(f"  exact   = {exact:.8f}")
     print(f"  numeric = {result:.8f}  (err est={err:.2e})")
 
-    # Area of an ellipse: ∫∫_{x²/a²+y²/b²≤1} dA = πab
+    # Area of an ellipse: integralintegral_{x²/a²+y²/b²<=1} dA = piab
     a, b = 3, 2
     f_ellipse = lambda y, x: 1.0
     area, _ = integrate.dblquad(f_ellipse,
                                  -a, a,
                                  lambda x: -b * np.sqrt(np.maximum(0, 1 - (x/a)**2)),
                                  lambda x:  b * np.sqrt(np.maximum(0, 1 - (x/a)**2)))
-    print(f"\n  Area of ellipse a={a},b={b}: numeric={area:.4f}  πab={np.pi*a*b:.4f}")
+    print(f"\n  Area of ellipse a={a},b={b}: numeric={area:.4f}  piab={np.pi*a*b:.4f}")
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_clustering")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. K-Means from scratch ───────────────────────────────────────────────────
+# -- 1. K-Means from scratch ---------------------------------------------------
 def kmeans_scratch():
     print("=== K-Means From Scratch ===")
 
@@ -53,7 +53,7 @@ def kmeans_scratch():
     print(f"  Inertia: {model.inertia_:.2f}  ARI: {ari:.4f}")
 
 
-# ── 2. K-Means++ initialisation and sklearn ───────────────────────────────────
+# -- 2. K-Means++ initialisation and sklearn -----------------------------------
 def kmeans_sklearn():
     print("\n=== K-Means++ and sklearn ===")
     X, y_true = make_blobs(n_samples=500, centers=5, random_state=1)
@@ -67,7 +67,7 @@ def kmeans_sklearn():
               f"std={np.std(arises):.4f}  inertia={km.inertia_:.0f}")
 
 
-# ── 3. Choosing k: elbow and silhouette ───────────────────────────────────────
+# -- 3. Choosing k: elbow and silhouette ---------------------------------------
 def choose_k():
     print("\n=== Choosing k: Elbow + Silhouette ===")
     X, _ = make_blobs(n_samples=300, centers=4, random_state=2)
@@ -80,7 +80,7 @@ def choose_k():
         print(f"  {k:<5} {km.inertia_:<12.2f} {sil:<14.4f} {db:.4f}")
 
 
-# ── 4. DBSCAN ────────────────────────────────────────────────────────────────
+# -- 4. DBSCAN ----------------------------------------------------------------
 def dbscan_demo():
     print("\n=== DBSCAN (Density-Based Spatial Clustering) ===")
     print("  Parameters: eps (radius), min_samples (core point threshold)")
@@ -99,7 +99,7 @@ def dbscan_demo():
             print(f"  {eps:<8} {ms:<14} {n_clust:<13} {n_noise:<10} {ari:.4f}")
 
 
-# ── 5. Hierarchical clustering ───────────────────────────────────────────────
+# -- 5. Hierarchical clustering -----------------------------------------------
 def hierarchical_clustering():
     print("\n=== Hierarchical Clustering ===")
     from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
@@ -124,10 +124,10 @@ def hierarchical_clustering():
     print(f"  Dendrogram saved: {path}")
 
 
-# ── 6. Gaussian Mixture Model ────────────────────────────────────────────────
+# -- 6. Gaussian Mixture Model ------------------------------------------------
 def gmm_demo():
     print("\n=== Gaussian Mixture Model (GMM) ===")
-    print("  Soft clustering: P(x) = Σ_k π_k N(x; μ_k, Σ_k)")
+    print("  Soft clustering: P(x) = Sigma_k pi_k N(x; mu_k, Sigma_k)")
     print("  Trained via EM algorithm")
 
     X, y = make_blobs(n_samples=400, centers=4, random_state=5)
@@ -144,7 +144,7 @@ def gmm_demo():
             print(f"  {n_comp:<15} {cov_type:<18} {ari:<10.4f} {bic:.1f}")
 
 
-# ── 7. Clustering algorithm comparison ───────────────────────────────────────
+# -- 7. Clustering algorithm comparison ---------------------------------------
 def clustering_comparison():
     print("\n=== Clustering Algorithm Comparison ===")
     # Moons: non-convex clusters

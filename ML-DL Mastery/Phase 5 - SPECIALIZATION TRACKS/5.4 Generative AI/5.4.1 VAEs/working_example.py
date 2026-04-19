@@ -1,6 +1,6 @@
 """
 Working Example: Variational Autoencoders (VAEs) — Deep Dive
-Covers ELBO derivation, reparameterisation, β-VAE, VQ-VAE,
+Covers ELBO derivation, reparameterisation, beta-VAE, VQ-VAE,
 and conditional VAE with working numpy demos.
 """
 import numpy as np
@@ -15,38 +15,38 @@ def relu(z): return np.maximum(0, z)
 def sigmoid(z): return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
 
 
-# ── 1. VAE theory ─────────────────────────────────────────────────────────────
+# -- 1. VAE theory -------------------------------------------------------------
 def vae_theory():
     print("=== Variational Autoencoder Theory ===")
     print("  Kingma & Welling (2014)")
     print()
     print("  Generative model:")
-    print("    p(x) = ∫ p(x|z) p(z) dz  — intractable")
+    print("    p(x) = integral p(x|z) p(z) dz  — intractable")
     print("    p(z) = N(0, I)            — prior")
-    print("    p(x|z) = N(μ_θ(z), σ²I)  — decoder / likelihood")
+    print("    p(x|z) = N(mu_theta(z), sigma²I)  — decoder / likelihood")
     print()
     print("  Variational inference:")
-    print("    q_φ(z|x) = N(μ_φ(x), diag(σ²_φ(x)))  — encoder / approximate posterior")
+    print("    q_phi(z|x) = N(mu_phi(x), diag(sigma²_phi(x)))  — encoder / approximate posterior")
     print()
     print("  ELBO (Evidence Lower BOund):")
-    print("    log p(x) ≥ ELBO = E_q[log p(x|z)] - KL(q_φ(z|x) || p(z))")
+    print("    log p(x) >= ELBO = E_q[log p(x|z)] - KL(q_phi(z|x) || p(z))")
     print()
     print("  Closed-form KL for Gaussians:")
-    print("    KL(N(μ,σ²)||N(0,I)) = -½ Σ_d (1 + log σ²_d - μ²_d - σ²_d)")
+    print("    KL(N(mu,sigma²)||N(0,I)) = -½ Sigma_d (1 + log sigma²_d - mu²_d - sigma²_d)")
     print()
     print("  Reparameterisation trick:")
-    print("    z = μ + σ ⊙ ε,  ε ~ N(0,I)  — makes gradient flow through z")
+    print("    z = mu + sigma ⊙ epsilon,  epsilon ~ N(0,I)  — makes gradient flow through z")
     print()
 
     # Numerics check
     mu  = np.array([0.5, -0.2, 0.1])
     lv  = np.array([-0.3, 0.1, -0.5])   # log variance
     kl  = -0.5 * (1 + lv - mu**2 - np.exp(lv)).sum()
-    print(f"  Example: μ={mu}  log σ²={lv}")
+    print(f"  Example: mu={mu}  log sigma²={lv}")
     print(f"  KL = {kl:.6f}")
 
 
-# ── 2. VAE class ──────────────────────────────────────────────────────────────
+# -- 2. VAE class --------------------------------------------------------------
 class VAE:
     def __init__(self, in_dim, hidden, latent, rng=None):
         rng = rng or np.random.default_rng(0)
@@ -115,9 +115,9 @@ def vae_demo():
     recon = vae.decode(z)
     mse = ((X - recon)**2).mean()
     print(f"  Train samples: {len(X)}, latent_dim={vae.latent}")
-    print(f"  Loss: {losses[0]:.4f} → {losses[-1]:.4f}")
+    print(f"  Loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
     print(f"  Reconstruction MSE: {mse:.6f}")
-    print(f"  Latent mean (μ): {mu.mean(0).round(3)}")
+    print(f"  Latent mean (mu): {mu.mean(0).round(3)}")
 
     # Latent space plot
     from sklearn.decomposition import PCA
@@ -131,23 +131,23 @@ def vae_demo():
     print(f"  Latent space plot: {path}")
 
 
-# ── 3. β-VAE ─────────────────────────────────────────────────────────────────
+# -- 3. beta-VAE -----------------------------------------------------------------
 def beta_vae():
-    print("\n=== β-VAE (Disentangled VAE) ===")
+    print("\n=== beta-VAE (Disentangled VAE) ===")
     print("  Higgins et al. (2017)")
-    print("  ELBO_β = E[log p(x|z)] - β·KL(q||p)  (β > 1 enforces disentanglement)")
+    print("  ELBO_beta = E[log p(x|z)] - beta·KL(q||p)  (beta > 1 enforces disentanglement)")
     print()
-    print("  β controls trade-off:")
-    print("    β=1:   standard VAE (ELBO)")
-    print("    β>1:   stronger pressure toward factorised posterior → disentangled z")
-    print("    β→∞:  ignore reconstruction; latent ~ N(0,I) but lossy")
+    print("  beta controls trade-off:")
+    print("    beta=1:   standard VAE (ELBO)")
+    print("    beta>1:   stronger pressure toward factorised posterior -> disentangled z")
+    print("    beta->inf:  ignore reconstruction; latent ~ N(0,I) but lossy")
     print()
 
     from sklearn.datasets import load_digits
     X = load_digits().data / 16.0
     rng = np.random.default_rng(0)
 
-    print(f"  {'β':>4}  {'Recon L':>10}  {'KL':>8}")
+    print(f"  {'beta':>4}  {'Recon L':>10}  {'KL':>8}")
     for beta in [0.1, 1.0, 4.0, 8.0]:
         vae = VAE(64, 64, 8, rng=np.random.default_rng(1))
         for _ in range(30):
@@ -169,17 +169,17 @@ def beta_vae():
         print(f"  {beta:>4}  {rl_fin:>10.4f}  {kl_fin:>8.4f}")
 
 
-# ── 4. VQ-VAE ────────────────────────────────────────────────────────────────
+# -- 4. VQ-VAE ----------------------------------------------------------------
 def vqvae_demo():
     print("\n=== VQ-VAE (Vector-Quantised VAE) ===")
     print("  van den Oord et al. (2017)")
     print()
-    print("  Discrete latent space: codebook e = {e_1,...,e_K} ∈ ℝ^D")
-    print("  Quantise: z_q = argmin_k ||z_e - e_k||₂")
+    print("  Discrete latent space: codebook e = {e_1,...,e_K} in ℝ^D")
+    print("  Quantise: z_q = argmin_k ||z_e - e_k||2")
     print()
     print("  Loss:")
-    print("    L = L_recon + ||sg[z_e] - e||² + β||z_e - sg[e]||²")
-    print("    sg = stop-gradient; β typically 0.25")
+    print("    L = L_recon + ||sg[z_e] - e||² + beta||z_e - sg[e]||²")
+    print("    sg = stop-gradient; beta typically 0.25")
     print()
 
     rng = np.random.default_rng(0)

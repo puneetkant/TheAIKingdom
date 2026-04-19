@@ -41,10 +41,10 @@ def demo_eigen_basics():
     eigenvals, eigenvecs = np.linalg.eig(A)
     print(f"  Eigenvalues:  {eigenvals}")
     print(f"  Eigenvectors:\n{eigenvecs}")
-    # Verify: Av = λv
+    # Verify: Av = lambdav
     for i in range(len(eigenvals)):
         v = eigenvecs[:, i]
-        print(f"  Av - λv check: {(A @ v - eigenvals[i] * v).round(10)}")
+        print(f"  Av - lambdav check: {(A @ v - eigenvals[i] * v).round(10)}")
 
 def demo_pca(X: np.ndarray):
     print("\n=== PCA via Eigendecomposition of Covariance Matrix ===")
@@ -87,7 +87,7 @@ def demo_power_iteration():
     A = np.array([[3., 1.], [1., 2.]])
     val, vec = power_iteration(A)
     true_vals = np.linalg.eigvals(A)
-    print(f"  Power iteration λ₁ = {val:.6f}")
+    print(f"  Power iteration lambda1 = {val:.6f}")
     print(f"  True eigenvalues:   {sorted(true_vals, reverse=True)}")
 
 def demo_markov():
@@ -96,13 +96,13 @@ def demo_markov():
     P = np.array([[0.7, 0.2, 0.1],
                   [0.3, 0.5, 0.2],
                   [0.1, 0.3, 0.6]])
-    # Stationary: π P = π → eigenvector of P^T with eigenvalue 1
+    # Stationary: pi P = pi -> eigenvector of P^T with eigenvalue 1
     vals, vecs = np.linalg.eig(P.T)
     # Find eigenvalue closest to 1
     idx = np.argmin(np.abs(vals - 1.0))
     pi = vecs[:, idx].real
     pi /= pi.sum()
-    print(f"  Stationary distribution π = {pi.round(4)}")
+    print(f"  Stationary distribution pi = {pi.round(4)}")
     print(f"  Check P^100 rows converge: {np.linalg.matrix_power(P, 100)[0].round(4)}")
 
 if __name__ == "__main__":

@@ -18,23 +18,23 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_theory")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Generalisation bound (finite hypothesis class) ────────────────────────
+# -- 1. Generalisation bound (finite hypothesis class) ------------------------
 def generalisation_bound():
     print("=== Generalisation Bound (finite H) ===")
-    print("  P(|R(h) - R̂(h)| > ε) ≤ 2|H| exp(-2nε²)")
-    print("  Rearranged: R(h) ≤ R̂(h) + √(log(2|H|/δ) / (2n))")
+    print("  P(|R(h) - R(h)| > epsilon) <= 2|H| exp(-2nepsilon²)")
+    print("  Rearranged: R(h) <= R(h) + sqrt(log(2|H|/delta) / (2n))")
     print()
 
     delta = 0.05
     for H_size in [10, 100, 1000]:
-        print(f"  |H|={H_size}, δ={delta}:")
+        print(f"  |H|={H_size}, delta={delta}:")
         for n in [100, 500, 1000, 5000]:
             bound = np.sqrt(np.log(2*H_size/delta) / (2*n))
             print(f"    n={n:5d}: complexity term = {bound:.4f}")
         print()
 
 
-# ── 2. Regularisation: Ridge vs Lasso ────────────────────────────────────────
+# -- 2. Regularisation: Ridge vs Lasso ----------------------------------------
 def regularisation_comparison():
     print("=== L2 (Ridge) vs L1 (Lasso) Regularisation ===")
     rng = np.random.default_rng(0)
@@ -49,7 +49,7 @@ def regularisation_comparison():
 
     alphas = [0.001, 0.01, 0.1, 1.0, 10.0]
     print(f"  True weights: {(w_true != 0).sum()} non-zero out of {p}")
-    print(f"\n  {'α':<8} {'Ridge MSE':<12} {'Ridge ||w||₂':<15} {'Lasso MSE':<12} {'Lasso nonzero'}")
+    print(f"\n  {'alpha':<8} {'Ridge MSE':<12} {'Ridge ||w||2':<15} {'Lasso MSE':<12} {'Lasso nonzero'}")
 
     for alpha in alphas:
         ridge = Ridge(alpha=alpha).fit(X, y)
@@ -61,7 +61,7 @@ def regularisation_comparison():
         print(f"  {alpha:<8} {r_mse:<12.4f} {r_l2:<15.4f} {l_mse:<12.4f} {l_nnz}")
 
 
-# ── 3. Bias-variance as function of regularisation strength ──────────────────
+# -- 3. Bias-variance as function of regularisation strength ------------------
 def regularisation_bias_variance():
     print("\n=== Bias-Variance vs Regularisation Strength (Ridge) ===")
     rng = np.random.default_rng(1)
@@ -74,7 +74,7 @@ def regularisation_bias_variance():
     y_test = X_test @ w_true
 
     alphas = np.logspace(-3, 3, 13)
-    print(f"  {'α':<12} {'Bias²':<12} {'Variance':<12} {'MSE'}")
+    print(f"  {'alpha':<12} {'Bias²':<12} {'Variance':<12} {'MSE'}")
     for alpha in alphas:
         preds = []
         for _ in range(M):
@@ -90,10 +90,10 @@ def regularisation_bias_variance():
         print(f"  {alpha:<12.3e} {bias2:<12.4f} {variance:<12.4f} {mse:.4f}")
 
 
-# ── 4. Structural Risk Minimisation ──────────────────────────────────────────
+# -- 4. Structural Risk Minimisation ------------------------------------------
 def structural_risk_minimisation():
     print("\n=== Structural Risk Minimisation ===")
-    print("  Choose model: min_h {R̂(h) + Ω(h)}  where Ω is complexity penalty")
+    print("  Choose model: min_h {R(h) + Omega(h)}  where Omega is complexity penalty")
     print()
     rng = np.random.default_rng(2)
     x = rng.uniform(0, 1, 60)
@@ -123,10 +123,10 @@ def structural_risk_minimisation():
         print(f"  {d:<8} {train_rmse:<14.4f} {val_rmse:<14.4f} {aic:<12.1f} {bic:.1f}")
 
 
-# ── 5. Double descent phenomenon ─────────────────────────────────────────────
+# -- 5. Double descent phenomenon ---------------------------------------------
 def double_descent():
     print("\n=== Double Descent (model complexity curve) ===")
-    print("  Classical: bias-var tradeoff → single optimal complexity")
+    print("  Classical: bias-var tradeoff -> single optimal complexity")
     print("  Modern ML: overparameterised models can generalise (interpolation regime)")
     print()
     rng  = np.random.default_rng(3)

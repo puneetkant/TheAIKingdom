@@ -12,28 +12,28 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_rl_fundamentals")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. MDP formulation ────────────────────────────────────────────────────────
+# -- 1. MDP formulation --------------------------------------------------------
 def mdp_overview():
     print("=== Markov Decision Process (MDP) ===")
-    print("  A MDP is defined by (S, A, P, R, γ):")
+    print("  A MDP is defined by (S, A, P, R, gamma):")
     print("    S  — finite state space")
     print("    A  — finite action space")
     print("    P(s'|s,a) — transition probability")
     print("    R(s,a,s') — reward function")
-    print("    γ ∈ [0,1) — discount factor")
+    print("    gamma in [0,1) — discount factor")
     print()
     print("  Markov property: future depends only on current state")
     print("    P[S_{t+1} | S_t, A_t, ..., S_0, A_0] = P[S_{t+1} | S_t, A_t]")
     print()
-    print("  Goal: find policy π(a|s) maximising discounted return:")
-    print("    G_t = R_{t+1} + γR_{t+2} + γ²R_{t+3} + ...")
+    print("  Goal: find policy pi(a|s) maximising discounted return:")
+    print("    G_t = R_{t+1} + gammaR_{t+2} + gamma²R_{t+3} + ...")
     print()
     print("  Episodic vs Continuing tasks:")
     print("    Episodic: terminal state exists (games, robotics tasks)")
     print("    Continuing: infinite horizon (stock trading, control systems)")
 
 
-# ── 2. GridWorld environment ──────────────────────────────────────────────────
+# -- 2. GridWorld environment --------------------------------------------------
 class GridWorld:
     """Simple 4×4 GridWorld with a goal and a trap."""
     def __init__(self, size=4):
@@ -103,23 +103,23 @@ def gridworld_overview():
     print(f"  Random rollout states: {trajectory}")
 
 
-# ── 3. Bellman equations ──────────────────────────────────────────────────────
+# -- 3. Bellman equations ------------------------------------------------------
 def bellman_equations():
     print("\n=== Bellman Equations ===")
     print("  State-value function:")
-    print("    V^π(s) = Σ_a π(a|s) Σ_{s'} P(s'|s,a) [R(s,a,s') + γV^π(s')]")
+    print("    V^pi(s) = Sigma_a pi(a|s) Sigma_{s'} P(s'|s,a) [R(s,a,s') + gammaV^pi(s')]")
     print()
     print("  Action-value function:")
-    print("    Q^π(s,a) = Σ_{s'} P(s'|s,a) [R(s,a,s') + γ Σ_{a'} π(a'|s') Q^π(s',a')]")
+    print("    Q^pi(s,a) = Sigma_{s'} P(s'|s,a) [R(s,a,s') + gamma Sigma_{a'} pi(a'|s') Q^pi(s',a')]")
     print()
     print("  Bellman optimality (greedy policy):")
-    print("    V*(s) = max_a Σ_{s'} P(s'|s,a) [R(s,a,s') + γV*(s')]")
-    print("    Q*(s,a) = Σ_{s'} P(s'|s,a) [R + γ max_{a'} Q*(s',a')]")
+    print("    V*(s) = max_a Sigma_{s'} P(s'|s,a) [R(s,a,s') + gammaV*(s')]")
+    print("    Q*(s,a) = Sigma_{s'} P(s'|s,a) [R + gamma max_{a'} Q*(s',a')]")
     print()
 
     # Small policy evaluation on GridWorld
-    print("  Policy Evaluation (random policy, γ=0.9):")
-    env = GridWorld(4); γ = 0.9
+    print("  Policy Evaluation (random policy, gamma=0.9):")
+    env = GridWorld(4); gamma = 0.9
     V   = np.zeros(env.n_states)
 
     def rand_policy(s): return np.ones(env.n_actions) / env.n_actions
@@ -135,7 +135,7 @@ def bellman_equations():
             for a in range(env.n_actions):
                 env.state = s
                 sid2, r, _ = env.step(a)
-                v += rand_policy(sid)[a] * (r + γ * V[sid2])
+                v += rand_policy(sid)[a] * (r + gamma * V[sid2])
             V_new[sid] = v
         V = V_new
 
@@ -143,16 +143,16 @@ def bellman_equations():
     env.display(V.reshape(4,4).flatten())
 
 
-# ── 4. Policy types ───────────────────────────────────────────────────────────
+# -- 4. Policy types -----------------------------------------------------------
 def policy_types():
     print("\n=== Policy Types ===")
-    print("  Deterministic: π(s) = a")
-    print("  Stochastic:    π(a|s) = P(A=a | S=s)")
+    print("  Deterministic: pi(s) = a")
+    print("  Stochastic:    pi(a|s) = P(A=a | S=s)")
     print()
     types = [
         ("Greedy",       "Always take the best known action; no exploration"),
-        ("ε-greedy",     "With prob ε choose random; else greedy"),
-        ("Boltzmann",    "Softmax of Q-values; temperature τ controls exploration"),
+        ("epsilon-greedy",     "With prob epsilon choose random; else greedy"),
+        ("Boltzmann",    "Softmax of Q-values; temperature tau controls exploration"),
         ("UCB",          "Upper Confidence Bound; optimistic face uncertainty"),
         ("Thompson",     "Bayesian sampling from posterior; bandit problems"),
         ("Entropy-reg.", "Add entropy bonus to reward; soft actor-critic"),
@@ -161,7 +161,7 @@ def policy_types():
         print(f"  {name:<14} {desc}")
     print()
 
-    # ε-greedy demo
+    # epsilon-greedy demo
     Q = np.array([1.0, 2.5, 1.8, 0.5])
     eps = 0.1
     rng = np.random.default_rng(0)
@@ -173,12 +173,12 @@ def policy_types():
             a = Q.argmax()
         actions.append(a)
     counts = np.bincount(actions, minlength=4)
-    print(f"  ε-greedy (ε={eps}) over 1000 steps — action counts: {counts}")
+    print(f"  epsilon-greedy (epsilon={eps}) over 1000 steps — action counts: {counts}")
     print(f"  Greedy action (Q={Q}): {Q.argmax()}")
-    print(f"  Selected {counts[Q.argmax()]/10:.1f}% of time (expected ≈{(1-eps)*100 + eps*25:.1f}%)")
+    print(f"  Selected {counts[Q.argmax()]/10:.1f}% of time (expected ~={(1-eps)*100 + eps*25:.1f}%)")
 
 
-# ── 5. Exploration strategies ─────────────────────────────────────────────────
+# -- 5. Exploration strategies -------------------------------------------------
 def exploration_strategies():
     print("\n=== Exploration vs Exploitation ===")
     print("  Dilemma: exploit current knowledge vs explore for better rewards")
@@ -215,8 +215,8 @@ def exploration_strategies():
         print(f"  {strat:<14} {avg:>10.4f}   Q_est={np.round(q_est,2)}")
 
     print()
-    print("  Regret = Σ_t [μ* - μ_{a_t}]  (difference from optimal)")
-    print("  ε-greedy: O(√T) regret with decaying ε")
+    print("  Regret = Sigma_t [mu* - mu_{a_t}]  (difference from optimal)")
+    print("  epsilon-greedy: O(sqrtT) regret with decaying epsilon")
     print("  UCB: O(log T) regret — theoretically optimal for stationary bandits")
 
 

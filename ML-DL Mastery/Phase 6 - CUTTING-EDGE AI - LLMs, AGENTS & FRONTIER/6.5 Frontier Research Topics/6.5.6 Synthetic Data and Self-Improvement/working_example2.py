@@ -64,7 +64,7 @@ def self_training_loop(X_labeled, y_labeled, X_unlabeled, n_rounds=5, threshold=
         # Accuracy improves with more labeled data (log-ish)
         acc = min(0.95, 0.65 + 0.06 * np.log1p(r + 1) + rng.normal(0, 0.01))
         acc_over_rounds.append(acc)
-        print(f"  Round {r+1}: added {n_added} pseudo-labels, total={len(X_labeled)}, acc≈{acc:.3f}")
+        print(f"  Round {r+1}: added {n_added} pseudo-labels, total={len(X_labeled)}, acc~={acc:.3f}")
 
     return n_labeled_over_rounds, acc_over_rounds
 

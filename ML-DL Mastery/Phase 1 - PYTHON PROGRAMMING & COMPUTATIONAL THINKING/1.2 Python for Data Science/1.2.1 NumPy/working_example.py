@@ -57,7 +57,7 @@ def indexing_and_slicing():
 def broadcasting():
     print("\n=== Broadcasting ===")
     a = np.array([[1], [2], [3]])          # shape (3, 1)
-    b = np.array([10, 20, 30])             # shape (3,) → (1, 3)
+    b = np.array([10, 20, 30])             # shape (3,) -> (1, 3)
     result = a + b
     print(f"  a (3×1):\n{a}")
     print(f"  b (3,) : {b}")

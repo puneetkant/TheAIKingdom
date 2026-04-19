@@ -28,7 +28,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── 1. Download and load California Housing ───────────────────────────────────
+# -- 1. Download and load California Housing -----------------------------------
 def download_cal_housing() -> Path:
     dest = DATA / "cal_housing.csv"
     if not dest.exists():
@@ -68,7 +68,7 @@ def load_to_numpy(path: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:
     return X, y, feature_cols
 
 
-# ── 2. Vectorized feature engineering ─────────────────────────────────────────
+# -- 2. Vectorized feature engineering -----------------------------------------
 def feature_engineering(X: np.ndarray, feature_cols: list[str]) -> tuple[np.ndarray, list[str]]:
     print("\n=== Vectorized Feature Engineering ===")
     # Indices by column name
@@ -97,7 +97,7 @@ def feature_engineering(X: np.ndarray, feature_cols: list[str]) -> tuple[np.ndar
     return new_features, new_names
 
 
-# ── 3. Normalisation (z-score) ─────────────────────────────────────────────────
+# -- 3. Normalisation (z-score) -------------------------------------------------
 def standardize(X: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Return standardised X, mean, and std vectors."""
     mean = X.mean(axis=0)
@@ -105,7 +105,7 @@ def standardize(X: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     return (X - mean) / std, mean, std
 
 
-# ── 4. Linear algebra: manual linear regression + PCA ─────────────────────────
+# -- 4. Linear algebra: manual linear regression + PCA -------------------------
 def demo_linear_algebra(X: np.ndarray, y: np.ndarray, feature_cols: list[str]) -> None:
     print("\n=== Linear Algebra ===")
 
@@ -138,7 +138,7 @@ def demo_linear_algebra(X: np.ndarray, y: np.ndarray, feature_cols: list[str]) -
           f"(total={sum(explained):.3f})")
 
 
-# ── 5. Boolean indexing + fancy indexing ──────────────────────────────────────
+# -- 5. Boolean indexing + fancy indexing --------------------------------------
 def demo_indexing(X: np.ndarray, y: np.ndarray) -> None:
     print("\n=== Indexing Patterns ===")
 
@@ -160,7 +160,7 @@ def demo_indexing(X: np.ndarray, y: np.ndarray) -> None:
     print(f"  Risk labels: {dict(zip(unique, counts))}")
 
 
-# ── 6. Performance comparison ─────────────────────────────────────────────────
+# -- 6. Performance comparison -------------------------------------------------
 def demo_performance(X: np.ndarray) -> None:
     print("\n=== Performance: NumPy vs Pure Python ===")
     flat = X[:, 0].tolist()   # first column as plain list

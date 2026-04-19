@@ -33,8 +33,8 @@ def demo():
     alphas = 1 - betas
     alphas_cumprod = np.cumprod(alphas)
 
-    print(f"  T=200 | β range: {betas[0]:.5f} → {betas[-1]:.5f}")
-    print(f"  √ᾱ_T = {np.sqrt(alphas_cumprod[-1]):.4f} (signal → 0)")
+    print(f"  T=200 | beta range: {betas[0]:.5f} -> {betas[-1]:.5f}")
+    print(f"  sqrt(alpha_bar_T) = {np.sqrt(alphas_cumprod[-1]):.4f} (signal -> 0)")
 
     # Use a digit image as x0
     X = load_digits().data / 16.0
@@ -45,11 +45,11 @@ def demo():
     for j, t in enumerate(timesteps):
         xt, eps = forward_process(x0, t, alphas_cumprod)
         axes[0, j].imshow(x0.reshape(8, 8), cmap="gray"); axes[0, j].axis("off")
-        axes[0, j].set_title("x₀" if j == 0 else "")
+        axes[0, j].set_title("x0" if j == 0 else "")
         axes[1, j].imshow(xt.reshape(8, 8), cmap="gray"); axes[1, j].axis("off")
         axes[1, j].set_title(f"t={t}")
-    axes[0, 0].set_ylabel("x₀"); axes[1, 0].set_ylabel("xₜ")
-    plt.suptitle("DDPM Forward Process (q(xₜ|x₀))")
+    axes[0, 0].set_ylabel("x0"); axes[1, 0].set_ylabel("xt")
+    plt.suptitle("DDPM Forward Process q(xt|x0)")
     plt.tight_layout(); plt.savefig(OUTPUT / "diffusion_forward.png"); plt.close()
 
     # SNR curve

@@ -8,7 +8,7 @@ import functools
 import time
 
 
-# ── Generators ────────────────────────────────────────────────────────────────
+# -- Generators ----------------------------------------------------------------
 def count_up(start=0, step=1):
     """Infinite generator — yields values lazily."""
     n = start
@@ -70,7 +70,7 @@ def generators_demo():
     print(f"  pipeline result: {processed}")
 
 
-# ── Custom Iterator ───────────────────────────────────────────────────────────
+# -- Custom Iterator -----------------------------------------------------------
 class Countdown:
     """Implements __iter__ / __next__ directly."""
     def __init__(self, start):
@@ -94,7 +94,7 @@ def iterator_demo():
     print()
 
 
-# ── Context Managers ─────────────────────────────────────────────────────────
+# -- Context Managers ---------------------------------------------------------
 class Timer:
     def __enter__(self):
         self._start = time.perf_counter()
@@ -108,11 +108,11 @@ class Timer:
 @contextlib.contextmanager
 def managed_resource(name):
     """Generator-based context manager."""
-    print(f"  → acquiring {name}")
+    print(f"  -> acquiring {name}")
     try:
         yield name.upper()
     finally:
-        print(f"  → releasing {name}")
+        print(f"  -> releasing {name}")
 
 
 def context_managers_demo():
@@ -130,7 +130,7 @@ def context_managers_demo():
     print("  ZeroDivisionError suppressed silently")
 
 
-# ── Advanced Decorators ───────────────────────────────────────────────────────
+# -- Advanced Decorators -------------------------------------------------------
 def retry(times=3, exceptions=(Exception,), delay=0):
     """Decorator factory: retry on failure."""
     def decorator(func):
@@ -187,7 +187,7 @@ def decorators_demo():
     print(f"  cache size   = {len(slow_fib.cache)}")
 
 
-# ── Descriptors ───────────────────────────────────────────────────────────────
+# -- Descriptors ---------------------------------------------------------------
 class Validated:
     """Descriptor: enforces a min/max range on a numeric attribute."""
     def __init__(self, min_val, max_val):
@@ -230,7 +230,7 @@ def descriptors_demo():
         print(f"  ValueError: {e}")
 
 
-# ── __slots__ ────────────────────────────────────────────────────────────────
+# -- __slots__ ----------------------------------------------------------------
 class PointSlots:
     __slots__ = ("x", "y")   # prevents arbitrary attribute creation
 

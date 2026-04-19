@@ -30,14 +30,14 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── 1. Utility: run shell command and stream output ───────────────────────────
+# -- 1. Utility: run shell command and stream output ---------------------------
 def sh(cmd: list[str], cwd: Path | None = None) -> str:
     """Safe subprocess call — never passes shell=True."""
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
     return result.stdout.strip() if result.returncode == 0 else f"(error: {result.stderr.strip()})"
 
 
-# ── 2. Environment config (dotenv-style) ──────────────────────────────────────
+# -- 2. Environment config (dotenv-style) --------------------------------------
 def load_env_config(path: Path | None = None) -> dict[str, str]:
     """Read KEY=VALUE lines from a .env file (stdlib only)."""
     config: dict[str, str] = {}
@@ -55,7 +55,7 @@ def load_env_config(path: Path | None = None) -> dict[str, str]:
     return config
 
 
-# ── 3. Pipeline steps ─────────────────────────────────────────────────────────
+# -- 3. Pipeline steps ---------------------------------------------------------
 def step_download() -> None:
     import urllib.request
     dest = DATA / "titanic.csv"
@@ -88,7 +88,7 @@ def step_clean() -> None:
     with open(dest, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=rows[0].keys())
         w.writeheader(); w.writerows(rows)
-    print(f"  [clean] {len(rows)} rows → {dest.name}")
+    print(f"  [clean] {len(rows)} rows -> {dest.name}")
 
 
 def step_stats() -> None:
@@ -115,7 +115,7 @@ def step_stats() -> None:
 STEPS = {"download": step_download, "clean": step_clean, "stats": step_stats}
 
 
-# ── 4. describe: list directory ────────────────────────────────────────────────
+# -- 4. describe: list directory ------------------------------------------------
 def cmd_describe(path: str) -> None:
     p = Path(path)
     if not p.exists():
@@ -132,7 +132,7 @@ def cmd_describe(path: str) -> None:
             print(f"  {item.name:<30} {'<dir>':>10}")
 
 
-# ── 5. sys info ────────────────────────────────────────────────────────────────
+# -- 5. sys info ----------------------------------------------------------------
 def cmd_sysinfo() -> None:
     print("\n=== System Info ===")
     print(f"  Python: {sys.version}")
@@ -150,7 +150,7 @@ def cmd_sysinfo() -> None:
     print(f"  Installed packages: {max(0, len(lines) - 2)}")
 
 
-# ── 6. argparse CLI entry point ───────────────────────────────────────────────
+# -- 6. argparse CLI entry point -----------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="working_example2",

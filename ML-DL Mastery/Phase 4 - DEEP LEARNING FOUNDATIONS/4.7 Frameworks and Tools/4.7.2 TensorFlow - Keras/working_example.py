@@ -22,13 +22,13 @@ import os
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")   # suppress TF C++ logs
 
 
-# ── helper ────────────────────────────────────────────────────────────────────
+# -- helper --------------------------------------------------------------------
 def code_block(code: str):
     for line in code.strip().splitlines():
         print(f"  {line}")
 
 
-# ── 1. Sequential API ─────────────────────────────────────────────────────────
+# -- 1. Sequential API ---------------------------------------------------------
 def sequential_api():
     print("=== Keras Sequential API ===")
     if not HAS_TF:
@@ -73,7 +73,7 @@ history = model.fit(X_train, y_train,
     print(f"  Final val_loss: {history.history['val_loss'][-1]:.4f}")
 
 
-# ── 2. Functional API ─────────────────────────────────────────────────────────
+# -- 2. Functional API ---------------------------------------------------------
 def functional_api():
     print("\n=== Keras Functional API ===")
     print("  Use for: multi-input/output, residual connections, DAG-style networks")
@@ -108,7 +108,7 @@ model = keras.Model(inputs=[inp_a, inp_b], outputs=out)
           f"params={model.count_params():,}")
 
 
-# ── 3. Custom layers ──────────────────────────────────────────────────────────
+# -- 3. Custom layers ----------------------------------------------------------
 def custom_layers():
     print("\n=== Custom Keras Layers ===")
     if not HAS_TF:
@@ -154,7 +154,7 @@ class MyModel(keras.Model):
     print(f"  Custom GeLU model built: {m.count_params()} params")
 
 
-# ── 4. Callbacks ──────────────────────────────────────────────────────────────
+# -- 4. Callbacks --------------------------------------------------------------
 def callbacks_demo():
     print("\n=== Keras Callbacks ===")
     callback_table = [
@@ -166,7 +166,7 @@ def callbacks_demo():
         ("LearningRateScheduler", "schedule=lambda ep: 1e-3 * 0.9**ep"),
     ]
     print(f"  {'Callback':<25} {'Common kwargs'}")
-    print(f"  {'─'*25} {'─'*45}")
+    print(f"  {'-'*25} {'-'*45}")
     for name, kwargs in callback_table:
         print(f"  {name:<25} {kwargs}")
 
@@ -193,7 +193,7 @@ def callbacks_demo():
     print(f"\n  EarlyStopping demo: stopped at epoch {stopped_at}/100, test acc={acc:.4f}")
 
 
-# ── 5. tf.data pipeline ───────────────────────────────────────────────────────
+# -- 5. tf.data pipeline -------------------------------------------------------
 def tf_data_pipeline():
     print("\n=== tf.data Pipeline ===")
     print("  Performance: prefetch, cache, and parallel map prevent GPU stalls")
@@ -227,7 +227,7 @@ dataset = dataset.map(parse_fn, num_parallel_calls=tf.data.AUTOTUNE)
     print(f"  First batch shape: X={batches[0][0].shape}, y={batches[0][1].shape}")
 
 
-# ── 6. Save and load ──────────────────────────────────────────────────────────
+# -- 6. Save and load ----------------------------------------------------------
 def save_load_patterns():
     print("\n=== Saving and Loading Models ===")
     code_block("""

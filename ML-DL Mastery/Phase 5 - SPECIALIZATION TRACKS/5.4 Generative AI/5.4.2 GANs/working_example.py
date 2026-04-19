@@ -17,7 +17,7 @@ def sigmoid(z): return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
 def dsigmoid(y): return y * (1 - y)
 
 
-# ── 1. GAN theory ─────────────────────────────────────────────────────────────
+# -- 1. GAN theory -------------------------------------------------------------
 def gan_theory():
     print("=== GAN Theory (Goodfellow et al. 2014) ===")
     print()
@@ -35,7 +35,7 @@ def gan_theory():
     print()
     print("  Jensen-Shannon divergence:")
     print("    V(D*, G) = 2·JSD(p_data || p_G) - log 4")
-    print("    JSD ≥ 0; zero iff p_G = p_data")
+    print("    JSD >= 0; zero iff p_G = p_data")
     print()
 
     # Check numerics
@@ -43,12 +43,12 @@ def gan_theory():
     print(f"  -log(4) = {v_opt:.4f}")
     d = 0.5   # D at optimum
     v_check = np.log(d) + np.log(1 - d)
-    print(f"  log(0.5) + log(0.5) = {v_check:.4f} ✓")
+    print(f"  log(0.5) + log(0.5) = {v_check:.4f} [OK]")
 
 
-# ── 2. 1D GAN from scratch ────────────────────────────────────────────────────
+# -- 2. 1D GAN from scratch ----------------------------------------------------
 class Generator:
-    """z (latent_dim) → x (1D)"""
+    """z (latent_dim) -> x (1D)"""
     def __init__(self, latent, hidden, out, rng):
         s = 0.05
         self.W1 = rng.standard_normal((latent, hidden)) * s
@@ -76,7 +76,7 @@ class Generator:
 
 
 class Discriminator:
-    """x → D(x) probability"""
+    """x -> D(x) probability"""
     def __init__(self, in_dim, hidden, rng):
         s = 0.05
         self.W1 = rng.standard_normal((in_dim, hidden)) * s
@@ -115,7 +115,7 @@ def train_gan():
     d_losses = []; g_losses = []
 
     for ep in range(n_epochs):
-        # ── Train D ──
+        # -- Train D --
         z   = rng.standard_normal((bs, latent))
         x_g = G.forward(z)
         x_r = sample_real(bs)
@@ -129,7 +129,7 @@ def train_gan():
         grad_dg = (1 / (1 - d_g + 1e-8)) * dsigmoid(d_g) / bs
         D.backward(grad_dg, lr_d)
 
-        # ── Train G ──
+        # -- Train G --
         z   = rng.standard_normal((bs, latent))
         x_g = G.forward(z)
         d_g2 = D.forward(x_g)
@@ -148,8 +148,8 @@ def train_gan():
     real    = sample_real(1000)
 
     print(f"  Epochs: {n_epochs}  Batch: {bs}")
-    print(f"  D loss: {d_losses[0]:.4f} → {d_losses[-1]:.4f}")
-    print(f"  G loss: {g_losses[0]:.4f} → {g_losses[-1]:.4f}")
+    print(f"  D loss: {d_losses[0]:.4f} -> {d_losses[-1]:.4f}")
+    print(f"  G loss: {g_losses[0]:.4f} -> {g_losses[-1]:.4f}")
     print(f"  Generated samples: mean={samples.mean():.3f}  std={samples.std():.3f}")
     print(f"  Real samples:      mean={real.mean():.3f}  std={real.std():.3f}")
 
@@ -166,12 +166,12 @@ def train_gan():
     print(f"  Plot: {path}")
 
 
-# ── 3. Mode collapse and training instability ─────────────────────────────────
+# -- 3. Mode collapse and training instability ---------------------------------
 def training_challenges():
     print("\n=== GAN Training Challenges ===")
     problems = [
         ("Mode collapse",         "G maps all z to a few modes; D can't distinguish"),
-        ("Vanishing gradient",    "D too strong → log(1-D(G(z))) ≈ 0; no grad for G"),
+        ("Vanishing gradient",    "D too strong -> log(1-D(G(z))) ~= 0; no grad for G"),
         ("Non-convergence",       "Oscillations; no guarantee of convergence"),
         ("Checkerboard artifacts","Transposed conv upsampling; use sub-pixel conv"),
         ("Training instability",  "Sensitive to hyperparams; needs careful tuning"),
@@ -194,31 +194,31 @@ def training_challenges():
         print(f"  {f:<22} {d}")
 
 
-# ── 4. Wasserstein GAN ───────────────────────────────────────────────────────
+# -- 4. Wasserstein GAN -------------------------------------------------------
 def wgan_overview():
     print("\n=== WGAN (Wasserstein GAN) ===")
     print("  Arjovsky et al. (2017)")
     print()
     print("  Problem with original GAN: JS divergence")
     print("    When p_data and p_G have disjoint support, JSD = log 2 (constant)")
-    print("    → Zero gradient for G")
+    print("    -> Zero gradient for G")
     print()
     print("  Wasserstein distance (Earth Mover):")
-    print("    W(p, q) = inf_{γ∈Π} E_{(x,y)~γ}[||x - y||]")
+    print("    W(p, q) = inf_{gammainPi} E_{(x,y)~gamma}[||x - y||]")
     print()
     print("  WGAN approximates W using critic (not discriminator):")
-    print("    max_{f∈1-Lipschitz} E_{x~p_data}[f(x)] - E_{z}[f(G(z))]")
+    print("    max_{fin1-Lipschitz} E_{x~p_data}[f(x)] - E_{z}[f(G(z))]")
     print()
     print("  Enforcing 1-Lipschitz:")
-    print("    Weight clipping: |w| ≤ c  (original WGAN; crude)")
-    print("    Gradient penalty: E[(||∇f(x̂)||₂ - 1)²]  (WGAN-GP; preferred)")
+    print("    Weight clipping: |w| <= c  (original WGAN; crude)")
+    print("    Gradient penalty: E[(||∇f(x)||2 - 1)²]  (WGAN-GP; preferred)")
     print()
     print("  Benefits:")
     print("    More stable training; meaningful loss (correlates with quality)")
     print("    No mode collapse issues; discriminator can be trained to optimality")
 
 
-# ── 5. GAN variants ───────────────────────────────────────────────────────────
+# -- 5. GAN variants -----------------------------------------------------------
 def gan_variants():
     print("\n=== GAN Variants ===")
     variants = [
@@ -236,7 +236,7 @@ def gan_variants():
         ("EG3D",       2022, "3D-aware GAN; NeRF + StyleGAN2"),
     ]
     print(f"  {'Model':<14} {'Year'} {'Description'}")
-    print(f"  {'─'*14} {'─'*4} {'─'*50}")
+    print(f"  {'-'*14} {'-'*4} {'-'*50}")
     for m, y, d in variants:
         print(f"  {m:<14} {y}  {d}")
 

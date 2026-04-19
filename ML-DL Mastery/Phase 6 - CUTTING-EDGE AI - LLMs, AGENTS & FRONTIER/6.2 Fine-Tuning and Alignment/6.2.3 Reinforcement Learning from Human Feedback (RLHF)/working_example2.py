@@ -79,8 +79,8 @@ def demo():
     # PPO KL penalty trade-off
     axes[2].plot(betas, objective, color="tomato", lw=2)
     axes[2].axhline(0, color="gray", linestyle="--", lw=1)
-    axes[2].set(xlabel="KL Penalty β", ylabel="PPO Objective",
-                title="PPO: Reward − β·KL(π ‖ π_ref)")
+    axes[2].set(xlabel="KL Penalty beta", ylabel="PPO Objective",
+                title="PPO: Reward - beta·KL(pi || pi_ref)")
     axes[2].grid(True, alpha=0.3)
 
     plt.tight_layout()

@@ -6,7 +6,7 @@ rank, norms, special matrices, and ML applications.
 import numpy as np
 
 
-# ── Creation ──────────────────────────────────────────────────────────────────
+# -- Creation ------------------------------------------------------------------
 def creation():
     print("=== Matrix Creation ===")
     A = np.array([[1, 2, 3],
@@ -20,7 +20,7 @@ def creation():
     print(f"\n  random(2,3):\n{np.round(np.random.default_rng(0).standard_normal((2,3)),3)}")
 
 
-# ── Basic arithmetic ──────────────────────────────────────────────────────────
+# -- Basic arithmetic ----------------------------------------------------------
 def arithmetic():
     print("\n=== Matrix Arithmetic ===")
     A = np.array([[1, 2], [3, 4]], dtype=float)
@@ -38,15 +38,15 @@ def arithmetic():
     print(f"  frobenius norm = {np.linalg.norm(A, 'fro'):.4f}")
 
 
-# ── Matrix powers and inverse ─────────────────────────────────────────────────
+# -- Matrix powers and inverse -------------------------------------------------
 def power_and_inverse():
     print("\n=== Inverse & Powers ===")
     A = np.array([[2, 1], [5, 3]], dtype=float)
     print(f"  A:\n{A}")
     print(f"  det(A) = {np.linalg.det(A):.4f}")
     Ainv = np.linalg.inv(A)
-    print(f"  A⁻¹:\n{Ainv}")
-    print(f"  A @ A⁻¹ ≈ I:\n{np.round(A @ Ainv, 10)}")
+    print(f"  A^-1:\n{Ainv}")
+    print(f"  A @ A^-1 ~= I:\n{np.round(A @ Ainv, 10)}")
 
     # Matrix power via repeated multiplication
     A2 = A @ A
@@ -62,10 +62,10 @@ def power_and_inverse():
     Bplus = np.linalg.pinv(B)
     print(f"\n  B (2×3):\n{B}")
     print(f"  pinv(B) (3×2):\n{np.round(Bplus, 4)}")
-    print(f"  B @ pinv(B) ≈ I₂:\n{np.round(B @ Bplus, 4)}")
+    print(f"  B @ pinv(B) ~= I2:\n{np.round(B @ Bplus, 4)}")
 
 
-# ── Rank ──────────────────────────────────────────────────────────────────────
+# -- Rank ----------------------------------------------------------------------
 def rank():
     print("\n=== Matrix Rank ===")
     cases = {
@@ -78,7 +78,7 @@ def rank():
         print(f"  {label:<22}: rank={np.linalg.matrix_rank(M)}, shape={M.shape}")
 
 
-# ── Special matrices ──────────────────────────────────────────────────────────
+# -- Special matrices ----------------------------------------------------------
 def special_matrices():
     print("\n=== Special Matrices ===")
 
@@ -90,7 +90,7 @@ def special_matrices():
     theta = np.pi / 4
     Q = np.array([[np.cos(theta), -np.sin(theta)],
                   [np.sin(theta),  np.cos(theta)]])
-    print(f"  rotation matrix Q^T Q ≈ I: {np.allclose(Q.T @ Q, np.eye(2))}")
+    print(f"  rotation matrix Q^T Q ~= I: {np.allclose(Q.T @ Q, np.eye(2))}")
 
     # Upper / lower triangular
     L = np.tril(np.ones((4,4)))
@@ -105,14 +105,14 @@ def special_matrices():
     print(f"  diagonally dominant: {is_diag_dom}")
 
 
-# ── Norms ─────────────────────────────────────────────────────────────────────
+# -- Norms ---------------------------------------------------------------------
 def matrix_norms():
     print("\n=== Matrix Norms ===")
     A = np.array([[1, 2], [3, 4]], dtype=float)
     norms = {
         "Frobenius":    np.linalg.norm(A, "fro"),
         "1-norm (max col sum)": np.linalg.norm(A, 1),
-        "∞-norm (max row sum)": np.linalg.norm(A, np.inf),
+        "inf-norm (max row sum)": np.linalg.norm(A, np.inf),
         "2-norm (spectral)":    np.linalg.norm(A, 2),
         "nuclear":              np.sum(np.linalg.svd(A, compute_uv=False)),
     }
@@ -120,7 +120,7 @@ def matrix_norms():
         print(f"  {name:<30}: {val:.4f}")
 
 
-# ── ML application: covariance matrix ────────────────────────────────────────
+# -- ML application: covariance matrix ----------------------------------------
 def covariance_matrix():
     print("\n=== Application: Covariance Matrix ===")
     rng  = np.random.default_rng(42)

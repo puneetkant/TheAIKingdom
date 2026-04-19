@@ -16,13 +16,13 @@ def cosine_sim(a, b):
     return (b @ a)
 
 
-# ── 1. RAG pipeline overview ──────────────────────────────────────────────────
+# -- 1. RAG pipeline overview --------------------------------------------------
 def rag_overview():
     print("=== Retrieval-Augmented Generation (RAG) ===")
     print()
     print("  RAG pipeline:")
-    print("    1. Ingest:    chunk documents → embed → store in vector DB")
-    print("    2. Retrieve:  embed query → ANN search → top-k chunks")
+    print("    1. Ingest:    chunk documents -> embed -> store in vector DB")
+    print("    2. Retrieve:  embed query -> ANN search -> top-k chunks")
     print("    3. Generate:  LLM synthesises answer from retrieved context")
     print()
     print("  Why RAG?")
@@ -37,7 +37,7 @@ def rag_overview():
         print(f"  {w:<16} {d}")
 
 
-# ── 2. Document ingestion ─────────────────────────────────────────────────────
+# -- 2. Document ingestion -----------------------------------------------------
 def document_ingestion():
     print("\n=== Document Ingestion ===")
     print()
@@ -45,8 +45,8 @@ def document_ingestion():
     strategies = [
         ("Fixed-size",        "Split every N tokens; simple; no semantic awareness"),
         ("Sentence-level",    "Split on sentence boundaries; better coherence"),
-        ("Recursive char",    "Split by paragraph → sentence → word; LangChain default"),
-        ("Semantic",          "Embed → split where similarity drops; best quality"),
+        ("Recursive char",    "Split by paragraph -> sentence -> word; LangChain default"),
+        ("Semantic",          "Embed -> split where similarity drops; best quality"),
         ("Document-aware",    "PDF/HTML/MD parser; preserve structure; headers"),
         ("Hierarchical",      "Parent chunk (512 tok) + child chunk (128 tok) for retrieve"),
     ]
@@ -66,7 +66,7 @@ def document_ingestion():
         print(f"  {m:<28} {d}")
 
 
-# ── 3. Retrieval demo ─────────────────────────────────────────────────────────
+# -- 3. Retrieval demo ---------------------------------------------------------
 def retrieval_demo():
     print("\n=== Retrieval Demo ===")
     print()
@@ -117,7 +117,7 @@ def retrieval_demo():
         print(f"  {v:<12} {d}")
 
 
-# ── 4. Advanced RAG ───────────────────────────────────────────────────────────
+# -- 4. Advanced RAG -----------------------------------------------------------
 def advanced_rag():
     print("\n=== Advanced RAG Patterns ===")
     print()

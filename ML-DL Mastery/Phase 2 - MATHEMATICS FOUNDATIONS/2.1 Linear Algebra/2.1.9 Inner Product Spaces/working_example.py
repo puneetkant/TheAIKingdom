@@ -6,13 +6,13 @@ projections, Gram-Schmidt, QR, and function spaces.
 import numpy as np
 
 
-# ── 1. Inner product axioms ───────────────────────────────────────────────────
+# -- 1. Inner product axioms ---------------------------------------------------
 def inner_product_axioms():
     print("=== Inner Product Axioms ===")
-    print("  An inner product ⟨·,·⟩ on vector space V must satisfy:")
-    print("    1. Linearity in first arg:   ⟨au+bv, w⟩ = a⟨u,w⟩ + b⟨v,w⟩")
-    print("    2. Conjugate symmetry:       ⟨u,v⟩ = conj(⟨v,u⟩)")
-    print("    3. Positive definiteness:    ⟨v,v⟩ ≥ 0, = 0 iff v = 0\n")
+    print("  An inner product <·,·> on vector space V must satisfy:")
+    print("    1. Linearity in first arg:   <au+bv, w> = a<u,w> + b<v,w>")
+    print("    2. Conjugate symmetry:       <u,v> = conj(<v,u>)")
+    print("    3. Positive definiteness:    <v,v> >= 0, = 0 iff v = 0\n")
 
     u = np.array([1., 2., 3.])
     v = np.array([4., 5., 6.])
@@ -22,15 +22,15 @@ def inner_product_axioms():
     ip = lambda x, y: np.dot(x, y)     # standard inner product
 
     print(f"  u={u}, v={v}, w={w}")
-    print(f"  Linearity:  ⟨au+bv, w⟩ = {ip(a*u+b*v, w):.4f}")
-    print(f"              a⟨u,w⟩+b⟨v,w⟩ = {a*ip(u,w)+b*ip(v,w):.4f}")
-    print(f"  Symmetry:   ⟨u,v⟩ = {ip(u,v):.4f},  ⟨v,u⟩ = {ip(v,u):.4f}")
-    print(f"  Pos-def:    ⟨u,u⟩ = {ip(u,u):.4f}  (≥0 ✓)")
+    print(f"  Linearity:  <au+bv, w> = {ip(a*u+b*v, w):.4f}")
+    print(f"              a<u,w>+b<v,w> = {a*ip(u,w)+b*ip(v,w):.4f}")
+    print(f"  Symmetry:   <u,v> = {ip(u,v):.4f},  <v,u> = {ip(v,u):.4f}")
+    print(f"  Pos-def:    <u,u> = {ip(u,u):.4f}  (>=0 [OK])")
 
 
-# ── 2. Induced norm and Cauchy-Schwarz ────────────────────────────────────────
+# -- 2. Induced norm and Cauchy-Schwarz ----------------------------------------
 def cauchy_schwarz():
-    print("\n=== Cauchy-Schwarz Inequality |⟨u,v⟩| ≤ ||u|| ||v|| ===")
+    print("\n=== Cauchy-Schwarz Inequality |<u,v>| <= ||u|| ||v|| ===")
     pairs = [
         (np.array([1., 0., 0.]), np.array([0., 1., 0.])),   # orthogonal
         (np.array([1., 2., 3.]), np.array([2., 4., 6.])),   # parallel
@@ -42,10 +42,10 @@ def cauchy_schwarz():
         ok  = lhs <= rhs + 1e-12
         cos = lhs / rhs
         print(f"  u={u} v={v}")
-        print(f"    |⟨u,v⟩|={lhs:.4f}  ||u||·||v||={rhs:.4f}  satisfied={ok}  cos θ={cos:.4f}\n")
+        print(f"    |<u,v>|={lhs:.4f}  ||u||·||v||={rhs:.4f}  satisfied={ok}  cos theta={cos:.4f}\n")
 
 
-# ── 3. Orthogonality and orthogonal complement ────────────────────────────────
+# -- 3. Orthogonality and orthogonal complement --------------------------------
 def orthogonality():
     print("=== Orthogonality ===")
     u = np.array([1., 0., 0.])
@@ -62,10 +62,10 @@ def orthogonality():
     for i in range(vecs.shape[1]):
         for j in range(i+1, vecs.shape[1]):
             dot = np.dot(vecs[:,i], vecs[:,j])
-            print(f"    v{i+1}·v{j+1} = {dot:.2e}  (should ≈ 0)")
+            print(f"    v{i+1}·v{j+1} = {dot:.2e}  (should ~= 0)")
 
 
-# ── 4. Orthogonal projection ──────────────────────────────────────────────────
+# -- 4. Orthogonal projection --------------------------------------------------
 def projections():
     print("\n=== Projections ===")
     # Project v onto u
@@ -93,9 +93,9 @@ def projections():
     print(f"  P w = {P_sub @ w}  (should be [3,4,0])")
 
 
-# ── 5. Gram-Schmidt and QR ────────────────────────────────────────────────────
+# -- 5. Gram-Schmidt and QR ----------------------------------------------------
 def gram_schmidt(A):
-    """Gram-Schmidt on columns of A → returns Q, R."""
+    """Gram-Schmidt on columns of A -> returns Q, R."""
     m, n = A.shape
     Q = np.zeros_like(A)
     R = np.zeros((n, n))
@@ -110,7 +110,7 @@ def gram_schmidt(A):
 
 
 def gram_schmidt_demo():
-    print("\n=== Gram-Schmidt → QR ===")
+    print("\n=== Gram-Schmidt -> QR ===")
     A = np.array([[1., 1., 0.],
                   [1., 0., 1.],
                   [0., 1., 1.]])
@@ -123,20 +123,20 @@ def gram_schmidt_demo():
     print(f"  matches np QR: {np.allclose(np.abs(Q), np.abs(Q_np))}")
 
 
-# ── 6. Weighted inner product ─────────────────────────────────────────────────
+# -- 6. Weighted inner product -------------------------------------------------
 def weighted_inner_product():
-    print("\n=== Weighted Inner Product ⟨u,v⟩_W = uᵀWv ===")
+    print("\n=== Weighted Inner Product <u,v>_W = uᵀWv ===")
     W = np.diag([1., 2., 3.])   # positive definite weight matrix
     u = np.array([1., 1., 1.])
     v = np.array([2., 0., 1.])
     ip_w = u @ W @ v
     ip_std = np.dot(u, v)
     print(f"  W = diag(1,2,3),  u={u},  v={v}")
-    print(f"  standard ⟨u,v⟩  = {ip_std}")
-    print(f"  weighted  ⟨u,v⟩_W = {ip_w}")
+    print(f"  standard <u,v>  = {ip_std}")
+    print(f"  weighted  <u,v>_W = {ip_w}")
     # Induced norm
     norm_w = np.sqrt(u @ W @ u)
-    print(f"  weighted ||u||_W = sqrt(⟨u,u⟩_W) = {norm_w:.4f}")
+    print(f"  weighted ||u||_W = sqrt(<u,u>_W) = {norm_w:.4f}")
 
 
 if __name__ == "__main__":

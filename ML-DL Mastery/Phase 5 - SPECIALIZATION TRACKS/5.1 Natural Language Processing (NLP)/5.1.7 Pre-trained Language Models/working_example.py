@@ -11,15 +11,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
 
-# ── 1. Pre-training vs Fine-tuning ────────────────────────────────────────────
+# -- 1. Pre-training vs Fine-tuning --------------------------------------------
 def pretraining_vs_finetuning():
     print("=== Pre-training vs Fine-tuning ===")
     print()
     print("  Pre-training (self-supervised, no labels):")
     print("    BERT: Masked Language Modelling (MLM) + Next Sentence Prediction (NSP)")
-    print("          → 'The [MASK] sat on the mat'  → predict 'cat'")
+    print("          -> 'The [MASK] sat on the mat'  -> predict 'cat'")
     print("    GPT:  Autoregressive LM (causal)")
-    print("          → 'The cat sat on the'  → predict 'mat'")
+    print("          -> 'The cat sat on the'  -> predict 'mat'")
     print("    T5:   Text-to-text (all tasks as seq2seq)")
     print()
     print("  Fine-tuning (supervised, with task labels):")
@@ -33,7 +33,7 @@ def pretraining_vs_finetuning():
     print("    4. PEFT (LoRA, etc.): train only small adapters (<1% params)")
 
 
-# ── 2. BERT fine-tuning patterns ─────────────────────────────────────────────
+# -- 2. BERT fine-tuning patterns ---------------------------------------------
 def bert_finetuning():
     print("\n=== BERT Fine-tuning Code Patterns ===")
     print("""
@@ -78,12 +78,12 @@ def bert_finetuning():
         ("DeBERTa-v3-base","86M params",  "Disentangled attention, best encoder"),
     ]
     print(f"  {'Model':<18} {'Size':<15} Details")
-    print(f"  {'─'*18} {'─'*15} {'─'*35}")
+    print(f"  {'-'*18} {'-'*15} {'-'*35}")
     for m, s, d in rows:
         print(f"  {m:<18} {s:<15} {d}")
 
 
-# ── 3. GPT-style generation ───────────────────────────────────────────────────
+# -- 3. GPT-style generation ---------------------------------------------------
 def gpt_generation_patterns():
     print("\n=== GPT-style Text Generation ===")
     print("""
@@ -112,16 +112,16 @@ def gpt_generation_patterns():
     strategies = [
         ("Greedy",       "argmax at each step; fast but repetitive"),
         ("Beam search",  "keep top-k sequences; good for translation"),
-        ("Temperature",  "T<1 → sharper; T>1 → more random"),
+        ("Temperature",  "T<1 -> sharper; T>1 -> more random"),
         ("Top-k",        "sample from top-k tokens (k=50)"),
-        ("Top-p (nucleus)", "sample from smallest set with Σ P ≥ p"),
+        ("Top-p (nucleus)", "sample from smallest set with Sigma P >= p"),
         ("Rep. penalty", "penalise already-generated tokens"),
     ]
     for s, d in strategies:
         print(f"    {s:<20} {d}")
 
 
-# ── 4. Simulated feature extraction (BERT-like) ───────────────────────────────
+# -- 4. Simulated feature extraction (BERT-like) -------------------------------
 def simulated_bert_features():
     """
     Simulates using pre-trained features for downstream classification.
@@ -169,10 +169,10 @@ def simulated_bert_features():
     print(f"  Accuracy: {acc:.4f}")
     print()
     print("  With real BERT embeddings (768-dim):")
-    print("    → typically 90-95% accuracy on SST-2 with only 10 examples (few-shot)")
+    print("    -> typically 90-95% accuracy on SST-2 with only 10 examples (few-shot)")
 
 
-# ── 5. Transfer learning strategies ──────────────────────────────────────────
+# -- 5. Transfer learning strategies ------------------------------------------
 def transfer_learning_nlp():
     print("\n=== Transfer Learning Strategies for NLP ===")
     strategies = [
@@ -192,7 +192,7 @@ def transfer_learning_nlp():
          "FLAN-T5, Alpaca — generalist task following"),
     ]
     print(f"  {'Strategy':<18} {'Description':<38} Example")
-    print(f"  {'─'*18} {'─'*38} {'─'*35}")
+    print(f"  {'-'*18} {'-'*38} {'-'*35}")
     for s, d, e in strategies:
         print(f"  {s:<18} {d:<38} {e[:35]}")
 

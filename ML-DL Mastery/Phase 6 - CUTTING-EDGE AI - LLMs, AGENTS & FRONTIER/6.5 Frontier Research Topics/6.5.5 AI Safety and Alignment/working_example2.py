@@ -90,7 +90,7 @@ def demo():
     axes[0][0].grid(True, alpha=0.3)
 
     axes[0][1].plot(steps, kl_d, color="purple", lw=2)
-    axes[0][1].set(xlabel="Training Step", ylabel="KL(π || π_ref)",
+    axes[0][1].set(xlabel="Training Step", ylabel="KL(pi || pi_ref)",
                    title="KL Divergence from Reference Policy")
     axes[0][1].grid(True, alpha=0.3)
 
@@ -105,8 +105,8 @@ def demo():
     axes[1][0].grid(True, alpha=0.3)
 
     axes[1][1].plot(betas, final_true_rewards, "o-", color="steelblue", lw=2)
-    axes[1][1].set(xlabel="KL Penalty β", ylabel="Peak True Reward",
-                   title="KL Penalty β vs True Reward")
+    axes[1][1].set(xlabel="KL Penalty beta", ylabel="Peak True Reward",
+                   title="KL Penalty beta vs True Reward")
     axes[1][1].grid(True, alpha=0.3)
 
     plt.tight_layout()

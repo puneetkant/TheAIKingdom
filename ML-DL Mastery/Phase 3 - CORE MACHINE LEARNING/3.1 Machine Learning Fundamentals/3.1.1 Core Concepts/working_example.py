@@ -14,7 +14,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_concepts")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. ML Taxonomy ────────────────────────────────────────────────────────────
+# -- 1. ML Taxonomy ------------------------------------------------------------
 def ml_taxonomy():
     print("=== Machine Learning Taxonomy ===")
     taxonomy = {
@@ -37,13 +37,13 @@ def ml_taxonomy():
             print(f"    {sub:<18}: {', '.join(algos)}")
 
 
-# ── 2. Bias-variance tradeoff ─────────────────────────────────────────────────
+# -- 2. Bias-variance tradeoff -------------------------------------------------
 def bias_variance_tradeoff():
     print("\n=== Bias-Variance Tradeoff ===")
-    print("  MSE(θ̂) = Bias²(θ̂) + Var(θ̂) + σ²_noise")
+    print("  MSE(theta) = Bias²(theta) + Var(theta) + sigma²_noise")
 
     rng = np.random.default_rng(0)
-    # True function: f(x) = sin(2πx)
+    # True function: f(x) = sin(2pix)
     f    = lambda x: np.sin(2*np.pi*x)
     n    = 15
     M    = 200    # repeated experiments
@@ -88,7 +88,7 @@ def bias_variance_tradeoff():
     print(f"\n  Saved: {path}")
 
 
-# ── 3. Overfitting and regularisation ────────────────────────────────────────
+# -- 3. Overfitting and regularisation ----------------------------------------
 def overfitting_demo():
     print("\n=== Overfitting and Regularisation ===")
     rng = np.random.default_rng(1)
@@ -107,12 +107,12 @@ def overfitting_demo():
         print(f"  {d:<8} {train_rm:<14.4f} {test_rm:<14.4f} {status}")
 
 
-# ── 4. No Free Lunch theorem illustration ─────────────────────────────────────
+# -- 4. No Free Lunch theorem illustration -------------------------------------
 def no_free_lunch():
     print("\n=== No Free Lunch Theorem ===")
     print("  NFL: averaged over ALL possible problems, no algorithm is better than random.")
-    print("  → Domain knowledge and inductive bias are essential.")
-    print("  → Choose model family matching your problem structure.")
+    print("  -> Domain knowledge and inductive bias are essential.")
+    print("  -> Choose model family matching your problem structure.")
     print()
 
     # Illustrate: KNN vs Linear for linear vs circular data
@@ -141,13 +141,13 @@ def no_free_lunch():
             print(f"    {clf_name:<14}: acc={acc:.4f}")
 
 
-# ── 5. PAC learning and VC dimension ─────────────────────────────────────────
+# -- 5. PAC learning and VC dimension -----------------------------------------
 def pac_learning():
     print("\n=== PAC Learning & VC Dimension ===")
     print("  PAC: Probably Approximately Correct learning")
-    print("  With n samples, ε error, δ failure prob:")
-    print("  n ≥ (1/ε)[log(|H|/δ)]  (finite H)")
-    print("  n ≥ (1/ε)[d_VC·log(2/δ)]  (infinite H, d_VC = VC dimension)")
+    print("  With n samples, epsilon error, delta failure prob:")
+    print("  n >= (1/epsilon)[log(|H|/delta)]  (finite H)")
+    print("  n >= (1/epsilon)[d_VC·log(2/delta)]  (infinite H, d_VC = VC dimension)")
     print()
 
     # Sample complexity bounds
@@ -155,16 +155,16 @@ def pac_learning():
     vc_dims = {"Halfplanes in R²": 3, "Decision stumps": 1,
                "SVM (linear kernel)": None, "1-layer NN (k nodes)": "k+1"}
 
-    print(f"  ε={eps}, δ={delta}")
+    print(f"  epsilon={eps}, delta={delta}")
     for name, d_vc in vc_dims.items():
         if isinstance(d_vc, int):
             n_req = int(np.ceil((1/eps) * (d_vc * np.log(2/delta))))
-            print(f"  {name:<28}: d_VC={d_vc}  n_req≈{n_req}")
+            print(f"  {name:<28}: d_VC={d_vc}  n_req~={n_req}")
         else:
             print(f"  {name:<28}: d_VC={d_vc} (depends on parameters)")
 
 
-# ── 6. Learning curves ────────────────────────────────────────────────────────
+# -- 6. Learning curves --------------------------------------------------------
 def learning_curves():
     print("\n=== Learning Curves ===")
     from sklearn.linear_model import Ridge

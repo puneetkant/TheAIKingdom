@@ -78,7 +78,7 @@ def demo_domain_features():
     pipe.fit(X_train, y_train)
     rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
     r2   = r2_score(y_test, pipe.predict(X_test))
-    print(f"  Domain features + Ridge: RMSE={rmse:.4f}  R²={r2:.4f}  (from 8 → {Xf.shape[1]} features)")
+    print(f"  Domain features + Ridge: RMSE={rmse:.4f}  R²={r2:.4f}  (from 8 -> {Xf.shape[1]} features)")
 
 if __name__ == "__main__":
     demo_polynomial()

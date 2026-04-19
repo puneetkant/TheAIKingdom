@@ -39,7 +39,7 @@ class PredictHandler:
         self.F = expected_features
 
     def handle(self, payload):
-        """payload: dict with 'instances' key → list of feature vectors."""
+        """payload: dict with 'instances' key -> list of feature vectors."""
         if "instances" not in payload:
             return {"error": "Missing 'instances' key"}, 400
         X = np.array(payload["instances"], dtype=float)

@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_cicd")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. CI/CD overview ─────────────────────────────────────────────────────────
+# -- 1. CI/CD overview ---------------------------------------------------------
 def cicd_overview():
     print("=== CI/CD for ML Systems ===")
     print()
@@ -23,7 +23,7 @@ def cicd_overview():
         ("4. Model testing",  "accuracy gates, bias checks, latency benchmarks"),
         ("5. Container build","build Docker image; push to registry"),
         ("6. Staging deploy", "deploy to staging; integration tests"),
-        ("7. Prod deploy",    "canary → full rollout; automated or approval gate"),
+        ("7. Prod deploy",    "canary -> full rollout; automated or approval gate"),
         ("8. Monitoring",     "drift detection triggers retraining"),
     ]
     for s, d in pipeline_stages:
@@ -42,7 +42,7 @@ def cicd_overview():
         print(f"  {p:<18} {d}")
 
 
-# ── 2. GitHub Actions workflow ────────────────────────────────────────────────
+# -- 2. GitHub Actions workflow ------------------------------------------------
 def github_actions_pattern():
     print("\n=== GitHub Actions ML Pipeline ===")
     print()
@@ -56,7 +56,7 @@ on:
     branches: [main]
 
 jobs:
-  # ── Step 1: Code Quality ────────────────────────────────────────────────────
+  # -- Step 1: Code Quality ----------------------------------------------------
   lint-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -68,7 +68,7 @@ jobs:
     - run: mypy src/
     - run: pytest tests/unit/ -v --cov=src
 
-  # ── Step 2: Data Validation ─────────────────────────────────────────────────
+  # -- Step 2: Data Validation -------------------------------------------------
   data-validation:
     runs-on: ubuntu-latest
     steps:
@@ -77,7 +77,7 @@ jobs:
     - run: dvc pull data/validation_set
     - run: python scripts/validate_data.py
 
-  # ── Step 3: Training ────────────────────────────────────────────────────────
+  # -- Step 3: Training --------------------------------------------------------
   train:
     needs: [lint-and-test, data-validation]
     runs-on: [self-hosted, gpu]
@@ -89,7 +89,7 @@ jobs:
         name: model-artefacts
         path: models/
 
-  # ── Step 4: Model Evaluation Gate ──────────────────────────────────────────
+  # -- Step 4: Model Evaluation Gate ------------------------------------------
   evaluate:
     needs: train
     runs-on: ubuntu-latest
@@ -100,7 +100,7 @@ jobs:
     - run: python scripts/check_bias.py
     - run: python scripts/benchmark_latency.py --max-p99-ms 100
 
-  # ── Step 5: Build and Push Image ───────────────────────────────────────────
+  # -- Step 5: Build and Push Image -------------------------------------------
   build-image:
     needs: evaluate
     runs-on: ubuntu-latest
@@ -116,7 +116,7 @@ jobs:
         push: true
         tags: ghcr.io/myorg/model-service:${{ github.sha }}
 
-  # ── Step 6: Deploy to Staging ──────────────────────────────────────────────
+  # -- Step 6: Deploy to Staging ----------------------------------------------
   deploy-staging:
     needs: build-image
     environment: staging
@@ -129,7 +129,7 @@ jobs:
     print(workflow_yaml)
 
 
-# ── 3. ML testing strategies ──────────────────────────────────────────────────
+# -- 3. ML testing strategies --------------------------------------------------
 def ml_testing_strategies():
     print("=== ML Testing Strategies ===")
     print()
@@ -162,7 +162,7 @@ def ml_testing_strategies():
     threshold = 0.90
     passed = accuracy >= threshold
     print(f"  Accuracy: {accuracy:.4f}  |  Threshold: {threshold}")
-    print(f"  Gate: {'PASSED ✓' if passed else 'FAILED ✗'}")
+    print(f"  Gate: {'PASSED [OK]' if passed else 'FAILED [X]'}")
     print(f"  CI exit code: {0 if passed else 1}")
 
 

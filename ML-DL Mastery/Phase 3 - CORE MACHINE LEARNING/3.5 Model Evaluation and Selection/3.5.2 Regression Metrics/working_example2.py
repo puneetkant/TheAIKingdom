@@ -36,8 +36,8 @@ def demo_metrics_comparison():
     models = [
         ("Ridge",  make_pipeline(StandardScaler(), Ridge(1.0))),
         ("Lasso",  make_pipeline(StandardScaler(), Lasso(0.01))),
-        ("RF-100", make_pipeline(StandardScaler(), RandomForestRegressor(100, random_state=42, n_jobs=-1))),
-        ("GBM",    make_pipeline(StandardScaler(), GradientBoostingRegressor(100, random_state=42))),
+        ("RF-100", make_pipeline(StandardScaler(), RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1))),
+        ("GBM",    make_pipeline(StandardScaler(), GradientBoostingRegressor(n_estimators=100, random_state=42))),
     ]
     hdr = f"  {'Model':8s}  {'MAE':>8}  {'RMSE':>8}  {'R²':>8}  {'MedAE':>8}  {'MAPE%':>8}"
     print(hdr)

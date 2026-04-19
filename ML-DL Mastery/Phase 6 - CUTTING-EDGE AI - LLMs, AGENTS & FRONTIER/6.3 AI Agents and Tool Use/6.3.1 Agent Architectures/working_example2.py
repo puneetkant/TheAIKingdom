@@ -74,7 +74,7 @@ def demo():
     trajectory = react_agent("capital france")
     for i, step in enumerate(trajectory):
         print(f"  Step {i+1} [{step['step']}]: {step['content']}"
-              + (f" → {step['result']}" if step["result"] else ""))
+              + (f" -> {step['result']}" if step["result"] else ""))
 
     # Visualise step-type distribution across many runs
     step_types = ["think", "act:search", "act:calc", "observe", "finish"]

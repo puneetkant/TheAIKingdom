@@ -4,7 +4,7 @@ Covers import styles, __name__, standard library highlights,
 creating your own module (inline demo), and __all__.
 """
 
-# ── import styles ─────────────────────────────────────────────────────────────
+# -- import styles -------------------------------------------------------------
 import os
 import sys
 import math
@@ -99,7 +99,7 @@ def itertools_demo():
     print("\n=== itertools module ===")
     # islice — lazy slice of any iterable
     naturals = (n for n in range(1, 1000))
-    print(f"  islice(1..∞, 7)  = {list(islice(naturals, 7))}")
+    print(f"  islice(1..inf, 7)  = {list(islice(naturals, 7))}")
 
     # chain — flatten iterables
     combined = list(chain([1, 2], [3, 4], [5]))
@@ -141,8 +141,8 @@ if __name__ == "__main__":
 
     print("\n  Usage from another file:")
     print("    from mymodule import add, multiply  # only __all__ items if 'import *'")
-    print("    add(2, 3)       → 5")
-    print("    multiply(4, 5)  → 20")
+    print("    add(2, 3)       -> 5")
+    print("    multiply(4, 5)  -> 20")
 
 
 if __name__ == "__main__":

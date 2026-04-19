@@ -1,6 +1,6 @@
 """
 Working Example 2: Agent Frameworks
-Minimal LangChain-style chain: prompt template → LLM call stub → output parser.
+Minimal LangChain-style chain: prompt template -> LLM call stub -> output parser.
 Demonstrates chain composition and pipeline patterns.
 Run: python working_example2.py
 """
@@ -115,7 +115,7 @@ def demo():
     texts = ["I love this product!", "The service was terrible.", "Machine learning is fascinating."]
     for text in texts:
         result, log = classify_chain.run(text=text)
-        print(f"  Classify: '{text[:30]}...' → {result}")
+        print(f"  Classify: '{text[:30]}...' -> {result}")
 
     result2, log2 = extract_chain.run(text="Apple CEO Tim Cook visited Paris.")
     print(f"\n  Extract entities: {result2}")

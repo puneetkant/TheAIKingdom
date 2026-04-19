@@ -20,25 +20,25 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Motivation ─────────────────────────────────────────────────────────────
+# -- 1. Motivation -------------------------------------------------------------
 def motivation():
     print("=== RNNs: Why Recurrence? ===")
     print("  Standard MLPs assume fixed-size independent inputs")
     print("  Sequences have variable length and temporal dependencies")
     print()
     print("  Applications of sequence modelling:")
-    print("    Text generation, language modelling   (many→many)")
-    print("    Sentiment analysis                    (many→one)")
-    print("    Machine translation                   (many→many)")
-    print("    Time series forecasting               (many→one or many)")
-    print("    Speech recognition                    (many→many)")
+    print("    Text generation, language modelling   (many->many)")
+    print("    Sentiment analysis                    (many->one)")
+    print("    Machine translation                   (many->many)")
+    print("    Time series forecasting               (many->one or many)")
+    print("    Speech recognition                    (many->many)")
     print()
     print("  Key idea: maintain a hidden state h_t that summarises past inputs")
     print("  h_t = f(W_hh · h_{t-1} + W_xh · x_t + b_h)")
     print("  y_t = g(W_hy · h_t + b_y)")
 
 
-# ── 2. Elman RNN from scratch ─────────────────────────────────────────────────
+# -- 2. Elman RNN from scratch -------------------------------------------------
 class ElmanRNN:
     """Simple Elman RNN: h_t = tanh(W_hh h_{t-1} + W_xh x_t + b_h)."""
 
@@ -129,27 +129,27 @@ def rnn_forward_demo():
         print(f"  t={t}: y={ys[t].round(3)}  h_norm={np.linalg.norm(hs[t]):.4f}")
 
 
-# ── 3. Sequence types ─────────────────────────────────────────────────────────
+# -- 3. Sequence types ---------------------------------------------------------
 def sequence_types():
     print("\n=== RNN Sequence Types ===")
     types = [
-        ("One→One",   "Single input → single output",    "MLPs, image classification"),
-        ("One→Many",  "Single input → sequence output",  "Image captioning"),
-        ("Many→One",  "Sequence input → single output",  "Sentiment analysis"),
-        ("Many→Many", "Same-length seq-to-seq",          "POS tagging, NER"),
-        ("Enc→Dec",   "Variable len seq-to-seq",         "Machine translation"),
+        ("One->One",   "Single input -> single output",    "MLPs, image classification"),
+        ("One->Many",  "Single input -> sequence output",  "Image captioning"),
+        ("Many->One",  "Sequence input -> single output",  "Sentiment analysis"),
+        ("Many->Many", "Same-length seq-to-seq",          "POS tagging, NER"),
+        ("Enc->Dec",   "Variable len seq-to-seq",         "Machine translation"),
     ]
     print(f"  {'Type':<12} {'Description':<36} {'Example'}")
     for t, d, e in types:
         print(f"  {t:<12} {d:<36} {e}")
 
 
-# ── 4. Vanishing gradient in RNNs ─────────────────────────────────────────────
+# -- 4. Vanishing gradient in RNNs ---------------------------------------------
 def vanishing_gradient_rnn():
     print("\n=== Vanishing Gradient in RNNs ===")
-    print("  During BPTT: δL/δh_1 = δL/δh_T · Π_{t=2}^{T} (W_hh · diag(tanh'(z_t)))")
-    print("  If spectral radius of W_hh < 1 → gradients vanish exponentially")
-    print("  If spectral radius of W_hh > 1 → gradients explode")
+    print("  During BPTT: deltaL/deltah_1 = deltaL/deltah_T · Pi_{t=2}^{T} (W_hh · diag(tanh'(z_t)))")
+    print("  If spectral radius of W_hh < 1 -> gradients vanish exponentially")
+    print("  If spectral radius of W_hh > 1 -> gradients explode")
     print()
 
     rng = np.random.default_rng(5)
@@ -161,13 +161,13 @@ def vanishing_gradient_rnn():
         grad = np.eye(8)
         norms = []
         for _ in range(T):
-            # tanh' ≈ 0.5 on average; include this factor
+            # tanh' ~= 0.5 on average; include this factor
             grad = 0.5 * W.T @ grad
             norms.append(np.linalg.norm(grad))
         print(f"  {label:<35}: norm after {T} steps = {norms[-1]:.4e}")
 
 
-# ── 5. BPTT training demo ─────────────────────────────────────────────────────
+# -- 5. BPTT training demo -----------------------------------------------------
 def bptt_training():
     print("\n=== BPTT Training: Sequence Classification ===")
     print("  Task: predict last element of sequence (parity of binary string)")
@@ -217,7 +217,7 @@ def bptt_training():
     print(f"  Training curve saved: {path}")
 
 
-# ── 6. Teacher forcing ────────────────────────────────────────────────────────
+# -- 6. Teacher forcing --------------------------------------------------------
 def teacher_forcing():
     print("\n=== Teacher Forcing ===")
     print("  During training: feed ground-truth y_{t-1} as next input")
@@ -227,12 +227,12 @@ def teacher_forcing():
     print("  Cons: exposure bias — model never sees its own errors during training")
     print()
     print("  Scheduled sampling (Bengio 2015):")
-    print("    ε_t = probability of using ground truth")
-    print("    Start with ε=1, anneal to ε=0 as training progresses")
+    print("    epsilon_t = probability of using ground truth")
+    print("    Start with epsilon=1, anneal to epsilon=0 as training progresses")
     print("    Bridges gap between teacher-forced training and free-running inference")
 
 
-# ── 7. Truncated BPTT ─────────────────────────────────────────────────────────
+# -- 7. Truncated BPTT ---------------------------------------------------------
 def truncated_bptt():
     print("\n=== Truncated BPTT ===")
     print("  Full BPTT on long sequences (T=1000) is expensive and unstable")

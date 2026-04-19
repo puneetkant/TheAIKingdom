@@ -11,7 +11,7 @@ import urllib.parse
 from datetime import datetime
 
 
-# ── 1. urllib (stdlib, no extra deps) ────────────────────────────────────────
+# -- 1. urllib (stdlib, no extra deps) ----------------------------------------
 def urllib_demo():
     print("=== 1. urllib (stdlib) ===")
     url = "https://httpbin.org/get?source=urllib&demo=true"
@@ -26,7 +26,7 @@ def urllib_demo():
         print(f"  (network unavailable): {e}")
 
 
-# ── 2. requests library ───────────────────────────────────────────────────────
+# -- 2. requests library -------------------------------------------------------
 def requests_demo():
     print("\n=== 2. requests ===")
     try:
@@ -67,7 +67,7 @@ def requests_demo():
         print(f"  (network unavailable): {e}")
 
 
-# ── 3. Public REST API — JSONPlaceholder ──────────────────────────────────────
+# -- 3. Public REST API — JSONPlaceholder --------------------------------------
 def rest_api_demo():
     print("\n=== 3. REST API (JSONPlaceholder) ===")
     base = "https://jsonplaceholder.typicode.com"
@@ -108,7 +108,7 @@ def rest_api_demo():
         print(f"  (network unavailable): {e}")
 
 
-# ── 4. BeautifulSoup — HTML scraping ─────────────────────────────────────────
+# -- 4. BeautifulSoup — HTML scraping -----------------------------------------
 def beautifulsoup_demo():
     print("\n=== 4. BeautifulSoup HTML Parsing ===")
     html = """
@@ -140,7 +140,7 @@ def beautifulsoup_demo():
         # Extract links
         print("\n  links:")
         for a in soup.select("#links a"):
-            print(f"    {a['href']}  →  {a.string}")
+            print(f"    {a['href']}  ->  {a.string}")
 
         # Extract table
         print("\n  table:")
@@ -156,7 +156,7 @@ def beautifulsoup_demo():
         print("  beautifulsoup4 not installed — pip install beautifulsoup4")
 
 
-# ── 5. Rate limiting & pagination ────────────────────────────────────────────
+# -- 5. Rate limiting & pagination --------------------------------------------
 def rate_limiting_demo():
     print("\n=== 5. Rate Limiting & Pagination ===")
     try:
@@ -187,7 +187,7 @@ def rate_limiting_demo():
         print(f"  (network unavailable): {e}")
 
 
-# ── 6. Error handling for network code ───────────────────────────────────────
+# -- 6. Error handling for network code ---------------------------------------
 def robust_request():
     print("\n=== 6. Robust Request Pattern ===")
     def fetch_with_retry(url, max_retries=3, backoff=1.0):

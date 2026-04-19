@@ -21,7 +21,7 @@ except ImportError:
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
-# ── Numpy Perceptron ─────────────────────────────────────────────────────────
+# -- Numpy Perceptron ---------------------------------------------------------
 class NumpyPerceptron:
     def __init__(self, lr=0.1, n_iter=100):
         self.lr, self.n_iter = lr, n_iter

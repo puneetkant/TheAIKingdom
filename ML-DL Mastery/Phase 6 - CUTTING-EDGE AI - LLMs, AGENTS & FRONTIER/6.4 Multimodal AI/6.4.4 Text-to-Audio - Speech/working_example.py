@@ -10,14 +10,14 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_audio")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Audio modalities overview ──────────────────────────────────────────────
+# -- 1. Audio modalities overview ----------------------------------------------
 def audio_overview():
     print("=== Text-to-Audio and Speech ===")
     print()
     modalities = [
         ("TTS (Text-to-Speech)",        "Natural human speech synthesis"),
         ("Voice cloning",               "Replicate target voice from short sample"),
-        ("ASR (Speech Recognition)",    "Audio → text transcription"),
+        ("ASR (Speech Recognition)",    "Audio -> text transcription"),
         ("Music generation",            "Full songs from text prompts"),
         ("Sound effect generation",     "Environmental/foley sounds from description"),
         ("Speech-to-speech",            "Real-time voice conversion / translation"),
@@ -26,12 +26,12 @@ def audio_overview():
         print(f"  {m:<34} {d}")
 
 
-# ── 2. TTS systems ────────────────────────────────────────────────────────────
+# -- 2. TTS systems ------------------------------------------------------------
 def tts_systems():
     print("\n=== Text-to-Speech Systems ===")
     print()
     systems = [
-        ("Tacotron 2",    "2019; text → mel spectrogram; WaveNet vocoder"),
+        ("Tacotron 2",    "2019; text -> mel spectrogram; WaveNet vocoder"),
         ("FastSpeech 2",  "Non-autoregressive; duration/pitch/energy predictors"),
         ("VITS",          "End-to-end; VAE + normalising flow; natural prosody"),
         ("NaturalSpeech 2","Latent diffusion; zero-shot voice cloning; codec"),
@@ -47,20 +47,20 @@ def tts_systems():
         print(f"  {s:<20} {d}")
     print()
     print("  TTS pipeline:")
-    print("    Text → grapheme-to-phoneme (G2P)")
-    print("         → acoustic model (phones → mel spectrogram)")
-    print("         → vocoder (mel → waveform)")
+    print("    Text -> grapheme-to-phoneme (G2P)")
+    print("         -> acoustic model (phones -> mel spectrogram)")
+    print("         -> vocoder (mel -> waveform)")
     print()
-    print("  Modern end-to-end: text → codec tokens → audio (no spectrogram)")
+    print("  Modern end-to-end: text -> codec tokens -> audio (no spectrogram)")
 
 
-# ── 3. Audio codecs and representations ──────────────────────────────────────
+# -- 3. Audio codecs and representations --------------------------------------
 def audio_representations():
     print("\n=== Audio Representations ===")
     print()
     print("  Waveform: raw samples at e.g. 16kHz (16k values/sec)")
     print("  Mel spectrogram: time-frequency; 80-128 mel bins; standard for TTS")
-    print("  Neural codecs: compress audio → discrete tokens (8x+ compression)")
+    print("  Neural codecs: compress audio -> discrete tokens (8x+ compression)")
     print()
     codecs = [
         ("EnCodec",     "Meta; RVQ codec; 75 tokens/sec at 24kHz"),
@@ -91,7 +91,7 @@ def audio_representations():
     print(f"  Encoded as {n_codebooks} tokens: {codes}")
 
 
-# ── 4. Music and sound generation ────────────────────────────────────────────
+# -- 4. Music and sound generation --------------------------------------------
 def music_generation():
     print("\n=== Music and Sound Generation ===")
     print()
@@ -103,7 +103,7 @@ def music_generation():
         ("Udio",        "Similar to Suno; commercial"),
         ("AudioCraft",  "Meta suite: MusicGen + AudioGen + EnCodec"),
         ("AudioGen",    "Meta; environmental/foley sound effects"),
-        ("Tango",       "Text→audio; Foley; open weights; DCASE winner"),
+        ("Tango",       "Text->audio; Foley; open weights; DCASE winner"),
     ]
     print(f"  {'System':<16} {'Notes'}")
     for s, d in systems:
@@ -111,15 +111,15 @@ def music_generation():
     print()
     print("  Music generation architectures:")
     arches = [
-        ("Token autoregressive", "Text → codec tokens → audio; MusicGen"),
-        ("Diffusion",            "Text → mel/latent → audio; Stable Audio, Tango"),
+        ("Token autoregressive", "Text -> codec tokens -> audio; MusicGen"),
+        ("Diffusion",            "Text -> mel/latent -> audio; Stable Audio, Tango"),
         ("Dual codec",           "Semantic tokens (coarse) + acoustic (fine)"),
     ]
     for a, d in arches:
         print(f"  {a:<24} {d}")
 
 
-# ── 5. ASR – Whisper ──────────────────────────────────────────────────────────
+# -- 5. ASR – Whisper ----------------------------------------------------------
 def asr_whisper():
     print("\n=== ASR: Whisper Architecture ===")
     print()
@@ -127,7 +127,7 @@ def asr_whisper():
     print("  Trained on 680K hours of weakly supervised web audio")
     print()
     print("  Architecture:")
-    print("    Audio → 80-channel log-Mel spectrogram (25ms window, 10ms stride)")
+    print("    Audio -> 80-channel log-Mel spectrogram (25ms window, 10ms stride)")
     print("    Encoder: Conv1D + Transformer (positional: learned)")
     print("    Decoder: Transformer; predicts text BPE tokens")
     print("    Special tokens: <|startoftranscript|> <|en|> <|transcribe|>")

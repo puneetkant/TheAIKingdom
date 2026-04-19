@@ -7,15 +7,15 @@ import numpy as np
 from scipy import stats
 
 
-# ── Helper: safe log ──────────────────────────────────────────────────────────
+# -- Helper: safe log ----------------------------------------------------------
 def _xlogy(x, y):
     """x * log(y), treating 0*log(0) as 0."""
     return np.where(x == 0, 0.0, x * np.log2(y + 1e-300))
 
 
-# ── 1. Shannon entropy H(X) ───────────────────────────────────────────────────
+# -- 1. Shannon entropy H(X) ---------------------------------------------------
 def shannon_entropy():
-    print("=== Shannon Entropy H(X) = -Σ p(x) log₂ p(x) ===")
+    print("=== Shannon Entropy H(X) = -Sigma p(x) log2 p(x) ===")
 
     def entropy(p):
         p = np.array(p, dtype=float)
@@ -37,12 +37,12 @@ def shannon_entropy():
         print(f"  {name:<35} {H:<12.4f} {H_max:.4f}  ({H/H_max*100:.1f}% of max)")
 
     print("\n  Properties:")
-    print(f"    H ≥ 0 always (equality iff deterministic)")
-    print(f"    H ≤ log₂|X| (equality iff uniform)")
-    print(f"    More states → higher maximum entropy")
+    print(f"    H >= 0 always (equality iff deterministic)")
+    print(f"    H <= log2|X| (equality iff uniform)")
+    print(f"    More states -> higher maximum entropy")
 
 
-# ── 2. Joint and conditional entropy ─────────────────────────────────────────
+# -- 2. Joint and conditional entropy -----------------------------------------
 def joint_conditional_entropy():
     print("\n=== Joint and Conditional Entropy ===")
     # Joint distribution P(X,Y)
@@ -67,12 +67,12 @@ def joint_conditional_entropy():
     print(f"  H(X,Y) = {H_XY:.4f} bits")
     print(f"  H(Y|X) = H(X,Y)-H(X) = {H_Y_gX:.4f} bits  (conditioning reduces entropy)")
     print(f"  H(X|Y) = H(X,Y)-H(Y) = {H_X_gY:.4f} bits")
-    print(f"  Check: H(Y|X) ≤ H(Y): {H_Y_gX <= H_Y + 1e-10}")
+    print(f"  Check: H(Y|X) <= H(Y): {H_Y_gX <= H_Y + 1e-10}")
 
     return H_X, H_Y, H_XY, H_Y_gX, H_X_gY, Px, Py, Pxy
 
 
-# ── 3. Mutual Information ─────────────────────────────────────────────────────
+# -- 3. Mutual Information -----------------------------------------------------
 def mutual_information():
     print("\n=== Mutual Information I(X;Y) ===")
     H_X, H_Y, H_XY, H_Y_gX, H_X_gY, Px, Py, Pxy = joint_conditional_entropy()
@@ -82,19 +82,19 @@ def mutual_information():
     print(f"  I(X;Y) = H(X)+H(Y)-H(X,Y) = {I_XY:.4f} bits")
     print(f"         = H(Y)-H(Y|X)       = {H_Y - H_Y_gX:.4f}")
     print(f"         = H(X)-H(X|Y)       = {H_X - H_X_gY:.4f}")
-    print(f"  I ≥ 0: {I_XY >= -1e-10}")
+    print(f"  I >= 0: {I_XY >= -1e-10}")
     print(f"  I = 0 iff X,Y independent")
 
     # Compare to independent case
     Pxy_indep = np.outer(Px, Py)
     H_XY_indep = -np.sum(_xlogy(Pxy_indep, Pxy_indep))
     I_indep = H_X + H_Y - H_XY_indep
-    print(f"\n  If independent: I(X;Y) = {I_indep:.4f}  (≈ 0)")
+    print(f"\n  If independent: I(X;Y) = {I_indep:.4f}  (~= 0)")
 
 
-# ── 4. KL Divergence ─────────────────────────────────────────────────────────
+# -- 4. KL Divergence ---------------------------------------------------------
 def kl_divergence():
-    print("\n=== KL Divergence D_KL(P||Q) = Σ p log(p/q) ===")
+    print("\n=== KL Divergence D_KL(P||Q) = Sigma p log(p/q) ===")
 
     def kl(p, q):
         p, q = np.array(p, float), np.array(q, float)
@@ -107,7 +107,7 @@ def kl_divergence():
     print(f"  P = {p}  Q = {q} (uniform)")
     print(f"  D_KL(P||Q) = {kl(p, q):.4f} bits")
     print(f"  D_KL(Q||P) = {kl(q, p):.4f} bits  (asymmetric!)")
-    print(f"  D_KL ≥ 0:  D_KL(P||Q)={kl(p,q)>=0}")
+    print(f"  D_KL >= 0:  D_KL(P||Q)={kl(p,q)>=0}")
     print(f"  D_KL = 0 iff P = Q: {np.isclose(kl(p,p), 0)}")
 
     # KL between two Gaussians (analytical)
@@ -121,9 +121,9 @@ def kl_divergence():
     print(f"  (numerical approximation: {kl_scipy:.4f} nats)")
 
 
-# ── 5. Cross-entropy (ML/DL loss function) ───────────────────────────────────
+# -- 5. Cross-entropy (ML/DL loss function) -----------------------------------
 def cross_entropy():
-    print("\n=== Cross-Entropy H(P,Q) = -Σ p log q ===")
+    print("\n=== Cross-Entropy H(P,Q) = -Sigma p log q ===")
     print("  Used as loss in classification: H(y_true, y_pred)")
     print("  Relation: H(P,Q) = H(P) + D_KL(P||Q)")
 
@@ -160,16 +160,16 @@ def cross_entropy():
         print(f"    {label:<25}: CE = {ce:.4f}")
 
 
-# ── 6. Information-theoretic quantities summary ───────────────────────────────
+# -- 6. Information-theoretic quantities summary -------------------------------
 def summary_table():
     print("\n=== Information Theory Summary ===")
     rows = [
-        ("H(X)",       "-Σ p log p",             "Self-information, uncertainty"),
-        ("H(X,Y)",     "-ΣΣ p(x,y) log p(x,y)", "Joint uncertainty"),
+        ("H(X)",       "-Sigma p log p",             "Self-information, uncertainty"),
+        ("H(X,Y)",     "-SigmaSigma p(x,y) log p(x,y)", "Joint uncertainty"),
         ("H(Y|X)",     "H(X,Y) - H(X)",          "Remaining uncertainty in Y given X"),
         ("I(X;Y)",     "H(X)+H(Y)-H(X,Y)",       "Shared information (MI)"),
-        ("D_KL(P||Q)", "Σ p log(p/q)",            "How different Q is from P"),
-        ("H(P,Q)",     "-Σ p log q",              "CE loss in classification"),
+        ("D_KL(P||Q)", "Sigma p log(p/q)",            "How different Q is from P"),
+        ("H(P,Q)",     "-Sigma p log q",              "CE loss in classification"),
     ]
     print(f"  {'Quantity':<12} {'Formula':<30} {'Interpretation'}")
     print("  " + "-"*75)

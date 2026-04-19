@@ -15,18 +15,18 @@ def softmax(z):
     return e / e.sum(-1, keepdims=True)
 
 
-# ── 1. Embedding-based neural CF ─────────────────────────────────────────────
+# -- 1. Embedding-based neural CF ---------------------------------------------
 def neural_cf():
     print("=== Neural Collaborative Filtering (NCF) ===")
     print("  He et al. (2017) — replaces dot product with MLP")
     print()
     print("  Architecture:")
-    print("    User ID → embedding e_u  (size K)")
-    print("    Item ID → embedding e_i  (size K)")
-    print("    [e_u || e_i] → MLP layers → output score")
+    print("    User ID -> embedding e_u  (size K)")
+    print("    Item ID -> embedding e_i  (size K)")
+    print("    [e_u || e_i] -> MLP layers -> output score")
     print()
     print("  GMF (Generalized MF): score = w · (e_u ⊙ e_i)")
-    print("  NeuMF: concatenate GMF + MLP pathways → final score")
+    print("  NeuMF: concatenate GMF + MLP pathways -> final score")
     print()
 
     # Tiny NCF demo
@@ -52,7 +52,7 @@ def neural_cf():
     print(f"  BCE loss: {bce:.4f}")
 
 
-# ── 2. Wide & Deep ────────────────────────────────────────────────────────────
+# -- 2. Wide & Deep ------------------------------------------------------------
 def wide_and_deep():
     print("\n=== Wide & Deep (Google, 2016) ===")
     print()
@@ -61,10 +61,10 @@ def wide_and_deep():
     print("    Memorises frequent patterns (e.g. user×item pairs seen at training)")
     print()
     print("  Deep component (generalisation):")
-    print("    Embedding → FC layers → logit")
+    print("    Embedding -> FC layers -> logit")
     print("    Generalises to unseen feature combinations")
     print()
-    print("  Combined: output = σ(w_wide^T [x, φ(x)] + w_deep^T a^{(lf)} + bias)")
+    print("  Combined: output = sigma(w_wide^T [x, phi(x)] + w_deep^T a^{(lf)} + bias)")
     print()
     print("  Variants:")
     variants = [
@@ -79,17 +79,17 @@ def wide_and_deep():
         print(f"  {m:<16} {d}")
 
 
-# ── 3. Two-tower retrieval model ─────────────────────────────────────────────
+# -- 3. Two-tower retrieval model ---------------------------------------------
 def two_tower():
     print("\n=== Two-Tower Retrieval Model ===")
     print()
-    print("  Query tower:  user features → user embedding q ∈ R^D")
-    print("  Item tower:   item features → item embedding d ∈ R^D")
+    print("  Query tower:  user features -> user embedding q in R^D")
+    print("  Item tower:   item features -> item embedding d in R^D")
     print("  Score:        sim(q, d) = q^T d  (or cosine similarity)")
     print()
     print("  Training objective: in-batch negatives softmax")
-    print("    L = -log [ exp(q_i^T d_i / τ) / Σ_j exp(q_i^T d_j / τ) ]")
-    print("    τ = temperature (typical: 0.05-0.1)")
+    print("    L = -log [ exp(q_i^T d_i / tau) / Sigma_j exp(q_i^T d_j / tau) ]")
+    print("    tau = temperature (typical: 0.05-0.1)")
     print()
 
     rng = np.random.default_rng(0)
@@ -102,11 +102,11 @@ def two_tower():
     logits = q @ d.T / tau  # (N, N)
     labels = np.eye(N)
     loss   = -(np.log(softmax(logits) + 1e-9) * labels).sum() / N
-    print(f"  In-batch softmax loss (N={N}, D={D}, τ={tau}): {loss:.4f}")
+    print(f"  In-batch softmax loss (N={N}, D={D}, tau={tau}): {loss:.4f}")
     print()
     print("  Deployment:")
     print("    Index all item embeddings in ANN (Approximate Nearest Neighbour) index")
-    print("    At query time: compute query embedding → search ANN index")
+    print("    At query time: compute query embedding -> search ANN index")
     print("    ANN options: FAISS, ScaNN, Annoy, HNSW")
     print()
     print("  ANN comparison:")
@@ -120,10 +120,10 @@ def two_tower():
         print(f"  {a:<8} {d_}")
 
 
-# ── 4. Sequential recommenders ────────────────────────────────────────────────
+# -- 4. Sequential recommenders ------------------------------------------------
 def sequential_recommenders():
     print("\n=== Sequential Recommenders ===")
-    print("  Model user history as a sequence → predict next item")
+    print("  Model user history as a sequence -> predict next item")
     print()
     models = [
         ("GRU4Rec",    2016, "GRU on item sequences; session-based"),
@@ -134,7 +134,7 @@ def sequential_recommenders():
         ("HSTU",       2024, "Meta; hierarchical sequential transduction"),
     ]
     print(f"  {'Model':<14} {'Year'} {'Notes'}")
-    print(f"  {'─'*14} {'─'*4} {'─'*45}")
+    print(f"  {'-'*14} {'-'*4} {'-'*45}")
     for m, y, d in models:
         print(f"  {m:<14} {y}  {d}")
     print()
@@ -155,7 +155,7 @@ def sequential_recommenders():
     mask = np.triu(np.full((L, L), -np.inf), k=1)
     att  = softmax(att_raw + mask)
     out  = att @ V   # (L, D)
-    # Last position → score all items
+    # Last position -> score all items
     scores = out[-1] @ I_emb.T   # (n_items,)
 
     print(f"  SASRec self-attention: seq_len={L}, D={D}")

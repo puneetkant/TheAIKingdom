@@ -24,14 +24,14 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── 1. Directory operations (pushd/popd) ──────────────────────────────────────
+# -- 1. Directory operations (pushd/popd) --------------------------------------
 def demo_directory_ops() -> None:
     print("=== Directory Operations ===")
     original = Path.cwd()
 
     # pushd equivalent
     os.chdir(DATA)
-    print(f"  cd data/    →  {Path.cwd().name}/")
+    print(f"  cd data/    ->  {Path.cwd().name}/")
 
     # Create some test files
     (Path("tmp_a.txt")).write_text("alpha 1\nbeta 2\ngamma 3\n")
@@ -39,10 +39,10 @@ def demo_directory_ops() -> None:
 
     # popd equivalent
     os.chdir(original)
-    print(f"  cd back     →  {Path.cwd().name}/")
+    print(f"  cd back     ->  {Path.cwd().name}/")
 
 
-# ── 2. File search (find equivalent) ─────────────────────────────────────────
+# -- 2. File search (find equivalent) -----------------------------------------
 def demo_file_search() -> None:
     print("\n=== File Search (find) ===")
     base = Path(__file__).parent
@@ -63,7 +63,7 @@ def demo_file_search() -> None:
     print(f"  Files > 1KB: {len(big)}")
 
 
-# ── 3. Text processing (grep/awk equivalent) ──────────────────────────────────
+# -- 3. Text processing (grep/awk equivalent) ----------------------------------
 def demo_text_processing() -> None:
     print("\n=== Text Processing (grep/awk) ===")
 
@@ -97,7 +97,7 @@ def demo_text_processing() -> None:
     print(f"  wc -l {dest.name}: {line_count}")
 
 
-# ── 4. Pipe pattern (chaining iterables) ──────────────────────────────────────
+# -- 4. Pipe pattern (chaining iterables) --------------------------------------
 def demo_pipes() -> None:
     """Demonstrate Unix pipe pattern using Python generators."""
     print("\n=== Python Pipe Pattern ===")
@@ -130,7 +130,7 @@ def demo_pipes() -> None:
             print(f"    {val!r}")
 
 
-# ── 5. Task runner (Makefile-style) ───────────────────────────────────────────
+# -- 5. Task runner (Makefile-style) -------------------------------------------
 class Task:
     """Simple Makefile-like task with dependency tracking."""
     registry: dict[str, "Task"] = {}
@@ -184,7 +184,7 @@ def demo_task_runner() -> None:
     task_report.execute(verbose=True)
 
 
-# ── 6. Process info ───────────────────────────────────────────────────────────
+# -- 6. Process info -----------------------------------------------------------
 def demo_process_info() -> None:
     print("\n=== Process Info ===")
     print(f"  PID: {os.getpid()}")

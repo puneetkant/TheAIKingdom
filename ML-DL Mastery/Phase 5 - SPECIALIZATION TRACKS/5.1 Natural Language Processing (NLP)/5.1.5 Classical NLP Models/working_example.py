@@ -8,12 +8,12 @@ from collections import Counter, defaultdict
 import numpy as np
 
 
-# ── helpers ───────────────────────────────────────────────────────────────────
+# -- helpers -------------------------------------------------------------------
 def tokenise(text):
     return re.sub(r"[^\w\s]", "", text.lower()).split()
 
 
-# ── 1. Naive Bayes Text Classifier ───────────────────────────────────────────
+# -- 1. Naive Bayes Text Classifier -------------------------------------------
 class NaiveBayesTextClassifier:
     """Multinomial Naive Bayes for text classification."""
     def __init__(self, alpha=1.0):
@@ -91,7 +91,7 @@ def naive_bayes_demo():
         "Average story, neither good nor bad",
     ]
     print(f"  {'Text':<42} {'Predicted':<10} P(pos) P(neg)")
-    print(f"  {'─'*42} {'─'*10} {'─'*6} {'─'*6}")
+    print(f"  {'-'*42} {'-'*10} {'-'*6} {'-'*6}")
     for text in tests:
         probs = clf.predict_proba(text)
         pred  = max(probs, key=probs.get)
@@ -102,13 +102,13 @@ def naive_bayes_demo():
     print(f"  Key properties: fast, no iterations, good baseline for text")
 
 
-# ── 2. N-gram Language Model ───────────────────────────────────────────────────
+# -- 2. N-gram Language Model ---------------------------------------------------
 class NgramLM:
     """Smoothed n-gram language model with Laplace smoothing."""
     def __init__(self, n=2, alpha=0.01):
         self.n     = n
         self.alpha = alpha
-        self.counts = defaultdict(Counter)  # context → next_word → count
+        self.counts = defaultdict(Counter)  # context -> next_word -> count
         self.vocab  = set()
 
     def fit(self, tokens):
@@ -174,7 +174,7 @@ def ngram_lm_demo():
         print(f"    Generated: {' '.join(generated)}")
 
 
-# ── 3. Hidden Markov Model for POS tagging ───────────────────────────────────
+# -- 3. Hidden Markov Model for POS tagging -----------------------------------
 class HMM:
     """First-order HMM for sequence labelling (POS tagging)."""
     def __init__(self):
@@ -255,7 +255,7 @@ def hmm_demo():
         ["a", "quick", "fox"],
     ]
     print(f"  {'Words':<30} Predicted POS")
-    print(f"  {'─'*30} {'─'*25}")
+    print(f"  {'-'*30} {'-'*25}")
     for words in tests:
         preds = hmm.viterbi(words)
         print(f"  {str(words):<30} {preds}")
@@ -265,14 +265,14 @@ def hmm_demo():
     print("        RB=Adverb  JJ=Adjective  PRP=Pronoun  NNS=Noun Plural")
 
 
-# ── 4. CRF concepts ───────────────────────────────────────────────────────────
+# -- 4. CRF concepts -----------------------------------------------------------
 def crf_concepts():
     print("\n=== Conditional Random Fields (CRF) ===")
     print("  HMM: generative P(X, Y) — models joint distribution")
     print("  CRF: discriminative P(Y|X) — models conditional directly")
     print()
     print("  Linear-chain CRF score:")
-    print("    P(Y|X) ∝ exp(Σ_t Σ_k λ_k · f_k(y_{t-1}, y_t, X, t))")
+    print("    P(Y|X) ∝ exp(Sigma_t Sigma_k lambda_k · f_k(y_{t-1}, y_t, X, t))")
     print()
     print("  Features f_k can depend on the whole input X:")
     print("    - Current word, previous word, next word")
@@ -286,7 +286,7 @@ def crf_concepts():
     print("  CRF beats HMM because:")
     print("    1. Can use arbitrary overlapping features")
     print("    2. No independence assumption on observations")
-    print("    3. Discriminative → higher accuracy")
+    print("    3. Discriminative -> higher accuracy")
     print()
     print("  Packages: sklearn-crfsuite, python-crfsuite, spaCy (uses CRF internally)")
 

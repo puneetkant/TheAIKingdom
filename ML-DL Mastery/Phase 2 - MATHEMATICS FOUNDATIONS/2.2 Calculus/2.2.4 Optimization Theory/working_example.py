@@ -14,10 +14,10 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_optim")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Convexity ───────────────────────────────────────────────────────────────
+# -- 1. Convexity ---------------------------------------------------------------
 def convexity():
     print("=== Convexity ===")
-    # Jensen's inequality: f(E[x]) ≤ E[f(x)] for convex f
+    # Jensen's inequality: f(E[x]) <= E[f(x)] for convex f
     f = lambda x: x**2    # convex
     g = lambda x: -x**2   # concave
 
@@ -25,10 +25,10 @@ def convexity():
     t  = 0.5
     xm = t*xs[0] + (1-t)*xs[1]   # midpoint
 
-    print(f"  f(x)=x² (convex):  f(midpoint)={f(xm):.2f}  ≤  t·f(x1)+(1-t)·f(x2)={t*f(xs[0])+(1-t)*f(xs[1]):.2f}")
-    print(f"  g(x)=-x² (concave): g(midpoint)={g(xm):.2f}  ≥  t·g(x1)+(1-t)·g(x2)={t*g(xs[0])+(1-t)*g(xs[1]):.2f}")
+    print(f"  f(x)=x² (convex):  f(midpoint)={f(xm):.2f}  <=  t·f(x1)+(1-t)·f(x2)={t*f(xs[0])+(1-t)*f(xs[1]):.2f}")
+    print(f"  g(x)=-x² (concave): g(midpoint)={g(xm):.2f}  >=  t·g(x1)+(1-t)·g(x2)={t*g(xs[0])+(1-t)*g(xs[1]):.2f}")
 
-    # Second-order condition: f convex ↔ f''(x) ≥ 0
+    # Second-order condition: f convex <-> f''(x) >= 0
     print("\n  Second-order convexity checks via Hessian eigenvalues:")
     funcs = {
         "x²+y²":   (lambda v: v[0]**2 + v[1]**2,  np.diag([2., 2.])),
@@ -38,10 +38,10 @@ def convexity():
     for name, (_, H) in funcs.items():
         eigs = np.linalg.eigvalsh(H)
         cvx  = "convex" if np.all(eigs>=0) else ("concave" if np.all(eigs<=0) else "non-convex")
-        print(f"    {name:<18}: H eigs={np.round(eigs,2)}  → {cvx}")
+        print(f"    {name:<18}: H eigs={np.round(eigs,2)}  -> {cvx}")
 
 
-# ── 2. Gradient Descent variants ──────────────────────────────────────────────
+# -- 2. Gradient Descent variants ----------------------------------------------
 def gradient_descent(f, grad_f, x0, lr, n_iter, name="GD"):
     x = x0.copy().astype(float)
     history = [f(x)]
@@ -109,7 +109,7 @@ def optimizer_comparison():
     print(f"  Saved: {path}")
 
 
-# ── 3. Learning-rate schedules ────────────────────────────────────────────────
+# -- 3. Learning-rate schedules ------------------------------------------------
 def lr_schedules():
     print("\n=== Learning-Rate Schedules ===")
     n = 100
@@ -138,12 +138,12 @@ def lr_schedules():
     print(f"  Saved: {path}")
 
 
-# ── 4. Lagrange multipliers ───────────────────────────────────────────────────
+# -- 4. Lagrange multipliers ---------------------------------------------------
 def lagrange_multipliers():
     print("\n=== Lagrange Multipliers ===")
     print("  Maximize f(x,y) = xy  subject to g(x,y) = x+y-1 = 0")
-    print("  Stationarity:  ∇f = λ∇g  →  (y, x) = λ(1, 1)  →  y=x")
-    print("  Constraint:    x+y=1  →  2x=1  →  x=y=0.5")
+    print("  Stationarity:  ∇f = lambda∇g  ->  (y, x) = lambda(1, 1)  ->  y=x")
+    print("  Constraint:    x+y=1  ->  2x=1  ->  x=y=0.5")
     print("  Maximum value: f(0.5,0.5) = 0.25")
     # Verify numerically with scipy
     from scipy.optimize import minimize
@@ -154,16 +154,16 @@ def lagrange_multipliers():
     print(f"  scipy result:  x*={np.round(res.x,4)}  f*={-res.fun:.4f}")
 
 
-# ── 5. KKT conditions (inequality constraints) ────────────────────────────────
+# -- 5. KKT conditions (inequality constraints) --------------------------------
 def kkt_conditions():
     print("\n=== KKT Conditions (Inequality Constraints) ===")
-    print("  min f(x) = x² + y² subject to x+y ≥ 1")
-    print("  Reformulate: min x²+y² s.t. 1-x-y ≤ 0")
+    print("  min f(x) = x² + y² subject to x+y >= 1")
+    print("  Reformulate: min x²+y² s.t. 1-x-y <= 0")
     print("  KKT conditions:")
-    print("    ∇f + λ∇g = 0  →  2x=λ, 2y=λ  →  x=y")
-    print("    λ ≥ 0  (dual feasibility)")
-    print("    λ·g = 0  (complementary slackness)")
-    print("    At minimum: 2x=1 → x=y=0.5, λ=1, f*=0.5")
+    print("    ∇f + lambda∇g = 0  ->  2x=lambda, 2y=lambda  ->  x=y")
+    print("    lambda >= 0  (dual feasibility)")
+    print("    lambda·g = 0  (complementary slackness)")
+    print("    At minimum: 2x=1 -> x=y=0.5, lambda=1, f*=0.5")
     from scipy.optimize import minimize
     res = minimize(lambda v: v[0]**2 + v[1]**2,
                    [0.0, 0.0],
@@ -172,7 +172,7 @@ def kkt_conditions():
     print(f"\n  scipy result:  x*={np.round(res.x,4)}  f*={res.fun:.4f}")
 
 
-# ── 6. Convex vs non-convex landscape ────────────────────────────────────────
+# -- 6. Convex vs non-convex landscape ----------------------------------------
 def loss_landscape():
     print("\n=== Loss Landscape Visualisation ===")
     x = np.linspace(-3, 3, 300)

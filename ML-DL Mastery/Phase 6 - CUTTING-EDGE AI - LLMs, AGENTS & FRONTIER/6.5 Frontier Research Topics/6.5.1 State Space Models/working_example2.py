@@ -37,7 +37,7 @@ def run_ssm(u, A, B, C, D):
 
 
 def discretise_ssm(A_c, B_c, delta=0.1):
-    """Bilinear (Tustin) discretisation: A_d = (I + Δ/2 A)(I - Δ/2 A)^{-1}."""
+    """Bilinear (Tustin) discretisation: A_d = (I + Delta/2 A)(I - Delta/2 A)^{-1}."""
     N = A_c.shape[0]
     I = np.eye(N)
     A_d = np.linalg.solve(I - (delta / 2) * A_c, I + (delta / 2) * A_c)
@@ -91,10 +91,10 @@ def demo():
     axes[0][0].legend()
     axes[0][0].grid(True, alpha=0.3)
 
-    # Δ sensitivity
+    # Delta sensitivity
     for delta, yd in zip(deltas, y_deltas):
-        axes[0][1].plot(t, yd, lw=1.5, label=f"Δ={delta}")
-    axes[0][1].set(xlabel="t", ylabel="y(t)", title="SSM Output vs Step Size Δ")
+        axes[0][1].plot(t, yd, lw=1.5, label=f"Delta={delta}")
+    axes[0][1].set(xlabel="t", ylabel="y(t)", title="SSM Output vs Step Size Delta")
     axes[0][1].legend(fontsize=8)
     axes[0][1].grid(True, alpha=0.3)
 

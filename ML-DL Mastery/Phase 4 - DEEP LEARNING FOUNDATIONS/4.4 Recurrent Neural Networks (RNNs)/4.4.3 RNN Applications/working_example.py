@@ -20,7 +20,7 @@ def softmax(z):
     return e / e.sum()
 
 
-# ── Minimal char-level RNN ────────────────────────────────────────────────────
+# -- Minimal char-level RNN ----------------------------------------------------
 class CharRNN:
     """Minimal char-level RNN (Karpathy 2015 style)."""
     def __init__(self, vocab_size, hidden_size=64, rng=None):
@@ -60,7 +60,7 @@ class CharRNN:
         return out
 
 
-# ── 1. Character-level language model ────────────────────────────────────────
+# -- 1. Character-level language model ----------------------------------------
 def char_language_model():
     print("=== Character-Level Language Model ===")
     text = "the quick brown fox jumps over the lazy dog " * 3
@@ -125,20 +125,20 @@ def char_language_model():
     print(f"  Loss plot: {path}")
 
 
-# ── 2. Encoder–Decoder (seq2seq) ──────────────────────────────────────────────
+# -- 2. Encoder–Decoder (seq2seq) ----------------------------------------------
 def seq2seq_architecture():
     print("\n=== Encoder–Decoder (Seq2Seq) Architecture ===")
-    print("  Encoder: reads source sequence → context vector c = h_T")
+    print("  Encoder: reads source sequence -> context vector c = h_T")
     print("  Decoder: generates target sequence conditioned on c")
     print()
     print("  Architecture:")
-    print("  x_1..x_T → [ENCODER LSTM] → c  ← final hidden state")
-    print("              c, <sos> → [DECODER LSTM] → y_1")
-    print("              c, y_1   → [DECODER LSTM] → y_2")
-    print("              ...      → [DECODER LSTM] → <eos>")
+    print("  x_1..x_T -> [ENCODER LSTM] -> c  <- final hidden state")
+    print("              c, <sos> -> [DECODER LSTM] -> y_1")
+    print("              c, y_1   -> [DECODER LSTM] -> y_2")
+    print("              ...      -> [DECODER LSTM] -> <eos>")
     print()
     print("  Limitations of fixed context vector:")
-    print("    Long sequences → bottleneck in single c vector")
+    print("    Long sequences -> bottleneck in single c vector")
     print("    Solution: attention mechanism (allows decoder to look at all encoder states)")
 
     rng     = np.random.default_rng(10)
@@ -158,7 +158,7 @@ def seq2seq_architecture():
     context = h.copy()
 
     # Simulate decoder (single pass)
-    W_dec = rng.standard_normal((H + H, H)) * 0.01   # [context + h_prev] → h
+    W_dec = rng.standard_normal((H + H, H)) * 0.01   # [context + h_prev] -> h
     b_dec = np.zeros(H)
     W_out = rng.standard_normal((H, V)) * 0.01
     b_out = np.zeros(V)
@@ -171,7 +171,7 @@ def seq2seq_architecture():
         print(f"  Decoder step {t+1}: predicted token={pred}")
 
 
-# ── 3. Time series forecasting ────────────────────────────────────────────────
+# -- 3. Time series forecasting ------------------------------------------------
 def time_series_forecasting():
     print("\n=== Time Series Forecasting with RNN ===")
     rng  = np.random.default_rng(20)
@@ -232,7 +232,7 @@ def time_series_forecasting():
     print(f"  Forecast plot: {path}")
 
 
-# ── 4. RNN for sequence tagging (NER simulation) ──────────────────────────────
+# -- 4. RNN for sequence tagging (NER simulation) ------------------------------
 def sequence_tagging():
     print("\n=== Sequence Tagging: Named Entity Recognition (NER) ===")
     print("  Many-to-Many: one label per token")
@@ -252,24 +252,24 @@ def sequence_tagging():
     print()
     print("  Architecture: BiLSTM-CRF")
     print("    1. Token embeddings (or character CNN + word embedding)")
-    print("    2. BiLSTM → context-aware representations")
-    print("    3. CRF layer → globally optimal label sequence")
+    print("    2. BiLSTM -> context-aware representations")
+    print("    3. CRF layer -> globally optimal label sequence")
     print("       (enforces tag constraints: B before I, no I-ORG after B-PER)")
     print()
     print("  Metrics: entity-level F1 (seqeval library)")
 
 
-# ── 5. Applications summary ───────────────────────────────────────────────────
+# -- 5. Applications summary ---------------------------------------------------
 def applications_summary():
     print("\n=== RNN Applications Summary ===")
     apps = [
         ("Language modelling",    "next word/char prediction",       "GPT (now Transformer)"),
         ("Machine translation",   "seq2seq + attention",             "Google Translate early"),
-        ("Speech recognition",    "acoustic → phoneme → word",       "DeepSpeech"),
+        ("Speech recognition",    "acoustic -> phoneme -> word",       "DeepSpeech"),
         ("Text generation",       "char/word level sampling",        "Karpathy's char-RNN"),
-        ("Sentiment analysis",    "sequence → sentiment class",      "BiLSTM classifier"),
+        ("Sentiment analysis",    "sequence -> sentiment class",      "BiLSTM classifier"),
         ("NER / POS tagging",     "BIO tagging + BiLSTM-CRF",       "Stanford NLP"),
-        ("Time series forecast",  "sliding window → next value",     "LSTNet, ES-RNN"),
+        ("Time series forecast",  "sliding window -> next value",     "LSTNet, ES-RNN"),
         ("Music generation",      "note sequence modelling",         "Magenta LSTM"),
         ("Video captioning",      "CNN features + LSTM decoder",     "Show and Tell"),
         ("Anomaly detection",     "reconstruction error on seq",     "LSTM-VAE"),

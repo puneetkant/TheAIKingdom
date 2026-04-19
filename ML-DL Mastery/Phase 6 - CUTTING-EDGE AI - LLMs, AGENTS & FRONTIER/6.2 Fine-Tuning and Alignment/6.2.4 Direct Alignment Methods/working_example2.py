@@ -19,7 +19,7 @@ OUTPUT.mkdir(exist_ok=True)
 
 
 def dpo_loss(log_pi_w, log_pi_l, log_ref_w, log_ref_l, beta=0.1):
-    """DPO loss: -log σ(β * (log(π(w)/π_ref(w)) - log(π(l)/π_ref(l))))."""
+    """DPO loss: -log sigma(beta * (log(pi(w)/pi_ref(w)) - log(pi(l)/pi_ref(l))))."""
     ratio = beta * ((log_pi_w - log_ref_w) - (log_pi_l - log_ref_l))
     return -np.log(1 / (1 + np.exp(-ratio)))
 
@@ -67,7 +67,7 @@ def demo():
 
     # DPO loss as function of implicit reward margin
     axes[1].plot(margins, loss_by_margin, color="darkorange", lw=2)
-    axes[1].set(xlabel="Implicit Reward Margin β(r_w − r_l)",
+    axes[1].set(xlabel="Implicit Reward Margin beta(r_w - r_l)",
                 ylabel="DPO Loss",
                 title="DPO Loss vs Reward Margin")
     axes[1].axvline(0, color="gray", linestyle="--")
@@ -84,7 +84,7 @@ def demo():
     mn = min(log_ref_w.min(), log_ref_l.min())
     mx = max(log_ref_w.max(), log_ref_l.max())
     axes[2].plot([mn, mx], [mn, mx], "k--", lw=1, alpha=0.5)
-    axes[2].set(xlabel="log π_ref", ylabel="log π_DPO",
+    axes[2].set(xlabel="log pi_ref", ylabel="log pi_DPO",
                 title="Policy vs Reference Log-Probs")
     axes[2].legend(fontsize=8)
     axes[2].grid(True, alpha=0.3)

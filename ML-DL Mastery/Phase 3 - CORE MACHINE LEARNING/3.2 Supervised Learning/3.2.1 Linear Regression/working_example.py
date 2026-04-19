@@ -14,7 +14,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_linreg")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Analytical OLS solution ────────────────────────────────────────────────
+# -- 1. Analytical OLS solution ------------------------------------------------
 def ols_analytical():
     print("=== Ordinary Least Squares (Analytical) ===")
     rng = np.random.default_rng(0)
@@ -24,7 +24,7 @@ def ols_analytical():
 
     # Design matrix with intercept
     X = np.column_stack([np.ones(n), x])
-    # Normal equations: w = (XᵀX)⁻¹Xᵀy
+    # Normal equations: w = (XᵀX)^-1Xᵀy
     w = np.linalg.solve(X.T @ X, X.T @ y)
     print(f"  True: w=[1.0, 2.5]")
     print(f"  OLS:  w={w.round(4)}")
@@ -48,7 +48,7 @@ def ols_analytical():
     print(f"\n  scipy.linregress: slope={slope_sp:.4f}  intercept={inter_sp:.4f}  p={p_sp:.2e}")
 
 
-# ── 2. Gradient descent for linear regression ────────────────────────────────
+# -- 2. Gradient descent for linear regression --------------------------------
 def gradient_descent_linreg():
     print("\n=== Gradient Descent for Linear Regression ===")
     rng = np.random.default_rng(1)
@@ -75,7 +75,7 @@ def gradient_descent_linreg():
     print(f"  OLS (analytical):            w={w_ols.round(4)}  MSE={np.mean((X@w_ols - y)**2):.4f}")
 
 
-# ── 3. Multiple linear regression assumptions ────────────────────────────────
+# -- 3. Multiple linear regression assumptions --------------------------------
 def assumptions_diagnostics():
     print("\n=== Gauss-Markov Assumptions and Diagnostics ===")
     rng = np.random.default_rng(2)
@@ -89,7 +89,7 @@ def assumptions_diagnostics():
     resid = y - X @ w
 
     # 1. Zero mean residuals
-    print(f"  1. E[ε] ≈ 0: {resid.mean():.6f}")
+    print(f"  1. E[epsilon] ~= 0: {resid.mean():.6f}")
 
     # 2. Homoscedasticity (Breusch-Pagan proxy)
     y_hat = X @ w
@@ -97,7 +97,7 @@ def assumptions_diagnostics():
         np.column_stack([np.ones(n), y_hat]), resid**2, rcond=None)
     # Simple: correlation of |resid| with fitted
     corr = np.corrcoef(y_hat, np.abs(resid))[0,1]
-    print(f"  2. Homoscedasticity: corr(ŷ, |ε|)={corr:.4f}  (small → good)")
+    print(f"  2. Homoscedasticity: corr(ŷ, |epsilon|)={corr:.4f}  (small -> good)")
 
     # 3. Normality of residuals (Shapiro-Wilk)
     _, sw_p = stats.shapiro(resid)
@@ -113,10 +113,10 @@ def assumptions_diagnostics():
             r2    = 1 - np.var(X_df[:,i] - X_other @ w_vif) / np.var(X_df[:,i])
             vifs.append(1/(1-r2) if r2 < 1 else np.inf)
         return vifs
-    print(f"  4. VIF: {[round(v,3) for v in vif(X)]}  (>10 → collinearity)")
+    print(f"  4. VIF: {[round(v,3) for v in vif(X)]}  (>10 -> collinearity)")
 
 
-# ── 4. Ridge, Lasso, Elastic Net ────────────────────────────────────────────
+# -- 4. Ridge, Lasso, Elastic Net --------------------------------------------
 def regularised_regression():
     print("\n=== Regularised Regression ===")
     from sklearn.linear_model import Ridge, Lasso, ElasticNet
@@ -136,8 +136,8 @@ def regularised_regression():
     print(f"  {'Model':<20} {'Test RMSE':<14} {'Non-zero coefs'}")
     for name, model in [
         ("OLS (np.lstsq)",    None),
-        ("Ridge (α=1)",       Ridge(alpha=1)),
-        ("Lasso (α=0.1)",     Lasso(alpha=0.1, max_iter=5000)),
+        ("Ridge (alpha=1)",       Ridge(alpha=1)),
+        ("Lasso (alpha=0.1)",     Lasso(alpha=0.1, max_iter=5000)),
         ("ElasticNet",        ElasticNet(alpha=0.1, l1_ratio=0.5, max_iter=5000)),
     ]:
         if model is None:
@@ -152,7 +152,7 @@ def regularised_regression():
         print(f"  {name:<20} {rmse:<14.4f} {nnz}/{p}")
 
 
-# ── 5. Polynomial regression ─────────────────────────────────────────────────
+# -- 5. Polynomial regression -------------------------------------------------
 def polynomial_regression():
     print("\n=== Polynomial Regression ===")
     from sklearn.preprocessing import PolynomialFeatures

@@ -20,7 +20,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_dimred")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. PCA from scratch ───────────────────────────────────────────────────────
+# -- 1. PCA from scratch -------------------------------------------------------
 def pca_scratch():
     print("=== PCA From Scratch ===")
     iris = load_iris()
@@ -43,7 +43,7 @@ def pca_scratch():
 
     # Project to 2D
     X_pca = X_s @ vecs[:, :2]
-    print(f"\n  Original shape: {X_s.shape} → PCA(2): {X_pca.shape}")
+    print(f"\n  Original shape: {X_s.shape} -> PCA(2): {X_pca.shape}")
 
     # Compare with sklearn
     pca = PCA(n_components=2)
@@ -70,7 +70,7 @@ def pca_scratch():
     print(f"  PCA plot saved: {path}")
 
 
-# ── 2. PCA: reconstruction and choosing n_components ─────────────────────────
+# -- 2. PCA: reconstruction and choosing n_components -------------------------
 def pca_reconstruction():
     print("\n=== PCA Reconstruction Error ===")
     digits = load_digits()
@@ -90,7 +90,7 @@ def pca_reconstruction():
         print(f"  {n:<15} {evr:<14.1f} {mse:<14.6f} {acc:.4f}")
 
 
-# ── 3. Kernel PCA ─────────────────────────────────────────────────────────────
+# -- 3. Kernel PCA -------------------------------------------------------------
 def kernel_pca():
     print("\n=== Kernel PCA ===")
     from sklearn.datasets import make_moons
@@ -113,7 +113,7 @@ def kernel_pca():
         print(f"  {kernel:<15} {str(params):<20} {acc:.4f}")
 
 
-# ── 4. t-SNE for visualisation ───────────────────────────────────────────────
+# -- 4. t-SNE for visualisation -----------------------------------------------
 def tsne_demo():
     print("\n=== t-SNE ===")
     print("  Minimises KL divergence between high-dim and low-dim joint distributions")
@@ -147,7 +147,7 @@ def tsne_demo():
     print(f"  t-SNE plot saved: {path}")
 
 
-# ── 5. ICA (Independent Component Analysis) ──────────────────────────────────
+# -- 5. ICA (Independent Component Analysis) ----------------------------------
 def ica_demo():
     print("\n=== Independent Component Analysis (ICA) ===")
     print("  PCA: uncorrelated components (max variance)")
@@ -174,7 +174,7 @@ def ica_demo():
                   abs(np.corrcoef(s2, S_hat[:,1])[0,1]))
     print(f"  Correlation with s1: {corr_s1:.4f}")
     print(f"  Correlation with s2: {corr_s2:.4f}")
-    print(f"  (High → ICA recovered the original sources)")
+    print(f"  (High -> ICA recovered the original sources)")
 
 
 if __name__ == "__main__":

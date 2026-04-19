@@ -28,7 +28,7 @@ def demo_permutation_importance():
     h = fetch_california_housing()
     X, y = h.data, h.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    rf = RandomForestRegressor(100, random_state=42, n_jobs=-1)
+    rf = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
     rf.fit(X_train, y_train)
 
     result = permutation_importance(rf, X_test, y_test, n_repeats=15, random_state=42)
@@ -43,7 +43,7 @@ def demo_partial_dependence():
     h = fetch_california_housing()
     X, y = h.data, h.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    gbm = GradientBoostingRegressor(100, random_state=42)
+    gbm = GradientBoostingRegressor(n_estimators=100, random_state=42)
     gbm.fit(X_train, y_train)
 
     # Top-2 features by permutation importance
@@ -63,7 +63,7 @@ def demo_shap_manual():
     h = fetch_california_housing()
     X, y = h.data, h.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    pipe = make_pipeline(StandardScaler(), GradientBoostingRegressor(50, random_state=42))
+    pipe = make_pipeline(StandardScaler(), GradientBoostingRegressor(n_estimators=50, random_state=42))
     pipe.fit(X_train, y_train)
     base_rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
 

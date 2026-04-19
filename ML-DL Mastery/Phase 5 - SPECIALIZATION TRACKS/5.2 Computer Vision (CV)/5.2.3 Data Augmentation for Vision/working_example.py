@@ -26,7 +26,7 @@ def make_image(H=32, W=32, seed=0):
     return np.clip(img, 0, 1)
 
 
-# ── 1. Geometric augmentations ────────────────────────────────────────────────
+# -- 1. Geometric augmentations ------------------------------------------------
 def flip(img, horizontal=True):
     return img[:, ::-1] if horizontal else img[::-1]
 
@@ -79,7 +79,7 @@ def geometric_augmentations():
     print(f"  Plot: {path}")
 
 
-# ── 2. Colour augmentations ───────────────────────────────────────────────────
+# -- 2. Colour augmentations ---------------------------------------------------
 def color_jitter(img, brightness=0.2, contrast=0.2, saturation=0.2, hue=0.05, rng=None):
     rng = rng or np.random.default_rng(0)
     img = img.copy()
@@ -128,7 +128,7 @@ def colour_augmentations():
     print(f"  Plot: {path}")
 
 
-# ── 3. Cutout / Random Erasing ───────────────────────────────────────────────
+# -- 3. Cutout / Random Erasing -----------------------------------------------
 def cutout(img, n_holes=1, length=8, rng=None):
     rng = rng or np.random.default_rng(0)
     img = img.copy()
@@ -151,9 +151,9 @@ def cutout_demo():
     print(f"  Cutout forces model to use multiple cues, not rely on one region")
 
 
-# ── 4. MixUp ─────────────────────────────────────────────────────────────────
+# -- 4. MixUp -----------------------------------------------------------------
 def mixup(img_a, img_b, label_a, label_b, alpha=0.4, rng=None):
-    """MixUp augmentation: λ·img_a + (1-λ)·img_b"""
+    """MixUp augmentation: lambda·img_a + (1-lambda)·img_b"""
     rng = rng or np.random.default_rng(0)
     lam = rng.beta(alpha, alpha)
     img_mix  = lam * img_a + (1 - lam) * img_b
@@ -170,16 +170,16 @@ def mixup_demo():
     label_b = np.array([0, 1, 0])
 
     mix, label_mix, lam = mixup(img_a, img_b, label_a, label_b, alpha=0.4, rng=RNG)
-    print(f"  λ = {lam:.4f}")
+    print(f"  lambda = {lam:.4f}")
     print(f"  Mixed image shape: {mix.shape}")
     print(f"  Soft label: {np.round(label_mix, 4)}")
     print(f"  Mix = {lam:.2f}·img_a + {1-lam:.2f}·img_b")
     print()
     print("  MixUp improves calibration and generalisation")
-    print("  Loss: CE(f(mix), label_mix) = λ·CE(f(x_a), y_a) + (1-λ)·CE(f(x_b), y_b)")
+    print("  Loss: CE(f(mix), label_mix) = lambda·CE(f(x_a), y_a) + (1-lambda)·CE(f(x_b), y_b)")
 
 
-# ── 5. CutMix ────────────────────────────────────────────────────────────────
+# -- 5. CutMix ----------------------------------------------------------------
 def cutmix(img_a, img_b, label_a, label_b, alpha=1.0, rng=None):
     """CutMix: paste rectangular region of img_b into img_a."""
     rng = rng or np.random.default_rng(0)
@@ -209,7 +209,7 @@ def cutmix_demo():
     print(f"  CutMix keeps local structure; better for dense prediction tasks")
 
 
-# ── 6. AutoAugment / RandAugment ─────────────────────────────────────────────
+# -- 6. AutoAugment / RandAugment ---------------------------------------------
 def autoaugment_overview():
     print("\n=== AutoAugment / RandAugment ===")
     print("  AutoAugment (Cubuk et al. 2018):")
@@ -228,7 +228,7 @@ def autoaugment_overview():
            "TranslateX", "TranslateY"]
     print(f"    {ops}")
     print()
-    print("  AugMix: mix multiple augmentation chains → consistency loss")
+    print("  AugMix: mix multiple augmentation chains -> consistency loss")
     print("  TrivialAugment: single op sampled uniformly, magnitude also random")
 
 

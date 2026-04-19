@@ -7,7 +7,7 @@ import functools
 import time
 
 
-# ── Basic function ─────────────────────────────────────────────────────────────
+# -- Basic function -------------------------------------------------------------
 def greet(name, greeting="Hello"):
     """Returns a greeting string."""
     return f"{greeting}, {name}!"
@@ -20,7 +20,7 @@ def positional_and_keyword_args():
     print(f"  {greet(greeting='Hey', name='Carol')}")
 
 
-# ── *args and **kwargs ──────────────────────────────────────────────────────────
+# -- *args and **kwargs ----------------------------------------------------------
 def variadic(*args, **kwargs):
     print(f"  args   = {args}")
     print(f"  kwargs = {kwargs}")
@@ -36,7 +36,7 @@ def args_kwargs():
     variadic(*nums, **attrs)
 
 
-# ── Return multiple values ─────────────────────────────────────────────────────
+# -- Return multiple values -----------------------------------------------------
 def min_max(numbers):
     return min(numbers), max(numbers)
 
@@ -47,7 +47,7 @@ def returns():
     print(f"  min={lo}, max={hi}")
 
 
-# ── Closures ──────────────────────────────────────────────────────────────────
+# -- Closures ------------------------------------------------------------------
 def make_multiplier(n):
     def multiplier(x):
         return x * n   # n is captured from enclosing scope
@@ -62,7 +62,7 @@ def closures():
     print(f"  triple(7) = {triple(7)}")
 
 
-# ── Decorators ────────────────────────────────────────────────────────────────
+# -- Decorators ----------------------------------------------------------------
 def timer(func):
     """Measure execution time of a function."""
     @functools.wraps(func)
@@ -104,7 +104,7 @@ def decorators():
     say_hi()
 
 
-# ── Recursion ─────────────────────────────────────────────────────────────────
+# -- Recursion -----------------------------------------------------------------
 def factorial(n):
     if n <= 1:
         return 1
@@ -128,7 +128,7 @@ def recursion():
     print(f"  fibonacci(0-14) = {fibs}")
 
 
-# ── Lambda ────────────────────────────────────────────────────────────────────
+# -- Lambda --------------------------------------------------------------------
 def lambdas():
     print("\n=== Lambda Functions ===")
     square   = lambda x: x ** 2
@@ -151,7 +151,7 @@ def lambdas():
     print(f"  map cubed      = {cubed}")
 
 
-# ── functools ────────────────────────────────────────────────────────────────
+# -- functools ----------------------------------------------------------------
 @functools.lru_cache(maxsize=128)
 def fib_cached(n):
     if n < 2:

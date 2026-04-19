@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_flows")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Normalising flows theory ───────────────────────────────────────────────
+# -- 1. Normalising flows theory -----------------------------------------------
 def normalising_flows_theory():
     print("=== Normalising Flows ===")
     print()
@@ -23,13 +23,13 @@ def normalising_flows_theory():
     print("    x = f(z)    (invertible, differentiable transformation)")
     print()
     print("    log p_x(x) = log p_z(z) - log |det J_f(z)|")
-    print("    where J_f = ∂f/∂z  (Jacobian)")
+    print("    where J_f = df/dz  (Jacobian)")
     print()
     print("  Training: maximise log-likelihood exactly (no ELBO approximation)")
     print("    L = E_{x~p_data}[log p_x(x)]")
     print()
     print("  Sampling:")
-    print("    z ~ N(0, I)  →  x = f(z)")
+    print("    z ~ N(0, I)  ->  x = f(z)")
     print()
     print("  Compared to other generative models:")
     print("    VAE:       approximate posterior; latent compression; fast gen")
@@ -38,7 +38,7 @@ def normalising_flows_theory():
     print("    Flow:      exact density; fast gen; constrained architectures")
 
 
-# ── 2. 1D flow demo ───────────────────────────────────────────────────────────
+# -- 2. 1D flow demo -----------------------------------------------------------
 def flow_1d_demo():
     print("\n=== 1D Flow Demo ===")
     rng = np.random.default_rng(0)
@@ -83,7 +83,7 @@ def flow_1d_demo():
     print(f"    Log |det J|: {log_det:.4f}")
 
 
-# ── 3. RealNVP coupling layers ────────────────────────────────────────────────
+# -- 3. RealNVP coupling layers ------------------------------------------------
 def realnvp_overview():
     print("\n=== RealNVP (Real-valued Non-Volume Preserving) ===")
     print("  Dinh et al. (2017)")
@@ -98,7 +98,7 @@ def realnvp_overview():
     print("    x_{1:d}    = z_{1:d}")
     print("    x_{d+1:D}  = (z_{d+1:D} - t(z_{1:d})) ⊙ exp(-s(z_{1:d}))")
     print()
-    print("  Jacobian is triangular → log det = Σ s(x_{1:d})")
+    print("  Jacobian is triangular -> log det = Sigma s(x_{1:d})")
     print("    (O(D) rather than O(D³) for full Jacobian)")
     print()
     print("  Multi-scale architecture:")
@@ -135,7 +135,7 @@ def realnvp_overview():
     print(f"    log det: {log_det:.4f}")
 
 
-# ── 4. Glow (generative flow) ─────────────────────────────────────────────────
+# -- 4. Glow (generative flow) -------------------------------------------------
 def glow_overview():
     print("\n=== Glow ===")
     print("  Kingma & Dhariwal (2018)")
@@ -145,7 +145,7 @@ def glow_overview():
     print("    2. 1×1 Invertible Conv: learnable channel permutation W (LU decomp)")
     print("    3. Affine Coupling: RealNVP-style s, t networks")
     print()
-    print("  ActNorm log det = H·W·Σ_c log|s_c|")
+    print("  ActNorm log det = H·W·Sigma_c log|s_c|")
     print("  1×1 Conv log det = H·W·log|det(W)|")
     print()
     print("  Why 1×1 invertible conv?")
@@ -157,25 +157,25 @@ def glow_overview():
     print("  Enables exact latent manipulation (smile, age, lighting)")
 
 
-# ── 5. Continuous normalising flows ──────────────────────────────────────────
+# -- 5. Continuous normalising flows ------------------------------------------
 def continuous_flows():
     print("\n=== Continuous Normalising Flows (CNF) ===")
     print("  Chen et al. (2018) — Neural ODE framework")
     print()
     print("  Instead of discrete steps, define dynamics via ODE:")
-    print("    dz(t)/dt = f_θ(z(t), t)   — neural network vector field")
-    print("    z(0) = x  →  z(T) = z_T   (forward ODE solve)")
+    print("    dz(t)/dt = f_theta(z(t), t)   — neural network vector field")
+    print("    z(0) = x  ->  z(T) = z_T   (forward ODE solve)")
     print()
     print("  Log-likelihood via instantaneous change of variables:")
-    print("    d/dt log p(z(t)) = -tr(∂f/∂z(t))   (trace of Jacobian)")
-    print("    → continuous-time version of coupling log det")
+    print("    d/dt log p(z(t)) = -tr(df/dz(t))   (trace of Jacobian)")
+    print("    -> continuous-time version of coupling log det")
     print()
     print("  Training: minimise -E[log p_x(x)] via adjoint method (backprop through ODE)")
     print()
     print("  Flow Matching (Lipman 2022, Liu 2022):")
-    print("    Learn vector field to interpolate p_0 → p_1")
+    print("    Learn vector field to interpolate p_0 -> p_1")
     print("    Conditional Flow Matching (CFM): simpler targets, no need for ODE solver")
-    print("    Straight trajectories → fewer NFEs (function evaluations)")
+    print("    Straight trajectories -> fewer NFEs (function evaluations)")
     print()
     print("  Models using flow matching:")
     print("    Flux: image generation via flow matching + DiT")
@@ -183,15 +183,15 @@ def continuous_flows():
     print("    Emu3 / CogVideoX: multi-modal")
 
 
-# ── 6. Autoregressive flows ───────────────────────────────────────────────────
+# -- 6. Autoregressive flows ---------------------------------------------------
 def autoregressive_flows():
     print("\n=== Autoregressive Flows ===")
     print("  Masked Autoregressive Flow (MAF) — Papamakarios 2017")
     print("  Inverse Autoregressive Flow (IAF) — Kingma 2016")
     print()
     print("  Autoregressive model:")
-    print("    p(x) = Π_i p(x_i | x_{1:i-1})")
-    print("    x_i = (z_i - μ_i(x_{1:i-1})) / exp(α_i(x_{1:i-1}))")
+    print("    p(x) = Pi_i p(x_i | x_{1:i-1})")
+    print("    x_i = (z_i - mu_i(x_{1:i-1})) / exp(alpha_i(x_{1:i-1}))")
     print()
     print("  MAF:")
     print("    Fast density evaluation; slow sampling (sequential per dimension)")

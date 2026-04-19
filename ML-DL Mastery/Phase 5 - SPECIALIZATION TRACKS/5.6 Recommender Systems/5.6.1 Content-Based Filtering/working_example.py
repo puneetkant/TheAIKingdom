@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_content_based")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Concept overview ───────────────────────────────────────────────────────
+# -- 1. Concept overview -------------------------------------------------------
 def overview():
     print("=== Content-Based Filtering ===")
     print()
@@ -31,7 +31,7 @@ def overview():
     print("    User cold-start still a problem")
 
 
-# ── 2. TF-IDF item profiles ───────────────────────────────────────────────────
+# -- 2. TF-IDF item profiles ---------------------------------------------------
 def tfidf_profiles():
     print("\n=== TF-IDF Item Profiles ===")
     # Movie tag corpus
@@ -92,7 +92,7 @@ def tfidf_profiles():
         print(f"    {rank}. {movie_names[idx]:<20} (sim={sim[liked_idx, idx]:.3f})")
 
 
-# ── 3. User profiles ──────────────────────────────────────────────────────────
+# -- 3. User profiles ----------------------------------------------------------
 def user_profiles():
     print("\n=== User Profile Construction ===")
     print()
@@ -143,7 +143,7 @@ def user_profiles():
         print()
 
 
-# ── 4. Hybrid content features ────────────────────────────────────────────────
+# -- 4. Hybrid content features ------------------------------------------------
 def hybrid_features():
     print("=== Feature Engineering for Content-Based ===")
     print()
@@ -159,8 +159,8 @@ def hybrid_features():
 
     print()
     print("  Modern approach: pre-trained embedding models")
-    print("    Sentence-BERT → 768-D text embeddings")
-    print("    CLIP → 512-D image+text shared embeddings")
+    print("    Sentence-BERT -> 768-D text embeddings")
+    print("    CLIP -> 512-D image+text shared embeddings")
     print("    These replace manual TF-IDF and improve semantic matching")
 
 

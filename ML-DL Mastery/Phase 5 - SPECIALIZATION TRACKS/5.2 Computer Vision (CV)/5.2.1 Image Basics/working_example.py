@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_image_basics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── synthetic test image helpers ──────────────────────────────────────────────
+# -- synthetic test image helpers ----------------------------------------------
 def make_test_image(H=64, W=64):
     """Create a simple synthetic RGB image (gradient + circles)."""
     rng = np.random.default_rng(0)
@@ -30,7 +30,7 @@ def make_test_image(H=64, W=64):
     return img
 
 
-# ── 1. Pixel representation ───────────────────────────────────────────────────
+# -- 1. Pixel representation ---------------------------------------------------
 def pixel_representation():
     print("=== Pixel Representation ===")
     img = make_test_image()
@@ -54,7 +54,7 @@ def pixel_representation():
         print(f"    {H}×{W} RGB: {nbytes:>8,} bytes ({nbytes/1024**2:.2f} MB) uncompressed")
 
 
-# ── 2. Colour spaces ─────────────────────────────────────────────────────────
+# -- 2. Colour spaces ---------------------------------------------------------
 def colour_spaces():
     print("\n=== Colour Spaces ===")
 
@@ -79,7 +79,7 @@ def colour_spaces():
 
     print(f"  RGB  shape: {img.shape}   range [{img.min()}, {img.max()}]")
     print(f"  Gray shape: {gray.shape}  range [{gray.min():.1f}, {gray.max():.1f}]")
-    print(f"  HSV  shape: {hsv.shape}   H∈[0,1] S∈[0,1] V∈[0,1]")
+    print(f"  HSV  shape: {hsv.shape}   Hin[0,1] Sin[0,1] Vin[0,1]")
 
     # Save comparison
     fig, axes = plt.subplots(1, 4, figsize=(12, 3))
@@ -104,14 +104,14 @@ def colour_spaces():
         print(f"    {c:<6} {d}")
 
 
-# ── 3. Image operations ───────────────────────────────────────────────────────
+# -- 3. Image operations -------------------------------------------------------
 def image_operations():
     print("\n=== Image Operations ===")
     img = make_test_image(64, 64).astype(float)
 
     # Crop
     crop = img[10:40, 10:40]
-    print(f"  Crop [10:40, 10:40]: {img.shape} → {crop.shape}")
+    print(f"  Crop [10:40, 10:40]: {img.shape} -> {crop.shape}")
 
     # Resize (nearest neighbour)
     def resize_nn(im, new_h, new_w):
@@ -122,7 +122,7 @@ def image_operations():
 
     small = resize_nn(img, 32, 32)
     big   = resize_nn(img, 128, 128)
-    print(f"  Resize NN: 64×64 → {small.shape[:2]} and → {big.shape[:2]}")
+    print(f"  Resize NN: 64x64 -> {small.shape[:2]} and -> {big.shape[:2]}")
 
     # Flip
     hflip = img[:, ::-1]
@@ -149,7 +149,7 @@ def image_operations():
         print("  Gaussian blur: scipy not available")
 
 
-# ── 4. Histograms ────────────────────────────────────────────────────────────
+# -- 4. Histograms ------------------------------------------------------------
 def histograms():
     print("\n=== Image Histograms ===")
     img = make_test_image()
@@ -157,7 +157,7 @@ def histograms():
     # Compute per-channel histograms
     for c, name in [(0,"Red"), (1,"Green"), (2,"Blue")]:
         h, _ = np.histogram(img[:,:,c], bins=8, range=(0,256))
-        bar   = "".join("█" * int(v / h.max() * 8) for v in h)
+        bar   = "".join("#" * int(v / h.max() * 8) for v in h)
         print(f"  {name}: [{bar}] mean={img[:,:,c].mean():.0f}")
 
     # Histogram equalisation (grayscale)

@@ -31,7 +31,7 @@ def make_synthetic_scene(H=64, W=64):
     return img, label
 
 
-# ── 1. Segmentation types ────────────────────────────────────────────────────
+# -- 1. Segmentation types ----------------------------------------------------
 def segmentation_types():
     print("=== Segmentation Task Types ===")
     types = [
@@ -52,7 +52,7 @@ def segmentation_types():
         print(f"    Models: {models}")
 
 
-# ── 2. Pixel-level metrics ────────────────────────────────────────────────────
+# -- 2. Pixel-level metrics ----------------------------------------------------
 def compute_miou(pred, target, n_classes):
     ious = []
     for c in range(n_classes):
@@ -98,7 +98,7 @@ def segmentation_metrics():
         print(f"    {m:<22} {d}")
 
 
-# ── 3. U-Net architecture ────────────────────────────────────────────────────
+# -- 3. U-Net architecture ----------------------------------------------------
 def unet_architecture():
     print("\n=== U-Net Architecture ===")
     print("  Originally for biomedical image segmentation (Ronneberger 2015)")
@@ -125,8 +125,8 @@ def unet_architecture():
 
     print()
     print("  Decoder (expanding path) with skip connections:")
-    print("    UpConv 2×2 → concat skip → Conv3×3 ×2  (×4)")
-    print("    Final: Conv1×1 → n_classes")
+    print("    UpConv 2x2 -> concat skip -> Conv3x3 x2  (x4)")
+    print("    Final: Conv1x1 -> n_classes")
     print()
     print("  Key features:")
     print("    Skip connections preserve fine spatial detail")
@@ -135,14 +135,14 @@ def unet_architecture():
     print("    Loss: weighted cross-entropy (border pixels up-weighted)")
 
 
-# ── 4. Fully convolutional network (FCN) ─────────────────────────────────────
+# -- 4. Fully convolutional network (FCN) -------------------------------------
 def fcn_overview():
     print("\n=== FCN (Fully Convolutional Network) ===")
     print("  Long et al. (2015) — first end-to-end CNN for semantic segmentation")
     print()
     print("  Key idea: replace FC layers in classifiers with conv layers")
-    print("    Classifier (AlexNet/VGG): conv → pool → FC → FC → softmax")
-    print("    FCN:                      conv → pool → conv → upsample → class map")
+    print("    Classifier (AlexNet/VGG): conv -> pool -> FC -> FC -> softmax")
+    print("    FCN:                      conv -> pool -> conv -> upsample -> class map")
     print()
     print("  Upsampling methods:")
     ups = [
@@ -156,11 +156,11 @@ def fcn_overview():
     print()
     print("  FCN variants:")
     print("    FCN-32s: stride 32 upsample (coarse)")
-    print("    FCN-16s: combine pool4 skip → stride 16")
-    print("    FCN-8s:  combine pool3 skip → stride 8  (best quality)")
+    print("    FCN-16s: combine pool4 skip -> stride 16")
+    print("    FCN-8s:  combine pool3 skip -> stride 8  (best quality)")
 
 
-# ── 5. Modern methods overview ────────────────────────────────────────────────
+# -- 5. Modern methods overview ------------------------------------------------
 def modern_methods():
     print("\n=== Modern Segmentation Models ===")
     models = [
@@ -174,7 +174,7 @@ def modern_methods():
         ("OneFormer",     2022, "Single model for all three task types"),
     ]
     print(f"  {'Model':<16} {'Year'} {'Notes'}")
-    print(f"  {'─'*16} {'─'*4} {'─'*50}")
+    print(f"  {'-'*16} {'-'*4} {'-'*50}")
     for m, y, d in models:
         print(f"  {m:<16} {y}  {d}")
 

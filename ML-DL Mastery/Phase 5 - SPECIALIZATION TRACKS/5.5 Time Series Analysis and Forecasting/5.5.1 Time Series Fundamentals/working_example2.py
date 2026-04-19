@@ -49,7 +49,7 @@ def demo():
     # ADF stationarity proxy (variance ratio)
     half = len(ts) // 2
     ratio = ts[:half].var() / ts[half:].var()
-    print(f"  Variance ratio (1st vs 2nd half): {ratio:.3f} (→1 = stationary)")
+    print(f"  Variance ratio (1st vs 2nd half): {ratio:.3f} (->1 = stationary)")
 
     rho = acf(ts)
     fig, axes = plt.subplots(2, 2, figsize=(10, 6))

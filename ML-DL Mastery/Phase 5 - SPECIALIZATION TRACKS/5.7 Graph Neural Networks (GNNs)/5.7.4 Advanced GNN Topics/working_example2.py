@@ -25,8 +25,8 @@ def gat_layer(A, X, W, a_src, a_dst):
     """
     Single-head Graph Attention (GAT).
     e_ij = LeakyReLU( a^T [Wh_i || Wh_j] )
-    α_ij = softmax_j(e_ij)
-    h_i  = σ( Σ_j α_ij Wh_j )
+    alpha_ij = softmax_j(e_ij)
+    h_i  = sigma( Sigma_j alpha_ij Wh_j )
     """
     N = len(A)
     H = X @ W                          # (N, F_out)
@@ -80,7 +80,7 @@ def demo():
 
     fig, axes = plt.subplots(1, 2, figsize=(9, 3))
     axes[0].imshow(alpha, cmap="Blues", vmin=0, vmax=alpha.max())
-    axes[0].set_title("GAT Attention α"); axes[0].set_xlabel("src"); axes[0].set_ylabel("dst")
+    axes[0].set_title("GAT Attention alpha"); axes[0].set_xlabel("src"); axes[0].set_ylabel("dst")
     axes[1].plot(range(1, 11), smoothing_curve, "o-"); axes[1].set_title("Over-smoothing (feature std)")
     axes[1].set_xlabel("GCN layers"); axes[1].set_ylabel("Pairwise distance std")
     plt.tight_layout(); plt.savefig(OUTPUT / "advanced_gnn.png"); plt.close()

@@ -29,7 +29,7 @@ def setup_git_identity():
     return name, email
 
 
-# ── 1. Repository initialisation ─────────────────────────────────────────────
+# -- 1. Repository initialisation ---------------------------------------------
 def init_demo(repo):
     print("=== 1. git init ===")
     print(run("git init", cwd=repo))
@@ -42,7 +42,7 @@ def init_demo(repo):
     print(f"  Repo at: {repo}")
 
 
-# ── 2. Staging and committing ─────────────────────────────────────────────────
+# -- 2. Staging and committing -------------------------------------------------
 def staging_demo(repo):
     print("\n=== 2. git add / commit ===")
     (Path(repo) / "README.md").write_text("# My Project\nWelcome!\n")
@@ -56,7 +56,7 @@ def staging_demo(repo):
     print(run("git log --oneline", cwd=repo))
 
 
-# ── 3. .gitignore ─────────────────────────────────────────────────────────────
+# -- 3. .gitignore -------------------------------------------------------------
 def gitignore_demo(repo):
     print("\n=== 3. .gitignore ===")
     gitignore = Path(repo) / ".gitignore"
@@ -70,7 +70,7 @@ def gitignore_demo(repo):
     print(f"  status after adding logs (should be empty): {status!r}")
 
 
-# ── 4. Branching and merging ──────────────────────────────────────────────────
+# -- 4. Branching and merging --------------------------------------------------
 def branching_demo(repo):
     print("\n=== 4. Branching & Merging ===")
     print(run("git branch", cwd=repo))
@@ -87,7 +87,7 @@ def branching_demo(repo):
     print(run("git log --oneline --graph --all", cwd=repo))
 
 
-# ── 5. Viewing history and diffs ──────────────────────────────────────────────
+# -- 5. Viewing history and diffs ----------------------------------------------
 def history_demo(repo):
     print("\n=== 5. log / diff / show ===")
     (Path(repo) / "app.py").write_text('print("hello world")\n# updated\n')
@@ -99,7 +99,7 @@ def history_demo(repo):
     print(run("git diff HEAD~1 HEAD -- app.py", cwd=repo))
 
 
-# ── 6. Undoing changes ────────────────────────────────────────────────────────
+# -- 6. Undoing changes --------------------------------------------------------
 def undo_demo(repo):
     print("\n=== 6. Undoing Changes ===")
 
@@ -113,7 +113,7 @@ def undo_demo(repo):
     print(run("git log --oneline --all", cwd=repo))
 
 
-# ── 7. Stashing ───────────────────────────────────────────────────────────────
+# -- 7. Stashing ---------------------------------------------------------------
 def stash_demo(repo):
     print("\n=== 7. git stash ===")
     (Path(repo) / "wip.py").write_text("# work in progress\n")
@@ -124,7 +124,7 @@ def stash_demo(repo):
     print(f"  wip.py restored: {(Path(repo)/'wip.py').exists()}")
 
 
-# ── 8. Tagging ────────────────────────────────────────────────────────────────
+# -- 8. Tagging ----------------------------------------------------------------
 def tag_demo(repo):
     print("\n=== 8. git tag ===")
     run("git tag v1.0.0 -m 'Version 1.0.0'", cwd=repo)
@@ -133,7 +133,7 @@ def tag_demo(repo):
     print(run("git show v1.0.0 --stat", cwd=repo))
 
 
-# ── 9. Command reference ─────────────────────────────────────────────────────
+# -- 9. Command reference -----------------------------------------------------
 def command_reference():
     print("\n=== 9. Quick Command Reference ===")
     commands = [

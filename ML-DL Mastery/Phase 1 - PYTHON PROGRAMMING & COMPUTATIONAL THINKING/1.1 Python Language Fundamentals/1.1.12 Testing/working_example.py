@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch, call
 import math
 
 
-# ── Code under test ───────────────────────────────────────────────────────────
+# -- Code under test -----------------------------------------------------------
 def add(a, b):
     return a + b
 
@@ -52,7 +52,7 @@ def send_email(to, subject, body, smtp_client):
     return True
 
 
-# ── TestCase classes ───────────────────────────────────────────────────────────
+# -- TestCase classes -----------------------------------------------------------
 class TestArithmetic(unittest.TestCase):
     """Tests for arithmetic functions."""
 
@@ -161,7 +161,7 @@ class TestMocking(unittest.TestCase):
             mock_fn()
 
 
-# ── Assert statement usage outside unittest ────────────────────────────────────
+# -- Assert statement usage outside unittest ------------------------------------
 def demo_assert():
     print("=== assert statement (development-time checks) ===")
     x = 42
@@ -175,7 +175,7 @@ def demo_assert():
         print(f"  AssertionError caught: {e}")
 
 
-# ── Run tests programmatically ─────────────────────────────────────────────────
+# -- Run tests programmatically -------------------------------------------------
 def run_all_tests():
     print("\n=== Running unittest suites ===")
     loader = unittest.TestLoader()

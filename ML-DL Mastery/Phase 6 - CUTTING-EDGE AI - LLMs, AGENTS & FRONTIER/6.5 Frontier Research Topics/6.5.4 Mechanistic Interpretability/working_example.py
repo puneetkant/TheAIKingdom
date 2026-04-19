@@ -10,12 +10,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_interp")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Overview ───────────────────────────────────────────────────────────────
+# -- 1. Overview ---------------------------------------------------------------
 def interpretability_overview():
     print("=== Mechanistic Interpretability ===")
     print()
     print("  Goal: understand HOW transformers compute, not just WHAT they output")
-    print("  Find algorithms implemented in weights → predict model behaviour")
+    print("  Find algorithms implemented in weights -> predict model behaviour")
     print()
     print("  Key concepts:")
     concepts = [
@@ -32,15 +32,15 @@ def interpretability_overview():
     print("  Leading researchers: Anthropic Interpretability Team, Neel Nanda, EleutherAI")
 
 
-# ── 2. Superposition ──────────────────────────────────────────────────────────
+# -- 2. Superposition ----------------------------------------------------------
 def superposition_demo():
     print("\n=== Superposition Demo ===")
     print()
     print("  Hypothesis: neural nets store more features than dimensions")
     print("  by using nearly-orthogonal directions in high-dim space")
     print()
-    print("  Johnson-Lindenstrauss: n features in d dims with error ε if:")
-    print("    n ≤ O(e^(ε² d) )   → exponentially many near-orthogonal directions")
+    print("  Johnson-Lindenstrauss: n features in d dims with error epsilon if:")
+    print("    n <= O(e^(epsilon² d) )   -> exponentially many near-orthogonal directions")
     print()
 
     # Show how many near-orthogonal vectors fit in d dims
@@ -66,7 +66,7 @@ def superposition_demo():
     print("  (respond to many unrelated concepts; hard to interpret directly)")
 
 
-# ── 3. Attention pattern analysis ─────────────────────────────────────────────
+# -- 3. Attention pattern analysis ---------------------------------------------
 def attention_patterns():
     print("\n=== Attention Pattern Analysis ===")
     print()
@@ -107,22 +107,22 @@ def attention_patterns():
     header = "        " + " ".join(f"{t:>6}" for t in tokens)
     print(f"  {header}")
     for i, row_tok in enumerate(tokens):
-        row = " ".join("█" * int(attn[i, j] * 8) + "·" * (8 - int(attn[i, j] * 8))
+        row = " ".join("#" * int(attn[i, j] * 8) + "·" * (8 - int(attn[i, j] * 8))
                        if int(attn[i, j] * 8) else "  " for j in range(T))
         print(f"  {row_tok:>6}  {' '.join(f'{attn[i,j]:.2f}' for j in range(T))}")
 
 
-# ── 4. Sparse autoencoders (SAEs) ─────────────────────────────────────────────
+# -- 4. Sparse autoencoders (SAEs) ---------------------------------------------
 def sparse_autoencoders():
     print("\n=== Sparse Autoencoders (SAEs) ===")
     print()
     print("  Tool for decomposing superposition into interpretable features")
-    print("  Train SAE on model activations → discover monosemantic features")
+    print("  Train SAE on model activations -> discover monosemantic features")
     print()
     print("  SAE architecture:")
-    print("    Encoder: x → z = ReLU(W_enc x + b_enc)   [z sparse: most zero]")
-    print("    Decoder: z → x̂ = W_dec z + b_dec")
-    print("    Loss: ||x - x̂||² + λ ||z||₁  (reconstruction + sparsity)")
+    print("    Encoder: x -> z = ReLU(W_enc x + b_enc)   [z sparse: most zero]")
+    print("    Decoder: z -> x = W_dec z + b_dec")
+    print("    Loss: ||x - x||² + lambda ||z||1  (reconstruction + sparsity)")
     print()
     print("  Anthropic findings (Claude features, 2024):")
     features = [

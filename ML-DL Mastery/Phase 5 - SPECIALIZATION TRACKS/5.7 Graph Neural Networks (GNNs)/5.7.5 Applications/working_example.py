@@ -13,7 +13,7 @@ def relu(x): return np.maximum(0, x)
 def sigmoid(x): return 1 / (1 + np.exp(-np.clip(x, -30, 30)))
 
 
-# ── 1. Molecular property prediction ─────────────────────────────────────────
+# -- 1. Molecular property prediction -----------------------------------------
 def molecular_property():
     print("=== Molecular Property Prediction ===")
     print("  Molecules as graphs: atoms = nodes, bonds = edges")
@@ -62,7 +62,7 @@ def molecular_property():
     print("              Uni-Mol (3D pre-training), GPS, Graphormer")
 
 
-# ── 2. Traffic forecasting ────────────────────────────────────────────────────
+# -- 2. Traffic forecasting ----------------------------------------------------
 def traffic_forecasting():
     print("\n=== Traffic Speed Forecasting (Spatio-Temporal GNN) ===")
     print("  Road network as graph; nodes = sensors, edges = road connections")
@@ -101,7 +101,7 @@ def traffic_forecasting():
     print(f"  Baseline (last obs) predictions: {baseline.squeeze().round(1)}")
 
 
-# ── 3. Knowledge graph completion ─────────────────────────────────────────────
+# -- 3. Knowledge graph completion ---------------------------------------------
 def knowledge_graph_completion():
     print("\n=== Knowledge Graph Completion ===")
     print("  KG: (subject, relation, object) triples")
@@ -109,7 +109,7 @@ def knowledge_graph_completion():
     print()
     print("  Embedding models:")
     kge_models = [
-        ("TransE",    "h + r ≈ t  (translation)"),
+        ("TransE",    "h + r ~= t  (translation)"),
         ("DistMult",  "score = h^T diag(r) t  (bilinear)"),
         ("ComplEx",   "complex-valued embeddings; handles antisymmetry"),
         ("RotatE",    "relation as rotation in complex space"),
@@ -138,7 +138,7 @@ def knowledge_graph_completion():
         print(f"    ({h}, r{r}, {t}): {s:.4f}")
 
 
-# ── 4. Social networks and fraud detection ────────────────────────────────────
+# -- 4. Social networks and fraud detection ------------------------------------
 def social_fraud():
     print("\n=== Social Network Applications ===")
     print()

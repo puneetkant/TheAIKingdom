@@ -97,7 +97,7 @@ def demo():
     print(f"\n  Demographic Parity:")
     print(f"    Group A approval: {rate_a:.3f}")
     print(f"    Group B approval: {rate_b:.3f}")
-    print(f"    DP Gap: {dp_gap:.3f} {'⚠ UNFAIR (>0.05)' if dp_gap > 0.05 else '✓ OK'}")
+    print(f"    DP Gap: {dp_gap:.3f} {'[!] UNFAIR (>0.05)' if dp_gap > 0.05 else '[OK]'}")
 
     # Equalized Odds
     tpr_a, fpr_a, tpr_b, fpr_b, tpr_gap, fpr_gap = equalized_odds(group, y_true, y_pred)
@@ -117,7 +117,7 @@ def demo():
 
     # Disparate impact ratio
     di = min(rate_a, rate_b) / (max(rate_a, rate_b) + 1e-10)
-    print(f"\n  Disparate Impact Ratio: {di:.3f} {'⚠ <0.8 threshold violated' if di < 0.8 else '✓ >0.8'}")
+    print(f"\n  Disparate Impact Ratio: {di:.3f} {'[!] <0.8 threshold violated' if di < 0.8 else '[OK] >0.8'}")
 
     fig, axes = plt.subplots(2, 2, figsize=(13, 9))
 

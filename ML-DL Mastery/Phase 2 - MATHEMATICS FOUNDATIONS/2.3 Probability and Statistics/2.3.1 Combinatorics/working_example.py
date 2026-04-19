@@ -9,7 +9,7 @@ from functools import reduce
 from collections import Counter
 
 
-# ── 1. Factorials, permutations, combinations ─────────────────────────────────
+# -- 1. Factorials, permutations, combinations ---------------------------------
 def basic_counting():
     print("=== Basic Counting ===")
     n, r = 6, 3
@@ -28,7 +28,7 @@ def basic_counting():
     print(f"\n  Stars & bars: {k} identical balls into {n_bins} bins = C({k+n_bins-1},{n_bins-1}) = {sb}")
 
 
-# ── 2. Explicit enumeration via itertools ─────────────────────────────────────
+# -- 2. Explicit enumeration via itertools -------------------------------------
 def itertools_demo():
     print("\n=== itertools Enumeration ===")
     items = ['A', 'B', 'C', 'D']
@@ -44,10 +44,10 @@ def itertools_demo():
     print(f"  2³ Cartesian product: {len(cart)}  binary strings of length 3")
 
 
-# ── 3. Pigeonhole principle ───────────────────────────────────────────────────
+# -- 3. Pigeonhole principle ---------------------------------------------------
 def pigeonhole():
     print("\n=== Pigeonhole Principle ===")
-    print("  If n+1 items fit into n pigeonholes, at least one holds ≥2 items.")
+    print("  If n+1 items fit into n pigeonholes, at least one holds >=2 items.")
     print()
     # Birthday paradox probability
     def birthday_prob(k, n=365):
@@ -60,14 +60,14 @@ def pigeonhole():
     print(f"  {'People':<8} {'P(shared birthday)'}")
     for k in [10, 20, 23, 30, 50, 70]:
         p = birthday_prob(k)
-        mark = " ← >50%" if p > 0.5 else ""
+        mark = " <- >50%" if p > 0.5 else ""
         print(f"  {k:<8} {p:.4f}{mark}")
 
 
-# ── 4. Inclusion-exclusion principle ─────────────────────────────────────────
+# -- 4. Inclusion-exclusion principle -----------------------------------------
 def inclusion_exclusion():
     print("\n=== Inclusion-Exclusion ===")
-    # |A∪B∪C| = |A|+|B|+|C| - |A∩B| - |A∩C| - |B∩C| + |A∩B∩C|
+    # |AuBuC| = |A|+|B|+|C| - |AnB| - |AnC| - |BnC| + |AnBnC|
     A = set(range(1, 11))      # multiples of 1 in 1..30 (proxy)
     B = set(range(2, 31, 2))   # even numbers 1..30
     C = set(range(3, 31, 3))   # multiples of 3
@@ -76,18 +76,18 @@ def inclusion_exclusion():
     union_set = len(B | C)
     print(f"  B = even numbers in [1,30]:   {len(B)} elements")
     print(f"  C = mult of 3 in [1,30]:      {len(C)} elements")
-    print(f"  |B∩C| = mult of 6:            {len(B&C)} elements")
-    print(f"  |B∪C| via I-E: {union_IE}   via set: {union_set}  match={union_IE==union_set}")
+    print(f"  |BnC| = mult of 6:            {len(B&C)} elements")
+    print(f"  |BuC| via I-E: {union_IE}   via set: {union_set}  match={union_IE==union_set}")
 
-    # Derangements via I-E: D_n = n! * Σ_{k=0}^{n} (-1)^k / k!
+    # Derangements via I-E: D_n = n! * Sigma_{k=0}^{n} (-1)^k / k!
     print("\n  Derangements D_n (permutations with no fixed point):")
     for n in range(1, 9):
         Dn_exact = round(math.factorial(n) * sum((-1)**k / math.factorial(k) for k in range(n+1)))
         Dn_approx = round(math.factorial(n) / math.e)
-        print(f"    D_{n} = {Dn_exact}  (≈ n!/e = {Dn_approx})")
+        print(f"    D_{n} = {Dn_exact}  (~= n!/e = {Dn_approx})")
 
 
-# ── 5. Pascal's triangle and binomial theorem ─────────────────────────────────
+# -- 5. Pascal's triangle and binomial theorem ---------------------------------
 def pascals_triangle():
     print("\n=== Pascal's Triangle ===")
     rows = 8
@@ -95,14 +95,14 @@ def pascals_triangle():
     for row in triangle:
         print("  " + "  ".join(f"{x:3d}" for x in row))
 
-    # Binomial theorem: (a+b)^n = Σ C(n,k) a^k b^(n-k)
+    # Binomial theorem: (a+b)^n = Sigma C(n,k) a^k b^(n-k)
     a, b, n = 2, 3, 4
     exact   = (a + b)**n
     binom   = sum(math.comb(n,k) * a**k * b**(n-k) for k in range(n+1))
-    print(f"\n  Binomial: ({a}+{b})^{n} = {exact}  via Σ C({n},k)·{a}^k·{b}^(n-k) = {binom}")
+    print(f"\n  Binomial: ({a}+{b})^{n} = {exact}  via Sigma C({n},k)·{a}^k·{b}^(n-k) = {binom}")
 
 
-# ── 6. Counting lattice paths ─────────────────────────────────────────────────
+# -- 6. Counting lattice paths -------------------------------------------------
 def lattice_paths():
     print("\n=== Lattice Paths from (0,0) to (m,n) ===")
     # Number of paths using only right/up moves = C(m+n, m)

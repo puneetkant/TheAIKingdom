@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from typing import Dict, List, Tuple
 
 
-# ── 1. Why Subword Tokenization? ──────────────────────────────────────────────
+# -- 1. Why Subword Tokenization? ----------------------------------------------
 def motivation():
     print("=== Why Subword Tokenization? ===")
     issues = [
@@ -17,7 +17,7 @@ def motivation():
         ("Subword",    "Mid vocab (32-64k)",  "OOV-free, morphology, efficiency"),
     ]
     print(f"  {'Method':<12} {'Vocab':<22} {'Issues / Strengths'}")
-    print(f"  {'─'*12} {'─'*22} {'─'*40}")
+    print(f"  {'-'*12} {'-'*22} {'-'*40}")
     for m, v, i in issues:
         print(f"  {m:<12} {v:<22} {i}")
 
@@ -29,7 +29,7 @@ def motivation():
     print("  Used by: GPT (BPE), BERT (WordPiece), T5/LLaMA (SentencePiece/BPE)")
 
 
-# ── 2. BPE from scratch ───────────────────────────────────────────────────────
+# -- 2. BPE from scratch -------------------------------------------------------
 def get_vocab(corpus: List[str]) -> Dict[str, int]:
     """Convert corpus to character-level vocabulary with end-of-word marker."""
     vocab = Counter()
@@ -76,7 +76,7 @@ def bpe_train(corpus: List[str], n_merges: int = 20):
         vocab = merge_vocab(best, vocab)
         merges.append(best)
         if i < 5 or i == n_merges - 1:
-            print(f"  Merge #{i+1:>2}: {best[0]} + {best[1]} → {''.join(best)} "
+            print(f"  Merge #{i+1:>2}: {best[0]} + {best[1]} -> {''.join(best)} "
                   f"(freq={pairs[best]})")
 
     return vocab, merges
@@ -120,10 +120,10 @@ def bpe_demo():
     print(f"\n  BPE encoding examples:")
     for w in ["low", "newer", "widest", "lowest"]:
         enc = bpe_encode(w, merges)
-        print(f"    '{w}' → {enc}")
+        print(f"    '{w}' -> {enc}")
 
 
-# ── 3. WordPiece ──────────────────────────────────────────────────────────────
+# -- 3. WordPiece --------------------------------------------------------------
 def wordpiece_overview():
     print("\n=== WordPiece (BERT-style) ===")
     print("  Similar to BPE but maximises likelihood of training data")
@@ -142,30 +142,30 @@ def wordpiece_overview():
     ]
     print()
     print(f"  {'Word':<35} Tokens")
-    print(f"  {'─'*35} {'─'*40}")
+    print(f"  {'-'*35} {'-'*40}")
     for word, toks in examples:
         print(f"  {word:<35} {toks}")
 
 
-# ── 4. Unigram LM tokenization ────────────────────────────────────────────────
+# -- 4. Unigram LM tokenization ------------------------------------------------
 def unigram_lm_overview():
     print("\n=== Unigram Language Model Tokenization ===")
     print("  Used by: SentencePiece (T5, LLaMA, Gemma)")
     print()
     print("  Algorithm:")
     print("    1. Start with a large initial vocabulary (all substrings)")
-    print("    2. Score each token with a unigram LM: P(text) = Π P(token_i)")
+    print("    2. Score each token with a unigram LM: P(text) = Pi P(token_i)")
     print("    3. Remove tokens that reduce likelihood the least")
     print("    4. Repeat until target vocab size reached")
     print()
     print("  Encodes space as ▁ (special prefix character)")
-    print("  'Hello world' → ['▁Hello', '▁world']  (no space token needed)")
+    print("  'Hello world' -> ['▁Hello', '▁world']  (no space token needed)")
     print()
     print("  Probabilistic: multiple segmentations possible")
     print("  Training uses EM algorithm to estimate token probabilities")
 
 
-# ── 5. SentencePiece ──────────────────────────────────────────────────────────
+# -- 5. SentencePiece ----------------------------------------------------------
 def sentencepiece_overview():
     print("\n=== SentencePiece ===")
     print("  Language-agnostic tokenizer (no word boundary assumption)")
@@ -178,14 +178,14 @@ def sentencepiece_overview():
         ("Lossless",      "Original text can always be recovered"),
         ("Language-free", "Works for Chinese, Japanese, Arabic, etc."),
         ("BOS/EOS",       "Adds <s> and </s> tokens by default"),
-        ("Byte fallback", "Unknown bytes → byte tokens (no UNK for UTF-8)"),
+        ("Byte fallback", "Unknown bytes -> byte tokens (no UNK for UTF-8)"),
         ("Subword reg.",  "Random segmentation at training for robustness"),
     ]
     for f, d in features:
         print(f"  {f:<15} {d}")
 
 
-# ── 6. Tokenizer comparison ───────────────────────────────────────────────────
+# -- 6. Tokenizer comparison ---------------------------------------------------
 def tokenizer_comparison():
     print("\n=== Tokenizer Comparison ===")
     text = "The tokenizer converts text into numerical tokens."
@@ -200,7 +200,7 @@ def tokenizer_comparison():
                                 "▁numerical", "▁tokens", "."],
     }
     print(f"  {'Model':<25} Tokens")
-    print(f"  {'─'*25} {'─'*55}")
+    print(f"  {'-'*25} {'-'*55}")
     for model, toks in examples.items():
         print(f"  {model:<25} {toks}")
     print()

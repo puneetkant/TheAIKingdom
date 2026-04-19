@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_prompt_eng")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Core techniques ────────────────────────────────────────────────────────
+# -- 1. Core techniques --------------------------------------------------------
 def core_techniques():
     print("=== Prompt Engineering Techniques ===")
     print()
@@ -29,7 +29,7 @@ def core_techniques():
         print(f"  {t:<22} {d}")
 
 
-# ── 2. Chain-of-thought ───────────────────────────────────────────────────────
+# -- 2. Chain-of-thought -------------------------------------------------------
 def chain_of_thought():
     print("\n=== Chain-of-Thought Prompting ===")
     print()
@@ -54,11 +54,11 @@ def chain_of_thought():
         print(f"    {line}")
 
     print()
-    print("  Self-consistency: sample K diverse CoT paths → majority vote")
+    print("  Self-consistency: sample K diverse CoT paths -> majority vote")
     print("  Improves accuracy on math/reasoning without fine-tuning")
 
 
-# ── 3. Structured prompts ─────────────────────────────────────────────────────
+# -- 3. Structured prompts -----------------------------------------------------
 def structured_prompts():
     print("\n=== Structured Prompts ===")
     print()
@@ -95,7 +95,7 @@ def structured_prompts():
         print(f"  {d:<16} {e}")
 
 
-# ── 4. Prompt injection and hardening ─────────────────────────────────────────
+# -- 4. Prompt injection and hardening -----------------------------------------
 def prompt_security():
     print("\n=== Prompt Injection and Security ===")
     print()
@@ -127,7 +127,7 @@ def prompt_security():
         print(f"  + {s}")
 
 
-# ── 5. DSPy – programmatic prompting ─────────────────────────────────────────
+# -- 5. DSPy – programmatic prompting -----------------------------------------
 def dspy_pattern():
     print("\n=== DSPy: Programmatic Prompt Optimisation ===")
     print()

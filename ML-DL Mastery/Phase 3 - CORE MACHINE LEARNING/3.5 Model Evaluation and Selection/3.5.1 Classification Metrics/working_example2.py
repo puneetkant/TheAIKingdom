@@ -47,7 +47,7 @@ def demo_roc_pr():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
                                                         stratify=y, random_state=42)
     for name, model in [("LogReg", LogisticRegression(max_iter=1000)),
-                         ("RF-50",  RandomForestClassifier(50, random_state=42))]:
+                         ("RF-50",  RandomForestClassifier(n_estimators=50, random_state=42))]:
         pipe = make_pipeline(StandardScaler(), model)
         pipe.fit(X_train, y_train)
         probs = pipe.predict_proba(X_test)[:, 1]
@@ -58,7 +58,7 @@ def demo_roc_pr():
     # Plot ROC
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     for name, model in [("LR", LogisticRegression(max_iter=1000)),
-                         ("RF", RandomForestClassifier(50, random_state=42))]:
+                         ("RF", RandomForestClassifier(n_estimators=50, random_state=42))]:
         pipe = make_pipeline(StandardScaler(), model)
         pipe.fit(X_train, y_train)
         probs = pipe.predict_proba(X_test)[:, 1]

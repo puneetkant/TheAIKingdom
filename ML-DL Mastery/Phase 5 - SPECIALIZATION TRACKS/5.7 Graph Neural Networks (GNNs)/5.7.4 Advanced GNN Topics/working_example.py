@@ -12,12 +12,12 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def relu(x): return np.maximum(0, x)
 
 
-# ── 1. Over-smoothing ─────────────────────────────────────────────────────────
+# -- 1. Over-smoothing ---------------------------------------------------------
 def over_smoothing():
     print("=== Over-Smoothing in GNNs ===")
     print()
     print("  Problem: after many layers, node representations converge to")
-    print("           the same vector → lose discriminative power")
+    print("           the same vector -> lose discriminative power")
     print()
     print("  Diagnosis: measure feature diversity = ||H^l||_F / N")
     print()
@@ -57,7 +57,7 @@ def over_smoothing():
         print(f"  {s:<18} {d}")
 
 
-# ── 2. Scalability ────────────────────────────────────────────────────────────
+# -- 2. Scalability ------------------------------------------------------------
 def scalability():
     print("\n=== GNN Scalability ===")
     print()
@@ -83,7 +83,7 @@ def scalability():
     print("    Mini-batch:      O(k^L · F)  per sample, k=fan-out, L=layers")
 
 
-# ── 3. Heterogeneous GNNs ─────────────────────────────────────────────────────
+# -- 3. Heterogeneous GNNs -----------------------------------------------------
 def heterogeneous_gnns():
     print("\n=== Heterogeneous GNNs ===")
     print()
@@ -105,7 +105,7 @@ def heterogeneous_gnns():
         print(f"  {a:<12} {d}")
     print()
     print("  R-GCN update:")
-    print("    h_v^{l+1} = σ(Σ_{r∈R} (1/c_{v,r}) Σ_{u∈N_r(v)} W_r^l h_u^l + W_0^l h_v^l)")
+    print("    h_v^{l+1} = sigma(Sigma_{rinR} (1/c_{v,r}) Sigma_{uinN_r(v)} W_r^l h_u^l + W_0^l h_v^l)")
 
     # Toy R-GCN
     rng = np.random.default_rng(0)
@@ -122,10 +122,10 @@ def heterogeneous_gnns():
         deg = A_r[r].sum(axis=1, keepdims=True) + 1e-9
         H_out += (A_r[r] / deg) @ X @ W_r[r]
     H_out = relu(H_out)
-    print(f"\n  R-GCN (2 relations): {X.shape} → {H_out.shape}")
+    print(f"\n  R-GCN (2 relations): {X.shape} -> {H_out.shape}")
 
 
-# ── 4. Temporal GNNs ─────────────────────────────────────────────────────────
+# -- 4. Temporal GNNs ---------------------------------------------------------
 def temporal_gnns():
     print("\n=== Temporal GNNs ===")
     print()
@@ -143,8 +143,8 @@ def temporal_gnns():
     print()
     print("  TGN (Rossi 2020):")
     print("    Node memory m_v:  persistent state updated by events")
-    print("    Message function:  msg = CONCAT(m_v, m_u, Δt, e_{uv})")
-    print("    Memory update:     m_v ← GRU(m_v, agg_msgs)")
+    print("    Message function:  msg = CONCAT(m_v, m_u, Deltat, e_{uv})")
+    print("    Memory update:     m_v <- GRU(m_v, agg_msgs)")
     print("    Embedding:         h_v = MLP(m_v, agg_neighbours)")
     print()
     print("  Applications:")

@@ -58,9 +58,9 @@ def demo_sparse():
 def demo_jacobi(tol=1e-6, max_iter=1000):
     print("\n=== Jacobi Iterative Solver ===")
     # Diagonally dominant system (guaranteed convergence)
-    A = np.array([[10.,-1.,2.],[
+    A = np.array([[10.,-1., 2.],
                   [-1.,11.,-1.],
-                  [2.,-1.,10.]])
+                  [ 2.,-1.,10.]])
     b = np.array([6., 25., -11.])
     x_true = np.linalg.solve(A, b)
 
@@ -83,7 +83,7 @@ def demo_jacobi(tol=1e-6, max_iter=1000):
 
     fig, ax = plt.subplots(figsize=(6,4))
     ax.semilogy(errors, c="steelblue")
-    ax.set_xlabel("Iteration"); ax.set_ylabel("‖Δx‖")
+    ax.set_xlabel("Iteration"); ax.set_ylabel("||Deltax||")
     ax.set_title("Jacobi convergence")
     fig.savefig(OUTPUT / "jacobi_convergence.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: jacobi_convergence.png")

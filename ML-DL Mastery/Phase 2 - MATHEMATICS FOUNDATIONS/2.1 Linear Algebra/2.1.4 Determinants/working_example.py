@@ -8,7 +8,7 @@ from itertools import permutations
 import math
 
 
-# ── Manual determinant via Leibniz formula ────────────────────────────────────
+# -- Manual determinant via Leibniz formula ------------------------------------
 def det_leibniz(M):
     """O(n!) — educational only, not for large matrices."""
     n = len(M)
@@ -22,7 +22,7 @@ def det_leibniz(M):
     return total
 
 
-# ── Cofactor expansion (recursive) ───────────────────────────────────────────
+# -- Cofactor expansion (recursive) -------------------------------------------
 def minor(M, row, col):
     return [[M[i][j] for j in range(len(M[0])) if j != col]
             for i in range(len(M)) if i != row]
@@ -39,7 +39,7 @@ def demo_det_computation():
     print("=== Determinant Computation ===")
     cases = [
         [[3, 8], [4, 6]],
-        [[1, 2, 3], [4, 5, 6], [7, 8, 9]],          # singular → det=0
+        [[1, 2, 3], [4, 5, 6], [7, 8, 9]],          # singular -> det=0
         [[2, -1, 0], [3, 5, -1], [1, -2, 4]],
     ]
     for M in cases:
@@ -51,7 +51,7 @@ def demo_det_computation():
         print(f"    Leibniz={d_lei}  Cofactor={d_cof}  NumPy={d_np}\n")
 
 
-# ── Properties of determinants ────────────────────────────────────────────────
+# -- Properties of determinants ------------------------------------------------
 def det_properties():
     print("=== Determinant Properties ===")
     rng = np.random.default_rng(42)
@@ -68,18 +68,18 @@ def det_properties():
          np.linalg.det(A.T),         dA),
         ("det(2A) = 2³ det(A) [n=3]",
          np.linalg.det(2 * A),       8 * dA),
-        ("det(A⁻¹) = 1/det(A)",
+        ("det(A^-1) = 1/det(A)",
          np.linalg.det(np.linalg.inv(A)), 1 / dA),
-        ("swap rows → negate det",
+        ("swap rows -> negate det",
          np.linalg.det(A[[1,0,2]]),  -dA),
     ]
     for label, computed, expected in props:
-        ok = "✓" if abs(computed - expected) < 1e-8 else "✗"
+        ok = "[OK]" if abs(computed - expected) < 1e-8 else "[X]"
         print(f"  [{ok}] {label}")
         print(f"       computed={computed:.4f}  expected={expected:.4f}")
 
 
-# ── Geometric interpretation ─────────────────────────────────────────────────
+# -- Geometric interpretation -------------------------------------------------
 def geometric_interpretation():
     print("\n=== Geometric Interpretation ===")
     # In 2D: |det| = area of parallelogram spanned by column vectors
@@ -104,7 +104,7 @@ def geometric_interpretation():
     print(f"\n  scaling matrix 2I: det = {np.linalg.det(A):.4f}  (volume scale factor = 2³ = 8)")
 
 
-# ── Cramer's Rule ────────────────────────────────────────────────────────────
+# -- Cramer's Rule ------------------------------------------------------------
 def cramers_rule(A, b):
     """Solve Ax = b using Cramer's Rule (for small n)."""
     A = np.array(A, dtype=float)
@@ -132,7 +132,7 @@ def demo_cramers_rule():
     print(f"  verify Ax = {np.round(np.array(A) @ x, 6)}")
 
 
-# ── Singularity detection ─────────────────────────────────────────────────────
+# -- Singularity detection -----------------------------------------------------
 def singularity_demo():
     print("\n=== Singularity & Ill-Conditioning ===")
     cases = [

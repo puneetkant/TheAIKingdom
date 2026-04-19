@@ -24,7 +24,7 @@ def ks_test(reference, production, alpha=0.05):
     cdf1 = np.searchsorted(np.sort(reference), all_vals, side='right') / n1
     cdf2 = np.searchsorted(np.sort(production), all_vals, side='right') / n2
     ks_stat = np.max(np.abs(cdf1 - cdf2))
-    critical = 1.36 * np.sqrt((n1 + n2) / (n1 * n2))  # α=0.05 approx
+    critical = 1.36 * np.sqrt((n1 + n2) / (n1 * n2))  # alpha=0.05 approx
     return ks_stat, ks_stat > critical
 
 def psi(ref, prod, bins=10):
@@ -67,7 +67,7 @@ def demo():
 
     for w, prod in enumerate(weekly_data):
         alert = monitor.check(w, prod)
-        flag = "🚨 ALERT" if alert else "✓"
+        flag = "[ALERT]" if alert else "[OK]"
         print(f"  Week {w:2d}: KS={monitor.alerts[-1]['ks']:.3f}  PSI={monitor.alerts[-1]['psi']:.3f}  {flag}")
 
     weeks = [a["week"] for a in monitor.alerts]

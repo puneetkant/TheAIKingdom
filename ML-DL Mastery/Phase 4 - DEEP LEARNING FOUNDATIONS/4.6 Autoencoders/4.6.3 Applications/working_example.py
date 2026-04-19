@@ -22,7 +22,7 @@ def sigmoid(z): return 1 / (1 + np.exp(-z.clip(-500, 500)))
 def relu(z):    return np.maximum(0, z)
 
 
-# ── Simple AE for reuse ───────────────────────────────────────────────────────
+# -- Simple AE for reuse -------------------------------------------------------
 class SimpleAE:
     def __init__(self, input_dim, hidden_dim, latent_dim, rng):
         s = 0.05
@@ -67,12 +67,12 @@ class SimpleAE:
         return losses
 
 
-# ── 1. Anomaly Detection ──────────────────────────────────────────────────────
+# -- 1. Anomaly Detection ------------------------------------------------------
 def anomaly_detection():
     print("=== Anomaly Detection with Autoencoders ===")
     print("  Key idea: AE trained on normal data cannot reconstruct anomalies well")
-    print("  Anomaly score = reconstruction error = ||X - X̂||²")
-    print("  Threshold τ: flag as anomaly if score > τ")
+    print("  Anomaly score = reconstruction error = ||X - X||²")
+    print("  Threshold tau: flag as anomaly if score > tau")
     print()
 
     rng = np.random.default_rng(42)
@@ -113,7 +113,7 @@ def anomaly_detection():
     tau = np.percentile(err_normal, 95)
     tp  = (err_anomaly > tau).sum()
     fp  = (err_normal  > tau).sum()
-    print(f"\n  Threshold @ 95th pct of normal: τ = {tau:.5f}")
+    print(f"\n  Threshold @ 95th pct of normal: tau = {tau:.5f}")
     print(f"  True positives: {tp}/{len(err_anomaly)} anomalies detected")
     print(f"  False positives: {fp}/{len(err_normal)} normal flagged")
 
@@ -121,7 +121,7 @@ def anomaly_detection():
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(err_normal, bins=30, alpha=0.6, label="Normal", density=True)
     ax.hist(err_anomaly, bins=30, alpha=0.6, label="Anomaly", density=True)
-    ax.axvline(tau, color='r', linestyle='--', label=f"τ={tau:.4f}")
+    ax.axvline(tau, color='r', linestyle='--', label=f"tau={tau:.4f}")
     ax.set(xlabel="Reconstruction Error", ylabel="Density",
            title="Anomaly Detection via Reconstruction Error"); ax.legend()
     ax.grid(True, alpha=0.3)
@@ -131,7 +131,7 @@ def anomaly_detection():
     print(f"  Distribution plot: {path}")
 
 
-# ── 2. Dimensionality reduction comparison ────────────────────────────────────
+# -- 2. Dimensionality reduction comparison ------------------------------------
 def dimensionality_reduction():
     print("\n=== Dimensionality Reduction: AE vs PCA ===")
     digits = load_digits()
@@ -170,11 +170,11 @@ def dimensionality_reduction():
               f"AE Acc={acc_ae:.3f} PCA Acc={acc_pca:.3f}")
 
     print()
-    print("  AE can learn non-linear structure → better at lower dims")
-    print("  PCA is linear → better when data is roughly linear or dim is moderate")
+    print("  AE can learn non-linear structure -> better at lower dims")
+    print("  PCA is linear -> better when data is roughly linear or dim is moderate")
 
 
-# ── 3. Denoising application ─────────────────────────────────────────────────
+# -- 3. Denoising application -------------------------------------------------
 def denoising_application():
     print("\n=== Denoising Application ===")
     digits = load_digits()
@@ -198,21 +198,21 @@ def denoising_application():
     mse_noisy_in   = np.mean((Xts_noisy - Xts)**2)
     mse_after_ae   = np.mean((X_hat_noisy - Xts)**2)
 
-    print(f"  Noise σ={sigma}")
+    print(f"  Noise sigma={sigma}")
     print(f"  Baseline MSE (noisy input vs clean): {mse_noisy_in:.5f}")
     print(f"  After AE denoising:                  {mse_after_ae:.5f}")
     psnr = 10 * np.log10(1.0 / mse_after_ae)
     print(f"  PSNR (higher=better):                {psnr:.2f} dB")
 
 
-# ── 4. Feature pre-training ───────────────────────────────────────────────────
+# -- 4. Feature pre-training ---------------------------------------------------
 def feature_pretraining():
     print("\n=== Unsupervised Pre-training with Autoencoders ===")
     print("  Historical use (pre-2012): initialise DNN weights with layer-wise AE pre-training")
     print("  Now superseded by better initialisers + batch norm + ReLUs")
     print()
     print("  Modern use cases:")
-    print("    1. Few-shot learning: AE features on unlabelled data → fine-tune")
+    print("    1. Few-shot learning: AE features on unlabelled data -> fine-tune")
     print("    2. Semi-supervised: AE on all data; classifier on labelled only")
     print("    3. Domain adaptation: unsupervised features generalise better")
     print()

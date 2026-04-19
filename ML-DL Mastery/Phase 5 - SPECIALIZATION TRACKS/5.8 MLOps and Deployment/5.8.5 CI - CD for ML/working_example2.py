@@ -1,7 +1,7 @@
 """
 Working Example 2: CI/CD for ML — pipeline simulation, test gate, deployment gate
 ==================================================================================
-Simulates a full CI/CD pipeline: lint → unit test → train → evaluate → promote.
+Simulates a full CI/CD pipeline: lint -> unit test -> train -> evaluate -> promote.
 
 Run:  python working_example2.py
 """
@@ -17,7 +17,7 @@ except ImportError:
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
-# ── Stages ────────────────────────────────────────────────────────────────────
+# -- Stages --------------------------------------------------------------------
 def stage_lint(code_str):
     """Checks for obvious issues."""
     issues = []
@@ -65,7 +65,7 @@ def stage_deploy(model_W, version):
     np.save(OUTPUT / f"model_v{version}.npy", model_W)
     return f"model_v{version}.npy"
 
-# ── Pipeline runner ───────────────────────────────────────────────────────────
+# -- Pipeline runner -----------------------------------------------------------
 def run_pipeline(version="1.0"):
     print(f"=== CI/CD Pipeline (v{version}) ===\n")
     results = {}
@@ -73,33 +73,33 @@ def run_pipeline(version="1.0"):
     print("  [1/5] Lint...")
     issues = stage_lint("def train(): pass\n")
     if issues:
-        print(f"  ❌ Lint failed: {issues}"); return False
-    print("  ✓ Lint passed")
+        print(f"  [X] Lint failed: {issues}"); return False
+    print("  [OK] Lint passed")
     results["lint"] = "pass"
 
     print("  [2/5] Unit tests...")
     try:
         stage_unit_test()
-        print("  ✓ Tests passed")
+        print("  [OK] Tests passed")
         results["unit_test"] = "pass"
     except AssertionError as e:
-        print(f"  ❌ Test failed: {e}"); return False
+        print(f"  [X] Test failed: {e}"); return False
 
     print("  [3/5] Training...")
     W, val_acc = stage_train()
-    print(f"  ✓ Trained — val_acc={val_acc:.4f}")
+    print(f"  [OK] Trained — val_acc={val_acc:.4f}")
     results["train"] = "pass"
 
     print("  [4/5] Evaluation gate...")
     passed, metrics = stage_evaluate(val_acc, threshold=0.70)
     if not passed:
-        print(f"  ❌ Eval gate failed: {metrics}"); return False
-    print(f"  ✓ Eval gate passed: {metrics}")
+        print(f"  [X] Eval gate failed: {metrics}"); return False
+    print(f"  [OK] Eval gate passed: {metrics}")
     results["eval"] = "pass"
 
     print("  [5/5] Deploy...")
     artifact = stage_deploy(W, version)
-    print(f"  ✓ Deployed: {artifact}")
+    print(f"  [OK] Deployed: {artifact}")
     results["deploy"] = "pass"
 
     print(f"\n  Pipeline complete. All stages: {list(results.values())}")

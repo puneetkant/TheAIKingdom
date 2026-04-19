@@ -20,7 +20,7 @@ except ImportError:
 OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
-# ── Numpy optimizer classes ─────────────────────────────────────────────────
+# -- Numpy optimizer classes -------------------------------------------------
 class SGD:
     def __init__(self, lr=0.01): self.lr = lr
     def update(self, p, g): return p - self.lr * g
@@ -52,7 +52,7 @@ class Adam:
         return p - self.lr * m_hat / (np.sqrt(v_hat) + self.eps)
 
 def demo_quadratic():
-    """Minimize f(x) = x² from x₀=10."""
+    """Minimize f(x) = x² from x0=10."""
     print("=== Optimizer comparison on f(x) = x² ===")
     x0 = 10.0
     opts = {"SGD": SGD(0.1), "Momentum": Momentum(0.1), "RMSProp": RMSProp(0.1), "Adam": Adam(0.1)}

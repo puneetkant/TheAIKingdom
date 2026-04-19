@@ -12,7 +12,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def sigmoid(x): return 1 / (1 + np.exp(-np.clip(x, -30, 30)))
 
 
-# ── 1. Serving approaches ─────────────────────────────────────────────────────
+# -- 1. Serving approaches -----------------------------------------------------
 def serving_overview():
     print("=== Model Serving and Deployment ===")
     print()
@@ -40,7 +40,7 @@ def serving_overview():
         print(f"  {f:<18} {d}")
 
 
-# ── 2. REST API design ────────────────────────────────────────────────────────
+# -- 2. REST API design --------------------------------------------------------
 def rest_api_design():
     print("\n=== REST API Design for ML Models ===")
     print()
@@ -100,7 +100,7 @@ async def metrics():
         print(f"  • {p}")
 
 
-# ── 3. Batching for throughput ────────────────────────────────────────────────
+# -- 3. Batching for throughput ------------------------------------------------
 def batching_demo():
     print("\n=== Dynamic Batching for Throughput ===")
     print()
@@ -148,7 +148,7 @@ dynamic_batching {
     print(triton_cfg)
 
 
-# ── 4. Model optimisation for serving ─────────────────────────────────────────
+# -- 4. Model optimisation for serving -----------------------------------------
 def model_optimisation():
     print("=== Model Optimisation for Serving ===")
     print()
@@ -163,7 +163,7 @@ def model_optimisation():
         ("FlashAttention",       "Memory-efficient attention; I/O aware"),
     ]
     print(f"  {'Technique':<25} {'Notes'}")
-    print(f"  {'─'*25} {'─'*50}")
+    print(f"  {'-'*25} {'-'*50}")
     for t, d in techniques:
         print(f"  {t:<25} {d}")
 

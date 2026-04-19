@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_3d_vision")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Camera models and geometry ─────────────────────────────────────────────
+# -- 1. Camera models and geometry ---------------------------------------------
 def camera_geometry():
     print("=== Camera Geometry ===")
     print("  Pinhole camera model:")
@@ -46,7 +46,7 @@ def camera_geometry():
     print(f"  Back-projected: ({X:.3f}, {Y:.3f}, {Z:.3f})  (should match original)")
 
 
-# ── 2. Stereo vision and depth ────────────────────────────────────────────────
+# -- 2. Stereo vision and depth ------------------------------------------------
 def stereo_vision():
     print("\n=== Stereo Vision ===")
     print("  Two cameras separated by baseline b; same horizontal row (epipolar)")
@@ -69,7 +69,7 @@ def stereo_vision():
         "1. Rectify images (align epipolar lines to horizontal)",
         "2. Compute cost volume: |I_L(x,y) - I_R(x-d,y)| for each d",
         "3. Aggregate costs (box filter or learning)",
-        "4. WTA (winner-take-all) per pixel → disparity map",
+        "4. WTA (winner-take-all) per pixel -> disparity map",
         "5. Post-process: sub-pixel refinement, hole filling",
     ]
     for s in steps:
@@ -87,7 +87,7 @@ def stereo_vision():
         print(f"    {m:<14} {d}")
 
 
-# ── 3. Point clouds ──────────────────────────────────────────────────────────
+# -- 3. Point clouds ----------------------------------------------------------
 def point_clouds():
     print("\n=== Point Clouds ===")
     print("  Representation: set of (x, y, z) [+ r, g, b, intensity, normal, ...]")
@@ -129,7 +129,7 @@ def point_clouds():
         print(f"    {m:<18} {d}")
 
 
-# ── 4. Optical flow ───────────────────────────────────────────────────────────
+# -- 4. Optical flow -----------------------------------------------------------
 def optical_flow():
     print("\n=== Optical Flow ===")
     print("  Estimate per-pixel motion between two frames")
@@ -142,7 +142,7 @@ def optical_flow():
     print()
     print("  Horn-Schunck (global, variational):")
     print("    Adds spatial smoothness constraint")
-    print("    Minimise: ∫∫ (Ix·u + Iy·v + It)² + λ(|∇u|² + |∇v|²) dx dy")
+    print("    Minimise: integralintegral (Ix·u + Iy·v + It)² + lambda(|∇u|² + |∇v|²) dx dy")
     print()
 
     # Simulate optical flow on synthetic motion
@@ -182,22 +182,22 @@ def optical_flow():
         print(f"    {m:<12} {d}")
 
 
-# ── 5. NeRF (Neural Radiance Fields) ─────────────────────────────────────────
+# -- 5. NeRF (Neural Radiance Fields) -----------------------------------------
 def nerf_overview():
     print("\n=== NeRF (Neural Radiance Fields) ===")
     print("  Mildenhall et al. (2020)")
-    print("  Represent a 3D scene as: f(x, y, z, θ, φ) → (r, g, b, σ)")
-    print("    (x,y,z) = 3D location  (θ,φ) = viewing direction")
-    print("    Output: colour (rgb) + volume density (σ)")
+    print("  Represent a 3D scene as: f(x, y, z, theta, phi) -> (r, g, b, sigma)")
+    print("    (x,y,z) = 3D location  (theta,phi) = viewing direction")
+    print("    Output: colour (rgb) + volume density (sigma)")
     print()
     print("  Rendering via volume rendering integral:")
-    print("    C(r) = ∫ T(t) σ(r(t)) c(r(t), d) dt")
-    print("    T(t) = exp(-∫ σ(r(s)) ds)   (transmittance)")
+    print("    C(r) = integral T(t) sigma(r(t)) c(r(t), d) dt")
+    print("    T(t) = exp(-integral sigma(r(s)) ds)   (transmittance)")
     print()
     print("  Training:")
     print("    1. Cast rays from known camera positions")
     print("    2. Sample points along each ray")
-    print("    3. Query MLP for (rgb, σ) at each point")
+    print("    3. Query MLP for (rgb, sigma) at each point")
     print("    4. Composite colours via volume rendering")
     print("    5. Minimise ||C_pred - C_gt||²")
     print()
@@ -213,17 +213,17 @@ def nerf_overview():
         print(f"    {v:<14} {d}")
 
 
-# ── 6. Monocular depth estimation ─────────────────────────────────────────────
+# -- 6. Monocular depth estimation ---------------------------------------------
 def monocular_depth():
     print("\n=== Monocular Depth Estimation ===")
     print("  Predict per-pixel depth from a single RGB image")
-    print("  Inherently ill-posed → needs learned priors")
+    print("  Inherently ill-posed -> needs learned priors")
     print()
     print("  Loss functions:")
     losses = [
-        ("Scale-Invariant Log",    "Δ(log d_i - log d̂_i) — handles scale ambiguity"),
-        ("AbsRel",                 "|d-d̂| / d — relative absolute error"),
-        ("δ1, δ2, δ3 accuracy",    "Fraction with max(d/d̂, d̂/d) < 1.25^k"),
+        ("Scale-Invariant Log",    "Delta(log d_i - log d_i) — handles scale ambiguity"),
+        ("AbsRel",                 "|d-d| / d — relative absolute error"),
+        ("delta1, delta2, delta3 accuracy",    "Fraction with max(d/d, d/d) < 1.25^k"),
         ("Berhu (reverse Huber)",  "L1 for small errors, L2 for large"),
     ]
     for l, d in losses:

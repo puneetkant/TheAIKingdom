@@ -24,7 +24,7 @@ def layer_norm(x, eps=1e-6):
 def relu(z): return np.maximum(0, z)
 
 
-# ── 1. Positional Encoding ───────────────────────────────────────────────────
+# -- 1. Positional Encoding ---------------------------------------------------
 def positional_encoding(T, d_model):
     """
     PE(pos, 2i)   = sin(pos / 10000^(2i/d_model))
@@ -47,7 +47,7 @@ def pe_demo():
     print()
     print("  Properties:")
     print("    Unique encoding for each position")
-    print("    PE · PE^T ≈ function of (pos1 - pos2) → relative position info")
+    print("    PE · PE^T ~= function of (pos1 - pos2) -> relative position info")
     print("    Works for unseen sequence lengths")
 
     T, d = 20, 64
@@ -67,7 +67,7 @@ def pe_demo():
     print(f"  Plot saved: {path}")
 
 
-# ── 2. Scaled Dot-Product Attention ──────────────────────────────────────────
+# -- 2. Scaled Dot-Product Attention ------------------------------------------
 def scaled_dot_product_attention(Q, K, V, mask=None):
     d_k    = Q.shape[-1]
     scores = Q @ K.swapaxes(-2, -1) / np.sqrt(d_k)
@@ -77,7 +77,7 @@ def scaled_dot_product_attention(Q, K, V, mask=None):
     return alpha @ V, alpha
 
 
-# ── 3. Multi-Head Attention layer ────────────────────────────────────────────
+# -- 3. Multi-Head Attention layer --------------------------------------------
 class MultiHeadAttention:
     def __init__(self, d_model, n_heads, rng):
         self.h  = n_heads
@@ -89,7 +89,7 @@ class MultiHeadAttention:
         self.d   = d_model
 
     def _split_heads(self, X):
-        """(T, d_model) → (n_heads, T, d_k)."""
+        """(T, d_model) -> (n_heads, T, d_k)."""
         T  = X.shape[0]
         X  = X.reshape(T, self.h, self.dk)
         return X.transpose(1, 0, 2)   # (h, T, dk)
@@ -107,7 +107,7 @@ class MultiHeadAttention:
         return concat @ self.W_O
 
 
-# ── 4. Feed-Forward sublayer ─────────────────────────────────────────────────
+# -- 4. Feed-Forward sublayer -------------------------------------------------
 class FeedForward:
     def __init__(self, d_model, d_ff, rng):
         self.W1 = rng.standard_normal((d_model, d_ff)) * 0.02
@@ -119,9 +119,9 @@ class FeedForward:
         return relu(X @ self.W1 + self.b1) @ self.W2 + self.b2
 
 
-# ── 5. Encoder Block ─────────────────────────────────────────────────────────
+# -- 5. Encoder Block ---------------------------------------------------------
 class EncoderBlock:
-    """Self-Attn → Add&Norm → FFN → Add&Norm."""
+    """Self-Attn -> Add&Norm -> FFN -> Add&Norm."""
     def __init__(self, d_model, n_heads, d_ff, rng):
         self.mha = MultiHeadAttention(d_model, n_heads, rng)
         self.ffn = FeedForward(d_model, d_ff, rng)
@@ -134,9 +134,9 @@ class EncoderBlock:
         return X3
 
 
-# ── 6. Decoder Block ─────────────────────────────────────────────────────────
+# -- 6. Decoder Block ---------------------------------------------------------
 class DecoderBlock:
-    """Masked Self-Attn → Cross-Attn → FFN (each with Add&Norm)."""
+    """Masked Self-Attn -> Cross-Attn -> FFN (each with Add&Norm)."""
     def __init__(self, d_model, n_heads, d_ff, rng):
         self.self_attn  = MultiHeadAttention(d_model, n_heads, rng)
         self.cross_attn = MultiHeadAttention(d_model, n_heads, rng)
@@ -151,7 +151,7 @@ class DecoderBlock:
         return layer_norm(Y3 + ff)
 
 
-# ── 7. Full Transformer ───────────────────────────────────────────────────────
+# -- 7. Full Transformer -------------------------------------------------------
 def transformer_demo():
     print("\n=== Full Transformer (Encoder-Decoder) ===")
     rng     = np.random.default_rng(42)
@@ -201,14 +201,14 @@ def transformer_demo():
     print(f"  Predicted token ids: {preds}")
 
 
-# ── 8. Architecture overview ─────────────────────────────────────────────────
+# -- 8. Architecture overview -------------------------------------------------
 def architecture_overview():
     print("\n=== Transformer Architecture ('Attention Is All You Need', Vaswani 2017) ===")
     print()
     print("  ENCODER (left)              DECODER (right)")
-    print("  ─────────────────────────   ─────────────────────────────")
+    print("  -------------------------   -----------------------------")
     print("  Input Embedding + PE        Output Embedding + PE")
-    print("  ↓                           ↓")
+    print("  v                           v")
     print("  × N:                        × N:")
     print("    Multi-Head Self-Attn        Masked MH Self-Attn")
     print("    Add & LayerNorm             Add & LayerNorm")
@@ -216,8 +216,8 @@ def architecture_overview():
     print("    Add & LayerNorm             Add & LayerNorm")
     print("                               Feed-Forward (d_ff=2048)")
     print("                               Add & LayerNorm")
-    print("                           ↓")
-    print("                           Linear → Softmax → Output probs")
+    print("                           v")
+    print("                           Linear -> Softmax -> Output probs")
     print()
     print("  Original 'base' config:")
     config = [
@@ -234,7 +234,7 @@ def architecture_overview():
         print(f"  {name:<14} {str(val):<10} {note}")
 
 
-# ── 9. Complexity comparison ─────────────────────────────────────────────────
+# -- 9. Complexity comparison -------------------------------------------------
 def complexity_comparison():
     print("\n=== Complexity: Self-Attention vs RNN vs CNN ===")
     print(f"  {'Operation':<22} {'Complexity per layer':<30} {'Sequential ops'}")

@@ -9,15 +9,15 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_peft")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. PEFT overview ──────────────────────────────────────────────────────────
+# -- 1. PEFT overview ----------------------------------------------------------
 def peft_overview():
     print("=== Parameter-Efficient Fine-Tuning (PEFT) ===")
     print()
-    print("  Full fine-tuning: update all N parameters → expensive")
+    print("  Full fine-tuning: update all N parameters -> expensive")
     print("  PEFT: train only a small subset / add tiny adapters")
     print()
     methods = [
-        ("LoRA",          "Low-Rank Adapters; decompose ΔW into AB; most popular"),
+        ("LoRA",          "Low-Rank Adapters; decompose DeltaW into AB; most popular"),
         ("QLoRA",         "LoRA + 4-bit quantised base; fits 70B on 48GB GPU"),
         ("Prefix Tuning", "Learn virtual token prefixes; prepend to K,V"),
         ("Prompt Tuning", "Learn soft prompt embeddings; very few params"),
@@ -30,12 +30,12 @@ def peft_overview():
         print(f"  {m:<16} {d}")
 
 
-# ── 2. LoRA deep dive ─────────────────────────────────────────────────────────
+# -- 2. LoRA deep dive ---------------------------------------------------------
 def lora_demo():
     print("\n=== LoRA (Low-Rank Adaptation) ===")
     print()
-    print("  W_new = W_0 + ΔW = W_0 + α/r · B·A")
-    print("  A ∈ ℝ^{r×d_in}, B ∈ ℝ^{d_out×r}, B init to 0, A ~ N(0,σ²)")
+    print("  W_new = W_0 + DeltaW = W_0 + alpha/r · B·A")
+    print("  A in ℝ^{rxd_in}, B in ℝ^{d_outxr}, B init to 0, A ~ N(0,sigma²)")
     print("  Only A, B trained; W_0 frozen; merged at inference")
     print()
 
@@ -85,10 +85,10 @@ def lora_demo():
     modules = ["q_proj", "k_proj", "v_proj", "o_proj",
                "gate_proj", "up_proj", "down_proj"]
     print(f"  {modules}")
-    print("  Typical: q_proj + v_proj only → fewer params, often sufficient")
+    print("  Typical: q_proj + v_proj only -> fewer params, often sufficient")
 
 
-# ── 3. QLoRA ──────────────────────────────────────────────────────────────────
+# -- 3. QLoRA ------------------------------------------------------------------
 def qlora_overview():
     print("\n=== QLoRA (Quantised LoRA) ===")
     print()
@@ -115,7 +115,7 @@ def qlora_overview():
     print("    Essentially no quality loss in practice for most tasks")
 
 
-# ── 4. Prompt tuning and prefix tuning ────────────────────────────────────────
+# -- 4. Prompt tuning and prefix tuning ----------------------------------------
 def soft_prompt_methods():
     print("\n=== Soft Prompt Methods ===")
     print()
@@ -131,7 +131,7 @@ def soft_prompt_methods():
     task_input   = rng.normal(0, 1, (8, d_model))   # 8 real tokens
     # Prepend soft prompts
     full_input = np.vstack([soft_prompts, task_input])
-    print(f"  Task input: {task_input.shape} → with prompt tokens: {full_input.shape}")
+    print(f"  Task input: {task_input.shape} -> with prompt tokens: {full_input.shape}")
 
     print()
     print("  Prefix Tuning (Li & Liang 2021):")

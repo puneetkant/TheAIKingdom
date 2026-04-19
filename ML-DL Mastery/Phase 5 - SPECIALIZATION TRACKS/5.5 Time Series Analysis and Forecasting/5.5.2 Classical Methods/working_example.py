@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_classical_ts")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Helper: generate data ─────────────────────────────────────────────────────
+# -- Helper: generate data -----------------------------------------------------
 def gen_series(T=120, seed=0):
     rng = np.random.default_rng(seed)
     t   = np.arange(T)
@@ -21,7 +21,7 @@ def gen_series(T=120, seed=0):
             + rng.normal(0, 2, T))
 
 
-# ── 1. Exponential smoothing ──────────────────────────────────────────────────
+# -- 1. Exponential smoothing --------------------------------------------------
 def exponential_smoothing():
     print("=== Exponential Smoothing Methods ===")
     series = gen_series()
@@ -36,13 +36,13 @@ def exponential_smoothing():
         return s
 
     alphas = [0.1, 0.3, 0.7]
-    print(f"  Simple Exponential Smoothing: ŷ_t = α·y_t + (1-α)·ŷ_{'{t-1}'}")
-    print(f"  α close to 1 → more weight on recent values")
+    print(f"  Simple Exponential Smoothing: ŷ_t = alpha·y_t + (1-alpha)·ŷ_{'{t-1}'}")
+    print(f"  alpha close to 1 -> more weight on recent values")
     print()
     for a in alphas:
         smoothed = ses(series, a)
         mse = ((series[1:] - smoothed[:-1])**2).mean()
-        print(f"  α={a}: one-step-ahead MSE = {mse:.3f}")
+        print(f"  alpha={a}: one-step-ahead MSE = {mse:.3f}")
 
     # Double exponential smoothing (Holt)
     def holt(y, alpha, beta, h=1):
@@ -98,12 +98,12 @@ def exponential_smoothing():
     print(f"\n  Holt-Winters plot: {path}")
 
 
-# ── 2. AR, MA, ARMA models ────────────────────────────────────────────────────
+# -- 2. AR, MA, ARMA models ----------------------------------------------------
 def arma_models():
     print("\n=== AR, MA, ARMA Models ===")
     print()
-    print("  AR(p):  x_t = c + φ_1·x_{t-1} + ... + φ_p·x_{t-p} + ε_t")
-    print("  MA(q):  x_t = c + ε_t + θ_1·ε_{t-1} + ... + θ_q·ε_{t-q}")
+    print("  AR(p):  x_t = c + phi_1·x_{t-1} + ... + phi_p·x_{t-p} + epsilon_t")
+    print("  MA(q):  x_t = c + epsilon_t + theta_1·epsilon_{t-1} + ... + theta_q·epsilon_{t-q}")
     print("  ARMA(p,q): combination")
     print()
     rng = np.random.default_rng(1)
@@ -116,8 +116,8 @@ def arma_models():
     for t in range(2, T):
         x[t] = phi[0]*x[t-1] + phi[1]*x[t-2] + e[t]
 
-    print("  Simulated AR(2): φ_1=0.5, φ_2=-0.3")
-    print(f"  Mean: {x.mean():.4f} (≈0)  Std: {x.std():.4f}")
+    print("  Simulated AR(2): phi_1=0.5, phi_2=-0.3")
+    print(f"  Mean: {x.mean():.4f} (~=0)  Std: {x.std():.4f}")
 
     # Yule-Walker estimation
     mu  = x.mean()
@@ -130,8 +130,8 @@ def arma_models():
     R   = np.array([[g0, g1], [g1, g0]])
     r   = np.array([g1, g2])
     phi_est = np.linalg.solve(R, r)
-    print(f"  Yule-Walker estimates: φ_1={phi_est[0]:.4f}  φ_2={phi_est[1]:.4f}")
-    print(f"  True values:           φ_1=0.5000  φ_2=-0.3000")
+    print(f"  Yule-Walker estimates: phi_1={phi_est[0]:.4f}  phi_2={phi_est[1]:.4f}")
+    print(f"  True values:           phi_1=0.5000  phi_2=-0.3000")
 
     # Simulate MA(2)
     theta = [0.5, 0.3]
@@ -140,11 +140,11 @@ def arma_models():
     for t in range(2, T):
         y[t] = e2[t] + theta[0]*e2[t-1] + theta[1]*e2[t-2]
     print()
-    print("  Simulated MA(2): θ_1=0.5, θ_2=0.3")
+    print("  Simulated MA(2): theta_1=0.5, theta_2=0.3")
     print(f"  Mean: {y.mean():.4f}  Std: {y.std():.4f}")
 
 
-# ── 3. ARIMA (integration) ────────────────────────────────────────────────────
+# -- 3. ARIMA (integration) ----------------------------------------------------
 def arima_overview():
     print("\n=== ARIMA(p, d, q) ===")
     print()
@@ -152,15 +152,15 @@ def arima_overview():
     print("  d = order of differencing to achieve stationarity")
     print()
     print("  ARIMA(1,1,0):")
-    print("    Δx_t = φ_1·Δx_{t-1} + ε_t")
+    print("    Deltax_t = phi_1·Deltax_{t-1} + epsilon_t")
     print()
     print("  SARIMA(p,d,q)(P,D,Q)_m:")
     print("    Adds seasonal AR, I, MA terms with period m")
     print("    e.g. SARIMA(1,1,1)(1,1,1)_{12} for monthly sales data")
     print()
     print("  Model selection via information criteria:")
-    print("    AIC = 2k - 2·log(L̂)       (penalises complexity)")
-    print("    BIC = k·log(T) - 2·log(L̂)  (stronger penalty)")
+    print("    AIC = 2k - 2·log(L)       (penalises complexity)")
+    print("    BIC = k·log(T) - 2·log(L)  (stronger penalty)")
     print("    AIC tends to choose higher-order; BIC more parsimonious")
     print()
 
@@ -175,7 +175,7 @@ def arima_overview():
     x = dx.cumsum()  # integrate once
 
     train, test = x[:120], x[120:]
-    print(f"  Simulated ARIMA(1,1,0): φ_1={phi}")
+    print(f"  Simulated ARIMA(1,1,0): phi_1={phi}")
     print(f"  Train: {len(train)}  Test: {len(test)}")
 
     # Naive forecast (last value)
@@ -195,11 +195,11 @@ def arima_overview():
         fc_diff[i] = train[-1] + (i+1)*v if i == 0 else fc_diff[i-1] + v
     mse_arima = ((test - fc_diff)**2).mean()
 
-    print(f"  φ_1 estimate (Yule-Walker): {phi_est:.4f}  (true: {phi})")
+    print(f"  phi_1 estimate (Yule-Walker): {phi_est:.4f}  (true: {phi})")
     print(f"  Test MSE — naive: {mse_naive:.2f}   AR(1)-on-diff: {mse_arima:.2f}")
 
 
-# ── 4. Box-Jenkins methodology ────────────────────────────────────────────────
+# -- 4. Box-Jenkins methodology ------------------------------------------------
 def box_jenkins():
     print("\n=== Box-Jenkins Methodology ===")
     print("  Step-by-step workflow for ARIMA modelling:")
@@ -207,8 +207,8 @@ def box_jenkins():
     steps = [
         ("1. Explore",       "Plot series, ACF/PACF; identify patterns"),
         ("2. Stationarity",  "ADF/KPSS tests; apply differencing d times"),
-        ("3. Identify p, q", "ACF → q; PACF → p; tentative model"),
-        ("4. Estimate",      "MLE of φ, θ; or conditional least squares"),
+        ("3. Identify p, q", "ACF -> q; PACF -> p; tentative model"),
+        ("4. Estimate",      "MLE of phi, theta; or conditional least squares"),
         ("5. Diagnostics",   "Residual ACF (should be white noise); Ljung-Box test"),
         ("6. Forecast",      "h-step ahead with prediction intervals"),
     ]

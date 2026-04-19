@@ -22,7 +22,7 @@ DATA.mkdir(exist_ok=True)
 DB   = DATA / "titanic.db"
 
 
-# ── 1. Download + load into SQLite ────────────────────────────────────────────
+# -- 1. Download + load into SQLite --------------------------------------------
 def download_titanic() -> Path:
     dest = DATA / "titanic.csv"
     if dest.exists(): return dest
@@ -48,7 +48,7 @@ def create_db(csv_path: Path) -> sqlite3.Connection:
     conn = sqlite3.connect(DB)
     conn.execute("PRAGMA foreign_keys = ON")
 
-    # ── passengers table ──
+    # -- passengers table --
     conn.execute("""
         CREATE TABLE passengers (
             passenger_id INTEGER PRIMARY KEY,
@@ -64,7 +64,7 @@ def create_db(csv_path: Path) -> sqlite3.Connection:
         )
     """)
 
-    # ── class_info lookup table ──
+    # -- class_info lookup table --
     conn.execute("""
         CREATE TABLE class_info (
             pclass      INTEGER PRIMARY KEY,
@@ -79,7 +79,7 @@ def create_db(csv_path: Path) -> sqlite3.Connection:
          (3, "Third",  "G-T")]
     )
 
-    # ── load passengers ──
+    # -- load passengers --
     with open(csv_path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         records = []
@@ -108,7 +108,7 @@ def create_db(csv_path: Path) -> sqlite3.Connection:
     return conn
 
 
-# ── 2. Demo queries ────────────────────────────────────────────────────────────
+# -- 2. Demo queries ------------------------------------------------------------
 def demo_basic_queries(conn: sqlite3.Connection) -> None:
     print("\n=== Basic Queries ===")
 
@@ -206,7 +206,7 @@ def demo_update_and_safe_query(conn: sqlite3.Connection) -> None:
     large_fam = conn.execute(
         "SELECT COUNT(*) FROM passengers WHERE family_size >= ?", (4,)
     ).fetchone()[0]
-    print(f"  Passengers in families ≥4: {large_fam}")
+    print(f"  Passengers in families >=4: {large_fam}")
 
 
 def export_to_csv(conn: sqlite3.Connection) -> None:

@@ -19,7 +19,7 @@ import tempfile
 from pathlib import Path
 
 
-# ── Helpers ────────────────────────────────────────────────────────────────────
+# -- Helpers --------------------------------------------------------------------
 def git(*args: str, cwd: Path | None = None) -> str:
     """Run a git command and return stdout; raise on error."""
     result = subprocess.run(
@@ -39,7 +39,7 @@ def git_safe(*args: str, cwd: Path | None = None) -> str:
         return f"(error: {e})"
 
 
-# ── 1. System check ────────────────────────────────────────────────────────────
+# -- 1. System check ------------------------------------------------------------
 def check_git() -> bool:
     try:
         version = git("--version")
@@ -50,7 +50,7 @@ def check_git() -> bool:
         return False
 
 
-# ── 2. Temporary repo setup ────────────────────────────────────────────────────
+# -- 2. Temporary repo setup ----------------------------------------------------
 def setup_temp_repo() -> Path:
     repo = Path(tempfile.mkdtemp(prefix="ml_git_demo_"))
     git("init", cwd=repo)
@@ -60,7 +60,7 @@ def setup_temp_repo() -> Path:
     return repo
 
 
-# ── 3. Simulate ML project commits ────────────────────────────────────────────
+# -- 3. Simulate ML project commits --------------------------------------------
 def make_ml_commits(repo: Path) -> None:
     """Create a realistic series of ML project commits."""
     # Commit 1: initial data pipeline
@@ -97,7 +97,7 @@ def make_ml_commits(repo: Path) -> None:
     print(f"  Created 4 commits in {repo.name}")
 
 
-# ── 4. Inspect repo ────────────────────────────────────────────────────────────
+# -- 4. Inspect repo ------------------------------------------------------------
 def inspect_repo(repo: Path) -> None:
     print("\n=== git log --oneline ===")
     log = git("log", "--oneline", cwd=repo)
@@ -118,7 +118,7 @@ def inspect_repo(repo: Path) -> None:
         print(f"  {line}")
 
 
-# ── 5. Branch + diff ──────────────────────────────────────────────────────────
+# -- 5. Branch + diff ----------------------------------------------------------
 def demo_branch_and_diff(repo: Path) -> None:
     print("\n=== Branch: experiment/new-features ===")
     git("checkout", "-b", "experiment/new-features", cwd=repo)
@@ -140,7 +140,7 @@ def demo_branch_and_diff(repo: Path) -> None:
     git("checkout", "-", cwd=repo)
 
 
-# ── 6. Stash demo ─────────────────────────────────────────────────────────────
+# -- 6. Stash demo -------------------------------------------------------------
 def demo_stash(repo: Path) -> None:
     print("\n=== Stash ===")
     (repo / "experiment.py").write_text('# work in progress\nresult = None\n')
@@ -151,7 +151,7 @@ def demo_stash(repo: Path) -> None:
     print("  Stash popped — file restored:", (repo / "experiment.py").exists())
 
 
-# ── 7. Tag a model release ────────────────────────────────────────────────────
+# -- 7. Tag a model release ----------------------------------------------------
 def demo_tag(repo: Path) -> None:
     print("\n=== Tag a model version ===")
     git("tag", "-a", "v0.1.0", "-m", "Model v0.1.0: baseline LinearModel", cwd=repo)
@@ -159,7 +159,7 @@ def demo_tag(repo: Path) -> None:
     print("  Tag description:", git("describe", "--tags", cwd=repo))
 
 
-# ── 8. Status + clean up ──────────────────────────────────────────────────────
+# -- 8. Status + clean up ------------------------------------------------------
 def demo_status_and_cleanup(repo: Path) -> None:
     print("\n=== git status ===")
     print(git("status", "--short", cwd=repo))

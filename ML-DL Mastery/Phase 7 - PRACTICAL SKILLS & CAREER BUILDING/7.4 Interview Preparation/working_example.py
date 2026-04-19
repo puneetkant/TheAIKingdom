@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_interviews")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Interview types ────────────────────────────────────────────────────────
+# -- 1. Interview types --------------------------------------------------------
 def interview_types():
     print("=== ML Interview Preparation ===")
     print()
@@ -27,7 +27,7 @@ def interview_types():
         print(f"  {r:<24} {d}")
 
 
-# ── 2. Core ML questions with answers ─────────────────────────────────────────
+# -- 2. Core ML questions with answers -----------------------------------------
 def core_ml_questions():
     print("\n=== Core ML Interview Questions ===")
     print()
@@ -40,10 +40,10 @@ def core_ml_questions():
          "Gradient descent converges faster; equal scales prevent dominance;\n"
          "   distance-based models (KNN, SVM, PCA) require it."),
         ("L1 vs L2 regularisation?",
-         "L1 (Lasso): ||w||₁ → sparse weights; useful for feature selection.\n"
-         "   L2 (Ridge): ||w||₂² → small non-zero weights; standard for NNs."),
+         "L1 (Lasso): ||w||1 -> sparse weights; useful for feature selection.\n"
+         "   L2 (Ridge): ||w||2² -> small non-zero weights; standard for NNs."),
         ("Cross-entropy loss for classification?",
-         "L = -Σ y_i log(p_i); minimises KL divergence between true and predicted dist."),
+         "L = -Sigma y_i log(p_i); minimises KL divergence between true and predicted dist."),
         ("Why batch norm?",
          "Reduces internal covariate shift; allows higher LR; slight regularisation;\n"
          "   stabilises deep network training significantly."),
@@ -59,7 +59,7 @@ def core_ml_questions():
         print()
 
 
-# ── 3. Implement from scratch ─────────────────────────────────────────────────
+# -- 3. Implement from scratch -------------------------------------------------
 def implement_from_scratch():
     print("=== Common 'Implement From Scratch' Tasks ===")
     print()
@@ -99,7 +99,7 @@ def implement_from_scratch():
         print(f"  • {t}")
 
 
-# ── 4. ML system design ───────────────────────────────────────────────────────
+# -- 4. ML system design -------------------------------------------------------
 def ml_system_design():
     print("\n=== ML System Design Framework ===")
     print()
@@ -129,7 +129,7 @@ def ml_system_design():
         print(f"  • {p}")
 
 
-# ── 5. Behavioural tips ───────────────────────────────────────────────────────
+# -- 5. Behavioural tips -------------------------------------------------------
 def behavioural_prep():
     print("\n=== Behavioural Interview Prep ===")
     print()

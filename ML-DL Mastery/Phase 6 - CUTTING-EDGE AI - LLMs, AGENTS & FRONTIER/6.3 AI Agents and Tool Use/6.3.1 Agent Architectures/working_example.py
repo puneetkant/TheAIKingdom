@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_agent_arch")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. What is an AI agent? ───────────────────────────────────────────────────
+# -- 1. What is an AI agent? ---------------------------------------------------
 def agent_overview():
     print("=== AI Agent Architectures ===")
     print()
@@ -24,7 +24,7 @@ def agent_overview():
     print()
     print("  Agent taxonomy:")
     agent_types = [
-        ("Reactive",        "Direct perception → action; no planning; simple"),
+        ("Reactive",        "Direct perception -> action; no planning; simple"),
         ("Deliberative",    "World model; plan then act; classical AI"),
         ("ReAct",           "Reason + Act interleaved; LLM-native"),
         ("Plan-Execute",    "High-level plan first; then subagents execute"),
@@ -35,7 +35,7 @@ def agent_overview():
         print(f"  {t:<18} {d}")
 
 
-# ── 2. ReAct ──────────────────────────────────────────────────────────────────
+# -- 2. ReAct ------------------------------------------------------------------
 def react_pattern():
     print("\n=== ReAct (Reasoning + Acting) ===")
     print()
@@ -63,13 +63,13 @@ Action 3: Finish["Tim Cook is the CEO of Apple Inc."]
     print("  • Handles errors by updating beliefs from observations")
 
 
-# ── 3. Reflexion ──────────────────────────────────────────────────────────────
+# -- 3. Reflexion --------------------------------------------------------------
 def reflexion_pattern():
     print("\n=== Reflexion ===")
     print()
     print("  Shinn et al. 2023 — agents that learn from past failures")
     print()
-    print("  Key idea: store verbal reflection after failure → guide future attempts")
+    print("  Key idea: store verbal reflection after failure -> guide future attempts")
     print()
     print("  Algorithm:")
     steps = [
@@ -85,7 +85,7 @@ def reflexion_pattern():
     print("  Example reflection:")
     reflection = """
 [Previous attempt]
-  Task: Sort a list in Python. Submitted: list.sorted() → AttributeError
+  Task: Sort a list in Python. Submitted: list.sorted() -> AttributeError
 
 [Reflection]
   list.sorted() is wrong. The correct methods are:
@@ -94,12 +94,12 @@ def reflexion_pattern():
   I should use sorted(lst) when I need the original unchanged.
 
 [Next attempt]
-  Used sorted(numbers) → correct output
+  Used sorted(numbers) -> correct output
 """
     print(reflection)
 
 
-# ── 4. Multi-agent patterns ───────────────────────────────────────────────────
+# -- 4. Multi-agent patterns ---------------------------------------------------
 def multi_agent():
     print("\n=== Multi-Agent Patterns ===")
     print()
@@ -111,10 +111,10 @@ def multi_agent():
     print("  Topology patterns:")
     topologies = [
         ("Orchestrator-worker",   "Orchestrator decomposes task; workers execute"),
-        ("Pipeline",              "Agent A output → Agent B → Agent C (sequential)"),
+        ("Pipeline",              "Agent A output -> Agent B -> Agent C (sequential)"),
         ("Debate",                "Multiple agents argue positions; judge decides"),
         ("Ensemble",              "N agents vote or merge outputs"),
-        ("Hierarchical",          "Manager → team leads → workers (tree)"),
+        ("Hierarchical",          "Manager -> team leads -> workers (tree)"),
         ("Peer-to-peer",          "Agents communicate directly via shared state"),
     ]
     for t, d in topologies:

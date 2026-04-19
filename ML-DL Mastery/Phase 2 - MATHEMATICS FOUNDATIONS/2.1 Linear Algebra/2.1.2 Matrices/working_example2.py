@@ -70,7 +70,7 @@ def demo_covariance_matrix(X):
     # Correlation matrix
     std = np.sqrt(np.diag(cov))
     corr = cov / np.outer(std, std)
-    print(f"  Correlation MedInc↔HouseAge: {corr[0,1]:.4f}")
+    print(f"  Correlation MedInc<->HouseAge: {corr[0,1]:.4f}")
 
     fig, ax = plt.subplots(figsize=(6, 5))
     im = ax.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
@@ -100,9 +100,9 @@ def demo_softmax_weights():
     print("\n=== Softmax Weight Matrix (3-class) ===")
     n, d, k = 20, 5, 3
     X  = np.random.randn(n, d)
-    W  = np.random.randn(d, k) * 0.1   # weight matrix ∈ ℝ^{d×k}
+    W  = np.random.randn(d, k) * 0.1   # weight matrix in ℝ^{dxk}
     b  = np.zeros(k)
-    Z  = X @ W + b                       # logits ∈ ℝ^{n×k}
+    Z  = X @ W + b                       # logits in ℝ^{nxk}
     eZ = np.exp(Z - Z.max(axis=1, keepdims=True))  # numerically stable
     P  = eZ / eZ.sum(axis=1, keepdims=True)         # softmax probabilities
     print(f"  W shape: {W.shape},  Z shape: {Z.shape},  P shape: {P.shape}")

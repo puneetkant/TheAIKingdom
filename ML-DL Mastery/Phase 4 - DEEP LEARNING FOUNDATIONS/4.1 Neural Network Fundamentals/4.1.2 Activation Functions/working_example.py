@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_activations")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Activation functions ──────────────────────────────────────────────────────
+# -- Activation functions ------------------------------------------------------
 def sigmoid(z):       return 1 / (1 + np.exp(-z.clip(-500,500)))
 def sigmoid_d(z):     s = sigmoid(z); return s * (1 - s)
 def tanh_d(z):        return 1 - np.tanh(z)**2
@@ -27,7 +27,7 @@ def swish(z):         return z * sigmoid(z)
 def selu(z, l=1.0507, a=1.6733): return l * np.where(z > 0, z, a*(np.exp(z.clip(-500,0))-1))
 
 
-# ── 1. Properties of activation functions ────────────────────────────────────
+# -- 1. Properties of activation functions ------------------------------------
 def activation_properties():
     print("=== Activation Function Properties ===")
     z = np.linspace(-5, 5, 1000)
@@ -41,7 +41,7 @@ def activation_properties():
         "Swish":       (swish(z),          None),
         "SELU":        (selu(z),           None),
     }
-    print(f"\n  {'Function':<15} {'Range':<20} {'Max grad':>10} {'Mean grad z∈[-1,1]':>20}")
+    print(f"\n  {'Function':<15} {'Range':<20} {'Max grad':>10} {'Mean grad zin[-1,1]':>20}")
     for name, (f, fd) in functions.items():
         fmin, fmax = f.min(), f.max()
         frange = f"[{fmin:.2f}, {fmax:.2f}]"
@@ -54,7 +54,7 @@ def activation_properties():
             print(f"  {name:<15} {frange:<20} {'—':>10} {'—':>20}")
 
 
-# ── 2. Visualise activations ─────────────────────────────────────────────────
+# -- 2. Visualise activations -------------------------------------------------
 def plot_activations():
     z = np.linspace(-4, 4, 300)
     funcs = [
@@ -83,24 +83,24 @@ def plot_activations():
     print(f"\n  Activation functions plot saved: {path}")
 
 
-# ── 3. Vanishing gradient ────────────────────────────────────────────────────
+# -- 3. Vanishing gradient ----------------------------------------------------
 def vanishing_gradient():
     print("\n=== Vanishing Gradient Problem ===")
     print("  Deep sigmoid networks suffer from vanishing gradients")
-    print("  σ'(z) ≤ 0.25  →  after L layers, gradient ≤ 0.25^L")
+    print("  sigma'(z) <= 0.25  ->  after L layers, gradient <= 0.25^L")
 
     for L in [1, 5, 10, 20, 50]:
         max_grad = 0.25**L
-        print(f"  L={L:<4} layers: max gradient ≤ {max_grad:.2e}")
+        print(f"  L={L:<4} layers: max gradient <= {max_grad:.2e}")
 
-    print("\n  ReLU solution: gradient = 1 for positive z → no vanishing")
-    print("  But: dead neurons when z ≤ 0 for all inputs (dying ReLU)")
+    print("\n  ReLU solution: gradient = 1 for positive z -> no vanishing")
+    print("  But: dead neurons when z <= 0 for all inputs (dying ReLU)")
 
 
-# ── 4. Dying ReLU ────────────────────────────────────────────────────────────
+# -- 4. Dying ReLU ------------------------------------------------------------
 def dying_relu():
     print("\n=== Dying ReLU Problem ===")
-    print("  If neuron always gets z < 0, gradient = 0 → weights never update")
+    print("  If neuron always gets z < 0, gradient = 0 -> weights never update")
     print("  Causes: large learning rate, poor weight init, negative bias")
     rng = np.random.default_rng(0)
 
@@ -116,14 +116,14 @@ def dying_relu():
     print(f"\n  Solutions:")
     print(f"    Leaky ReLU: f(z) = max(0.01z, z)  — never truly dead")
     print(f"    ELU:        smooth negative region  — self-normalising")
-    print(f"    SELU:       self-normalising (λ=1.0507, α=1.6733)")
+    print(f"    SELU:       self-normalising (lambda=1.0507, alpha=1.6733)")
     print(f"    He init:    proper weight init prevents large negative z")
 
 
-# ── 5. Softmax (multi-class output) ──────────────────────────────────────────
+# -- 5. Softmax (multi-class output) ------------------------------------------
 def softmax_activation():
     print("\n=== Softmax Activation (Multi-class Output) ===")
-    print("  σ(z)_k = exp(z_k) / Σ exp(z_j)   (numerically stable: subtract max)")
+    print("  sigma(z)_k = exp(z_k) / Sigma exp(z_j)   (numerically stable: subtract max)")
 
     def softmax(z):
         e = np.exp(z - z.max())   # numerical stability
@@ -136,15 +136,15 @@ def softmax_activation():
     ]
     for z in z_examples:
         s = softmax(z)
-        print(f"  z={z} → softmax={s.round(4)} (sum={s.sum():.4f})")
+        print(f"  z={z} -> softmax={s.round(4)} (sum={s.sum():.4f})")
 
     print(f"\n  Properties:")
     print(f"    Output sums to 1 (valid probability distribution)")
     print(f"    Amplifies differences between logits")
-    print(f"    Temperature: σ(z/T) where T→0 = argmax, T→∞ = uniform")
+    print(f"    Temperature: sigma(z/T) where T->0 = argmax, T->inf = uniform")
 
 
-# ── 6. Activation choice guide ───────────────────────────────────────────────
+# -- 6. Activation choice guide -----------------------------------------------
 def activation_guide():
     print("\n=== Activation Function Selection Guide ===")
     print(f"  {'Layer/Task':<30} {'Recommended':<20} {'Why'}")

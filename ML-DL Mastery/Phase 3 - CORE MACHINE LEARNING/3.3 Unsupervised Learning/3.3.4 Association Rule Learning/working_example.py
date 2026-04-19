@@ -9,7 +9,7 @@ from collections import defaultdict
 import os
 
 
-# ── 1. Market basket dataset ─────────────────────────────────────────────────
+# -- 1. Market basket dataset -------------------------------------------------
 TRANSACTIONS = [
     {"milk", "bread", "butter"},
     {"beer", "bread"},
@@ -24,7 +24,7 @@ TRANSACTIONS = [
 ]
 
 
-# ── 2. Apriori from scratch ───────────────────────────────────────────────────
+# -- 2. Apriori from scratch ---------------------------------------------------
 def apriori_scratch(transactions, min_support=0.3, min_confidence=0.6):
     print("=== Apriori Algorithm (from scratch) ===")
     print(f"  min_support={min_support}  min_confidence={min_confidence}")
@@ -73,7 +73,7 @@ def apriori_scratch(transactions, min_support=0.3, min_confidence=0.6):
     return all_frequent
 
 
-# ── 3. Association rule generation ───────────────────────────────────────────
+# -- 3. Association rule generation -------------------------------------------
 def generate_rules(all_frequent, transactions, min_confidence=0.6, min_lift=1.0):
     print(f"\n=== Association Rules (min_confidence={min_confidence}, min_lift={min_lift}) ===")
     n = len(transactions)
@@ -109,21 +109,21 @@ def generate_rules(all_frequent, transactions, min_confidence=0.6, min_lift=1.0)
 
     rules.sort(key=lambda r: (-r["lift"], -r["confidence"]))
     print(f"  Found {len(rules)} rules\n")
-    print(f"  {'Antecedent':<25} → {'Consequent':<15} {'Supp':>7} {'Conf':>7} {'Lift':>7} {'Conv':>8}")
+    print(f"  {'Antecedent':<25} -> {'Consequent':<15} {'Supp':>7} {'Conf':>7} {'Lift':>7} {'Conv':>8}")
     for r in rules[:15]:
-        print(f"  {str(r['antecedent']):<25} → {str(r['consequent']):<15} "
+        print(f"  {str(r['antecedent']):<25} -> {str(r['consequent']):<15} "
               f"{r['support']:>7.3f} {r['confidence']:>7.3f} {r['lift']:>7.3f} {r['conviction']:>8.3f}")
     return rules
 
 
-# ── 4. Metrics explained ─────────────────────────────────────────────────────
+# -- 4. Metrics explained -----------------------------------------------------
 def metrics_explained():
     print("\n=== Association Rule Metrics ===")
-    print("  Support(A→B)    = P(A∪B)        — how often A and B occur together")
-    print("  Confidence(A→B) = P(B|A)         — how often B when A occurs")
-    print("  Lift(A→B)       = P(B|A)/P(B)    — >1: positive association")
-    print("  Conviction      = (1-P(B))/(1-Conf) — directional, ∞ if conf=1")
-    print("  Leverage        = P(A∪B)-P(A)·P(B)  — deviation from independence")
+    print("  Support(A->B)    = P(AuB)        — how often A and B occur together")
+    print("  Confidence(A->B) = P(B|A)         — how often B when A occurs")
+    print("  Lift(A->B)       = P(B|A)/P(B)    — >1: positive association")
+    print("  Conviction      = (1-P(B))/(1-Conf) — directional, inf if conf=1")
+    print("  Leverage        = P(AuB)-P(A)·P(B)  — deviation from independence")
     print()
     print("  Lift interpretation:")
     print("    Lift > 1: A and B appear together more than expected (positive rule)")
@@ -131,11 +131,11 @@ def metrics_explained():
     print("    Lift < 1: A and B appear together less than expected (negative rule)")
 
 
-# ── 5. FP-Growth concept ────────────────────────────────────────────────────
+# -- 5. FP-Growth concept ----------------------------------------------------
 def fp_growth_concept():
     print("\n=== FP-Growth (Frequent Pattern Growth) ===")
-    print("  Apriori: generates many candidate itemsets → expensive")
-    print("  FP-Growth: compresses database into FP-tree → mine without candidate gen.")
+    print("  Apriori: generates many candidate itemsets -> expensive")
+    print("  FP-Growth: compresses database into FP-tree -> mine without candidate gen.")
     print()
     print("  Steps:")
     print("  1. Find all frequent items (min_support), sort by frequency")
@@ -163,7 +163,7 @@ def fp_growth_concept():
         print("  (mlxtend not installed; install with: pip install mlxtend)")
 
 
-# ── 6. Practical analysis ────────────────────────────────────────────────────
+# -- 6. Practical analysis ----------------------------------------------------
 def practical_analysis():
     print("\n=== Practical Recommendations ===")
     print("  1. Start with min_support = 1-5% for large datasets")

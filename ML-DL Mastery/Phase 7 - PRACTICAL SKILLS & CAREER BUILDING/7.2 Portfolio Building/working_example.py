@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_portfolio")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Project selection ──────────────────────────────────────────────────────
+# -- 1. Project selection ------------------------------------------------------
 def project_selection():
     print("=== Portfolio Building ===")
     print()
@@ -39,7 +39,7 @@ def project_selection():
         print(f"  • {idea}")
 
 
-# ── 2. GitHub best practices ──────────────────────────────────────────────────
+# -- 2. GitHub best practices --------------------------------------------------
 def github_best_practices():
     print("\n=== GitHub Repository Best Practices ===")
     print()
@@ -56,7 +56,7 @@ def github_best_practices():
         ("CONTRIBUTING.md",    "If you want others to contribute"),
     ]
     for c, d in checklist:
-        print(f"  {'✓ ' + c:<24} {d}")
+        print(f"  {'[OK] ' + c:<24} {d}")
     print()
     print("  README structure:")
     readme_sections = [
@@ -72,7 +72,7 @@ def github_best_practices():
         print(f"  {s}")
 
 
-# ── 3. Writing about ML work ──────────────────────────────────────────────────
+# -- 3. Writing about ML work --------------------------------------------------
 def writing_about_ml():
     print("\n=== Writing About ML Work ===")
     print()
@@ -98,7 +98,7 @@ def writing_about_ml():
         "Writing for ML experts when your audience is hiring managers",
     ]
     for m in mistakes:
-        print(f"  ✗ {m}")
+        print(f"  [X] {m}")
     print()
     print("  Platforms:")
     platforms = [
@@ -113,7 +113,7 @@ def writing_about_ml():
         print(f"  {p:<26} {d}")
 
 
-# ── 4. Project showcase template ─────────────────────────────────────────────
+# -- 4. Project showcase template ---------------------------------------------
 def showcase_template():
     print("\n=== Project Showcase Template ===")
     print()

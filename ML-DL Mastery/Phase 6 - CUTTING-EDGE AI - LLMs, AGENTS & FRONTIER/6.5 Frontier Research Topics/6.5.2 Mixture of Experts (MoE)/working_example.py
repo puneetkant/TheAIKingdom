@@ -10,13 +10,13 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_moe")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. MoE motivation ─────────────────────────────────────────────────────────
+# -- 1. MoE motivation ---------------------------------------------------------
 def moe_motivation():
     print("=== Mixture of Experts (MoE) ===")
     print()
     print("  Key idea: replace FFN with N expert FFNs")
     print("  Activate only K experts per token (sparse MoE)")
-    print("  → more parameters, same compute cost per forward pass")
+    print("  -> more parameters, same compute cost per forward pass")
     print()
     print("  Scaling comparison:")
     print(f"  {'Architecture':<22} {'Total params':>14} {'Active params/token':>20}")
@@ -32,14 +32,14 @@ def moe_motivation():
     print("  Result: 47B MoE can match 70B dense at ~13B compute cost")
 
 
-# ── 2. Router mechanism ───────────────────────────────────────────────────────
+# -- 2. Router mechanism -------------------------------------------------------
 def router_demo():
     print("\n=== Routing Mechanism ===")
     print()
     print("  Token-choice routing (standard):")
     print("    gate(x) = softmax(x @ W_gate)  [shape: (n_experts,)]")
     print("    top_k   = select K highest gate scores")
-    print("    output  = Σ gate_k * expert_k(x)  for each selected expert")
+    print("    output  = Sigma gate_k * expert_k(x)  for each selected expert")
     print()
 
     rng = np.random.default_rng(0)
@@ -65,7 +65,7 @@ def router_demo():
         print(f"  tok_{i:>2d}   expert_{idx[0]:<2d}  {scores[0]:.4f}   expert_{idx[1]:<2d}  {scores[1]:.4f}")
 
 
-# ── 3. Load balancing ─────────────────────────────────────────────────────────
+# -- 3. Load balancing ---------------------------------------------------------
 def load_balancing():
     print("\n=== Load Balancing Problem ===")
     print()
@@ -102,14 +102,14 @@ def load_balancing():
 
     print(f"  Expert load distribution (100 tokens, top-2, biased router):")
     for i, load in enumerate(loads):
-        bar = "█" * load
+        bar = "#" * load
         print(f"    Expert {i}: {load:3d} tokens  {bar}")
     ideal = n_tokens * top_k / n_experts
     print(f"  Ideal: {ideal:.0f} tokens/expert")
     print(f"  Max/min ratio: {loads.max()/loads.min():.1f}x (want ~1.0x)")
 
 
-# ── 4. Key MoE models ─────────────────────────────────────────────────────────
+# -- 4. Key MoE models ---------------------------------------------------------
 def moe_models():
     print("\n=== Key MoE Models ===")
     print()

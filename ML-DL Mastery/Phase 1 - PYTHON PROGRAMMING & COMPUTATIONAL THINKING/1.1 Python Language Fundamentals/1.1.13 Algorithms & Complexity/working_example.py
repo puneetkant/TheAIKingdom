@@ -9,7 +9,7 @@ import sys
 from functools import lru_cache
 
 
-# ── Big-O complexity reference ────────────────────────────────────────────────
+# -- Big-O complexity reference ------------------------------------------------
 def big_o_demo():
     print("=== Big-O Complexity Reference ===")
     examples = [
@@ -25,7 +25,7 @@ def big_o_demo():
         print(f"  {complexity:<12} {example}")
 
 
-# ── Sorting algorithms ────────────────────────────────────────────────────────
+# -- Sorting algorithms --------------------------------------------------------
 def bubble_sort(arr):
     """O(n²) — simple, rarely used in practice."""
     a = arr[:]
@@ -132,7 +132,7 @@ def sorting_benchmark():
     print(f"  sorted()      : {timed(sorted,         data):.4f}s")
 
 
-# ── Searching ─────────────────────────────────────────────────────────────────
+# -- Searching -----------------------------------------------------------------
 def linear_search(arr, target):
     """O(n)"""
     for i, val in enumerate(arr):
@@ -169,7 +169,7 @@ def searching_demo():
     print(f"  binary_search({miss})   = {binary_search(arr, miss)}")
 
 
-# ── Recursion vs iteration ────────────────────────────────────────────────────
+# -- Recursion vs iteration ----------------------------------------------------
 def fib_naive(n):
     if n < 2: return n
     return fib_naive(n-1) + fib_naive(n-2)   # O(2ⁿ)
@@ -209,7 +209,7 @@ def recursion_vs_iteration():
               f"iter={r3} ({t3:.5f}s)")
 
 
-# ── Space complexity ──────────────────────────────────────────────────────────
+# -- Space complexity ----------------------------------------------------------
 def space_demo():
     print("\n=== Space Complexity ===")
     sizes = [1_000, 10_000, 100_000]

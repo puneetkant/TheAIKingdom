@@ -22,7 +22,7 @@ def save(name):
     print(f"  Saved: {path}")
 
 
-# ── 1. Line plot ──────────────────────────────────────────────────────────────
+# -- 1. Line plot --------------------------------------------------------------
 def line_plot():
     print("=== Line Plot ===")
     x = np.linspace(0, 4 * np.pi, 300)
@@ -39,7 +39,7 @@ def line_plot():
     save("01_line_plot")
 
 
-# ── 2. Scatter plot ───────────────────────────────────────────────────────────
+# -- 2. Scatter plot -----------------------------------------------------------
 def scatter_plot():
     print("=== Scatter Plot ===")
     rng = np.random.default_rng(0)
@@ -59,7 +59,7 @@ def scatter_plot():
     save("02_scatter_plot")
 
 
-# ── 3. Bar chart ──────────────────────────────────────────────────────────────
+# -- 3. Bar chart --------------------------------------------------------------
 def bar_chart():
     print("=== Bar Chart ===")
     categories = ["Python", "NumPy", "Pandas", "Matplotlib", "scikit-learn"]
@@ -78,7 +78,7 @@ def bar_chart():
     save("03_bar_chart")
 
 
-# ── 4. Histogram ──────────────────────────────────────────────────────────────
+# -- 4. Histogram --------------------------------------------------------------
 def histogram():
     print("=== Histogram ===")
     rng  = np.random.default_rng(1)
@@ -100,7 +100,7 @@ def histogram():
     save("04_histogram")
 
 
-# ── 5. Subplots grid ──────────────────────────────────────────────────────────
+# -- 5. Subplots grid ----------------------------------------------------------
 def subplots_grid():
     print("=== Subplots Grid ===")
     rng = np.random.default_rng(42)
@@ -116,7 +116,7 @@ def subplots_grid():
     x2 = rng.uniform(-3, 3, 150)
     axes[0, 1].scatter(x2, x2**2 + rng.normal(0, 1, 150),
                        alpha=0.5, color="teal", s=20)
-    axes[0, 1].set_title("Scatter: y ≈ x²")
+    axes[0, 1].set_title("Scatter: y ~= x²")
 
     # (1,0) — bar
     cats = ["A","B","C","D","E"]
@@ -135,7 +135,7 @@ def subplots_grid():
     save("05_subplots_grid")
 
 
-# ── 6. Seaborn-style plots using Matplotlib ──────────────────────────────────
+# -- 6. Seaborn-style plots using Matplotlib ----------------------------------
 def seaborn_demo():
     """Use seaborn if available, else skip gracefully."""
     print("=== Seaborn (statistical plots) ===")
@@ -171,7 +171,7 @@ def seaborn_demo():
         print(f"  seaborn demo skipped: {e}")
 
 
-# ── 7. Heatmap (manually with matplotlib) ────────────────────────────────────
+# -- 7. Heatmap (manually with matplotlib) ------------------------------------
 def heatmap():
     print("=== Heatmap (Correlation Matrix) ===")
     rng = np.random.default_rng(7)

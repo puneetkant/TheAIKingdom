@@ -17,7 +17,7 @@ def softmax(z, axis=-1):
     return e / e.sum(axis=axis, keepdims=True)
 
 
-# ── 1. Motivation ─────────────────────────────────────────────────────────────
+# -- 1. Motivation -------------------------------------------------------------
 def motivation():
     print("=== Why Attention? ===")
     print("  Seq2Seq bottleneck: all source info compressed into single context c")
@@ -32,13 +32,13 @@ def motivation():
     print("    The model learns WHICH source tokens are relevant for each target token")
 
 
-# ── 2. Bahdanau additive attention ───────────────────────────────────────────
+# -- 2. Bahdanau additive attention -------------------------------------------
 def bahdanau_attention(query, keys, W_q, W_k, v):
     """
     Additive (Bahdanau) attention:
     score(q, k_i) = v^T · tanh(W_q·q + W_k·k_i)
     alpha = softmax(scores)
-    context = Σ alpha_i · k_i
+    context = Sigma alpha_i · k_i
     """
     T_src, _ = keys.shape
     scores = []
@@ -54,7 +54,7 @@ def bahdanau_attention(query, keys, W_q, W_k, v):
 def bahdanau_demo():
     print("\n=== Bahdanau (Additive) Attention ===")
     print("  score(q, k) = v^T · tanh(W_q·q + W_k·k)")
-    print("  Context = Σ softmax(scores) · values")
+    print("  Context = Sigma softmax(scores) · values")
 
     rng = np.random.default_rng(1)
     T_src = 5; d_enc = 6; d_dec = 4; d_attn = 8
@@ -74,7 +74,7 @@ def bahdanau_demo():
     print(f"  Context vector shape: {context.shape}")
 
 
-# ── 3. Luong multiplicative attention ─────────────────────────────────────────
+# -- 3. Luong multiplicative attention -----------------------------------------
 def luong_attention(query, keys, W_score=None, mode="dot"):
     """
     Luong attention:
@@ -95,7 +95,7 @@ def luong_demo():
     print("\n=== Luong (Multiplicative / Dot-Product) Attention ===")
     print("  score(q, k) = q^T · k           (dot)")
     print("  score(q, k) = q^T · W · k       (general)")
-    print("  Scaled: divide by √d_k to prevent softmax saturation")
+    print("  Scaled: divide by sqrtd_k to prevent softmax saturation")
 
     rng = np.random.default_rng(2)
     T_src = 6; d = 8
@@ -109,15 +109,15 @@ def luong_demo():
     scores_scaled = (keys @ query) / np.sqrt(d)
     alpha_scaled  = softmax(scores_scaled)
     print(f"  Scaled dot weights:    {alpha_scaled.round(4)}")
-    print(f"\n  Scaling by √d={d**0.5:.2f} prevents softmax from becoming one-hot")
+    print(f"\n  Scaling by sqrtd={d**0.5:.2f} prevents softmax from becoming one-hot")
 
 
-# ── 4. Self-attention ─────────────────────────────────────────────────────────
+# -- 4. Self-attention ---------------------------------------------------------
 def self_attention(X, W_Q, W_K, W_V, mask=None):
     """
     Scaled dot-product self-attention.
     Q = X·W_Q, K = X·W_K, V = X·W_V
-    Attention = softmax(Q·K^T / √d_k) · V
+    Attention = softmax(Q·K^T / sqrtd_k) · V
     """
     Q = X @ W_Q   # (T, d_k)
     K = X @ W_K   # (T, d_k)
@@ -135,7 +135,7 @@ def self_attention_demo():
     print("\n=== Self-Attention ===")
     print("  Every token attends to every other token in the same sequence")
     print("  Q = X·W_Q   K = X·W_K   V = X·W_V")
-    print("  Attn = softmax(QK^T / √d_k) · V")
+    print("  Attn = softmax(QK^T / sqrtd_k) · V")
 
     rng  = np.random.default_rng(3)
     T, d = 7, 16
@@ -153,11 +153,11 @@ def self_attention_demo():
     print(np.round(alpha, 3))
 
 
-# ── 5. Causal (masked) self-attention ─────────────────────────────────────────
+# -- 5. Causal (masked) self-attention -----------------------------------------
 def causal_attention_demo():
     print("\n=== Causal (Masked) Self-Attention ===")
-    print("  Used in autoregressive models (GPT): token t can only attend to t'≤t")
-    print("  Mask future positions with -∞ before softmax")
+    print("  Used in autoregressive models (GPT): token t can only attend to t'<=t")
+    print("  Mask future positions with -inf before softmax")
 
     rng  = np.random.default_rng(4)
     T, d = 5, 8
@@ -176,9 +176,9 @@ def causal_attention_demo():
     print(np.round(alpha, 3))
 
 
-# ── 6. Multi-head attention ───────────────────────────────────────────────────
+# -- 6. Multi-head attention ---------------------------------------------------
 def multi_head_attention(X, W_Qs, W_Ks, W_Vs, W_O):
-    """Multi-head attention: parallel heads, then concat → project."""
+    """Multi-head attention: parallel heads, then concat -> project."""
     heads = []
     for W_Q, W_K, W_V in zip(W_Qs, W_Ks, W_Vs):
         h, _ = self_attention(X, W_Q, W_K, W_V)
@@ -195,7 +195,7 @@ def multi_head_demo():
     print()
     print("  Different heads might learn:")
     print("    Head 1: syntactic relationships (subject-verb)")
-    print("    Head 2: co-reference (pronoun → noun)")
+    print("    Head 2: co-reference (pronoun -> noun)")
     print("    Head 3: semantic similarity")
 
     rng = np.random.default_rng(5)
@@ -220,7 +220,7 @@ def multi_head_demo():
     print(f"  Total MHA params: {total}")
 
 
-# ── 7. Visualise attention map ────────────────────────────────────────────────
+# -- 7. Visualise attention map ------------------------------------------------
 def visualise_attention():
     rng    = np.random.default_rng(6)
     tokens = ["The", "cat", "sat", "on", "the", "mat"]

@@ -50,7 +50,6 @@ def demo_missing_data():
 
     # Baseline (no missing)
     pipe_full = make_pipeline(StandardScaler(), Ridge(1.0))
-    pipe_full.fit(*train_test_split(X, y, test_size=0.2, random_state=42)[:2])
     Xt, Xv, yt, yv = train_test_split(X, y, test_size=0.2, random_state=42)
     pipe_full.fit(Xt, yt)
     rmse_full = mean_squared_error(yv, pipe_full.predict(Xv))**0.5

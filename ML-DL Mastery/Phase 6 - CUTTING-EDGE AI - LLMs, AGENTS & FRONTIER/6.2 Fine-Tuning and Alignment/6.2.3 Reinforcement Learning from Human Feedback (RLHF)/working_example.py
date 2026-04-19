@@ -11,7 +11,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def sigmoid(x): return 1 / (1 + np.exp(-np.clip(x, -30, 30)))
 
 
-# ── 1. RLHF pipeline ─────────────────────────────────────────────────────────
+# -- 1. RLHF pipeline ---------------------------------------------------------
 def rlhf_pipeline():
     print("=== RLHF Pipeline ===")
     print()
@@ -24,23 +24,23 @@ def rlhf_pipeline():
     print()
     print("  Stage 2: Reward Model Training")
     print("    - Collect comparison data: (prompt, response_A, response_B, preference)")
-    print("    - Train reward model R_θ to predict human preferences")
-    print("    - R_θ(x, y) → scalar score; higher = more preferred")
+    print("    - Train reward model R_theta to predict human preferences")
+    print("    - R_theta(x, y) -> scalar score; higher = more preferred")
     print()
     print("  Stage 3: RL Fine-Tuning with PPO")
-    print("    - Use R_θ as reward signal")
-    print("    - Optimise policy π_φ to maximise expected reward")
+    print("    - Use R_theta as reward signal")
+    print("    - Optimise policy pi_phi to maximise expected reward")
     print("    - KL penalty prevents policy from diverging from SFT model")
     print()
     print("  Full objective:")
-    print("    L_RLHF = E_t[R_θ(x, y_t)] - β · KL[π_φ || π_SFT]")
+    print("    L_RLHF = E_t[R_theta(x, y_t)] - beta · KL[pi_phi || pi_SFT]")
 
 
-# ── 2. Reward model training ──────────────────────────────────────────────────
+# -- 2. Reward model training --------------------------------------------------
 def reward_model():
     print("\n=== Reward Model Training ===")
     print()
-    print("  Loss: L_RM = -E[(x,y_w,y_l)] log σ(R(x,y_w) - R(x,y_l))")
+    print("  Loss: L_RM = -E[(x,y_w,y_l)] log sigma(R(x,y_w) - R(x,y_l))")
     print("  (Bradley-Terry preference model)")
     print()
 
@@ -95,7 +95,7 @@ def reward_model():
         print(f"  {c:<16} {d}")
 
 
-# ── 3. PPO for LLMs ───────────────────────────────────────────────────────────
+# -- 3. PPO for LLMs -----------------------------------------------------------
 def ppo_for_llms():
     print("\n=== PPO for LLM Fine-Tuning ===")
     print()
@@ -103,19 +103,19 @@ def ppo_for_llms():
     print()
     print("  Key components:")
     components = [
-        ("Policy (π)",         "The LLM being trained; generates tokens"),
+        ("Policy (pi)",         "The LLM being trained; generates tokens"),
         ("Reference policy",   "Frozen SFT model; KL anchor"),
-        ("Reward model (R_θ)", "Scores full response; scalar at EOS"),
-        ("Value model (V_φ)",  "Estimates expected return; same size as policy"),
-        ("KL penalty",         "r_t = R_θ(y) - β·Σ_t log π(y_t|y_<t,x) / π_ref"),
+        ("Reward model (R_theta)", "Scores full response; scalar at EOS"),
+        ("Value model (V_phi)",  "Estimates expected return; same size as policy"),
+        ("KL penalty",         "r_t = R_theta(y) - beta·Sigma_t log pi(y_t|y_<t,x) / pi_ref"),
     ]
     for c, d in components:
         print(f"  {c:<22} {d}")
 
     print()
     print("  PPO clip objective:")
-    print("    L_PPO = E[min(r_t·A_t, clip(r_t, 1-ε, 1+ε)·A_t)]")
-    print("    r_t = π_new(a_t|s_t) / π_old(a_t|s_t)  (probability ratio)")
+    print("    L_PPO = E[min(r_t·A_t, clip(r_t, 1-epsilon, 1+epsilon)·A_t)]")
+    print("    r_t = pi_new(a_t|s_t) / pi_old(a_t|s_t)  (probability ratio)")
     print("    A_t = advantage estimate (GAE)")
     print()
     print("  Practical challenges:")
@@ -123,14 +123,14 @@ def ppo_for_llms():
         ("Credit assignment",  "Only 1 reward at end of sequence"),
         ("PPO instability",    "LLM PPO tricky; many hyperparams"),
         ("Reward hacking",     "Policy finds reward model loopholes"),
-        ("KL budget",         "β=0.1–0.5; balance reward vs drift"),
+        ("KL budget",         "beta=0.1–0.5; balance reward vs drift"),
         ("Memory",            "4 models: policy, ref, reward, value"),
     ]
     for c, d in challenges:
         print(f"  {c:<20} {d}")
 
 
-# ── 4. RLHF alternatives ──────────────────────────────────────────────────────
+# -- 4. RLHF alternatives ------------------------------------------------------
 def rlhf_alternatives():
     print("\n=== RLHF Alternatives ===")
     print()

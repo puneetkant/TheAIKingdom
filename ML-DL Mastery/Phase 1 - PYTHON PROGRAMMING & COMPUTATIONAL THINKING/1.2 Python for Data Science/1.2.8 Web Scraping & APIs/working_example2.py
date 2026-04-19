@@ -24,7 +24,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── Helper: safe HTTP GET with retry ─────────────────────────────────────────
+# -- Helper: safe HTTP GET with retry -----------------------------------------
 def http_get(url: str, params: dict | None = None, retries: int = 3,
              timeout: int = 10) -> bytes | None:
     """Fetch URL with query params, retry on failure. Returns bytes or None."""
@@ -39,7 +39,7 @@ def http_get(url: str, params: dict | None = None, retries: int = 3,
             if attempt < retries:
                 time.sleep(0.5 * attempt)
             else:
-                print(f"  HTTP error: {e} → offline fallback")
+                print(f"  HTTP error: {e} -> offline fallback")
     return None
 
 
@@ -52,7 +52,7 @@ def http_get_json(url: str, params: dict | None = None) -> dict | list | None:
         return None
 
 
-# ── 1. Weather API (Open-Meteo) ───────────────────────────────────────────────
+# -- 1. Weather API (Open-Meteo) -----------------------------------------------
 def demo_weather_api() -> None:
     print("=== Weather API (Open-Meteo) ===")
     data = http_get_json(
@@ -84,7 +84,7 @@ def demo_weather_api() -> None:
             print(f"  Day {i+1}: {t:.1f}°C")
 
 
-# ── 2. JSONPlaceholder REST API (pagination) ──────────────────────────────────
+# -- 2. JSONPlaceholder REST API (pagination) ----------------------------------
 def demo_rest_api_pagination() -> None:
     print("\n=== REST API Pagination (JSONPlaceholder) ===")
     all_posts = []
@@ -108,7 +108,7 @@ def demo_rest_api_pagination() -> None:
         print("  (offline — no posts fetched)")
 
 
-# ── 3. HuggingFace dataset download (binary) ──────────────────────────────────
+# -- 3. HuggingFace dataset download (binary) ----------------------------------
 def demo_hf_download() -> None:
     print("\n=== HuggingFace Dataset Download ===")
     dest = DATA / "titanic.csv"
@@ -127,7 +127,7 @@ def demo_hf_download() -> None:
                         "1,1,1,Alice,female,28\n2,0,3,Bob,male,35\n")
 
 
-# ── 4. HTML table scraping (html.parser) ──────────────────────────────────────
+# -- 4. HTML table scraping (html.parser) --------------------------------------
 class TableParser(html.parser.HTMLParser):
     """Minimal HTML parser that extracts text from <table> cells."""
 
@@ -188,7 +188,7 @@ def demo_html_scraping() -> None:
             print(f"    {row}")
 
 
-# ── 5. Caching and rate limiting demo ────────────────────────────────────────
+# -- 5. Caching and rate limiting demo ----------------------------------------
 def demo_caching() -> None:
     print("\n=== Disk Cache Pattern ===")
     cache_file = DATA / "api_cache.json"

@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ml_system_design")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. ML system components ───────────────────────────────────────────────────
+# -- 1. ML system components ---------------------------------------------------
 def ml_system_overview():
     print("=== ML System Design ===")
     print()
@@ -43,12 +43,12 @@ def ml_system_overview():
         print(f"  {s:<22} {d}")
 
 
-# ── 2. Feature store patterns ─────────────────────────────────────────────────
+# -- 2. Feature store patterns -------------------------------------------------
 def feature_store():
     print("\n=== Feature Store ===")
     print()
     print("  Problem: features computed differently at training vs serving")
-    print("           → training-serving skew → silent performance degradation")
+    print("           -> training-serving skew -> silent performance degradation")
     print()
     print("  Feature store solves this by:")
     print("    1. Computing features once (no duplicate logic)")
@@ -80,7 +80,7 @@ def feature_store():
         print(f"  {backend:<22}: mean={latencies.mean():.1f}ms  p99={np.percentile(latencies,99):.1f}ms")
 
 
-# ── 3. Data versioning and reproducibility ────────────────────────────────────
+# -- 3. Data versioning and reproducibility ------------------------------------
 def data_versioning():
     print("\n=== Data Versioning and Reproducibility ===")
     print()
@@ -112,7 +112,7 @@ dvc dag                              # visualise dependency graph
     print(dvc_code)
 
 
-# ── 4. Production design patterns ─────────────────────────────────────────────
+# -- 4. Production design patterns ---------------------------------------------
 def production_patterns():
     print("=== Production ML Patterns ===")
     patterns = [
@@ -123,10 +123,10 @@ def production_patterns():
         ("Champion-Challenger","Current champion vs new challenger; promote on win"),
         ("Multi-armed bandit","Adaptive traffic routing; maximise online metric"),
         ("Ensemble serving", "Multiple models averaged; better than any single"),
-        ("Fallback chains",  "Primary → secondary → heuristic on failure"),
+        ("Fallback chains",  "Primary -> secondary -> heuristic on failure"),
     ]
     print(f"  {'Pattern':<22} {'Description'}")
-    print(f"  {'─'*22} {'─'*50}")
+    print(f"  {'-'*22} {'-'*50}")
     for p, d in patterns:
         print(f"  {p:<22} {d}")
 

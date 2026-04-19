@@ -7,7 +7,7 @@ import numpy as np
 from scipy import integrate, misc
 
 
-# ── 1. Limits ─────────────────────────────────────────────────────────────────
+# -- 1. Limits -----------------------------------------------------------------
 def limits():
     print("=== Limits ===")
     # Numeric approach: squeeze from both sides
@@ -19,22 +19,22 @@ def limits():
             try:
                 fl = f(x0 - eps)
                 fr = f(x0 + eps)
-                print(f"    ε={eps:.0e}:  f(x₀-ε)={fl:.8f}  f(x₀+ε)={fr:.8f}")
+                print(f"    epsilon={eps:.0e}:  f(x0-epsilon)={fl:.8f}  f(x0+epsilon)={fr:.8f}")
             except (ZeroDivisionError, ValueError):
                 pass
 
-    # lim_{x→0} sin(x)/x = 1
-    limit_approach(lambda x: np.sin(x)/x, 0, "x→0 sin(x)/x")
-    # lim_{x→0} (e^x - 1)/x = 1
-    limit_approach(lambda x: (np.exp(x)-1)/x, 0, "x→0 (eˣ-1)/x")
-    # lim_{x→∞} (1 + 1/x)^x = e
-    print("\n  lim_{x→∞} (1+1/x)^x:")
+    # lim_{x->0} sin(x)/x = 1
+    limit_approach(lambda x: np.sin(x)/x, 0, "x->0 sin(x)/x")
+    # lim_{x->0} (e^x - 1)/x = 1
+    limit_approach(lambda x: (np.exp(x)-1)/x, 0, "x->0 (eˣ-1)/x")
+    # lim_{x->inf} (1 + 1/x)^x = e
+    print("\n  lim_{x->inf} (1+1/x)^x:")
     for x in [10, 100, 1e4, 1e7]:
         val = (1 + 1/x)**x
         print(f"    x={x:.0e}: {val:.8f}  (e = {np.e:.8f})")
 
 
-# ── 2. Derivatives ────────────────────────────────────────────────────────────
+# -- 2. Derivatives ------------------------------------------------------------
 def derivatives():
     print("\n=== Derivatives ===")
     # Analytical derivatives
@@ -46,7 +46,7 @@ def derivatives():
         "x·sin(x)":   (lambda x: x*np.sin(x), lambda x: np.sin(x)+x*np.cos(x)),
     }
     x = np.pi / 4
-    print(f"  Evaluated at x = π/4 ≈ {x:.4f}")
+    print(f"  Evaluated at x = pi/4 ~= {x:.4f}")
     print(f"  {'f(x)':<15} {'f\'(x) exact':<15} {'f\'(x) numeric':<15} {'error'}")
     print("  " + "-"*60)
     for name, (f, df) in funcs.items():
@@ -63,7 +63,7 @@ def derivatives():
     print(f"    exact={df(x0):.6f}  numeric={misc.derivative(f, x0, dx=1e-7):.6f}")
 
 
-# ── 3. Numerical differentiation (finite differences) ────────────────────────
+# -- 3. Numerical differentiation (finite differences) ------------------------
 def finite_differences():
     print("\n=== Finite Differences ===")
     f  = lambda x: np.exp(x) * np.sin(x)
@@ -79,7 +79,7 @@ def finite_differences():
         print(f"  {h:<12.0e} {fwd:<16.8f} {ctr:<16.8f} {abs(fwd-true_val):<12.2e} {abs(ctr-true_val):.2e}")
 
 
-# ── 4. Integration ────────────────────────────────────────────────────────────
+# -- 4. Integration ------------------------------------------------------------
 def integration():
     print("\n=== Integration ===")
     # Exact antiderivative comparison
@@ -94,8 +94,8 @@ def integration():
         numeric, _ = integrate.quad(f, a, b)
         print(f"  {name:<8} {exact:<14.8f} {numeric:<14.8f} {abs(exact-numeric):.2e}")
 
-    # Numerical integration methods on [0, π]
-    print("\n  Integrating sin(x) over [0,π] using different methods:")
+    # Numerical integration methods on [0, pi]
+    print("\n  Integrating sin(x) over [0,pi] using different methods:")
     n   = 20
     xs  = np.linspace(0, np.pi, n)
     ys  = np.sin(xs)
@@ -109,18 +109,18 @@ def integration():
     print(f"    Gauss quadrature      : {gauss:.8f}  err={abs(gauss-exact_val):.2e}")
 
 
-# ── 5. Taylor series ──────────────────────────────────────────────────────────
+# -- 5. Taylor series ----------------------------------------------------------
 def taylor_series():
     print("\n=== Taylor Series ===")
     def taylor_sin(x, n_terms):
-        """sin(x) ≈ Σ (-1)^k x^(2k+1) / (2k+1)!"""
+        """sin(x) ~= Sigma (-1)^k x^(2k+1) / (2k+1)!"""
         result = 0.0
         for k in range(n_terms):
             result += ((-1)**k) * x**(2*k+1) / np.math.factorial(2*k+1)
         return result
 
     def taylor_exp(x, n_terms):
-        """eˣ ≈ Σ x^k / k!"""
+        """eˣ ~= Sigma x^k / k!"""
         result = 0.0
         for k in range(n_terms):
             result += x**k / np.math.factorial(k)
@@ -135,7 +135,7 @@ def taylor_series():
         print(f"  {n:<8} {s:<14.8f} {abs(s-np.sin(x)):<12.2e} {e:<14.8f} {abs(e-np.exp(x)):.2e}")
 
 
-# ── 6. Mean Value Theorem demo ────────────────────────────────────────────────
+# -- 6. Mean Value Theorem demo ------------------------------------------------
 def mean_value_theorem():
     print("\n=== Mean Value Theorem ===")
     # There exists c in (a,b) such that f'(c) = (f(b)-f(a))/(b-a)
@@ -143,7 +143,7 @@ def mean_value_theorem():
     df = lambda x: 3*x**2 - 2
     a, b = 0.5, 2.5
     mvt_slope = (f(b) - f(a)) / (b - a)
-    # Solve f'(c) = mvt_slope: 3c²-2 = mvt_slope → c = sqrt((mvt_slope+2)/3)
+    # Solve f'(c) = mvt_slope: 3c²-2 = mvt_slope -> c = sqrt((mvt_slope+2)/3)
     c = np.sqrt((mvt_slope + 2) / 3)
     print(f"  f(x) = x³ - 2x,  [a,b] = [{a},{b}]")
     print(f"  Average slope (f(b)-f(a))/(b-a) = {mvt_slope:.4f}")

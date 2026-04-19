@@ -25,7 +25,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── 1. Model Registry via Metaclass ───────────────────────────────────────────
+# -- 1. Model Registry via Metaclass -------------------------------------------
 class ModelRegistry(type):
     """Metaclass that auto-registers concrete model classes."""
     _registry: dict[str, type] = {}
@@ -74,7 +74,7 @@ def demo_metaclass() -> None:
     print(f"  Built: {t}  predict([1,2,3]) = {t.predict([1,2,3])}")
 
 
-# ── 2. Descriptors for validated attributes ───────────────────────────────────
+# -- 2. Descriptors for validated attributes -----------------------------------
 class BoundedFloat:
     """Descriptor: float in [min_val, max_val], raises ValueError otherwise."""
     def __init__(self, min_val: float, max_val: float):
@@ -125,7 +125,7 @@ def demo_descriptors() -> None:
         print(f"  Caught: {e}")
 
 
-# ── 3. __slots__ for memory efficiency ────────────────────────────────────────
+# -- 3. __slots__ for memory efficiency ----------------------------------------
 class SampleSlots:
     """Uses __slots__ — no __dict__, ~30% less memory per instance."""
     __slots__ = ("feature", "label", "weight")
@@ -152,7 +152,7 @@ def demo_slots() -> None:
     print(f"  Has __dict__: SampleDict={hasattr(s_dict,'__dict__')}, SampleSlots={hasattr(s_slots,'__dict__')}")
 
 
-# ── 4. Generator with send() ──────────────────────────────────────────────────
+# -- 4. Generator with send() --------------------------------------------------
 def running_mean() -> Generator[float, float, None]:
     """Coroutine-style generator: send values, yield running mean."""
     total = 0.0
@@ -175,7 +175,7 @@ def demo_generator_send() -> None:
     gen.close()
 
 
-# ── 5. Dataclasses with __post_init__ ─────────────────────────────────────────
+# -- 5. Dataclasses with __post_init__ -----------------------------------------
 @dataclass
 class Experiment:
     name:        str
@@ -205,7 +205,7 @@ def demo_dataclasses() -> None:
         print(f"    valid={exp.is_valid}")
 
 
-# ── 6. itertools in ML contexts ───────────────────────────────────────────────
+# -- 6. itertools in ML contexts -----------------------------------------------
 def demo_itertools() -> None:
     print("\n=== itertools in ML ===")
     # Product: hyperparameter grid search

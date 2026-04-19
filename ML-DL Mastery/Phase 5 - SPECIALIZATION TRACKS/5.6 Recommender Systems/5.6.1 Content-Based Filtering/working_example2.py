@@ -49,7 +49,7 @@ def demo():
 
     # User profile: weighted average of liked item vectors
     liked = [0, 1, 7]  # Matrix, Terminator, Blade Runner
-    user_vec = item_matrix[liked].mean(axis=0)
+    user_vec = np.asarray(item_matrix[liked].mean(axis=0))
     user_sims = cosine_similarity(user_vec, item_matrix).ravel()
     ranked_user = np.argsort(user_sims)[::-1]
     print(f"\n  User profile recommendations (liked: {[titles[i] for i in liked]}):")

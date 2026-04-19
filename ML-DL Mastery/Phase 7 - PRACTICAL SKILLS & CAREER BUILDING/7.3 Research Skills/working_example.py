@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_research")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. How to read ML papers ──────────────────────────────────────────────────
+# -- 1. How to read ML papers --------------------------------------------------
 def how_to_read_papers():
     print("=== Research Skills ===")
     print()
@@ -38,7 +38,7 @@ def how_to_read_papers():
         print()
 
 
-# ── 2. Paper discovery ────────────────────────────────────────────────────────
+# -- 2. Paper discovery --------------------------------------------------------
 def paper_discovery():
     print("=== Paper Discovery ===")
     print()
@@ -73,7 +73,7 @@ def paper_discovery():
     print("    4. Use Google Scholar alerts for specific topics/authors")
 
 
-# ── 3. Reproducing papers ─────────────────────────────────────────────────────
+# -- 3. Reproducing papers -----------------------------------------------------
 def reproducing_papers():
     print("\n=== Reproducing Papers ===")
     print()
@@ -106,7 +106,7 @@ def reproducing_papers():
         print(f"  {f:<26} {d}")
 
 
-# ── 4. Writing research ───────────────────────────────────────────────────────
+# -- 4. Writing research -------------------------------------------------------
 def writing_research():
     print("\n=== Writing Research (Papers) ===")
     print()

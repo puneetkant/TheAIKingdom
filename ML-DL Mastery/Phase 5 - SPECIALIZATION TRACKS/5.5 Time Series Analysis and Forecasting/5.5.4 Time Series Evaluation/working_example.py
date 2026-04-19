@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ts_eval")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Point forecast metrics ─────────────────────────────────────────────────
+# -- 1. Point forecast metrics -------------------------------------------------
 def point_metrics():
     print("=== Time Series Evaluation Metrics ===")
     rng  = np.random.default_rng(0)
@@ -33,7 +33,7 @@ def point_metrics():
     train = true + rng.normal(0, 0.1, T)  # synthetic train for MASE denominator
 
     print(f"  {'Metric':<10} {'Value':>10}  {'Notes'}")
-    print(f"  {'─'*10} {'─'*10}  {'─'*45}")
+    print(f"  {'-'*10} {'-'*10}  {'-'*45}")
     print(f"  {'MAE':<10} {mae(true,pred):>10.4f}  Mean absolute error")
     print(f"  {'RMSE':<10} {rmse(true,pred):>10.4f}  Root mean squared error (penalises outliers)")
     print(f"  {'MAPE':<10} {mape(true,pred):>10.4f}  % error; ill-defined near zero")
@@ -47,7 +47,7 @@ def point_metrics():
     print("    M4/M5 competition uses sMAPE + MASE (OWA: weighted average)")
 
 
-# ── 2. Backtesting and walk-forward validation ────────────────────────────────
+# -- 2. Backtesting and walk-forward validation --------------------------------
 def backtesting():
     print("\n=== Backtesting (Walk-Forward Validation) ===")
     print()
@@ -59,7 +59,7 @@ def backtesting():
     print()
     print("  Walk-forward (expanding window):")
     print("    For each fold, train on all history up to t, forecast h steps")
-    print("    → Most realistic; average metrics across folds")
+    print("    -> Most realistic; average metrics across folds")
     print()
     print("  Sliding window:")
     print("    Fixed-size training window [t-W : t]")
@@ -84,7 +84,7 @@ def backtesting():
     print(f"    Mean MAE: {np.mean(maes):.3f}  Std: {np.std(maes):.3f}")
 
 
-# ── 3. Probabilistic forecasting ─────────────────────────────────────────────
+# -- 3. Probabilistic forecasting ---------------------------------------------
 def probabilistic_forecasting():
     print("\n=== Probabilistic Forecasting ===")
     print()
@@ -92,9 +92,9 @@ def probabilistic_forecasting():
     print()
     print("  Output forms:")
     forms = [
-        ("Quantile",     "ŷ_q for q ∈ {0.1, 0.5, 0.9}; non-crossing property"),
-        ("Interval",     "Prediction interval [L, U] at coverage 1-α"),
-        ("Parametric",   "N(μ, σ²) or NegBinomial(μ, α) per timestep"),
+        ("Quantile",     "ŷ_q for q in {0.1, 0.5, 0.9}; non-crossing property"),
+        ("Interval",     "Prediction interval [L, U] at coverage 1-alpha"),
+        ("Parametric",   "N(mu, sigma²) or NegBinomial(mu, alpha) per timestep"),
         ("Sample-based", "Monte Carlo draws from predictive distribution"),
     ]
     for f, d in forms:
@@ -128,12 +128,12 @@ def probabilistic_forecasting():
 
     print()
     print("  CRPS (Continuous Ranked Probability Score):")
-    print("    CRPS = ∫[F(z) - 1{z≥y}]² dz  (lower=better)")
+    print("    CRPS = integral[F(z) - 1{z>=y}]² dz  (lower=better)")
     print("    Proper scoring rule: rewards calibration + sharpness")
     print("    Decomposes: Reliability + Resolution")
 
 
-# ── 4. Model comparison ───────────────────────────────────────────────────────
+# -- 4. Model comparison -------------------------------------------------------
 def model_comparison():
     print("\n=== Model Comparison and Selection ===")
     print()
@@ -160,7 +160,7 @@ def model_comparison():
     d_t   = loss1 - loss2
     dm    = d_t.mean() / (d_t.std() / np.sqrt(T))
     print(f"  DM test statistic: {dm:.3f}")
-    print(f"  (Large |DM| → significant difference; DM ~ N(0,1) asymptotically)")
+    print(f"  (Large |DM| -> significant difference; DM ~ N(0,1) asymptotically)")
     print()
     print("  Best practices:")
     bps = [

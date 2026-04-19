@@ -1,7 +1,7 @@
 """
 Working Example 2: Image Classification — CNN proxy with sklearn on digits
 ===========================================================================
-PCA feature extraction → SVM, comparing CNN-like pipeline with raw pixels.
+PCA feature extraction -> SVM, comparing CNN-like pipeline with raw pixels.
 
 Run:  python working_example2.py
 """

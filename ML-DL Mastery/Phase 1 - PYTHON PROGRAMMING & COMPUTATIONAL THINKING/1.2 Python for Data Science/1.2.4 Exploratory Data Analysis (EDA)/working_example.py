@@ -15,7 +15,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_eda")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Synthetic dataset ─────────────────────────────────────────────────────────
+# -- Synthetic dataset ---------------------------------------------------------
 def make_dataset(n=200, seed=0):
     rng = np.random.default_rng(seed)
     age    = rng.integers(22, 65, n).astype(float)
@@ -36,7 +36,7 @@ def make_dataset(n=200, seed=0):
     })
 
 
-# ── 1. Basic profiling ────────────────────────────────────────────────────────
+# -- 1. Basic profiling --------------------------------------------------------
 def basic_profile(df):
     print("=== 1. Basic Profile ===")
     print(f"  Shape     : {df.shape}")
@@ -47,7 +47,7 @@ def basic_profile(df):
     print(f"\n  duplicated rows: {df.duplicated().sum()}")
 
 
-# ── 2. Univariate analysis ────────────────────────────────────────────────────
+# -- 2. Univariate analysis ----------------------------------------------------
 def univariate(df):
     print("\n=== 2. Univariate Analysis ===")
     # Numeric
@@ -64,7 +64,7 @@ def univariate(df):
     print(f"  dept %:\n{df['dept'].value_counts(normalize=True).mul(100).round(1)}")
 
 
-# ── 3. Outlier detection ──────────────────────────────────────────────────────
+# -- 3. Outlier detection ------------------------------------------------------
 def outlier_detection(df):
     print("\n=== 3. Outlier Detection ===")
     s = df["salary"]
@@ -83,7 +83,7 @@ def outlier_detection(df):
     print(f"  z-score |z|>3 outliers: {z_outliers}")
 
 
-# ── 4. Bivariate / correlation analysis ──────────────────────────────────────
+# -- 4. Bivariate / correlation analysis --------------------------------------
 def bivariate(df):
     print("\n=== 4. Bivariate Analysis ===")
     numeric = df[["age", "experience", "salary", "score"]].dropna()
@@ -95,7 +95,7 @@ def bivariate(df):
     print(f"\n  by department:\n{group}")
 
 
-# ── 5. Plot distributions and relationships ───────────────────────────────────
+# -- 5. Plot distributions and relationships -----------------------------------
 def eda_plots(df):
     print("\n=== 5. EDA Plots (saved to output_eda/) ===")
     numeric = df[["age", "experience", "salary", "score"]]
@@ -139,7 +139,7 @@ def eda_plots(df):
     print("  Saved: eda_salary_vs_exp.png")
 
 
-# ── 6. EDA checklist ─────────────────────────────────────────────────────────
+# -- 6. EDA checklist ---------------------------------------------------------
 def eda_checklist():
     print("\n=== 6. EDA Checklist ===")
     checklist = [

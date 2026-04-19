@@ -25,7 +25,7 @@ def demo_lln():
     samples = np.random.binomial(1, p_true, max(ns))
     for n in ns:
         p_est = samples[:n].mean()
-        print(f"  n={n:>6}: p̂ = {p_est:.4f}  |err| = {abs(p_est - p_true):.4f}")
+        print(f"  n={n:>6}: p = {p_est:.4f}  |err| = {abs(p_est - p_true):.4f}")
 
     # Plot running average
     running = np.cumsum(samples) / np.arange(1, len(samples)+1)
@@ -75,7 +75,7 @@ def demo_bootstrap():
 def demo_mc_integration():
     print("\n=== Monte Carlo Integration ===")
     np.random.seed(1)
-    # ∫₀¹ x² dx = 1/3
+    # integral01 x² dx = 1/3
     true_val = 1/3
     for N in [100, 1000, 10000, 100000]:
         x = np.random.uniform(0, 1, N)

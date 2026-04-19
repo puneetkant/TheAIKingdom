@@ -19,7 +19,7 @@ def relu(z): return np.maximum(0, z)
 def sigmoid(z): return 1 / (1 + np.exp(-np.clip(z, -500, 500)))
 
 
-# ── 1. VAE for Image Generation ───────────────────────────────────────────────
+# -- 1. VAE for Image Generation -----------------------------------------------
 class ImageVAE:
     """Minimal VAE using flattened image pixels (numpy only)."""
     def __init__(self, input_dim=64, hidden=32, latent=8, rng=None):
@@ -93,7 +93,7 @@ def vae_image_demo():
     generated  = vae.decode(z_samples)
     print(f"  Digits dataset: {N} images, {D}-dim")
     print(f"  Latent dim: {vae.latent}")
-    print(f"  Training loss: {losses[0]:.4f} → {losses[-1]:.4f}")
+    print(f"  Training loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
     print(f"  Generated samples: {generated.shape}  range [{generated.min():.3f}, {generated.max():.3f}]")
 
     # Reconstruct some digits
@@ -118,7 +118,7 @@ def vae_image_demo():
     print(f"  VAE generation plot: {path}")
 
 
-# ── 2. GAN concepts ───────────────────────────────────────────────────────────
+# -- 2. GAN concepts -----------------------------------------------------------
 def gan_overview():
     print("\n=== Generative Adversarial Networks ===")
     print("  Goodfellow et al. (2014)")
@@ -126,12 +126,12 @@ def gan_overview():
     print("  Framework: minimax game between Generator G and Discriminator D")
     print("  min_G max_D  E[log D(x)] + E[log(1 - D(G(z)))]")
     print()
-    print("  G: noise z → fake image   (tries to fool D)")
-    print("  D: image → real/fake prob (tries to detect fakes)")
+    print("  G: noise z -> fake image   (tries to fool D)")
+    print("  D: image -> real/fake prob (tries to detect fakes)")
     print()
     print("  Training alternates:")
-    print("    1. Update D: real images → label 1, fake images → label 0")
-    print("    2. Update G: generate fakes, target D output → 1")
+    print("    1. Update D: real images -> label 1, fake images -> label 0")
+    print("    2. Update G: generate fakes, target D output -> 1")
     print()
     print("  GAN variants:")
     variants = [
@@ -148,17 +148,17 @@ def gan_overview():
         print(f"    {v:<12} {d}")
 
 
-# ── 3. Diffusion models ───────────────────────────────────────────────────────
+# -- 3. Diffusion models -------------------------------------------------------
 def diffusion_overview():
     print("\n=== Diffusion Models ===")
     print("  Forward process: gradually add Gaussian noise over T steps")
-    print("    q(x_t | x_{t-1}) = N(x_t; √(1-β_t)·x_{t-1}, β_t·I)")
+    print("    q(x_t | x_{t-1}) = N(x_t; sqrt(1-beta_t)·x_{t-1}, beta_t·I)")
     print()
     print("  Reverse process: learn to denoise")
-    print("    p_θ(x_{t-1} | x_t) = N(x_{t-1}; μ_θ(x_t, t), σ_t²·I)")
+    print("    p_theta(x_{t-1} | x_t) = N(x_{t-1}; mu_theta(x_t, t), sigma_t²·I)")
     print()
     print("  Simplified training objective:")
-    print("    L = E[||ε - ε_θ(x_t, t)||²]   (predict the noise)")
+    print("    L = E[||epsilon - epsilon_theta(x_t, t)||²]   (predict the noise)")
     print()
 
     # Simulate forward diffusion
@@ -176,7 +176,7 @@ def diffusion_overview():
         eps = rng.standard_normal(x0.shape)
         xt  = np.sqrt(ab) * x0 + np.sqrt(1 - ab) * eps
         snr = ab / (1 - ab)
-        print(f"    t={t_idx+1:>2}: x_t ≈ {xt.round(3)}  α̅={ab:.4f}  SNR={snr:.4f}")
+        print(f"    t={t_idx+1:>2}: x_t ~= {xt.round(3)}  alpha={ab:.4f}  SNR={snr:.4f}")
 
     print()
     print("  Key models:")
@@ -194,7 +194,7 @@ def diffusion_overview():
         print(f"    {m:<12} {d}")
 
 
-# ── 4. Style transfer ─────────────────────────────────────────────────────────
+# -- 4. Style transfer ---------------------------------------------------------
 def style_transfer_overview():
     print("\n=== Neural Style Transfer ===")
     print("  Gatys et al. (2015): optimise input image to match")
@@ -202,9 +202,9 @@ def style_transfer_overview():
     print("    Style:    Gram matrix of style image activations")
     print()
     print("  Loss:")
-    print("    L = α·L_content + β·L_style")
+    print("    L = alpha·L_content + beta·L_style")
     print("    L_content = ||F_content - F_generated||²  (deep layer)")
-    print("    L_style   = Σ_l ||G_l^style - G_l^gen||²  (Gram matrices)")
+    print("    L_style   = Sigma_l ||G_l^style - G_l^gen||²  (Gram matrices)")
     print()
 
     # Simulate Gram matrix
@@ -212,20 +212,20 @@ def style_transfer_overview():
     F = rng.standard_normal((32, 10, 10))   # 32 filters, 10×10 spatial
     F_flat = F.reshape(32, -1)              # (32, 100)
     G = F_flat @ F_flat.T / 100            # Gram matrix (32, 32)
-    print(f"  Gram matrix: F {F.shape} → G {G.shape}")
+    print(f"  Gram matrix: F {F.shape} -> G {G.shape}")
     print(f"    Gram diag (style energy per filter): mean={np.diag(G).mean():.3f}")
     print()
     print("  Fast style transfer: train a per-style feed-forward network")
     print("  AdaIN (Adaptive Instance Normalization): arbitrary style in real-time")
 
 
-# ── 5. Generation metrics ────────────────────────────────────────────────────
+# -- 5. Generation metrics ----------------------------------------------------
 def generation_metrics():
     print("\n=== Image Generation Evaluation Metrics ===")
     print("  FID (Fréchet Inception Distance):")
     print("    Lower is better (0 = perfect)")
     print("    Computes distance between real/fake feature distributions")
-    print("    FID = ||μ_r - μ_f||² + Tr(Σ_r + Σ_f - 2·(Σ_r·Σ_f)^0.5)")
+    print("    FID = ||mu_r - mu_f||² + Tr(Sigma_r + Sigma_f - 2·(Sigma_r·Sigma_f)^0.5)")
     print()
 
     # Toy FID simulation
@@ -244,7 +244,7 @@ def generation_metrics():
     print()
     print("  Other metrics:")
     metrics = [
-        ("IS (Inception Score)", "High quality + diversity → high IS"),
+        ("IS (Inception Score)", "High quality + diversity -> high IS"),
         ("LPIPS",                "Perceptual similarity; learned patch distance"),
         ("SSIM",                 "Structural similarity; luminance/contrast/structure"),
         ("PSNR",                 "Peak SNR; 10·log10(MAX²/MSE); higher is better"),

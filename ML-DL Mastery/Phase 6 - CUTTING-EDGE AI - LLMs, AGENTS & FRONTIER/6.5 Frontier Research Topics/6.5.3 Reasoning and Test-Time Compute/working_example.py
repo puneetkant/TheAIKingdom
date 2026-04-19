@@ -10,21 +10,21 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_reasoning")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Test-time compute overview ─────────────────────────────────────────────
+# -- 1. Test-time compute overview ---------------------------------------------
 def test_time_overview():
     print("=== Reasoning and Test-Time Compute ===")
     print()
     print("  Traditional scaling: more params + more data")
     print("  New scaling axis: more compute at INFERENCE time")
-    print("  'Thinking longer' → better answers for hard problems")
+    print("  'Thinking longer' -> better answers for hard problems")
     print()
     print("  Two orthogonal scaling curves:")
-    print("  1. Pre-training compute  → base capability")
-    print("  2. Test-time compute     → reasoning depth")
+    print("  1. Pre-training compute  -> base capability")
+    print("  2. Test-time compute     -> reasoning depth")
     print()
     approaches = [
-        ("Chain-of-thought",    "Prompt: think step by step → linear reasoning trace"),
-        ("Self-consistency",    "K diverse CoTs → majority vote; reliable but K×cost"),
+        ("Chain-of-thought",    "Prompt: think step by step -> linear reasoning trace"),
+        ("Self-consistency",    "K diverse CoTs -> majority vote; reliable but Kxcost"),
         ("Best-of-N sampling",  "Sample N answers; pick highest reward model score"),
         ("MCTS / tree search",  "Branch + evaluate; backtrack; finds optimal path"),
         ("Process rewards",     "PRM: score each reasoning step, not just final answer"),
@@ -36,11 +36,11 @@ def test_time_overview():
         print(f"  {a:<22} {d}")
 
 
-# ── 2. Self-consistency ───────────────────────────────────────────────────────
+# -- 2. Self-consistency -------------------------------------------------------
 def self_consistency_demo():
     print("\n=== Self-Consistency Demo ===")
     print()
-    print("  Sample K reasoning paths → take majority vote on final answer")
+    print("  Sample K reasoning paths -> take majority vote on final answer")
     print()
 
     rng = np.random.default_rng(42)
@@ -74,7 +74,7 @@ def self_consistency_demo():
         print(f"  {K:<6} {greedy_acc:>17.1%} {sc_acc:>14.1%}")
 
 
-# ── 3. Process reward models ──────────────────────────────────────────────────
+# -- 3. Process reward models --------------------------------------------------
 def process_reward_models():
     print("\n=== Process Reward Models (PRMs) ===")
     print()
@@ -96,13 +96,13 @@ def process_reward_models():
         ("Step 2: Alice has 15, Bob has x - 15.",            0.95),
         ("Step 3: Bob gives 5 to Carol, so Bob has x-20.",   0.82),
         ("Step 4: 3 * (x-20) = x (Carol triples Bob's).",   0.61),  # error here
-        ("Step 5: 3x - 60 = x → 2x = 60 → x = 30.",        0.40),
+        ("Step 5: 3x - 60 = x -> 2x = 60 -> x = 30.",        0.40),
         ("Step 6: Answer = 30.",                             0.35),
     ]
     print("  Simulated PRM scores for a reasoning trace:")
     for step, score in trace:
-        bar = "█" * int(score * 20)
-        flag = " ← suspect" if score < 0.6 else ""
+        bar = "#" * int(score * 20)
+        flag = " <- suspect" if score < 0.6 else ""
         print(f"  [{score:.2f}] {step[:55]:<55} {bar}{flag}")
     print()
     print("  Best-of-N with PRM:")
@@ -110,7 +110,7 @@ def process_reward_models():
     print("  pick solution with highest min-step score (pessimistic product)")
 
 
-# ── 4. o1 / o3 architecture ───────────────────────────────────────────────────
+# -- 4. o1 / o3 architecture ---------------------------------------------------
 def o1_architecture():
     print("\n=== OpenAI o1/o3 — Extended Thinking ===")
     print()
@@ -148,12 +148,12 @@ def o1_architecture():
         "Tasks where accuracy >>> latency/cost",
     ]
     for uc in use_cases:
-        print(f"  ✓ {uc}")
+        print(f"  [OK] {uc}")
     print()
     print("  NOT worth it for:")
     not_worth = ["Simple factual queries", "Creative writing", "Translation", "Summarisation"]
     for n in not_worth:
-        print(f"  ✗ {n}")
+        print(f"  [X] {n}")
 
 
 if __name__ == "__main__":

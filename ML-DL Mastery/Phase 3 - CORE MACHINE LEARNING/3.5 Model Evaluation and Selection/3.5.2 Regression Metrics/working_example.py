@@ -19,7 +19,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_reg_metrics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Core regression metrics ───────────────────────────────────────────────
+# -- 1. Core regression metrics -----------------------------------------------
 def core_metrics():
     print("=== Core Regression Metrics ===")
     rng = np.random.default_rng(0)
@@ -53,14 +53,14 @@ def core_metrics():
         print(f"  {name:<38}: {val:.4f}")
 
     print(f"\n  Formulas:")
-    print(f"    MAE     = Σ|y-ŷ|/n")
-    print(f"    MSE     = Σ(y-ŷ)²/n")
-    print(f"    RMSE    = √MSE")
+    print(f"    MAE     = Sigma|y-ŷ|/n")
+    print(f"    MSE     = Sigma(y-ŷ)²/n")
+    print(f"    RMSE    = sqrtMSE")
     print(f"    R²      = 1 - SS_res/SS_tot  (proportion of variance explained)")
     print(f"    R²_adj  = 1 - (1-R²)(n-1)/(n-p-1)")
 
 
-# ── 2. Relative metrics (MAPE, SMAPE) ────────────────────────────────────────
+# -- 2. Relative metrics (MAPE, SMAPE) ----------------------------------------
 def relative_metrics():
     print("\n=== Relative Metrics (scale-independent) ===")
     rng = np.random.default_rng(1)
@@ -72,8 +72,8 @@ def relative_metrics():
 
     print(f"  MAPE  = {MAPE*100:.2f}%  (Mean Absolute Percentage Error)")
     print(f"  SMAPE = {SMAPE:.2f}%  (Symmetric MAPE, capped at 200%)")
-    print(f"\n  MAPE = mean(|y-ŷ|/|y|)  ← undefined when y=0, asymmetric")
-    print(f"  SMAPE = mean(2|y-ŷ|/(|y|+|ŷ|)) ← symmetric, bounded")
+    print(f"\n  MAPE = mean(|y-ŷ|/|y|)  <- undefined when y=0, asymmetric")
+    print(f"  SMAPE = mean(2|y-ŷ|/(|y|+|ŷ|)) <- symmetric, bounded")
 
     # Demonstrate MAPE issue near zero
     y_near_zero = np.array([0.01, 1.0, 10.0, 100.0])
@@ -84,12 +84,12 @@ def relative_metrics():
         print(f"    y={ytrue:.2f}  ŷ={ypred:.3f}  MAPE={m:.1f}%")
 
 
-# ── 3. RMSLE (log scale) ─────────────────────────────────────────────────────
+# -- 3. RMSLE (log scale) -----------------------------------------------------
 def rmsle_demo():
     print("\n=== RMSLE (Root Mean Squared Log Error) ===")
     print("  Used when target spans several orders of magnitude")
     print("  Penalises under-prediction more than over-prediction")
-    print("  Formula: √(Σ(log(ŷ+1) - log(y+1))²/n)")
+    print("  Formula: sqrt(Sigma(log(ŷ+1) - log(y+1))²/n)")
 
     rng = np.random.default_rng(2)
     y_te   = rng.exponential(1000, 200).clip(1, None)
@@ -108,7 +108,7 @@ def rmsle_demo():
         print(f"  Predict {label}: RMSLE={rmsle:.4f}")
 
 
-# ── 4. Residual analysis ─────────────────────────────────────────────────────
+# -- 4. Residual analysis -----------------------------------------------------
 def residual_analysis():
     print("\n=== Residual Analysis ===")
     rng = np.random.default_rng(3)
@@ -153,7 +153,7 @@ def residual_analysis():
     print(f"\n  Residual plots saved: {path}")
 
 
-# ── 5. Metric comparison on multiple models ───────────────────────────────────
+# -- 5. Metric comparison on multiple models -----------------------------------
 def model_comparison():
     print("\n=== Regression Metric Comparison Across Models ===")
     rng = np.random.default_rng(4)
@@ -182,7 +182,7 @@ def model_comparison():
         print(f"  {name:<18} {mae:>8.4f} {rmse:>8.4f} {r2:>8.4f} {mape:>8.2f} {rmsle:>8.4f}")
 
 
-# ── 6. When to use which metric ───────────────────────────────────────────────
+# -- 6. When to use which metric -----------------------------------------------
 def metric_selection_guide():
     print("\n=== Metric Selection Guide ===")
     print("  MAE:   Robust to outliers, interpretable (same units as y)")

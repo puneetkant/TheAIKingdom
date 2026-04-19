@@ -72,8 +72,8 @@ def demo():
     out = transformer_encoder_block(X, params)
     print(f"  Input:  {X.shape}")
     print(f"  Output: {out.shape}  (same — transformer preserves sequence shape)")
-    print(f"  LayerNorm mean: {out.mean(axis=-1).round(4)}  (≈0 after norm)")
-    print(f"  LayerNorm std:  {out.std(axis=-1).round(4)}  (≈1 after norm)")
+    print(f"  LayerNorm mean: {out.mean(axis=-1).round(4)}  (~=0 after norm)")
+    print(f"  LayerNorm std:  {out.std(axis=-1).round(4)}  (~=1 after norm)")
 
 if __name__ == "__main__":
     demo()

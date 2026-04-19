@@ -6,65 +6,65 @@ chain rule in matrix form, and the connection to neural-network backpropagation.
 import numpy as np
 
 
-# ── Notation reference ────────────────────────────────────────────────────────
+# -- Notation reference --------------------------------------------------------
 def notation():
     print("=== Matrix Calculus Notation ===")
     ref = [
-        ("∂y/∂x",   "y scalar, x scalar",  "scalar"),
-        ("∂y/∂x",   "y scalar, x (n,) vec","row vector (1×n) — 'numerator layout'"),
-        ("∂y/∂x",   "y scalar, x (n,) vec","column vector (n×1) — 'denominator layout'"),
-        ("∂y/∂X",   "y scalar, X (m×n)",   "(m×n) matrix — gradient matrix"),
-        ("∂y/∂X",   "y (p,) vec, x (n,)",  "(n×p) Jacobian"),
+        ("dy/dx",   "y scalar, x scalar",  "scalar"),
+        ("dy/dx",   "y scalar, x (n,) vec","row vector (1xn) — 'numerator layout'"),
+        ("dy/dx",   "y scalar, x (n,) vec","column vector (nx1) — 'denominator layout'"),
+        ("dy/dX",   "y scalar, X (mxn)",   "(mxn) matrix — gradient matrix"),
+        ("dy/dX",   "y (p,) vec, x (n,)",  "(nxp) Jacobian"),
     ]
     for lhs, dims, result in ref:
         print(f"  {lhs:<10} | {dims:<30} | result = {result}")
-    print("\n  (We follow denominator/column layout: ∂y/∂x is a column vector)")
+    print("\n  (We follow denominator/column layout: dy/dx is a column vector)")
 
 
-# ── 1. Scalar-by-vector: ∂(aᵀx)/∂x = a ──────────────────────────────────────
+# -- 1. Scalar-by-vector: d(aᵀx)/dx = a --------------------------------------
 def scalar_by_vector():
-    print("\n=== ∂(aᵀx)/∂x = a   and   ∂(xᵀAx)/∂x = (A+Aᵀ)x ===")
+    print("\n=== d(aᵀx)/dx = a   and   d(xᵀAx)/dx = (A+Aᵀ)x ===")
     n = 4
     rng = np.random.default_rng(0)
     a   = rng.standard_normal(n)
     A   = rng.standard_normal((n, n))
     x0  = rng.standard_normal(n)
 
-    # f = aᵀx → ∂f/∂x = a
+    # f = aᵀx -> df/dx = a
     f1       = lambda x: a @ x
     grad1_ex = a
     grad1_nu = numerical_grad(f1, x0)
     print(f"  f = aᵀx:  exact={np.round(grad1_ex,4)}  numeric={np.round(grad1_nu,4)}")
     print(f"  match: {np.allclose(grad1_ex, grad1_nu)}")
 
-    # f = xᵀAx → ∂f/∂x = (A+Aᵀ)x
+    # f = xᵀAx -> df/dx = (A+Aᵀ)x
     f2       = lambda x: x @ A @ x
     grad2_ex = (A + A.T) @ x0
     grad2_nu = numerical_grad(f2, x0)
     print(f"\n  f = xᵀAx:  max|exact-numeric| = {np.max(np.abs(grad2_ex-grad2_nu)):.2e}")
 
-    # If A symmetric: ∂(xᵀAx)/∂x = 2Ax
+    # If A symmetric: d(xᵀAx)/dx = 2Ax
     A_sym    = A + A.T
     grad_sym = 2 * A_sym @ x0
     f_sym    = lambda x: x @ A_sym @ x
     print(f"  f = xᵀ(A+Aᵀ)x symmetric: grad=2(A+Aᵀ)x,  match={np.allclose(grad_sym, numerical_grad(f_sym, x0))}")
 
 
-# ── 2. ∂(Ax)/∂x = A and ∂(xᵀA)/∂x = Aᵀ ─────────────────────────────────────
+# -- 2. d(Ax)/dx = A and d(xᵀA)/dx = Aᵀ -------------------------------------
 def vector_by_vector():
-    print("\n=== Jacobians: ∂(Ax)/∂x = A ===")
+    print("\n=== Jacobians: d(Ax)/dx = A ===")
     m, n = 3, 4
     rng  = np.random.default_rng(1)
     A    = rng.standard_normal((m, n))
     x0   = rng.standard_normal(n)
 
-    # J[i,j] = ∂(Ax)_i / ∂x_j = A[i,j]
+    # J[i,j] = d(Ax)_i / dx_j = A[i,j]
     J_exact   = A
     J_numeric = numerical_jacobian(lambda x: A @ x, x0)
     print(f"  J = A ({m}×{n}):  max|J_exact - J_numeric| = {np.max(np.abs(J_exact - J_numeric)):.2e}")
 
 
-# ── 3. Derivative of loss w.r.t. weight matrix (linear layer) ────────────────
+# -- 3. Derivative of loss w.r.t. weight matrix (linear layer) ----------------
 def linear_layer_gradient():
     print("\n=== Gradient Through Linear Layer y = Wx + b ===")
     n_in, n_out = 4, 3
@@ -77,12 +77,12 @@ def linear_layer_gradient():
     # Forward: y = Wx + b,  L = ||y - y_t||²
     y    = W @ x + b
     loss = 0.5 * np.sum((y - y_t)**2)
-    dL_dy = y - y_t                      # ∂L/∂y = (y - y_t)
+    dL_dy = y - y_t                      # dL/dy = (y - y_t)
 
     # Backprop:
-    #   ∂L/∂W = ∂L/∂y · ∂y/∂W = dL_dy ⊗ x (outer product)
-    #   ∂L/∂b = ∂L/∂y · ∂y/∂b = dL_dy (identity Jacobian)
-    #   ∂L/∂x = Wᵀ dL_dy
+    #   dL/dW = dL/dy · dy/dW = dL_dy x x (outer product)
+    #   dL/db = dL/dy · dy/db = dL_dy (identity Jacobian)
+    #   dL/dx = Wᵀ dL_dy
     dL_dW = np.outer(dL_dy, x)
     dL_db = dL_dy
     dL_dx = W.T @ dL_dy
@@ -99,15 +99,15 @@ def linear_layer_gradient():
             dL_dW_num[i,j] = (L1 - L2) / (2*h)
 
     print(f"  Loss = {loss:.4f}")
-    print(f"  max|∂L/∂W  analytic - numeric| = {np.max(np.abs(dL_dW - dL_dW_num)):.2e}")
-    print(f"  ∂L/∂b = {np.round(dL_db, 4)}")
-    print(f"  ∂L/∂x shape: {dL_dx.shape}  (flows to previous layer)")
+    print(f"  max|dL/dW  analytic - numeric| = {np.max(np.abs(dL_dW - dL_dW_num)):.2e}")
+    print(f"  dL/db = {np.round(dL_db, 4)}")
+    print(f"  dL/dx shape: {dL_dx.shape}  (flows to previous layer)")
 
 
-# ── 4. Chain rule in matrix form (composition of layers) ─────────────────────
+# -- 4. Chain rule in matrix form (composition of layers) ---------------------
 def chain_rule_matrix():
     print("\n=== Chain Rule: L = loss(g(f(x))) ===")
-    # f: R³→R², g: R²→R², loss: R²→R
+    # f: R³->R², g: R²->R², loss: R²->R
     # f(x) = W1 x  (linear)
     # g(z) = tanh(W2 z)  (activation)
     # L(a) = 0.5 ||a||²
@@ -125,9 +125,9 @@ def chain_rule_matrix():
     dL_da  = a
     dtanh  = 1 - np.tanh(W2 @ z)**2       # elementwise
     dL_dWz = dL_da * dtanh                 # dL/d(W2 z) via elementwise chain
-    dL_dW2 = np.outer(dL_dWz, z)          # ∂L/∂W2
+    dL_dW2 = np.outer(dL_dWz, z)          # dL/dW2
     dL_dz  = W2.T @ dL_dWz               # propagate through W2
-    dL_dW1 = np.outer(dL_dz, x)           # ∂L/∂W1
+    dL_dW1 = np.outer(dL_dz, x)           # dL/dW1
     dL_dx  = W1.T @ dL_dz                # gradient w.r.t. input
 
     # Numeric verification
@@ -138,31 +138,31 @@ def chain_rule_matrix():
 
     dL_dx_num = numerical_grad(forward, x)
     print(f"  Loss = {loss:.6f}")
-    print(f"  ∂L/∂x  analytic: {np.round(dL_dx, 6)}")
-    print(f"  ∂L/∂x  numeric : {np.round(dL_dx_num, 6)}")
+    print(f"  dL/dx  analytic: {np.round(dL_dx, 6)}")
+    print(f"  dL/dx  numeric : {np.round(dL_dx_num, 6)}")
     print(f"  max diff: {np.max(np.abs(dL_dx - dL_dx_num)):.2e}")
 
 
-# ── 5. Common matrix derivative identities ────────────────────────────────────
+# -- 5. Common matrix derivative identities ------------------------------------
 def identities():
     print("\n=== Common Matrix Derivative Identities ===")
     idents = [
-        ("∂(aᵀx)/∂x",           "a"),
-        ("∂(xᵀa)/∂x",           "a"),
-        ("∂(xᵀx)/∂x",           "2x"),
-        ("∂(xᵀAx)/∂x",          "(A+Aᵀ)x  →  2Ax if A symmetric"),
-        ("∂(aᵀXb)/∂X",          "abᵀ"),
-        ("∂tr(AX)/∂X",          "Aᵀ"),
-        ("∂tr(XᵀA)/∂X",         "A"),
-        ("∂tr(AXBXᵀ)/∂X",       "AᵀXBᵀ + AXB"),
-        ("∂(Ax)/∂x",             "A  (Jacobian)"),
-        ("∂ln det(X)/∂X",        "X⁻ᵀ"),
+        ("d(aᵀx)/dx",           "a"),
+        ("d(xᵀa)/dx",           "a"),
+        ("d(xᵀx)/dx",           "2x"),
+        ("d(xᵀAx)/dx",          "(A+Aᵀ)x  ->  2Ax if A symmetric"),
+        ("d(aᵀXb)/dX",          "abᵀ"),
+        ("dtr(AX)/dX",          "Aᵀ"),
+        ("dtr(XᵀA)/dX",         "A"),
+        ("dtr(AXBXᵀ)/dX",       "AᵀXBᵀ + AXB"),
+        ("d(Ax)/dx",             "A  (Jacobian)"),
+        ("dln det(X)/dX",        "X^-ᵀ"),
     ]
     for lhs, rhs in idents:
         print(f"  {lhs:<30} = {rhs}")
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# -- Helpers -------------------------------------------------------------------
 def numerical_grad(f, x0, h=1e-6):
     grad = np.zeros_like(x0)
     for i in range(len(x0)):

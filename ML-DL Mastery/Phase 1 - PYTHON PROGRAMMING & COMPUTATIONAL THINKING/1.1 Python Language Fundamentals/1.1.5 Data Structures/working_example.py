@@ -94,8 +94,8 @@ def sets_demo():
     print("\n=== Sets ===")
     a = {1, 2, 3, 4, 5}
     b = {3, 4, 5, 6, 7}
-    print(f"  a ∪ b (union)        = {a | b}")
-    print(f"  a ∩ b (intersection) = {a & b}")
+    print(f"  a u b (union)        = {a | b}")
+    print(f"  a n b (intersection) = {a & b}")
     print(f"  a - b (difference)   = {a - b}")
     print(f"  a △ b (symmetric ∆)  = {a ^ b}")
     print(f"  a ⊆ {1,2,3} (subset) = {a >= {1,2,3}}")
@@ -125,13 +125,13 @@ def counter_demo():
 def choosing_structures():
     print("\n=== Choosing the Right Data Structure ===")
     guide = {
-        "list"       : "Ordered, mutable, duplicates allowed → sequences, stacks, queues",
-        "tuple"      : "Ordered, immutable → fixed records, dict keys, namedtuples",
-        "dict"       : "Key→value lookup, O(1) average → counts, caches, config",
-        "set"        : "Unordered, unique → dedup, fast membership O(1), set math",
-        "defaultdict": "dict with default factory → grouping, graph adjacency",
-        "Counter"    : "dict subclass for counting → word frequency, histogram",
-        "deque"      : "Double-ended queue → fast O(1) append/pop both ends",
+        "list"       : "Ordered, mutable, duplicates allowed -> sequences, stacks, queues",
+        "tuple"      : "Ordered, immutable -> fixed records, dict keys, namedtuples",
+        "dict"       : "Key->value lookup, O(1) average -> counts, caches, config",
+        "set"        : "Unordered, unique -> dedup, fast membership O(1), set math",
+        "defaultdict": "dict with default factory -> grouping, graph adjacency",
+        "Counter"    : "dict subclass for counting -> word frequency, histogram",
+        "deque"      : "Double-ended queue -> fast O(1) append/pop both ends",
     }
     for struct, desc in guide.items():
         print(f"  {struct:<14} : {desc}")

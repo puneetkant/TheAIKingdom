@@ -12,7 +12,7 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Regression losses ──────────────────────────────────────────────────────
+# -- 1. Regression losses ------------------------------------------------------
 def regression_losses():
     print("=== Regression Loss Functions ===")
     rng  = np.random.default_rng(0)
@@ -40,7 +40,7 @@ def regression_losses():
         ("MSE",         mse,        "Large errors penalised heavily"),
         ("RMSE",        rmse,       "Same units as y"),
         ("MAE",         mae,        "Robust to outliers"),
-        (f"Huber(δ={delta})", huber_loss, "MAE far, MSE near zero"),
+        (f"Huber(delta={delta})", huber_loss, "MAE far, MSE near zero"),
         ("Log-Cosh",    logcosh,    "Smooth MAE approximation"),
     ]:
         print(f"  {name:<20} {val:>10.4f}  {note}")
@@ -48,15 +48,15 @@ def regression_losses():
     # Gradient comparison at a specific residual
     print(f"\n  Gradients at r=5 (outlier):")
     r_val = 5.0
-    print(f"    MSE gradient:   2r = {2*r_val:.1f}  (large → sensitive to outliers)")
+    print(f"    MSE gradient:   2r = {2*r_val:.1f}  (large -> sensitive to outliers)")
     print(f"    MAE gradient:   sign(r) = 1.0  (constant)")
-    print(f"    Huber gradient: δ·sign(r) = {delta:.1f}  (clipped)")
+    print(f"    Huber gradient: delta·sign(r) = {delta:.1f}  (clipped)")
 
 
-# ── 2. Binary cross-entropy ──────────────────────────────────────────────────
+# -- 2. Binary cross-entropy --------------------------------------------------
 def binary_cross_entropy():
     print("\n=== Binary Cross-Entropy (BCE) ===")
-    print("  L = -Σ [y·log(ŷ) + (1-y)·log(1-ŷ)] / n")
+    print("  L = -Sigma [y·log(ŷ) + (1-y)·log(1-ŷ)] / n")
     print("  Also called log loss; used for binary classification")
 
     rng   = np.random.default_rng(1)
@@ -74,13 +74,13 @@ def binary_cross_entropy():
         L = -(y_true*np.log(y_pred+eps) + (1-y_true)*np.log(1-y_pred+eps))
         print(f"    y={y_true}  ŷ={y_pred}  L={L:.4f}")
 
-    print(f"\n  Gradient: ∂L/∂ŷ = (ŷ - y) / (ŷ(1-ŷ))  →  ∂L/∂logit = ŷ - y")
+    print(f"\n  Gradient: dL/dŷ = (ŷ - y) / (ŷ(1-ŷ))  ->  dL/dlogit = ŷ - y")
 
 
-# ── 3. Categorical cross-entropy ─────────────────────────────────────────────
+# -- 3. Categorical cross-entropy ---------------------------------------------
 def categorical_cross_entropy():
     print("\n=== Categorical Cross-Entropy ===")
-    print("  L = -Σ y_k·log(ŷ_k)   (only the true class term survives)")
+    print("  L = -Sigma y_k·log(ŷ_k)   (only the true class term survives)")
 
     rng    = np.random.default_rng(2)
     n, K   = 50, 4
@@ -104,10 +104,10 @@ def categorical_cross_entropy():
         print(f"    true={true_cls}  probs={p.round(3)}  L={L:.4f}")
 
 
-# ── 4. KL Divergence ─────────────────────────────────────────────────────────
+# -- 4. KL Divergence ---------------------------------------------------------
 def kl_divergence():
     print("\n=== KL Divergence ===")
-    print("  D_KL(P||Q) = Σ P(x) log(P(x)/Q(x))")
+    print("  D_KL(P||Q) = Sigma P(x) log(P(x)/Q(x))")
     print("  Measures how P differs from Q (not symmetric!)")
     print("  Used in VAEs, knowledge distillation, RL")
 
@@ -128,11 +128,11 @@ def kl_divergence():
     print(f"  D_KL(Q1||P) = {kl(Q1,P):.4f}  (asymmetric!)")
 
 
-# ── 5. Hinge loss (SVM) ──────────────────────────────────────────────────────
+# -- 5. Hinge loss (SVM) ------------------------------------------------------
 def hinge_loss():
     print("\n=== Hinge Loss (SVM-style) ===")
-    print("  L = max(0, 1 - y·ŷ)  where y∈{-1,+1}")
-    print("  Encourages margin ≥ 1 around decision boundary")
+    print("  L = max(0, 1 - y·ŷ)  where yin{-1,+1}")
+    print("  Encourages margin >= 1 around decision boundary")
 
     y    = np.array([ 1,  1, -1, -1,  1], dtype=float)
     yhat = np.array([0.8, 0.3, -0.9, 0.2, -0.5])  # raw scores
@@ -146,18 +146,18 @@ def hinge_loss():
     print(f"\n  Mean hinge loss: {hinge.mean():.4f}")
 
 
-# ── 6. Focal loss (class imbalance) ──────────────────────────────────────────
+# -- 6. Focal loss (class imbalance) ------------------------------------------
 def focal_loss():
     print("\n=== Focal Loss (RetinaNet) ===")
-    print("  FL(p_t) = -(1-p_t)^γ · log(p_t)")
+    print("  FL(p_t) = -(1-p_t)^gamma · log(p_t)")
     print("  Down-weights easy examples; focuses on hard misclassifications")
-    print("  γ=0 → standard cross-entropy  γ=2 → strong focus on hard")
+    print("  gamma=0 -> standard cross-entropy  gamma=2 -> strong focus on hard")
 
     eps  = 1e-15
     p_t  = np.array([0.99, 0.7, 0.5, 0.3, 0.1, 0.01])  # predicted prob for true class
     ce   = -np.log(p_t + eps)
 
-    print(f"\n  {'p_t':<8} {'CE':>10} {'FL(γ=1)':>12} {'FL(γ=2)':>12}")
+    print(f"\n  {'p_t':<8} {'CE':>10} {'FL(gamma=1)':>12} {'FL(gamma=2)':>12}")
     for p, c in zip(p_t, ce):
         fl1 = (1-p)**1 * c
         fl2 = (1-p)**2 * c
@@ -167,7 +167,7 @@ def focal_loss():
     print(f"  When p_t=0.1 (hard):  FL/CE = {(1-0.1)**2:.4f}  (large weight)")
 
 
-# ── 7. Contrastive and Triplet loss ──────────────────────────────────────────
+# -- 7. Contrastive and Triplet loss ------------------------------------------
 def metric_learning_losses():
     print("\n=== Contrastive and Triplet Loss (Metric Learning) ===")
     print("  Used in Siamese networks, face recognition, embedding learning")
@@ -196,7 +196,7 @@ def metric_learning_losses():
     print(f"  Triplet  d(a,p)={d_ap}  d(a,n)={d_an2}  margin=0.2  L={L_trip2:.4f}  (violated!)")
 
 
-# ── 8. Loss selection guide ───────────────────────────────────────────────────
+# -- 8. Loss selection guide ---------------------------------------------------
 def loss_selection_guide():
     print("\n=== Loss Function Selection Guide ===")
     print(f"  {'Task':<35} {'Loss':<28} {'Notes'}")

@@ -17,7 +17,7 @@ def softmax(z, axis=-1):
     return e / e.sum(axis=axis, keepdims=True)
 
 
-# ── 1. The quadratic bottleneck ───────────────────────────────────────────────
+# -- 1. The quadratic bottleneck -----------------------------------------------
 def quadratic_bottleneck():
     print("=== The Quadratic Bottleneck of Full Self-Attention ===")
     print("  Full attention: O(T²·d) time, O(T²) memory for the attention matrix")
@@ -32,7 +32,7 @@ def quadratic_bottleneck():
     print("  Solution: approximate or restructure the attention computation")
 
 
-# ── 2. Local / Sliding window attention ──────────────────────────────────────
+# -- 2. Local / Sliding window attention --------------------------------------
 def local_window_attention(X, W_Q, W_K, W_V, window_size=3):
     """Each token attends to at most 2w+1 tokens (window_size each side)."""
     T, d = X.shape
@@ -68,7 +68,7 @@ def local_attention_demo():
         print(f"  window_size={w:<4}: each token attends {min(2*w+1, T)} tokens  out={out.shape}")
 
 
-# ── 3. Global tokens (Longformer) ─────────────────────────────────────────────
+# -- 3. Global tokens (Longformer) ---------------------------------------------
 def global_tokens_demo():
     print("\n=== Global Tokens (Longformer / BigBird) ===")
     print("  Mix local window + a few global tokens (e.g. [CLS])")
@@ -83,7 +83,7 @@ def global_tokens_demo():
     print(f"  Longformer:        {local_attn:,} ops  ({local_attn/full_attn*100:.1f}%)")
 
 
-# ── 4. Random / sparse attention ──────────────────────────────────────────────
+# -- 4. Random / sparse attention ----------------------------------------------
 def sparse_attention_demo():
     print("\n=== Sparse Attention (BigBird, Routing Transformer) ===")
     print("  Attention matrix is sparse: only attend to selected positions")
@@ -101,15 +101,15 @@ def sparse_attention_demo():
     print(f"  Reduction: {total_ops/T/T*100:.1f}% of full")
 
 
-# ── 5. Linear attention (Performer) ──────────────────────────────────────────
+# -- 5. Linear attention (Performer) ------------------------------------------
 def linear_attention_demo():
     print("\n=== Linear Attention (Performer, Linformer) ===")
-    print("  Standard: Attn = softmax(QK^T/√d) · V   O(T²)")
+    print("  Standard: Attn = softmax(QK^T/sqrtd) · V   O(T²)")
     print()
     print("  Key insight: approximate softmax(QK^T) using kernel decomposition")
-    print("  FAVOR+ (Performer): φ(q)·φ(k)^T ≈ exp(q^T k / √d)")
-    print("  → Compute (Σ φ(k_i)^T V_i) first, then multiply by φ(q)")
-    print("  → O(T·r) where r = random feature dimension ≪ T")
+    print("  FAVOR+ (Performer): phi(q)·phi(k)^T ~= exp(q^T k / sqrtd)")
+    print("  -> Compute (Sigma phi(k_i)^T V_i) first, then multiply by phi(q)")
+    print("  -> O(T·r) where r = random feature dimension ≪ T")
     print()
 
     rng = np.random.default_rng(2)
@@ -119,7 +119,7 @@ def linear_attention_demo():
     K = rng.standard_normal((T, d))
     V = rng.standard_normal((T, d))
 
-    # Random feature map: φ(x) = exp(Wx) / √r   (simplified FAVOR)
+    # Random feature map: phi(x) = exp(Wx) / sqrtr   (simplified FAVOR)
     Omega = rng.standard_normal((d, r_feat)) / np.sqrt(d)
     def phi(X):
         return np.exp(X @ Omega) / np.sqrt(r_feat)
@@ -144,12 +144,12 @@ def linear_attention_demo():
     print(f"  (Approx quality improves with larger r_feat)")
 
 
-# ── 6. Linformer ─────────────────────────────────────────────────────────────
+# -- 6. Linformer -------------------------------------------------------------
 def linformer_demo():
     print("\n=== Linformer (Wang et al., 2020) ===")
     print("  Observation: attention matrices have low-rank structure")
-    print("  Project keys and values from T → k  (k ≪ T)")
-    print("  Attn ≈ softmax(Q · (E·K)^T / √d) · (F·V)")
+    print("  Project keys and values from T -> k  (k ≪ T)")
+    print("  Attn ~= softmax(Q · (E·K)^T / sqrtd) · (F·V)")
     print("  Complexity: O(T·k·d) — linear in T if k is fixed")
     print()
 
@@ -169,13 +169,13 @@ def linformer_demo():
     out    = alpha @ V_proj               # (T, d)
 
     print(f"  T={T}, d={d}, projection_rank={k_rank}")
-    print(f"  K projected: {K.shape} → {K_proj.shape}")
+    print(f"  K projected: {K.shape} -> {K_proj.shape}")
     print(f"  Attention map: (T, k) = ({T}, {k_rank}) instead of ({T}, {T})")
     print(f"  Output: {out.shape}")
     print(f"  Memory reduction: {k_rank}/{T} = {k_rank/T*100:.0f}% of full attention")
 
 
-# ── 7. Flash Attention ───────────────────────────────────────────────────────
+# -- 7. Flash Attention -------------------------------------------------------
 def flash_attention_concept():
     print("\n=== Flash Attention (Dao et al., 2022) ===")
     print("  NOT an approximation — computes exact attention!")
@@ -194,7 +194,7 @@ def flash_attention_concept():
     print("    Supported: A100, H100 GPUs; PyTorch 2.0+ via F.scaled_dot_product_attention")
 
 
-# ── 8. Complexity summary ─────────────────────────────────────────────────────
+# -- 8. Complexity summary -----------------------------------------------------
 def complexity_summary():
     print("\n=== Efficient Attention Variants — Complexity Summary ===")
     print(f"  {'Method':<24} {'Time':<22} {'Memory':<20} {'Exact?'}")

@@ -67,7 +67,7 @@ def demo():
     print("=== Value Iteration on GridWorld ===")
     V = value_iteration()
     pi = extract_policy(V)
-    arrows = ["↑", "↓", "←", "→"]
+    arrows = ["^", "v", "<-", "->"]
     print("\n  Value function:")
     print(V.reshape(N, N).round(2))
     print("\n  Greedy policy:")

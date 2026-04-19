@@ -17,7 +17,7 @@ from heapq import nlargest, nsmallest
 DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
-# ── 1. Download a small movie ratings CSV from HuggingFace ───────────────────
+# -- 1. Download a small movie ratings CSV from HuggingFace -------------------
 RATINGS_URL = (
     "https://huggingface.co/datasets/Shahrukh0/MovieLens-Small/resolve/main/ratings.csv"
 )
@@ -32,9 +32,9 @@ def download(url: str, dest: Path) -> Path:
     print(f"Downloading {dest.name} …")
     try:
         urllib.request.urlretrieve(url, dest)
-        print(f"  ✓ {dest.stat().st_size // 1024} KB")
+        print(f"  [OK] {dest.stat().st_size // 1024} KB")
     except Exception as e:
-        print(f"  ✗ {e}. Using synthetic data.")
+        print(f"  [X] {e}. Using synthetic data.")
         if "ratings" in dest.name:
             dest.write_text(
                 "userId,movieId,rating,timestamp\n"
@@ -54,7 +54,7 @@ def download(url: str, dest: Path) -> Path:
     return dest
 
 
-# ── 2. Lists — sort, slice, comprehension ─────────────────────────────────────
+# -- 2. Lists — sort, slice, comprehension -------------------------------------
 def demo_lists(ratings: list[dict]) -> None:
     print("=== Lists ===")
     scores = [float(r["rating"]) for r in ratings[:1000]]
@@ -73,7 +73,7 @@ def demo_lists(ratings: list[dict]) -> None:
     for s in scores[:5]:
         stack.append(s)
     print(f"  Stack push 5 items: {stack}")
-    print(f"  Stack pop         : {stack.pop()} → remaining {stack}")
+    print(f"  Stack pop         : {stack.pop()} -> remaining {stack}")
 
     # List as queue (deque is faster for queue)
     queue = deque(maxlen=5)
@@ -82,7 +82,7 @@ def demo_lists(ratings: list[dict]) -> None:
     print(f"  Deque (maxlen=5) after 8 pushes: {list(queue)}")
 
 
-# ── 3. Dicts — inverted index, merging ────────────────────────────────────────
+# -- 3. Dicts — inverted index, merging ----------------------------------------
 def demo_dicts(ratings: list[dict], movies: list[dict]) -> dict:
     print("\n=== Dicts ===")
     # Build movie lookup: {movieId: title}
@@ -116,7 +116,7 @@ def demo_dicts(ratings: list[dict], movies: list[dict]) -> dict:
     return movie_stats
 
 
-# ── 4. Sets — genre analysis ──────────────────────────────────────────────────
+# -- 4. Sets — genre analysis --------------------------------------------------
 def demo_sets(movies: list[dict]) -> None:
     print("\n=== Sets ===")
     all_genres: set[str] = set()
@@ -136,12 +136,12 @@ def demo_sets(movies: list[dict]) -> None:
         a, b = movie_genres[ids[0]], movie_genres[ids[1]]
         print(f"  Movie {ids[0]} genres : {a}")
         print(f"  Movie {ids[1]} genres : {b}")
-        print(f"  Intersection (∩)   : {a & b}")
-        print(f"  Union (∪)          : {a | b}")
+        print(f"  Intersection (n)   : {a & b}")
+        print(f"  Union (u)          : {a | b}")
         print(f"  Difference (a-b)   : {a - b}")
 
 
-# ── 5. Counter + namedtuple ───────────────────────────────────────────────────
+# -- 5. Counter + namedtuple ---------------------------------------------------
 def demo_counter_namedtuple(ratings: list[dict]) -> None:
     print("\n=== Counter & namedtuple ===")
     Rating = namedtuple("Rating", ["user_id", "movie_id", "score"])
@@ -151,7 +151,7 @@ def demo_counter_namedtuple(ratings: list[dict]) -> None:
     score_dist = Counter(t.score for t in typed)
     print("  Rating distribution:")
     for score in sorted(score_dist):
-        bar = "█" * (score_dist[score] // 5)
+        bar = "#" * (score_dist[score] // 5)
         print(f"    {score}: {bar} ({score_dist[score]})")
 
     # Most active users
@@ -159,7 +159,7 @@ def demo_counter_namedtuple(ratings: list[dict]) -> None:
     print(f"  Most active users (top 5): {user_counts.most_common(5)}")
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# -- Entry point ---------------------------------------------------------------
 if __name__ == "__main__":
     r_path = download(RATINGS_URL, DATA_DIR / "ratings.csv")
     m_path = download(MOVIES_URL,  DATA_DIR / "movies.csv")

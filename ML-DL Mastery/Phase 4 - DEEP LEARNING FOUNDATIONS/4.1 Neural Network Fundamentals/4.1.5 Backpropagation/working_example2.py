@@ -26,7 +26,7 @@ def relu(x):    return np.maximum(0, x)
 def relu_d(x):  return (x > 0).astype(float)
 
 class TwoLayerNet:
-    """Input → Hidden(ReLU) → Output(Sigmoid), BCE loss."""
+    """Input -> Hidden(ReLU) -> Output(Sigmoid), BCE loss."""
     def __init__(self, n_in, n_hidden, lr=0.01, seed=42):
         rng = np.random.default_rng(seed)
         self.lr = lr

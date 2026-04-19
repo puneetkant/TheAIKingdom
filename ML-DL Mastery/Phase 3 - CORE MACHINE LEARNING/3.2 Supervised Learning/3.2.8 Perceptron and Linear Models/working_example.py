@@ -18,10 +18,10 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_perceptron")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Perceptron from scratch ────────────────────────────────────────────────
+# -- 1. Perceptron from scratch ------------------------------------------------
 def perceptron_scratch():
     print("=== Perceptron Algorithm (from scratch) ===")
-    print("  Update: if y_i(wᵀx_i) ≤ 0: w ← w + η·y_i·x_i")
+    print("  Update: if y_i(wᵀx_i) <= 0: w <- w + eta·y_i·x_i")
     print()
 
     class Perceptron_scratch:
@@ -65,29 +65,29 @@ def perceptron_scratch():
     # Non-separable data (will not converge cleanly)
     X2, y2 = make_classification(n_samples=200, n_features=2, n_redundant=0,
                                   n_informative=2, class_sep=0.5, random_state=1)
-    y2 = 2*y2 - 1  # {0,1} → {-1,+1}
+    y2 = 2*y2 - 1  # {0,1} -> {-1,+1}
     p2 = Perceptron_scratch(lr=0.01, max_iter=200).fit(X2, y2)
     acc2 = (p2.predict(X2) == y2).mean()
     print(f"\n  Non-separable: accuracy={acc2:.4f}  (no convergence guarantee)")
 
 
-# ── 2. Perceptron convergence theorem ────────────────────────────────────────
+# -- 2. Perceptron convergence theorem ----------------------------------------
 def convergence_theorem():
     print("\n=== Perceptron Convergence Theorem ===")
-    print("  IF data is linearly separable with margin γ, and ||x_i|| ≤ R:")
-    print("  Mistakes ≤ (R/γ)²")
+    print("  IF data is linearly separable with margin gamma, and ||x_i|| <= R:")
+    print("  Mistakes <= (R/gamma)²")
     print()
     print("  Proof sketch:")
-    print("  1. Each mistake increases w·w* by at least γ")
+    print("  1. Each mistake increases w·w* by at least gamma")
     print("  2. Each mistake increases ||w||² by at most R²")
-    print("  3. Combining → bounded mistakes")
+    print("  3. Combining -> bounded mistakes")
 
 
-# ── 3. Delta rule (Widrow-Hoff / LMS) ────────────────────────────────────────
+# -- 3. Delta rule (Widrow-Hoff / LMS) ----------------------------------------
 def delta_rule():
     print("\n=== Delta Rule (Widrow-Hoff / LMS) ===")
-    print("  Minimise MSE: L(w) = Σ(y_i - wᵀx_i)²")
-    print("  Update: w ← w + η·(y_i - ŷ_i)·x_i   [gradient descent on MSE]")
+    print("  Minimise MSE: L(w) = Sigma(y_i - wᵀx_i)²")
+    print("  Update: w <- w + eta·(y_i - ŷ_i)·x_i   [gradient descent on MSE]")
     print()
 
     rng = np.random.default_rng(2)
@@ -111,7 +111,7 @@ def delta_rule():
     print(f"  Final MSE:   {losses[-1]:.4f}")
 
 
-# ── 4. sklearn Perceptron ─────────────────────────────────────────────────────
+# -- 4. sklearn Perceptron -----------------------------------------------------
 def sklearn_perceptron():
     print("\n=== sklearn Perceptron ===")
     X, y = make_classification(n_samples=500, n_features=10, n_informative=5, random_state=3)
@@ -124,23 +124,23 @@ def sklearn_perceptron():
     print(f"  Perceptron: test acc={p.score(X_te_s, y_te):.4f}  "
           f"n_iter={p.n_iter_}")
 
-    # SGDClassifier with hinge loss ≈ linear SVM
+    # SGDClassifier with hinge loss ~= linear SVM
     sgd = SGDClassifier(loss="hinge", max_iter=1000, tol=1e-3, random_state=0)
     sgd.fit(X_tr_s, y_tr)
     print(f"  SGD(hinge): test acc={sgd.score(X_te_s, y_te):.4f}  "
           f"(linear SVM approximation)")
 
-    # SGDClassifier with log_loss ≈ logistic regression
+    # SGDClassifier with log_loss ~= logistic regression
     sgd_log = SGDClassifier(loss="log_loss", max_iter=1000, tol=1e-3, random_state=0)
     sgd_log.fit(X_tr_s, y_tr)
     print(f"  SGD(log):   test acc={sgd_log.score(X_te_s, y_te):.4f}  "
           f"(logistic regression approximation)")
 
 
-# ── 5. Linear Discriminant Analysis ─────────────────────────────────────────
+# -- 5. Linear Discriminant Analysis -----------------------------------------
 def lda_demo():
     print("\n=== Linear Discriminant Analysis (LDA) ===")
-    print("  Model: P(x|y=k) = N(μ_k, Σ)   (shared covariance)")
+    print("  Model: P(x|y=k) = N(mu_k, Sigma)   (shared covariance)")
     print("  Decision rule: argmax_k log P(y=k) + log P(x|y=k)")
     print("  Also used for dimensionality reduction: projects to n_classes-1 dims")
 
@@ -155,7 +155,7 @@ def lda_demo():
 
     # Dimensionality reduction
     X_lda = lda.transform(X)
-    print(f"  Original shape: {X.shape}  → LDA shape: {X_lda.shape}")
+    print(f"  Original shape: {X.shape}  -> LDA shape: {X_lda.shape}")
 
     # Plot LDA projection
     fig, ax = plt.subplots(figsize=(7, 4))
@@ -171,7 +171,7 @@ def lda_demo():
     print(f"  LDA projection saved: {path}")
 
 
-# ── 6. Comparison of linear classifiers ──────────────────────────────────────
+# -- 6. Comparison of linear classifiers --------------------------------------
 def linear_classifier_comparison():
     print("\n=== Linear Classifier Comparison ===")
     from sklearn.linear_model import LogisticRegression

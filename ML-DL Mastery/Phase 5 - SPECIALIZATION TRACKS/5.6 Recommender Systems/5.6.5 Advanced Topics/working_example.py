@@ -14,12 +14,12 @@ def softmax(z):
     e = np.exp(z - z.max()); return e / e.sum()
 
 
-# ── 1. Diversity and serendipity ──────────────────────────────────────────────
+# -- 1. Diversity and serendipity ----------------------------------------------
 def diversity_metrics():
     print("=== Diversity and Serendipity in Recommendations ===")
     print()
     print("  Relevance alone is not enough:")
-    print("    Top-N purely by predicted score → redundant, filter-bubble")
+    print("    Top-N purely by predicted score -> redundant, filter-bubble")
     print()
 
     # Simulate item embeddings and predicted scores
@@ -70,7 +70,7 @@ def diversity_metrics():
         print(f"  {m:<30} {d}")
 
 
-# ── 2. Popularity bias and debiasing ──────────────────────────────────────────
+# -- 2. Popularity bias and debiasing ------------------------------------------
 def debiasing():
     print("\n=== Bias and Debiasing in Recommenders ===")
     print()
@@ -114,7 +114,7 @@ def debiasing():
     print(f"  Long-tail items in IPS:  {(ips_order[:5] >= 5).sum()}/5")
 
 
-# ── 3. Fairness ───────────────────────────────────────────────────────────────
+# -- 3. Fairness ---------------------------------------------------------------
 def fairness():
     print("\n=== Fairness in Recommender Systems ===")
     print()
@@ -125,7 +125,7 @@ def fairness():
     print("  Fairness metrics:")
     fm = [
         ("NDKL",           "Normalised Discounted KL-divergence from ideal exposure"),
-        ("Exposure fairness","Producer exposure ≥ relevance threshold"),
+        ("Exposure fairness","Producer exposure >= relevance threshold"),
         ("DP (Demo. Parity)","Equal positive rates across demographic groups"),
         ("EO (Equal Opp)", "Equal true positive rates across groups"),
         ("Calibration",    "User preference distribution matches served distribution"),
@@ -139,7 +139,7 @@ def fairness():
     print("    Adversarial: discriminator removes protected group features")
 
 
-# ── 4. LLM-based recommendations ─────────────────────────────────────────────
+# -- 4. LLM-based recommendations ---------------------------------------------
 def llm_recommenders():
     print("\n=== LLM-Based Recommenders ===")
     print()

@@ -22,7 +22,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_anomaly")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Statistical methods ────────────────────────────────────────────────────
+# -- 1. Statistical methods ----------------------------------------------------
 def statistical_anomaly():
     print("=== Statistical Anomaly Detection ===")
     rng = np.random.default_rng(0)
@@ -55,10 +55,10 @@ def statistical_anomaly():
     print(f"\n  Modified Z-score: detected {mz_pred.sum()} anomalies")
 
 
-# ── 2. Isolation Forest ───────────────────────────────────────────────────────
+# -- 2. Isolation Forest -------------------------------------------------------
 def isolation_forest():
     print("\n=== Isolation Forest ===")
-    print("  Anomalies are isolated faster → shorter average path length in random trees")
+    print("  Anomalies are isolated faster -> shorter average path length in random trees")
     rng = np.random.default_rng(1)
     # Inliers: blob, outliers: random
     X_in  = rng.multivariate_normal([0,0], [[1,0.5],[0.5,1]], 200)
@@ -87,11 +87,11 @@ def isolation_forest():
               f"{recall_score(y_true,yp):<10.4f} {f1_score(y_true,yp):.4f}")
 
 
-# ── 3. Local Outlier Factor ───────────────────────────────────────────────────
+# -- 3. Local Outlier Factor ---------------------------------------------------
 def lof_demo():
     print("\n=== Local Outlier Factor (LOF) ===")
     print("  Compares local density of point to its k-neighbours' densities")
-    print("  LOF >> 1 → lower density than neighbours → anomaly")
+    print("  LOF >> 1 -> lower density than neighbours -> anomaly")
 
     rng = np.random.default_rng(2)
     X_in  = rng.multivariate_normal([0,0], [[1,0],[0,1]], 200)
@@ -107,7 +107,7 @@ def lof_demo():
               f"{recall_score(y_true,yp):<10.4f} {f1_score(y_true,yp):.4f}")
 
 
-# ── 4. One-Class SVM ─────────────────────────────────────────────────────────
+# -- 4. One-Class SVM ---------------------------------------------------------
 def one_class_svm():
     print("\n=== One-Class SVM ===")
     print("  Trains a boundary around inliers in feature space (kernel-induced)")
@@ -132,7 +132,7 @@ def one_class_svm():
                   f"{recall_score(y_te,yp,zero_division=0):.4f}")
 
 
-# ── 5. Elliptic Envelope ─────────────────────────────────────────────────────
+# -- 5. Elliptic Envelope -----------------------------------------------------
 def elliptic_envelope():
     print("\n=== Elliptic Envelope (Robust Covariance) ===")
     print("  Fits a robust Gaussian to inliers; flags points far from the centre")
@@ -150,7 +150,7 @@ def elliptic_envelope():
               f"Recall={recall_score(y_true,yp):.4f}")
 
 
-# ── 6. Algorithm comparison ───────────────────────────────────────────────────
+# -- 6. Algorithm comparison ---------------------------------------------------
 def anomaly_comparison():
     print("\n=== Anomaly Detection Algorithm Comparison ===")
     rng = np.random.default_rng(5)

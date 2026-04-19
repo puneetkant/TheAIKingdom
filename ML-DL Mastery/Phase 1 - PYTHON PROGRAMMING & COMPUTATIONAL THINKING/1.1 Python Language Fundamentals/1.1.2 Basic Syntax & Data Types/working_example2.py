@@ -21,7 +21,7 @@ DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 
-# ── 1. Download and parse a real CSV (Titanic from HF) ───────────────────────
+# -- 1. Download and parse a real CSV (Titanic from HF) -----------------------
 TITANIC_URL = (
     "https://huggingface.co/datasets/phihung/titanic/resolve/main/train.csv"
 )
@@ -35,9 +35,9 @@ def download_titanic() -> Path:
     print(f"Downloading Titanic dataset …")
     try:
         urllib.request.urlretrieve(TITANIC_URL, dest)
-        print(f"✓ Saved {dest.stat().st_size // 1024} KB to {dest}")
+        print(f"[OK] Saved {dest.stat().st_size // 1024} KB to {dest}")
     except Exception as e:
-        print(f"✗ Download failed ({e}). Creating synthetic fallback …")
+        print(f"[X] Download failed ({e}). Creating synthetic fallback …")
         synthetic = (
             "PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked\n"
             "1,0,3,Braund Mr. Owen Harris,male,22,1,0,A/5 21171,7.25,,S\n"
@@ -84,7 +84,7 @@ def demo_type_coercion_on_real_csv(path: Path) -> list[dict]:
     return rows
 
 
-# ── 2. Typed dataclass (Python 3.10+ pattern) ─────────────────────────────────
+# -- 2. Typed dataclass (Python 3.10+ pattern) ---------------------------------
 @dataclass
 class Passenger:
     passenger_id: int
@@ -137,7 +137,7 @@ def demo_typed_dataclass(path: Path) -> None:
         print(f"  {p}")
 
 
-# ── 3. String formatting methods compared ─────────────────────────────────────
+# -- 3. String formatting methods compared -------------------------------------
 def string_formatting_comparison() -> None:
     print("\n=== String Formatting Comparison ===")
     name  = "Titanic"
@@ -159,7 +159,7 @@ def string_formatting_comparison() -> None:
     print("  " + "  ".join(f"{v:>10}" for v in [name, count, f"{rate:.2%}"]))
 
 
-# ── 4. Python walrus operator and type matching (3.10+) ───────────────────────
+# -- 4. Python walrus operator and type matching (3.10+) -----------------------
 def modern_python_syntax() -> None:
     print("\n=== Modern Python Syntax (3.8-3.12) ===")
 
@@ -186,7 +186,7 @@ def modern_python_syntax() -> None:
 
     test_values = [-5, 0, 42, 3.14, "hello", None, [1, 2]]
     for v in test_values:
-        print(f"  classify({v!r:<10}) → {classify(v)}")
+        print(f"  classify({v!r:<10}) -> {classify(v)}")
 
     # PEP 695 type aliases (3.12+)
     print("\n  Type annotations (PEP 604 union syntax, 3.10+):")
@@ -196,7 +196,7 @@ def modern_python_syntax() -> None:
     print(f"  {greet()}")
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# -- Entry point ---------------------------------------------------------------
 if __name__ == "__main__":
     path = download_titanic()
     demo_type_coercion_on_real_csv(path)

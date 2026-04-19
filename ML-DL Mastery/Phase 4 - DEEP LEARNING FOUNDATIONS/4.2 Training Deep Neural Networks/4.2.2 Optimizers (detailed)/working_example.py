@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_optimizers")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Test loss surface ─────────────────────────────────────────────────────────
+# -- Test loss surface ---------------------------------------------------------
 def rosenbrock(x, y):
     """Non-convex Rosenbrock function; minimum at (1,1)."""
     return (1-x)**2 + 100*(y-x**2)**2
@@ -23,7 +23,7 @@ def rosenbrock_grad(x, y):
     return np.array([dL_dx, dL_dy])
 
 
-# ── Optimizer implementations ─────────────────────────────────────────────────
+# -- Optimizer implementations -------------------------------------------------
 def sgd_step(theta, grad, state, lr=0.001, **_):
     theta = theta - lr * grad
     return theta, state
@@ -71,10 +71,10 @@ def adamw_step(theta, grad, state, lr=0.001, b1=0.9, b2=0.999, eps=1e-8, wd=0.01
     return theta * (1 - lr*wd) - lr * m_hat / (np.sqrt(v_hat) + eps), state
 
 
-# ── 1. SGD ────────────────────────────────────────────────────────────────────
+# -- 1. SGD --------------------------------------------------------------------
 def sgd_demo():
     print("=== Stochastic Gradient Descent (SGD) ===")
-    print("  θ ← θ - η · ∇L(θ)")
+    print("  theta <- theta - eta · ∇L(theta)")
     print("  Batch GD: use all data  |  SGD: 1 sample  |  Mini-batch: batch_size")
     print()
     print("  Batch GD:   stable convergence, expensive per step")
@@ -82,41 +82,41 @@ def sgd_demo():
     print("  Mini-batch: best of both worlds (typical: 32–512)")
 
 
-# ── 2. Momentum ───────────────────────────────────────────────────────────────
+# -- 2. Momentum ---------------------------------------------------------------
 def momentum_demo():
     print("\n=== Momentum ===")
-    print("  v ← βv - η·∇L    θ ← θ + v")
+    print("  v <- betav - eta·∇L    theta <- theta + v")
     print("  Accelerates in consistent directions; dampens oscillations")
-    print("  β=0.9: velocity decays as 1/(1-β)=10 steps memory")
+    print("  beta=0.9: velocity decays as 1/(1-beta)=10 steps memory")
     print()
-    print("  Effective step size ≈ η/(1-β)  e.g.  0.01/(1-0.9) = 0.1")
+    print("  Effective step size ~= eta/(1-beta)  e.g.  0.01/(1-0.9) = 0.1")
 
 
-# ── 3. Adagrad, RMSProp ───────────────────────────────────────────────────────
+# -- 3. Adagrad, RMSProp -------------------------------------------------------
 def adaptive_lr_demo():
     print("\n=== Adaptive Learning Rate Methods ===")
     print("  Adagrad: accumulates squared gradients G += g²")
-    print("    θ ← θ - η/√(G+ε) · g  (LR shrinks monotonically → stops learning)")
+    print("    theta <- theta - eta/sqrt(G+epsilon) · g  (LR shrinks monotonically -> stops learning)")
     print()
     print("  RMSProp: exponential moving average of G:")
-    print("    v ← β·v + (1-β)·g²   θ ← θ - η/√(v+ε) · g")
+    print("    v <- beta·v + (1-beta)·g²   theta <- theta - eta/sqrt(v+epsilon) · g")
     print("    Fixes Adagrad's decaying LR problem")
 
 
-# ── 4. Adam ───────────────────────────────────────────────────────────────────
+# -- 4. Adam -------------------------------------------------------------------
 def adam_demo():
     print("\n=== Adam (Adaptive Moment Estimation) ===")
     print("  Combines Momentum + RMSProp:")
-    print("  m ← β1·m + (1-β1)·g      (1st moment / momentum)")
-    print("  v ← β2·v + (1-β2)·g²     (2nd moment / adaptive LR)")
-    print("  m̂ = m/(1-β1^t)  v̂ = v/(1-β2^t)   (bias correction)")
-    print("  θ ← θ - η·m̂/√(v̂+ε)")
+    print("  m <- beta1·m + (1-beta1)·g      (1st moment / momentum)")
+    print("  v <- beta2·v + (1-beta2)·g²     (2nd moment / adaptive LR)")
+    print("  m = m/(1-beta1^t)  v = v/(1-beta2^t)   (bias correction)")
+    print("  theta <- theta - eta·m/sqrt(v+epsilon)")
     print()
-    print("  Defaults: β1=0.9  β2=0.999  ε=1e-8  η=0.001")
-    print("  AdamW: decoupled weight decay θ ← θ·(1-η·λ) - η·m̂/√(v̂+ε)")
+    print("  Defaults: beta1=0.9  beta2=0.999  epsilon=1e-8  eta=0.001")
+    print("  AdamW: decoupled weight decay theta <- theta·(1-eta·lambda) - eta·m/sqrt(v+epsilon)")
 
 
-# ── 5. Convergence comparison on Rosenbrock ───────────────────────────────────
+# -- 5. Convergence comparison on Rosenbrock -----------------------------------
 def convergence_comparison():
     print("\n=== Convergence Comparison (Rosenbrock function) ===")
     print("  f(x,y) = (1-x)² + 100(y-x²)²   minimum at (1,1)  f=0")
@@ -159,14 +159,14 @@ def convergence_comparison():
     print(f"\n  Convergence plot saved: {path}")
 
 
-# ── 6. Optimizer selection guide ─────────────────────────────────────────────
+# -- 6. Optimizer selection guide ---------------------------------------------
 def optimizer_guide():
     print("\n=== Optimizer Selection Guide ===")
     print(f"  {'Optimizer':<20} {'Best for':<40} {'Notes'}")
     rows = [
         ("SGD (no momentum)", "Convex problems",               "Slow; rarely used alone"),
         ("SGD + Momentum",    "CNNs, ResNets (with schedule)", "Often best final acc with tuning"),
-        ("Adagrad",           "Sparse gradients (NLP)",        "LR shrinks → stops learning"),
+        ("Adagrad",           "Sparse gradients (NLP)",        "LR shrinks -> stops learning"),
         ("RMSProp",           "Non-stationary problems, RNNs", "Good default for RNNs"),
         ("Adam",              "General default",               "Fast convergence, often suboptimal"),
         ("AdamW",             "Transformers, large models",    "Decoupled weight decay"),

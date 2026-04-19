@@ -18,24 +18,24 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_svm")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Hard-margin SVM intuition ─────────────────────────────────────────────
+# -- 1. Hard-margin SVM intuition ---------------------------------------------
 def svm_intuition():
     print("=== SVM: Maximum Margin Classifier ===")
     print("  Primal problem:")
-    print("    min ||w||²/2   s.t.  y_i(wᵀx_i + b) ≥ 1  ∀i")
+    print("    min ||w||²/2   s.t.  y_i(wᵀx_i + b) >= 1  for alli")
     print()
     print("  Dual problem:")
-    print("    max Σα_i - ½ Σ_ij α_i α_j y_i y_j (xᵢᵀxⱼ)")
-    print("    s.t. Σ α_i y_i = 0,  α_i ≥ 0")
+    print("    max Sigmaalpha_i - ½ Sigma_ij alpha_i alpha_j y_i y_j (xᵢᵀxⱼ)")
+    print("    s.t. Sigma alpha_i y_i = 0,  alpha_i >= 0")
     print()
-    print("  Support vectors: training points with α_i > 0  (on the margin)")
+    print("  Support vectors: training points with alpha_i > 0  (on the margin)")
     print("  Margin width = 2 / ||w||")
     print()
-    print("  Kernel trick: replace xᵢᵀxⱼ → K(xᵢ,xⱼ)")
+    print("  Kernel trick: replace xᵢᵀxⱼ -> K(xᵢ,xⱼ)")
     print("  Common kernels: Linear, RBF (Gaussian), Polynomial, Sigmoid")
 
 
-# ── 2. Linear SVM on linearly separable data ─────────────────────────────────
+# -- 2. Linear SVM on linearly separable data ---------------------------------
 def linear_svm():
     print("\n=== Linear SVM ===")
     rng  = np.random.default_rng(0)
@@ -54,7 +54,7 @@ def linear_svm():
         print(f"  C={C:<8} acc={acc:.4f}  support_vectors={n_sv}  margin={margin:.4f}")
 
 
-# ── 3. Kernel SVM ────────────────────────────────────────────────────────────
+# -- 3. Kernel SVM ------------------------------------------------------------
 def kernel_svm():
     print("\n=== Kernel SVM on Non-Linearly Separable Data ===")
     X, y = make_moons(n_samples=400, noise=0.2, random_state=1)
@@ -76,12 +76,12 @@ def kernel_svm():
         print(f"  {name:<12} {acc:<12.4f} {n_sv}")
 
 
-# ── 4. Soft-margin (C parameter) ─────────────────────────────────────────────
+# -- 4. Soft-margin (C parameter) ---------------------------------------------
 def soft_margin_C():
     print("\n=== Soft-Margin SVM: C Hyperparameter ===")
-    print("  min  ½||w||² + C·Σξ_i   s.t.  y_i(wᵀx_i+b) ≥ 1-ξ_i,  ξ_i ≥ 0")
-    print("  C → ∞: hard margin (low bias, high variance)")
-    print("  C → 0: wide margin, more violations (high bias, low variance)")
+    print("  min  ½||w||² + C·Sigmaxi_i   s.t.  y_i(wᵀx_i+b) >= 1-xi_i,  xi_i >= 0")
+    print("  C -> inf: hard margin (low bias, high variance)")
+    print("  C -> 0: wide margin, more violations (high bias, low variance)")
     X, y = make_moons(n_samples=400, noise=0.3, random_state=2)
     scaler = StandardScaler()
     X_s = scaler.fit_transform(X)
@@ -96,12 +96,12 @@ def soft_margin_C():
         print(f"  {C:<10} {tr_acc:<12.4f} {te_acc:.4f}")
 
 
-# ── 5. RBF kernel and gamma ───────────────────────────────────────────────────
+# -- 5. RBF kernel and gamma ---------------------------------------------------
 def rbf_gamma_effect():
-    print("\n=== RBF Kernel: γ Effect ===")
-    print("  K(x,x') = exp(-γ||x-x'||²)")
-    print("  γ large → narrow Gaussian → more complex boundary (overfit)")
-    print("  γ small → wide Gaussian → smoother boundary (underfit)")
+    print("\n=== RBF Kernel: gamma Effect ===")
+    print("  K(x,x') = exp(-gamma||x-x'||²)")
+    print("  gamma large -> narrow Gaussian -> more complex boundary (overfit)")
+    print("  gamma small -> wide Gaussian -> smoother boundary (underfit)")
 
     X, y = make_moons(n_samples=400, noise=0.2, random_state=3)
     scaler = StandardScaler()
@@ -116,7 +116,7 @@ def rbf_gamma_effect():
         Z = model.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
         ax.contourf(xx, yy, Z, alpha=0.3, cmap="RdBu")
         ax.scatter(X_s[:,0], X_s[:,1], c=y, cmap="RdBu", edgecolors='k', s=15, lw=0.4)
-        ax.set(title=f"γ={gamma}  acc={acc:.3f}")
+        ax.set(title=f"gamma={gamma}  acc={acc:.3f}")
         ax.grid(True, alpha=0.3)
     plt.tight_layout()
     path = os.path.join(OUTPUT_DIR, "rbf_gamma.png")
@@ -124,7 +124,7 @@ def rbf_gamma_effect():
     print(f"  RBF gamma plot saved: {path}")
 
 
-# ── 6. GridSearch for C and gamma ────────────────────────────────────────────
+# -- 6. GridSearch for C and gamma --------------------------------------------
 def grid_search_svm():
     print("\n=== Grid Search for SVM Hyperparameters ===")
     X, y = make_moons(n_samples=400, noise=0.2, random_state=4)
@@ -138,10 +138,10 @@ def grid_search_svm():
     print(f"  Best CV acc: {gs.best_score_:.4f}")
 
 
-# ── 7. Support Vector Regression ────────────────────────────────────────────
+# -- 7. Support Vector Regression --------------------------------------------
 def svr_demo():
     print("\n=== Support Vector Regression (SVR) ===")
-    print("  ε-insensitive loss: loss=0 if |y-ŷ|<ε, else |y-ŷ|-ε")
+    print("  epsilon-insensitive loss: loss=0 if |y-ŷ|<epsilon, else |y-ŷ|-epsilon")
     rng = np.random.default_rng(5)
     x   = rng.uniform(-3, 3, 100)
     y   = np.sin(x) + rng.normal(0, 0.3, 100)
@@ -152,7 +152,7 @@ def svr_demo():
     scaler = StandardScaler().fit(X)
     X_s, X_t_s = scaler.transform(X), scaler.transform(x_t)
 
-    print(f"  {'ε':<8} {'C':<8} {'RMSE'}")
+    print(f"  {'epsilon':<8} {'C':<8} {'RMSE'}")
     for epsilon in [0.01, 0.1, 0.5]:
         for C in [0.1, 1, 10]:
             model = SVR(kernel="rbf", epsilon=epsilon, C=C, gamma="scale")
@@ -161,7 +161,7 @@ def svr_demo():
             print(f"  {epsilon:<8} {C:<8} {rmse:.4f}")
 
 
-# ── 8. Multi-class SVM ───────────────────────────────────────────────────────
+# -- 8. Multi-class SVM -------------------------------------------------------
 def multiclass_svm():
     print("\n=== Multi-class SVM ===")
     X, y = make_blobs(n_samples=300, centers=4, random_state=6, cluster_std=1.5)

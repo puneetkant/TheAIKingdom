@@ -13,7 +13,7 @@ from sklearn.model_selection import cross_val_score, train_test_split
 import os
 
 
-# ── 1. Why encoding matters ───────────────────────────────────────────────────
+# -- 1. Why encoding matters ---------------------------------------------------
 def why_encoding():
     print("=== Why We Encode Categorical Variables ===")
     print("  ML models require numeric inputs.")
@@ -30,7 +30,7 @@ def why_encoding():
     print(f"  One-hot encoding: {ohe}")
 
 
-# ── 2. Label Encoding (ordinal/integer) ──────────────────────────────────────
+# -- 2. Label Encoding (ordinal/integer) --------------------------------------
 def label_encoding():
     print("\n=== Label Encoding ===")
     print("  Assigns integer to each category: {'A':0, 'B':1, 'C':2}")
@@ -49,7 +49,7 @@ def label_encoding():
     print(f"  Ordinal: {ordinal}  (correct order preserved)")
 
 
-# ── 3. One-Hot Encoding ───────────────────────────────────────────────────────
+# -- 3. One-Hot Encoding -------------------------------------------------------
 def one_hot_encoding():
     print("\n=== One-Hot Encoding ===")
     print("  Creates a binary column per category: no ordering implied")
@@ -65,14 +65,14 @@ def one_hot_encoding():
     print(f"  Encoded shape: {X_ohe.shape}")
     print(f"  First 5 rows:")
     for row, orig in zip(X_ohe[:5], colors[:5, 0]):
-        print(f"    {orig:<8} → {row}")
+        print(f"    {orig:<8} -> {row}")
 
     print()
     print("  drop='first': removes one column to avoid perfect multicollinearity")
     print("  handle_unknown='ignore': set unseen categories to 0 at test time")
 
 
-# ── 4. Ordinal Encoding ───────────────────────────────────────────────────────
+# -- 4. Ordinal Encoding -------------------------------------------------------
 def ordinal_encoding():
     print("\n=== Ordinal Encoding ===")
     print("  Use when categories have a meaningful order")
@@ -86,7 +86,7 @@ def ordinal_encoding():
         print(f"  {orig:<15} {int(enc)}")
 
 
-# ── 5. Target Encoding ────────────────────────────────────────────────────────
+# -- 5. Target Encoding --------------------------------------------------------
 def target_encoding():
     print("\n=== Target Encoding ===")
     print("  Replace category with mean target value (+ smoothing to avoid leakage)")
@@ -118,7 +118,7 @@ def target_encoding():
     print(f"  Linear Regression RMSE with target encoding: {rmse:.0f}")
 
 
-# ── 6. Frequency / Count Encoding ────────────────────────────────────────────
+# -- 6. Frequency / Count Encoding --------------------------------------------
 def frequency_encoding():
     print("\n=== Frequency Encoding ===")
     print("  Replace category with its frequency in the dataset")
@@ -137,7 +137,7 @@ def frequency_encoding():
     print(f"  First 10 encoded: {encoded[:10].round(3)}")
 
 
-# ── 7. Binary Encoding (for high cardinality) ────────────────────────────────
+# -- 7. Binary Encoding (for high cardinality) --------------------------------
 def binary_encoding():
     print("\n=== Binary Encoding (high cardinality) ===")
     print("  LabelEncode then convert integer to binary bits")
@@ -148,14 +148,14 @@ def binary_encoding():
     int_codes = le.fit_transform(categories)
 
     n_bits = int(np.ceil(np.log2(len(categories))))
-    print(f"\n  {len(categories)} categories → {n_bits} binary bits (OHE would need {len(categories)} cols)")
+    print(f"\n  {len(categories)} categories -> {n_bits} binary bits (OHE would need {len(categories)} cols)")
     print(f"  {'Category':<12} {'Int code':<12} {'Binary encoding'}")
     for cat, code in zip(categories[:8], int_codes[:8]):
         bits = [int(b) for b in format(code, f'0{n_bits}b')]
         print(f"  {cat:<12} {code:<12} {bits}")
 
 
-# ── 8. ColumnTransformer pipeline ────────────────────────────────────────────
+# -- 8. ColumnTransformer pipeline --------------------------------------------
 def column_transformer_pipeline():
     print("\n=== ColumnTransformer Pipeline ===")
     rng = np.random.default_rng(2)

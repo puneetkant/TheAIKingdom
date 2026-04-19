@@ -20,7 +20,7 @@ def softmax(z):
     return e / e.sum(-1, keepdims=True)
 
 
-# ── Vocabulary builder ────────────────────────────────────────────────────────
+# -- Vocabulary builder --------------------------------------------------------
 def build_vocab(texts, max_vocab=2000, min_freq=2):
     cnt = Counter()
     for text in texts:
@@ -42,11 +42,11 @@ def encode(text, vocab, max_len=50):
     return np.array(ids[:max_len])
 
 
-# ── 1. TextCNN ────────────────────────────────────────────────────────────────
+# -- 1. TextCNN ----------------------------------------------------------------
 class TextCNN:
     """
     Simplified TextCNN (Kim 2014).
-    For each filter size: conv → max-pool → concat → FC → softmax
+    For each filter size: conv -> max-pool -> concat -> FC -> softmax
     """
     def __init__(self, vocab_size, emb_dim, n_classes, filter_sizes=(2,3,4),
                  n_filters=16, rng=None):
@@ -127,7 +127,7 @@ class TextCNN:
 
 def textcnn_demo():
     print("=== TextCNN for Text Classification ===")
-    print("  Architecture: Embed → [Conv(f=2), Conv(f=3), Conv(f=4)] → MaxPool → Concat → FC")
+    print("  Architecture: Embed -> [Conv(f=2), Conv(f=3), Conv(f=4)] -> MaxPool -> Concat -> FC")
     print()
     # Small synthetic sentiment dataset
     rng = np.random.default_rng(42)
@@ -157,7 +157,7 @@ def textcnn_demo():
     preds  = probs.argmax(1)
     acc    = (preds == y).mean()
     print(f"  Vocab: {len(vocab)}  Samples: {len(texts)}")
-    print(f"  Loss: {losses[0]:.4f} → {losses[-1]:.4f}")
+    print(f"  Loss: {losses[0]:.4f} -> {losses[-1]:.4f}")
     print(f"  Train accuracy: {acc:.4f}")
     print()
     print("  TextCNN advantages:")
@@ -166,7 +166,7 @@ def textcnn_demo():
     print("    - Multiple filter sizes = multi-scale patterns")
 
 
-# ── 2. BiLSTM for NER ────────────────────────────────────────────────────────
+# -- 2. BiLSTM for NER --------------------------------------------------------
 def lstm_step(x, h, c, W, U, b):
     """Single LSTM step."""
     z = x @ W + h @ U + b
@@ -203,7 +203,7 @@ def bilstm_ner_demo():
     vocab["<UNK>"] = 0
 
     print("  Architecture:")
-    print("    Token → Embedding → BiLSTM → [h_fwd; h_bwd] → Linear → Tag")
+    print("    Token -> Embedding -> BiLSTM -> [h_fwd; h_bwd] -> Linear -> Tag")
     print()
     print(f"  Tags: {tag_set}")
     print()
@@ -221,7 +221,7 @@ def bilstm_ner_demo():
     print("    - Together: ~90+ F1 on CoNLL-2003 benchmark")
 
 
-# ── 3. Seq2Seq with attention ────────────────────────────────────────────────
+# -- 3. Seq2Seq with attention ------------------------------------------------
 def seq2seq_demo():
     print("\n=== Seq2Seq with Attention ===")
     print("  Encoder-Decoder architecture for translation, summarisation, etc.")
@@ -232,8 +232,8 @@ def seq2seq_demo():
     print()
     print("  Attention (Bahdanau):")
     print("    e_t = v^T tanh(W_a h + U_a s_{t-1})")
-    print("    α_t = softmax(e_t)              # attention weights")
-    print("    c_t = Σ α_{ti} h_i              # context vector")
+    print("    alpha_t = softmax(e_t)              # attention weights")
+    print("    c_t = Sigma alpha_{ti} h_i              # context vector")
     print()
     print("  Decoder:")
     print("    s_t = LSTM([e(y_{t-1}); c_t], s_{t-1})")
@@ -252,7 +252,7 @@ def seq2seq_demo():
     e      = v @ np.tanh((H @ W_a + s @ U_a)).T  # (T_src,)
     alpha  = softmax(e.reshape(1, -1)).flatten()
 
-    print(f"  Attention weights α over src (T={T_src}): {np.round(alpha, 3)}")
+    print(f"  Attention weights alpha over src (T={T_src}): {np.round(alpha, 3)}")
     c = (alpha[:, None] * H).sum(0)
     print(f"  Context vector c: {np.round(c[:4], 3)}...")
     print()

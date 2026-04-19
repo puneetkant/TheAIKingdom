@@ -8,20 +8,20 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_containers")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Docker for ML ──────────────────────────────────────────────────────────
+# -- 1. Docker for ML ----------------------------------------------------------
 def docker_patterns():
     print("=== Docker for ML Services ===")
     print()
     print("  Best-practice Dockerfile for a Python ML service:")
     print()
     dockerfile = '''\
-# ── Stage 1: build dependencies ─────────────────────────────────────────────
+# -- Stage 1: build dependencies ---------------------------------------------
 FROM python:3.11-slim AS builder
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --user --no-cache-dir -r requirements.txt
 
-# ── Stage 2: lean runtime ────────────────────────────────────────────────────
+# -- Stage 2: lean runtime ----------------------------------------------------
 FROM python:3.11-slim
 WORKDIR /app
 COPY --from=builder /root/.local /root/.local
@@ -44,7 +44,7 @@ CMD ["python", "src/main.py"]
 
     print("  Key Docker concepts for ML:")
     concepts = [
-        ("Multi-stage build",   "Separate build/runtime; smaller image (2GB→200MB)"),
+        ("Multi-stage build",   "Separate build/runtime; smaller image (2GB->200MB)"),
         ("Layer caching",       "COPY requirements.txt first; pip install cached"),
         ("Non-root user",       "Security; never run as root in production"),
         (".dockerignore",       "Exclude data/, .git/, __pycache__, *.pt"),
@@ -56,7 +56,7 @@ CMD ["python", "src/main.py"]
         print(f"  {c:<22} {d}")
 
 
-# ── 2. Kubernetes for ML ──────────────────────────────────────────────────────
+# -- 2. Kubernetes for ML ------------------------------------------------------
 def kubernetes_patterns():
     print("\n=== Kubernetes for ML Serving ===")
     print()
@@ -151,7 +151,7 @@ spec:
         print(f"  {c:<22} {d}")
 
 
-# ── 3. Kubeflow Pipelines ─────────────────────────────────────────────────────
+# -- 3. Kubeflow Pipelines -----------------------------------------------------
 def kubeflow_patterns():
     print("\n=== Kubeflow Pipelines ===")
     print()

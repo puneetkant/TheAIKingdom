@@ -55,11 +55,11 @@ def demo_manual_metrics():
             print(f"    NDCG@{k}={nd:.4f}  AP@{k}={ap:.4f}")
 
 def demo_regression_as_ranking():
-    print("\n=== Regression → Ranking (Cal Housing) ===")
+    print("\n=== Regression -> Ranking (Cal Housing) ===")
     h = fetch_california_housing()
     X, y = h.data, h.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    pipe = make_pipeline(StandardScaler(), GradientBoostingRegressor(100, random_state=42))
+    pipe = make_pipeline(StandardScaler(), GradientBoostingRegressor(n_estimators=100, random_state=42))
     pipe.fit(X_train, y_train)
     y_pred = pipe.predict(X_test)
 

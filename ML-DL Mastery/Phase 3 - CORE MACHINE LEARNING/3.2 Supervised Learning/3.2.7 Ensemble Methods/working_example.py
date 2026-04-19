@@ -17,24 +17,24 @@ from sklearn.preprocessing import StandardScaler
 import os
 
 
-# ── 1. Wisdom of crowds: why ensembles work ───────────────────────────────────
+# -- 1. Wisdom of crowds: why ensembles work -----------------------------------
 def ensemble_theory():
     print("=== Why Ensembles Work ===")
     print("  Error of ensemble (averaging) with M independent classifiers:")
-    print("  Each has error ε, if ε < 0.5 and models are independent:")
-    print("  P(majority wrong) = Σ_{k>M/2} C(M,k) ε^k (1-ε)^{M-k}")
+    print("  Each has error epsilon, if epsilon < 0.5 and models are independent:")
+    print("  P(majority wrong) = Sigma_{k>M/2} C(M,k) epsilon^k (1-epsilon)^{M-k}")
     print()
     from scipy.stats import binom
     for eps in [0.4, 0.3, 0.2]:
         for M in [3, 5, 11, 21]:
             # P(majority vote wrong) = P(binomial(M, eps) > M/2)
             p_err = 1 - binom.cdf(M//2, M, eps)
-            print(f"  ε={eps}  M={M:2d}: P(ensemble wrong)={p_err:.6f}  (single={eps})")
+            print(f"  epsilon={eps}  M={M:2d}: P(ensemble wrong)={p_err:.6f}  (single={eps})")
     print()
     print("  Key: models should be diverse (low correlation in errors).")
 
 
-# ── 2. Bagging ────────────────────────────────────────────────────────────────
+# -- 2. Bagging ----------------------------------------------------------------
 def bagging_demo():
     print("\n=== Bagging (Bootstrap Aggregating) ===")
     X, y = make_classification(n_samples=500, n_features=10, random_state=0)
@@ -57,7 +57,7 @@ def bagging_demo():
     print(f"  Bagging(100): train={bagging.score(X_tr,y_tr):.4f}  test={bagging.score(X_te,y_te):.4f}")
 
 
-# ── 3. Random Forest ─────────────────────────────────────────────────────────
+# -- 3. Random Forest ---------------------------------------------------------
 def random_forest():
     print("\n=== Random Forest ===")
     print("  Extension of bagging: at each split, consider random subset of features")
@@ -85,10 +85,10 @@ def random_forest():
     print(f"  Top 5 features: {[(f'f{i}', round(importances[i],4)) for i in top_idx]}")
 
 
-# ── 4. Extra Trees ────────────────────────────────────────────────────────────
+# -- 4. Extra Trees ------------------------------------------------------------
 def extra_trees():
     print("\n=== Extremely Randomised Trees (Extra Trees) ===")
-    print("  Splits chosen at random (not optimally) → even lower variance")
+    print("  Splits chosen at random (not optimally) -> even lower variance")
     X, y = make_classification(n_samples=500, n_features=10, random_state=2)
     X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3, random_state=0)
 
@@ -100,7 +100,7 @@ def extra_trees():
         print(f"  {name:<16}: test acc={model.score(X_te, y_te):.4f}")
 
 
-# ── 5. AdaBoost ───────────────────────────────────────────────────────────────
+# -- 5. AdaBoost ---------------------------------------------------------------
 def adaboost_demo():
     print("\n=== AdaBoost ===")
     print("  Sequentially fit weak learners, upweight misclassified samples")
@@ -118,7 +118,7 @@ def adaboost_demo():
             print(f"  {n_est:<15} {lr:<16} {ada.score(X_te, y_te):.4f}")
 
 
-# ── 6. Gradient Boosting ──────────────────────────────────────────────────────
+# -- 6. Gradient Boosting ------------------------------------------------------
 def gradient_boosting_demo():
     print("\n=== Gradient Boosting (GBDT) ===")
     print("  Fit each tree to residuals of previous ensemble (gradient of loss)")
@@ -148,7 +148,7 @@ def gradient_boosting_demo():
             print(f"  {lr:<15} {md:<12} {model.score(X_te, y_te):.4f}")
 
 
-# ── 7. Voting and Stacking ───────────────────────────────────────────────────
+# -- 7. Voting and Stacking ---------------------------------------------------
 def voting_and_stacking():
     print("\n=== Voting and Stacking ===")
     X, y = make_classification(n_samples=500, n_features=10, random_state=5)

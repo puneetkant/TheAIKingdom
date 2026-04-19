@@ -12,10 +12,10 @@ from sklearn.pipeline import Pipeline
 import os
 
 
-# ── 1. Polynomial features ────────────────────────────────────────────────────
+# -- 1. Polynomial features ----------------------------------------------------
 def polynomial_features():
     print("=== Polynomial Feature Expansion ===")
-    print("  Adds x², x³, x₁x₂, ... to capture non-linear relationships")
+    print("  Adds x², x³, x1x2, ... to capture non-linear relationships")
     rng = np.random.default_rng(0)
     n   = 200
     x   = rng.uniform(-2, 2, (n, 2))
@@ -31,10 +31,10 @@ def polynomial_features():
             print(f"    Feature names: {poly.get_feature_names_out(['x0','x1'])}")
 
 
-# ── 2. Interaction features ───────────────────────────────────────────────────
+# -- 2. Interaction features ---------------------------------------------------
 def interaction_features():
     print("\n=== Interaction Features ===")
-    print("  x₁ × x₂ captures synergistic effects between features")
+    print("  x1 x x2 captures synergistic effects between features")
     rng   = np.random.default_rng(1)
     n     = 300
     price = rng.uniform(10, 100, n)
@@ -52,7 +52,7 @@ def interaction_features():
         print(f"  {name:<35}: CV RMSE={-cv.mean():.4f}")
 
 
-# ── 3. Domain feature engineering example (housing) ──────────────────────────
+# -- 3. Domain feature engineering example (housing) --------------------------
 def domain_features():
     print("\n=== Domain Feature Engineering (Housing) ===")
     rng = np.random.default_rng(2)
@@ -78,7 +78,7 @@ def domain_features():
         print(f"  {name:<25}: CV RMSE={-cv.mean():.0f}")
 
 
-# ── 4. Datetime feature extraction ────────────────────────────────────────────
+# -- 4. Datetime feature extraction --------------------------------------------
 def datetime_features():
     print("\n=== Datetime Feature Extraction ===")
     import datetime
@@ -105,10 +105,10 @@ def datetime_features():
         print(f"    {k:<15}: {v:.4f}" if isinstance(v, float) else f"    {k:<15}: {v}")
 
     print()
-    print("  Cyclic encoding (sin/cos): avoids jump between 23→0 hour or Sun→Mon")
+    print("  Cyclic encoding (sin/cos): avoids jump between 23->0 hour or Sun->Mon")
 
 
-# ── 5. Binning (discretisation) ───────────────────────────────────────────────
+# -- 5. Binning (discretisation) -----------------------------------------------
 def binning_demo():
     print("\n=== Binning (Discretisation) ===")
     print("  Converts continuous variable into discrete bins")
@@ -128,7 +128,7 @@ def binning_demo():
     print(f"\n  Manual age groups: {[labels[g] for g in groups[:10]]}")
 
 
-# ── 6. Log and sqrt transforms ───────────────────────────────────────────────
+# -- 6. Log and sqrt transforms -----------------------------------------------
 def transform_skewed():
     print("\n=== Transforms for Skewed Features ===")
     rng   = np.random.default_rng(4)
@@ -142,14 +142,14 @@ def transform_skewed():
         "sqrt(x)":       np.sqrt(price),
         "x^(1/3)":       price**(1/3),
         "1/x":           1/(price + 1),
-        "Box-Cox (λ=0)": np.log(price + 1),
+        "Box-Cox (lambda=0)": np.log(price + 1),
     }
     print(f"  {'Transform':<18} {'Skewness':>12}  {'Range'}")
     for name, arr in transforms.items():
         print(f"  {name:<18} {skew(arr):>12.4f}  [{arr.min():.3f}, {arr.max():.3f}]")
 
 
-# ── 7. Feature crossing ───────────────────────────────────────────────────────
+# -- 7. Feature crossing -------------------------------------------------------
 def feature_crossing():
     print("\n=== Feature Crossing (categorical × categorical) ===")
     print("  Combine two categorical features into a single interaction feature")
@@ -173,7 +173,7 @@ def feature_crossing():
     print(f"  (These can be one-hot encoded or target-encoded for downstream models)")
 
 
-# ── 8. Feature engineering impact ────────────────────────────────────────────
+# -- 8. Feature engineering impact --------------------------------------------
 def engineering_impact():
     print("\n=== Feature Engineering Impact Summary ===")
     rng = np.random.default_rng(6)

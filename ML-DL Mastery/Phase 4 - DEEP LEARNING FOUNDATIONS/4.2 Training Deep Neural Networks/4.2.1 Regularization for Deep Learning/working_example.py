@@ -19,11 +19,11 @@ def relu_d(z):  return (z > 0).astype(float)
 def sigmoid(z): return 1 / (1 + np.exp(-z.clip(-500, 500)))
 
 
-# ── 1. L1 and L2 Weight Decay ─────────────────────────────────────────────────
+# -- 1. L1 and L2 Weight Decay -------------------------------------------------
 def weight_decay():
     print("=== L1 and L2 Weight Decay ===")
-    print("  L2: L_total = L + λΣw²    gradient += 2λw  (shrinks towards 0)")
-    print("  L1: L_total = L + λΣ|w|   gradient += λ·sign(w)  (sparsity)")
+    print("  L2: L_total = L + lambdaSigmaw²    gradient += 2lambdaw  (shrinks towards 0)")
+    print("  L1: L_total = L + lambdaSigma|w|   gradient += lambda·sign(w)  (sparsity)")
 
     rng = np.random.default_rng(0)
     # Simulate weights being updated with/without L2 regularisation
@@ -46,7 +46,7 @@ def weight_decay():
     print(f"  L1 (Lasso):        promotes exact zeros (sparse weights)")
 
 
-# ── 2. Dropout ────────────────────────────────────────────────────────────────
+# -- 2. Dropout ----------------------------------------------------------------
 class Dropout:
     def __init__(self, p=0.5):
         self.p = p
@@ -80,11 +80,11 @@ def dropout_demo():
     print(f"  Typical: p=0.5 hidden layers, p=0.1-0.2 input layer")
 
 
-# ── 3. Batch Normalisation ────────────────────────────────────────────────────
+# -- 3. Batch Normalisation ----------------------------------------------------
 def batch_normalisation():
     print("\n=== Batch Normalisation ===")
-    print("  For each mini-batch: x̂ = (x - μ_B) / √(σ²_B + ε)")
-    print("  Then: y = γ·x̂ + β  (learnable scale and shift)")
+    print("  For each mini-batch: x = (x - mu_B) / sqrt(sigma²_B + epsilon)")
+    print("  Then: y = gamma·x + beta  (learnable scale and shift)")
     print("  Benefits: reduces covariate shift, allows higher LR, mild regularisation")
 
     class BatchNorm:
@@ -115,7 +115,7 @@ def batch_normalisation():
 
     print(f"\n  Input  X: mean={X.mean(axis=0).round(2)}  std={X.std(axis=0).round(2)}")
     print(f"  After BN: mean={Xbn.mean(axis=0).round(4)}  std={Xbn.std(axis=0).round(4)}")
-    print(f"  (γ=1, β=0 → zero mean, unit variance)")
+    print(f"  (gamma=1, beta=0 -> zero mean, unit variance)")
 
     print(f"\n  BatchNorm vs LayerNorm:")
     print(f"    BatchNorm: normalise across BATCH dimension per feature")
@@ -124,10 +124,10 @@ def batch_normalisation():
     print(f"               works for transformers, RNNs (any batch size)")
 
 
-# ── 4. Layer Normalization ────────────────────────────────────────────────────
+# -- 4. Layer Normalization ----------------------------------------------------
 def layer_normalisation():
     print("\n=== Layer Normalisation ===")
-    print("  x̂ = (x - μ_sample) / √(σ²_sample + ε)  per sample")
+    print("  x = (x - mu_sample) / sqrt(sigma²_sample + epsilon)  per sample")
     print("  Each sample normalised independently (batch size doesn't matter)")
 
     rng = np.random.default_rng(2)
@@ -142,7 +142,7 @@ def layer_normalisation():
     print(f"  After LN: per-sample mean={X_norm.mean(axis=1).round(6)}  std={X_norm.std(axis=1).round(6)}")
 
 
-# ── 5. Early Stopping ─────────────────────────────────────────────────────────
+# -- 5. Early Stopping ---------------------------------------------------------
 def early_stopping():
     print("\n=== Early Stopping ===")
     print("  Monitor validation loss; stop when it doesn't improve for 'patience' epochs")
@@ -178,7 +178,7 @@ def early_stopping():
     print(f"  Plot saved: {path}")
 
 
-# ── 6. Regularization comparison ─────────────────────────────────────────────
+# -- 6. Regularization comparison ---------------------------------------------
 def regularization_comparison():
     print("\n=== Regularization Comparison ===")
     print(f"  {'Method':<25} {'Effect':<35} {'When to use'}")

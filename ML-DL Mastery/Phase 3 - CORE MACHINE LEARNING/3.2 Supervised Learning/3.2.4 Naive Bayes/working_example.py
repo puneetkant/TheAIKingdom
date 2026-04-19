@@ -13,10 +13,10 @@ from sklearn.metrics import classification_report
 import os
 
 
-# ── 1. Naive Bayes from scratch ────────────────────────────────────────────────
+# -- 1. Naive Bayes from scratch ------------------------------------------------
 def naive_bayes_from_scratch():
     print("=== Naive Bayes From Scratch (Gaussian) ===")
-    print("  P(y|x) ∝ P(y) · Π_j P(x_j|y)    [class-conditional independence]")
+    print("  P(y|x) ∝ P(y) · Pi_j P(x_j|y)    [class-conditional independence]")
 
     class GaussianNB_scratch:
         def fit(self, X, y):
@@ -62,11 +62,11 @@ def naive_bayes_from_scratch():
     # Show learned parameters for class 0
     c = 0
     print(f"\n  Class={c} prior={model.priors[c]:.4f}")
-    print(f"    μ = {model.mu[c].round(4)}")
-    print(f"    σ²= {model.sigma[c].round(4)}")
+    print(f"    mu = {model.mu[c].round(4)}")
+    print(f"    sigma²= {model.sigma[c].round(4)}")
 
 
-# ── 2. Gaussian NB on continuous features ────────────────────────────────────
+# -- 2. Gaussian NB on continuous features ------------------------------------
 def gaussian_nb_demo():
     print("\n=== Gaussian Naive Bayes (sklearn) ===")
     X, y = make_classification(n_samples=500, n_features=6, n_informative=4,
@@ -80,7 +80,7 @@ def gaussian_nb_demo():
     print(f"  Class priors:  {model.class_prior_.round(4)}")
 
 
-# ── 3. Multinomial NB for text ───────────────────────────────────────────────
+# -- 3. Multinomial NB for text -----------------------------------------------
 def multinomial_nb_text():
     print("\n=== Multinomial NB for Text Classification ===")
     corpus = [
@@ -113,7 +113,7 @@ def multinomial_nb_text():
     probs  = model.predict_proba(X_test)
     for txt, pred, prob in zip(tests, preds, probs):
         print(f"  '{txt}'")
-        print(f"    → {'spam' if pred==1 else 'ham'}  P(ham)={prob[0]:.4f}  P(spam)={prob[1]:.4f}")
+        print(f"    -> {'spam' if pred==1 else 'ham'}  P(ham)={prob[0]:.4f}  P(spam)={prob[1]:.4f}")
 
     print(f"\n  Vocabulary size: {len(vec.vocabulary_)}")
     print(f"  Log-likelihood (spam) top terms:")
@@ -124,21 +124,21 @@ def multinomial_nb_text():
         print(f"    '{vocab_inv[i]}': log P = {spam_log[i]:.4f}")
 
 
-# ── 4. Laplace smoothing ─────────────────────────────────────────────────────
+# -- 4. Laplace smoothing -----------------------------------------------------
 def laplace_smoothing():
     print("\n=== Laplace Smoothing ===")
-    print("  Without smoothing: unseen word → P=0 → P(y|x)=0")
-    print("  With α smoothing: P(x_j|y) = (count(x_j,y)+α) / (count(y)+α·|V|)")
+    print("  Without smoothing: unseen word -> P=0 -> P(y|x)=0")
+    print("  With alpha smoothing: P(x_j|y) = (count(x_j,y)+alpha) / (count(y)+alpha·|V|)")
     print()
     counts = {"word_a": 10, "word_b": 5, "word_c": 0}   # word_c unseen in class
     N, V = sum(counts.values()), len(counts)
     print(f"  Counts in class: {counts}   N={N}  |V|={V}")
     for alpha in [0, 0.1, 0.5, 1.0]:
         probs = {w: (c+alpha)/(N+alpha*V) for w,c in counts.items()}
-        print(f"  α={alpha}: {{'a':{probs['word_a']:.4f}, 'b':{probs['word_b']:.4f}, 'c':{probs['word_c']:.4f}}}")
+        print(f"  alpha={alpha}: {{'a':{probs['word_a']:.4f}, 'b':{probs['word_b']:.4f}, 'c':{probs['word_c']:.4f}}}")
 
 
-# ── 5. Bernoulli NB (binary features) ────────────────────────────────────────
+# -- 5. Bernoulli NB (binary features) ----------------------------------------
 def bernoulli_nb_demo():
     print("\n=== Bernoulli NB (binary features) ===")
     rng = np.random.default_rng(2)
@@ -160,7 +160,7 @@ def bernoulli_nb_demo():
         print(f"    {name}: {probs.round(4)}")
 
 
-# ── 6. Naive Bayes assumptions analysis ──────────────────────────────────────
+# -- 6. Naive Bayes assumptions analysis --------------------------------------
 def assumption_analysis():
     print("\n=== When Naive Bayes Fails (Correlated Features) ===")
     rng = np.random.default_rng(3)

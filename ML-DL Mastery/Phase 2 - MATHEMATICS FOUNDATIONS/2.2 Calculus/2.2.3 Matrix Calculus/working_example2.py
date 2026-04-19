@@ -64,7 +64,7 @@ def demo_softmax_gradient():
     print(f"  Row sums (should be 0 — probabilities sum to 1):\n  {J_ana.sum(axis=1).round(8)}")
 
 def demo_ridge_regression_gradient():
-    print("\n=== Ridge regression: d/dw [||Xw-y||² + λ||w||²] ===")
+    print("\n=== Ridge regression: d/dw [||Xw-y||² + lambda||w||²] ===")
     np.random.seed(1)
     n, d = 50, 8
     X = np.random.randn(n, d)

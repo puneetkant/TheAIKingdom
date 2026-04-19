@@ -101,7 +101,7 @@ def demo():
 
     # Frame interpolation
     axes[1][0].plot(alphas, [np.mean(f) for f in interp_frames], "o-", color="mediumseagreen", lw=2)
-    axes[1][0].set(xlabel="Interpolation α", ylabel="Mean Pixel Value",
+    axes[1][0].set(xlabel="Interpolation alpha", ylabel="Mean Pixel Value",
                    title="Linear Frame Interpolation")
     axes[1][0].grid(True, alpha=0.3)
 

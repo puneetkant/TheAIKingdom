@@ -20,8 +20,8 @@ OUTPUT.mkdir(exist_ok=True)
 def estimate_resources(batch_size, model_params_M, precision_bytes=4):
     """
     Rough GPU memory estimate for inference.
-    Activation memory ≈ batch_size * hidden_dim * n_layers * precision_bytes
-    Model memory ≈ params_M * 1e6 * precision_bytes
+    Activation memory ~= batch_size * hidden_dim * n_layers * precision_bytes
+    Model memory ~= params_M * 1e6 * precision_bytes
     """
     model_mb = model_params_M * 1e6 * precision_bytes / (1024**2)
     activation_mb = batch_size * 512 * 12 * precision_bytes / (1024**2)  # proxy
@@ -78,7 +78,7 @@ def demo():
 
     print("\n--- Resource Estimates (batch=32) ---")
     for s, m, a in zip(sizes, model_mbs, act_mbs):
-        print(f"  {s:4d}M params → model {m:.0f}MB  activations {a:.0f}MB  total ~{m+a:.0f}MB")
+        print(f"  {s:4d}M params -> model {m:.0f}MB  activations {a:.0f}MB  total ~{m+a:.0f}MB")
 
     plt.figure(figsize=(6, 3))
     plt.plot(sizes, model_mbs, "o-", label="Model weights")

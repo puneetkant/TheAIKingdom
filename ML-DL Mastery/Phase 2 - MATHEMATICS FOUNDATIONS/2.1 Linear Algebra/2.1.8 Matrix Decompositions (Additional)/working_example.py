@@ -7,7 +7,7 @@ import numpy as np
 from scipy import linalg
 
 
-# ── 1. QR Decomposition ───────────────────────────────────────────────────────
+# -- 1. QR Decomposition -------------------------------------------------------
 def qr_decomposition():
     print("=== QR Decomposition (A = QR) ===")
     A = np.array([[1, 2, 3],
@@ -24,9 +24,9 @@ def qr_decomposition():
     print(f"  QR = A?        {np.allclose(Q @ R, A)}")
 
     # Least squares using QR
-    print("\n  QR-based least squares Ax ≈ b:")
+    print("\n  QR-based least squares Ax ~= b:")
     b = np.array([1, 2, 3, 4], dtype=float)
-    # x = R⁻¹ Qᵀ b  (only for full-rank A)
+    # x = R^-1 Qᵀ b  (only for full-rank A)
     x_qr   = np.linalg.solve(R[:A.shape[1]], Q.T @ b)
     x_lstsq = np.linalg.lstsq(A, b, rcond=None)[0]
     print(f"  x (QR)    = {np.round(x_qr, 4)}")
@@ -34,10 +34,10 @@ def qr_decomposition():
     print(f"  match: {np.allclose(x_qr, x_lstsq, atol=1e-8)}")
 
 
-# ── 2. Cholesky Decomposition ─────────────────────────────────────────────────
+# -- 2. Cholesky Decomposition -------------------------------------------------
 def cholesky_decomposition():
     print("\n=== Cholesky Decomposition (A = LLᵀ, A symmetric positive definite) ===")
-    # Create a positive definite matrix: A = Bᵀ B + ε I
+    # Create a positive definite matrix: A = Bᵀ B + epsilon I
     rng = np.random.default_rng(0)
     B   = rng.standard_normal((4, 4))
     A   = B.T @ B + 4 * np.eye(4)   # positive definite
@@ -61,7 +61,7 @@ def cholesky_decomposition():
     print(f"  positive definite: {np.all(eigvals > 0)}")
 
 
-# ── 3. Schur Decomposition ────────────────────────────────────────────────────
+# -- 3. Schur Decomposition ----------------------------------------------------
 def schur_decomposition():
     print("\n=== Schur Decomposition (A = Q T Qᵀ) ===")
     A = np.array([[4, 1, 0],
@@ -76,7 +76,7 @@ def schur_decomposition():
     print(f"  Z T Zᵀ = A: {np.allclose(Z @ T @ Z.T, A)}")
 
 
-# ── 4. LDLᵀ Decomposition ────────────────────────────────────────────────────
+# -- 4. LDLᵀ Decomposition ----------------------------------------------------
 def ldl_decomposition():
     print("\n=== LDLᵀ Decomposition ===")
     A = np.array([[4, 2, 1],
@@ -92,12 +92,12 @@ def ldl_decomposition():
     print(f"  L D Lᵀ = A? {np.allclose(recon[np.ix_(perm,perm)], A, atol=1e-10)}")
 
 
-# ── 5. Comparison: when to use which ─────────────────────────────────────────
+# -- 5. Comparison: when to use which -----------------------------------------
 def decomposition_guide():
     print("\n=== Decomposition Selection Guide ===")
     guide = [
         ("LU",       "General square A",              "Solve Ax=b, compute det"),
-        ("QR",       "m×n (m≥n), any A",              "Least squares, QR algorithm"),
+        ("QR",       "mxn (m>=n), any A",              "Least squares, QR algorithm"),
         ("Cholesky", "Symmetric positive definite A",  "SPD systems, sampling gaussians"),
         ("SVD",      "Any A",                          "Pseudoinverse, PCA, rank reveal"),
         ("Eig",      "Square A",                       "Diagonalisation, PCA, PageRank"),

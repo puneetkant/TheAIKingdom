@@ -58,7 +58,7 @@ def estimate_gpu_memory_gb(n_params, dtype_bytes=2, batch_size=1, seq_len=512,
 def training_time_hours(n_tokens, n_params, gpu_flops_per_sec=312e12, mfu=0.4):
     """
     Chinchilla training time estimate.
-    FLOPs needed ≈ 6 * N * D (N=params, D=tokens).
+    FLOPs needed ~= 6 * N * D (N=params, D=tokens).
     """
     total_flops = 6 * n_params * n_tokens
     effective_flops = gpu_flops_per_sec * mfu

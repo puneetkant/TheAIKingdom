@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_doc_understand")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Document understanding overview ───────────────────────────────────────
+# -- 1. Document understanding overview ---------------------------------------
 def doc_overview():
     print("=== Document Understanding ===")
     print()
@@ -25,15 +25,15 @@ def doc_overview():
         ("Qwen-VL",      "Strong OCR + document; Chinese/English"),
         ("Claude 3.5",   "Excellent document QA; multi-page; tables"),
         ("GPT-4o",       "Strong with PDFs; API with vision"),
-        ("Marker",       "Pipeline: detect → OCR → structure; open source"),
-        ("Docling",      "IBM; PDF → JSON/MD; tables/equations; open"),
+        ("Marker",       "Pipeline: detect -> OCR -> structure; open source"),
+        ("Docling",      "IBM; PDF -> JSON/MD; tables/equations; open"),
     ]
     print(f"  {'Model':<16} {'Notes'}")
     for m, d in models:
         print(f"  {m:<16} {d}")
 
 
-# ── 2. OCR pipeline ───────────────────────────────────────────────────────────
+# -- 2. OCR pipeline -----------------------------------------------------------
 def ocr_pipeline():
     print("\n=== OCR Pipeline ===")
     print()
@@ -42,7 +42,7 @@ def ocr_pipeline():
         ("1. Pre-processing",  "Binarise, deskew, denoise"),
         ("2. Layout analysis", "Detect text regions, columns, tables"),
         ("3. Line/word detect","Segment text into lines and words"),
-        ("4. Recognition",     "CNN + RNN/CTC → character sequences"),
+        ("4. Recognition",     "CNN + RNN/CTC -> character sequences"),
         ("5. Post-processing", "Spell check, language model correction"),
     ]
     for s, d in steps:
@@ -60,7 +60,7 @@ def ocr_pipeline():
         print(f"  {e:<16} {d}")
 
 
-# ── 3. Layout analysis ────────────────────────────────────────────────────────
+# -- 3. Layout analysis --------------------------------------------------------
 def layout_analysis():
     print("\n=== Layout Analysis ===")
     print()
@@ -97,12 +97,12 @@ def layout_analysis():
         print(f"  {r:<10} {x1:>4} {y1:>4} {x2:>4} {y2:>4}")
 
 
-# ── 4. Table extraction ───────────────────────────────────────────────────────
+# -- 4. Table extraction -------------------------------------------------------
 def table_extraction():
     print("\n=== Table Extraction ===")
     print()
     print("  Hardest part of document understanding")
-    print("  Steps: detect → structure recognition → cell content extraction")
+    print("  Steps: detect -> structure recognition -> cell content extraction")
     print()
 
     # Simulate a simple detected table
@@ -124,7 +124,7 @@ def table_extraction():
     print()
     print("  Table extraction approaches:")
     approaches = [
-        ("Rule-based",      "Line detection → cell inference; fragile for complex tables"),
+        ("Rule-based",      "Line detection -> cell inference; fragile for complex tables"),
         ("TableFormer",     "Microsoft; structure recognition + functional analysis"),
         ("TATR",            "Table Transformer; deformable DETR on PubTables-1M"),
         ("Img2Table",       "OpenCV + rules; no ML needed; fast"),
@@ -134,7 +134,7 @@ def table_extraction():
         print(f"  {a:<18} {d}")
 
 
-# ── 5. Document QA ────────────────────────────────────────────────────────────
+# -- 5. Document QA ------------------------------------------------------------
 def document_qa():
     print("\n=== Document Question Answering ===")
     print()
@@ -142,7 +142,7 @@ def document_qa():
     steps = [
         "1. Ingest PDF: extract text + layout (Docling/Marker/Nougat)",
         "2. Chunk preserving structure (section-aware chunking)",
-        "3. Embed chunks → vector DB (with page/section metadata)",
+        "3. Embed chunks -> vector DB (with page/section metadata)",
         "4. At query time: retrieve relevant chunks",
         "5. Pass chunks + question to VLM (include page images for figures)",
         "6. LLM generates cited answer",

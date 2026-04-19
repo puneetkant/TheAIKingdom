@@ -26,9 +26,9 @@ def demo_mle_gaussian():
     mu_hat   = np.mean(data)
     sigma_hat = np.sqrt(np.mean((data - mu_hat)**2))   # biased MLE
     sigma_unb = np.std(data, ddof=1)                   # unbiased
-    print(f"  True: μ={mu_true}, σ={sigma_true}")
-    print(f"  MLE:  μ̂={mu_hat:.4f}, σ̂={sigma_hat:.4f}  (biased)")
-    print(f"  Unbiased σ: {sigma_unb:.4f}")
+    print(f"  True: mu={mu_true}, sigma={sigma_true}")
+    print(f"  MLE:  mu={mu_hat:.4f}, sigma={sigma_hat:.4f}  (biased)")
+    print(f"  Unbiased sigma: {sigma_unb:.4f}")
 
     # Log-likelihood surface
     mus = np.linspace(2.0, 4.0, 100)
@@ -39,7 +39,7 @@ def demo_mle_gaussian():
     cs = ax.contourf(MU, SIG, LL, 25, cmap="viridis")
     ax.scatter(mu_hat, sigma_hat, color="r", zorder=5, label="MLE")
     ax.scatter(mu_true, sigma_true, color="w", marker="*", s=100, zorder=5, label="true")
-    plt.colorbar(cs); ax.legend(); ax.set_xlabel("μ"); ax.set_ylabel("σ")
+    plt.colorbar(cs); ax.legend(); ax.set_xlabel("mu"); ax.set_ylabel("sigma")
     ax.set_title("Gaussian Log-Likelihood surface")
     fig.savefig(OUTPUT / "mle_surface.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: mle_surface.png")
@@ -52,11 +52,11 @@ def demo_mle_bernoulli():
         data = np.random.binomial(1, p_true, n)
         p_hat = data.mean()
         se    = math.sqrt(p_hat * (1 - p_hat) / n)
-        print(f"  n={n:>5}: p̂={p_hat:.4f}  95%CI=[{max(0,p_hat-1.96*se):.4f},{min(1,p_hat+1.96*se):.4f}]")
+        print(f"  n={n:>5}: p={p_hat:.4f}  95%CI=[{max(0,p_hat-1.96*se):.4f},{min(1,p_hat+1.96*se):.4f}]")
 
 def demo_map_beta_prior():
     print("\n=== MAP with Beta Prior ===")
-    # Conjugate: p|data ~ Beta(α+k, β+n-k) with prior Beta(α,β)
+    # Conjugate: p|data ~ Beta(alpha+k, beta+n-k) with prior Beta(alpha,beta)
     alpha, beta = 2, 2          # prior (slightly regularising)
     n = 20; k = 4               # 4 successes in 20 trials
     # MLE
@@ -66,9 +66,9 @@ def demo_map_beta_prior():
     # Posterior mean
     p_post = (alpha + k) / (alpha + beta + n)
     print(f"  Observed: k={k}, n={n}")
-    print(f"  MLE:           p̂={p_mle:.4f}")
-    print(f"  MAP:           p̂={p_map:.4f}")
-    print(f"  Posterior mean:p̂={p_post:.4f}")
+    print(f"  MLE:           p={p_mle:.4f}")
+    print(f"  MAP:           p={p_map:.4f}")
+    print(f"  Posterior mean:p={p_post:.4f}")
 
 def demo_bias_variance():
     print("\n=== Bias-Variance Decomposition ===")

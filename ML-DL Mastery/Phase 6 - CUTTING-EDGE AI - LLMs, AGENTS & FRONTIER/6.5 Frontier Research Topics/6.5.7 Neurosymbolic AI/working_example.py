@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_neurosym")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Overview ───────────────────────────────────────────────────────────────
+# -- 1. Overview ---------------------------------------------------------------
 def neurosym_overview():
     print("=== Neurosymbolic AI ===")
     print()
@@ -22,7 +22,7 @@ def neurosym_overview():
     levels = [
         ("Symbolic-neuro",      "Neural net inside a symbolic system (NSIL, NTP)"),
         ("Neuro-symbolic",      "Symbolic engine inside neural (AlphaGeometry)"),
-        ("Neuro-then-symbolic", "Neural output → symbolic verification"),
+        ("Neuro-then-symbolic", "Neural output -> symbolic verification"),
         ("Neuro+symbolic",      "Parallel neural and symbolic streams (DNN+KB)"),
     ]
     for l, d in levels:
@@ -42,7 +42,7 @@ def neurosym_overview():
         print(f"  {s:<28} {d}")
 
 
-# ── 2. Symbolic reasoning with Python ─────────────────────────────────────────
+# -- 2. Symbolic reasoning with Python -----------------------------------------
 def symbolic_reasoning_demo():
     print("\n=== Symbolic Reasoning Demo ===")
     print()
@@ -89,11 +89,11 @@ def symbolic_reasoning_demo():
     print("  Final facts:", sorted(kb.facts))
 
 
-# ── 3. LLM + symbolic verifier ────────────────────────────────────────────────
+# -- 3. LLM + symbolic verifier ------------------------------------------------
 def llm_plus_verifier():
     print("\n=== LLM + Symbolic Verifier Pattern ===")
     print()
-    print("  Pattern: LLM generates candidate solution → symbolic verifier checks correctness")
+    print("  Pattern: LLM generates candidate solution -> symbolic verifier checks correctness")
     print("  Retry until verified or budget exhausted")
     print()
 
@@ -109,9 +109,9 @@ def llm_plus_verifier():
             try:
                 result = eval(test_code, namespace)
                 if result != expected:
-                    return False, f"FAIL: {test_code} → {result!r}, expected {expected!r}"
+                    return False, f"FAIL: {test_code} -> {result!r}, expected {expected!r}"
             except Exception as e:
-                return False, f"ERROR: {test_code} → {e}"
+                return False, f"ERROR: {test_code} -> {e}"
         return True, "All tests passed"
 
     problem = "Write a function is_prime(n) returning True if n is prime."
@@ -142,7 +142,7 @@ def llm_plus_verifier():
             break
 
 
-# ── 4. Neural theorem proving ─────────────────────────────────────────────────
+# -- 4. Neural theorem proving -------------------------------------------------
 def neural_theorem_proving():
     print("\n=== Neural Theorem Proving ===")
     print()
@@ -150,15 +150,15 @@ def neural_theorem_proving():
     print("    Lean 4, Isabelle, Coq, Rocq — formally verify mathematical proofs")
     print()
     print("  Neural guidance:")
-    print("    LLM proposes next proof tactic → symbolic checker verifies")
-    print("    If invalid → backtrack; if valid → continue")
+    print("    LLM proposes next proof tactic -> symbolic checker verifies")
+    print("    If invalid -> backtrack; if valid -> continue")
     print()
     print("  Key results:")
     results = [
         ("GPT-f (OpenAI)",       "GPT-3 for proof completion in Metamath; 25% problems"),
         ("AlphaProof",           "DeepMind; LLM + Lean; IMO 2024: 4/6 problems"),
         ("AlphaGeometry",        "DeepMind; LLM + DDAR solver; IMO geometry gold"),
-        ("LLM+Lean (MIT)",       "Draft-Sketch-Prove; informal → formal translation"),
+        ("LLM+Lean (MIT)",       "Draft-Sketch-Prove; informal -> formal translation"),
         ("COPRA",                "Contextual online proof retrieval augmentation"),
     ]
     for r, d in results:
@@ -167,9 +167,9 @@ def neural_theorem_proving():
     print("  Lean 4 example (illustrative):")
     lean_ex = '''
 theorem even_plus_even (m n : Nat) (hm : Even m) (hn : Even n) : Even (m + n) := by
-  obtain ⟨k, hk⟩ := hm
-  obtain ⟨l, hl⟩ := hn
-  exact ⟨k + l, by linarith⟩
+  obtain <k, hk> := hm
+  obtain <l, hl> := hn
+  exact <k + l, by linarith>
 '''
     for line in lean_ex.splitlines():
         print(f"  {line}")

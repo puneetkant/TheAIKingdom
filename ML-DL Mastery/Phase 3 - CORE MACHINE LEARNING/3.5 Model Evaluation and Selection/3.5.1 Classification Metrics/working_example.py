@@ -24,7 +24,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_clf_metrics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Core binary classification metrics ────────────────────────────────────
+# -- 1. Core binary classification metrics ------------------------------------
 def binary_metrics():
     print("=== Binary Classification Metrics ===")
     rng  = np.random.default_rng(0)
@@ -76,10 +76,10 @@ def binary_metrics():
     print(f"    Precision  = TP/(TP+FP) = {TP}/{TP+FP} = {prec:.4f}")
     print(f"    Recall     = TP/(TP+FN) = {TP}/{TP+FN} = {rec:.4f}")
     print(f"    F1         = 2·(P·R)/(P+R) = {f1:.4f}")
-    print(f"    MCC        = (TP·TN - FP·FN) / √[(TP+FP)(TP+FN)(TN+FP)(TN+FN)] = {mcc:.4f}")
+    print(f"    MCC        = (TP·TN - FP·FN) / sqrt[(TP+FP)(TP+FN)(TN+FP)(TN+FN)] = {mcc:.4f}")
 
 
-# ── 2. ROC and PR curves ─────────────────────────────────────────────────────
+# -- 2. ROC and PR curves -----------------------------------------------------
 def roc_pr_curves():
     print("\n=== ROC and Precision-Recall Curves ===")
     X, y = make_classification(n_samples=500, n_features=10, n_informative=5,
@@ -118,7 +118,7 @@ def roc_pr_curves():
     print(f"\n  ROC/PR curves saved: {path}")
 
 
-# ── 3. Multi-class metrics ───────────────────────────────────────────────────
+# -- 3. Multi-class metrics ---------------------------------------------------
 def multiclass_metrics():
     print("\n=== Multi-class Classification Metrics ===")
     iris = load_iris()
@@ -147,12 +147,12 @@ def multiclass_metrics():
     print(classification_report(y_te, y_pred, target_names=iris.target_names, indent=4))
 
 
-# ── 4. F-beta score ──────────────────────────────────────────────────────────
+# -- 4. F-beta score ----------------------------------------------------------
 def fbeta_score():
     print("\n=== F-beta Score ===")
-    print("  F_β = (1+β²) · P·R / (β²·P + R)")
-    print("  β > 1: recall is more important (e.g. medical diagnosis)")
-    print("  β < 1: precision is more important (e.g. spam detection)")
+    print("  F_beta = (1+beta²) · P·R / (beta²·P + R)")
+    print("  beta > 1: recall is more important (e.g. medical diagnosis)")
+    print("  beta < 1: precision is more important (e.g. spam detection)")
     from sklearn.metrics import fbeta_score
 
     X, y = make_classification(n_samples=500, n_features=10, random_state=2,
@@ -165,10 +165,10 @@ def fbeta_score():
     print(f"  Precision={prec:.4f}  Recall={rec:.4f}")
     for beta in [0.25, 0.5, 1.0, 2.0, 4.0]:
         fb = fbeta_score(y_te, y_pred, beta=beta, zero_division=0)
-        print(f"  F_{beta}: {fb:.4f}  (β>1 emphasises recall)")
+        print(f"  F_{beta}: {fb:.4f}  (beta>1 emphasises recall)")
 
 
-# ── 5. Threshold analysis ────────────────────────────────────────────────────
+# -- 5. Threshold analysis ----------------------------------------------------
 def threshold_analysis():
     print("\n=== Optimal Threshold Selection ===")
     X, y = make_classification(n_samples=500, n_features=10, random_state=3,

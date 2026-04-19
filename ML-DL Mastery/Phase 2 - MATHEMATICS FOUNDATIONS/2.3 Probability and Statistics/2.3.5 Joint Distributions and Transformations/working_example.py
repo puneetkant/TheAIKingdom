@@ -7,7 +7,7 @@ import numpy as np
 from scipy import stats, integrate
 
 
-# ── 1. Joint discrete distribution ───────────────────────────────────────────
+# -- 1. Joint discrete distribution -------------------------------------------
 def joint_discrete():
     print("=== Joint Discrete Distribution ===")
     # Joint PMF: X = row index, Y = col index (each in {0,1,2})
@@ -44,7 +44,7 @@ def joint_discrete():
     print(f"\n  E[X]={EX:.4f}  E[Y]={EY:.4f}  E[XY]={EXY:.4f}  Cov(X,Y)={cov:.4f}")
 
 
-# ── 2. Joint continuous distribution ─────────────────────────────────────────
+# -- 2. Joint continuous distribution -----------------------------------------
 def joint_continuous():
     print("\n=== Joint Continuous Distribution ===")
     # f(x,y) = 6xy(x+y) on [0,1]×[0,1]  — verify it integrates to 1
@@ -52,9 +52,9 @@ def joint_continuous():
 
     total, _ = integrate.dblquad(f, 0, 1, 0, 1)
     print(f"  f(x,y) = 6xy(x+y) on [0,1]²")
-    print(f"  ∫∫ f(x,y) dx dy = {total:.6f}  (should be 1)")
+    print(f"  integralintegral f(x,y) dx dy = {total:.6f}  (should be 1)")
 
-    # Marginal of X: f_X(x) = ∫₀¹ f(x,y) dy
+    # Marginal of X: f_X(x) = integral01 f(x,y) dy
     f_X = lambda x: integrate.quad(lambda y: f(x, y), 0, 1)[0]
     xs  = np.linspace(0, 1, 10)
     print(f"\n  Marginal f_X(x) at x=0.5: {f_X(0.5):.4f}")
@@ -69,10 +69,10 @@ def joint_continuous():
     varX  = EX2 - EX**2
     varY  = EY2 - EY**2
     corr  = cov / np.sqrt(varX * varY)
-    print(f"  E[X]={EX:.4f}  E[Y]={EY:.4f}  Cov(X,Y)={cov:.4f}  ρ={corr:.4f}")
+    print(f"  E[X]={EX:.4f}  E[Y]={EY:.4f}  Cov(X,Y)={cov:.4f}  rho={corr:.4f}")
 
 
-# ── 3. Multivariate Normal ────────────────────────────────────────────────────
+# -- 3. Multivariate Normal ----------------------------------------------------
 def multivariate_normal():
     print("\n=== Multivariate Normal Distribution ===")
     mu  = np.array([1., 2.])
@@ -80,27 +80,27 @@ def multivariate_normal():
                     [1., 1.5]])
     mvn = stats.multivariate_normal(mean=mu, cov=Cov)
 
-    print(f"  μ = {mu}")
-    print(f"  Σ =\n{Cov}")
-    print(f"  Correlation ρ = Σ₁₂/√(Σ₁₁Σ₂₂) = {Cov[0,1]/np.sqrt(Cov[0,0]*Cov[1,1]):.4f}")
+    print(f"  mu = {mu}")
+    print(f"  Sigma =\n{Cov}")
+    print(f"  Correlation rho = Sigma12/sqrt(Sigma11Sigma22) = {Cov[0,1]/np.sqrt(Cov[0,0]*Cov[1,1]):.4f}")
 
     # Marginal distributions
-    print(f"\n  Marginal X₁ ~ N({mu[0]},{Cov[0,0]})")
-    print(f"  Marginal X₂ ~ N({mu[1]},{Cov[1,1]})")
+    print(f"\n  Marginal X1 ~ N({mu[0]},{Cov[0,0]})")
+    print(f"  Marginal X2 ~ N({mu[1]},{Cov[1,1]})")
 
-    # Conditional distribution X₁ | X₂ = x₂
+    # Conditional distribution X1 | X2 = x2
     x2 = 2.5
     mu_cond  = mu[0] + Cov[0,1]/Cov[1,1] * (x2 - mu[1])
     var_cond = Cov[0,0] - Cov[0,1]**2/Cov[1,1]
-    print(f"\n  Conditional X₁ | X₂={x2}: μ_cond={mu_cond:.4f}  σ²_cond={var_cond:.4f}")
+    print(f"\n  Conditional X1 | X2={x2}: mu_cond={mu_cond:.4f}  sigma²_cond={var_cond:.4f}")
 
     # Sample and verify
     rng = np.random.default_rng(0)
     samples = mvn.rvs(size=100_000, random_state=0)
-    print(f"\n  MC sample (N=100k): mean={np.round(samples.mean(0),4)}  cov≈\n{np.round(np.cov(samples.T),4)}")
+    print(f"\n  MC sample (N=100k): mean={np.round(samples.mean(0),4)}  cov~=\n{np.round(np.cov(samples.T),4)}")
 
 
-# ── 4. Covariance and correlation ─────────────────────────────────────────────
+# -- 4. Covariance and correlation ---------------------------------------------
 def covariance_correlation():
     print("\n=== Covariance and Correlation ===")
     rng  = np.random.default_rng(5)
@@ -110,10 +110,10 @@ def covariance_correlation():
     Y2   = -X  + rng.standard_normal(n)   # negatively correlated
     Y3   = rng.standard_normal(n)         # independent
 
-    for label, Y in [("Y=2X+ε (pos)", Y1), ("Y=-X+ε (neg)", Y2), ("Y=ε (indep)", Y3)]:
+    for label, Y in [("Y=2X+epsilon (pos)", Y1), ("Y=-X+epsilon (neg)", Y2), ("Y=epsilon (indep)", Y3)]:
         cov  = np.cov(X, Y)[0,1]
         corr = np.corrcoef(X, Y)[0,1]
-        print(f"  {label:<20}: Cov={cov:.4f}  ρ={corr:.4f}")
+        print(f"  {label:<20}: Cov={cov:.4f}  rho={corr:.4f}")
 
     print("\n  Properties:")
     print(f"    Cov(X,X) = Var(X) = {np.var(X, ddof=1):.4f}")
@@ -121,29 +121,29 @@ def covariance_correlation():
     print(f"    Cov(aX, bY1) = ab·Cov(X,Y1): {np.cov(a*X,b*Y1)[0,1]:.4f} vs {a*b*np.cov(X,Y1)[0,1]:.4f}")
 
 
-# ── 5. Transformations of random variables ────────────────────────────────────
+# -- 5. Transformations of random variables ------------------------------------
 def rv_transformations():
     print("\n=== Transformations of RVs ===")
     rng = np.random.default_rng(9)
     n   = 500_000
 
-    # X ~ N(0,1)  →  Y = X² ~ χ²(1)
+    # X ~ N(0,1)  ->  Y = X² ~ chi²(1)
     X = rng.standard_normal(n)
     Y = X**2
     chi2 = stats.chi2(df=1)
     print(f"  Y = X² where X~N(0,1):")
     print(f"    E[Y] empirical={Y.mean():.4f}  theory (chi²(1))={chi2.mean():.4f}")
 
-    # Sum of squares: Z = Σ Xᵢ² ~ χ²(k)
+    # Sum of squares: Z = Sigma Xᵢ² ~ chi²(k)
     k = 5
     Z = rng.standard_normal((n, k))**2
     Z_sum = Z.sum(axis=1)
     chi2k = stats.chi2(df=k)
-    print(f"\n  Z = Σᵢ₌₁⁵ Xᵢ² ~ χ²(5):")
+    print(f"\n  Z = Sigmaᵢ₌1⁵ Xᵢ² ~ chi²(5):")
     print(f"    E[Z] empirical={Z_sum.mean():.4f}  theory={chi2k.mean():.4f}")
     print(f"    Var[Z] empirical={Z_sum.var():.4f}  theory={chi2k.var():.4f}")
 
-    # Box-Muller: U1,U2 uniform → two N(0,1) samples
+    # Box-Muller: U1,U2 uniform -> two N(0,1) samples
     U1 = rng.uniform(0, 1, n)
     U2 = rng.uniform(0, 1, n)
     Z1 = np.sqrt(-2*np.log(U1)) * np.cos(2*np.pi*U2)

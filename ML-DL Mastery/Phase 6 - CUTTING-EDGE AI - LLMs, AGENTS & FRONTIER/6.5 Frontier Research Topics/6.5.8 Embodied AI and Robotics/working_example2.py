@@ -18,7 +18,7 @@ OUTPUT = Path(__file__).parent / "output"
 OUTPUT.mkdir(exist_ok=True)
 
 ACTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
-ACTION_NAMES = ["↑", "↓", "←", "→"]
+ACTION_NAMES = ["^", "v", "<-", "->"]
 
 
 class GridWorld:

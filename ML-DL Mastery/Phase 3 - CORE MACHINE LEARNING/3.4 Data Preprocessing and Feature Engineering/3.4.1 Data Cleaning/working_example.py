@@ -18,7 +18,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_cleaning")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Missing value detection ────────────────────────────────────────────────
+# -- 1. Missing value detection ------------------------------------------------
 def missing_value_detection():
     print("=== Missing Value Detection ===")
     rng = np.random.default_rng(0)
@@ -47,7 +47,7 @@ def missing_value_detection():
     return X
 
 
-# ── 2. Imputation strategies ──────────────────────────────────────────────────
+# -- 2. Imputation strategies --------------------------------------------------
 def imputation_strategies(X):
     print("\n=== Imputation Strategies ===")
     from sklearn.impute import SimpleImputer, KNNImputer
@@ -69,12 +69,12 @@ def imputation_strategies(X):
     print("\n  Missing data mechanisms:")
     print("    MCAR (Missing Completely At Random): imputation valid, any method OK")
     print("    MAR  (Missing At Random): depends on observed data, imputation valid")
-    print("    MNAR (Missing Not At Random): systematic → requires domain knowledge")
+    print("    MNAR (Missing Not At Random): systematic -> requires domain knowledge")
 
     return SimpleImputer(strategy="mean").fit_transform(X)
 
 
-# ── 3. Outlier detection and treatment ───────────────────────────────────────
+# -- 3. Outlier detection and treatment ---------------------------------------
 def outlier_handling():
     print("\n=== Outlier Detection and Treatment ===")
     rng = np.random.default_rng(1)
@@ -86,13 +86,13 @@ def outlier_handling():
     # Z-score
     z        = np.abs((x - x.mean()) / x.std())
     z_mask   = z > 3
-    print(f"\n  Z-score (|z|>3): {z_mask.sum()} outliers  → {x[z_mask].round(1)}")
+    print(f"\n  Z-score (|z|>3): {z_mask.sum()} outliers  -> {x[z_mask].round(1)}")
 
     # IQR
     Q1, Q3   = np.percentile(x, 25), np.percentile(x, 75)
     IQR      = Q3 - Q1
     iqr_mask = (x < Q1-1.5*IQR) | (x > Q3+1.5*IQR)
-    print(f"  IQR method:      {iqr_mask.sum()} outliers  → {x[iqr_mask].round(1)}")
+    print(f"  IQR method:      {iqr_mask.sum()} outliers  -> {x[iqr_mask].round(1)}")
 
     # Treatments
     x_clean      = x[~z_mask]                          # removal
@@ -105,7 +105,7 @@ def outlier_handling():
         print(f"    {name:<22}: mean={arr.mean():.2f}  std={arr.std():.2f}")
 
 
-# ── 4. Duplicate detection ────────────────────────────────────────────────────
+# -- 4. Duplicate detection ----------------------------------------------------
 def duplicate_handling():
     print("\n=== Duplicate Detection ===")
     # Simulate dataset with duplicates
@@ -137,7 +137,7 @@ def duplicate_handling():
     print(f"  After dedup: {(~is_dup).sum()} rows")
 
 
-# ── 5. Data type fixes ────────────────────────────────────────────────────────
+# -- 5. Data type fixes --------------------------------------------------------
 def data_type_fixes():
     print("\n=== Data Type Issues ===")
     # Simulate mixed-type column
@@ -165,7 +165,7 @@ def data_type_fixes():
     print(f"  Valid stats: mean={np.nanmean(cleaned):.2f}  std={np.nanstd(cleaned):.2f}")
 
 
-# ── 6. Inconsistency detection ───────────────────────────────────────────────
+# -- 6. Inconsistency detection -----------------------------------------------
 def inconsistency_detection():
     print("\n=== Inconsistency Detection ===")
     print("  Common inconsistencies in real datasets:")
@@ -189,12 +189,12 @@ def inconsistency_detection():
     ages   = rng.normal(35, 15, 200)
     ages   = np.concatenate([ages, [-5, 200, -20]])
     valid  = (ages >= 0) & (ages <= 120)
-    print(f"  Age data: {(~valid).sum()} out-of-range values → {ages[~valid].round(1)}")
+    print(f"  Age data: {(~valid).sum()} out-of-range values -> {ages[~valid].round(1)}")
     ages_clean = ages[valid]
     print(f"  After filter: n={len(ages_clean)}  mean={ages_clean.mean():.2f}")
 
 
-# ── 7. Data cleaning pipeline ────────────────────────────────────────────────
+# -- 7. Data cleaning pipeline ------------------------------------------------
 def cleaning_pipeline():
     print("\n=== Data Cleaning Pipeline Summary ===")
     print("  1. Profile data: shape, dtypes, missing %, value counts")

@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_staying_current")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Information sources ────────────────────────────────────────────────────
+# -- 1. Information sources ----------------------------------------------------
 def information_sources():
     print("=== Staying Current in AI/ML ===")
     print()
@@ -37,7 +37,7 @@ def information_sources():
         print(f"  {s:<34} {d}")
 
 
-# ── 2. Learning system ────────────────────────────────────────────────────────
+# -- 2. Learning system --------------------------------------------------------
 def learning_system():
     print("\n=== Building a Personal Learning System ===")
     print()
@@ -77,7 +77,7 @@ def learning_system():
         print(f"  {t}")
 
 
-# ── 3. Podcasts, courses, communities ─────────────────────────────────────────
+# -- 3. Podcasts, courses, communities -----------------------------------------
 def podcasts_and_communities():
     print("\n=== Podcasts, Courses, and Communities ===")
     print()
@@ -116,7 +116,7 @@ def podcasts_and_communities():
         print(f"  {c:<22} {d}")
 
 
-# ── 4. Personal knowledge base ────────────────────────────────────────────────
+# -- 4. Personal knowledge base ------------------------------------------------
 def knowledge_base():
     print("\n=== Personal Knowledge Base Workflow ===")
     print()
@@ -150,7 +150,7 @@ def knowledge_base():
         "Conference names don't sound familiar",
     ]
     for w in warnings:
-        print(f"  ⚠ {w}")
+        print(f"  [!] {w}")
 
 
 if __name__ == "__main__":

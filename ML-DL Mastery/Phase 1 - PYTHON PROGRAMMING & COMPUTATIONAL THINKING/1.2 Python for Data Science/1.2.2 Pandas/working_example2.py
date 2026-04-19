@@ -27,7 +27,7 @@ DATA = Path(__file__).parent / "data"
 DATA.mkdir(exist_ok=True)
 
 
-# ── Download ───────────────────────────────────────────────────────────────────
+# -- Download -------------------------------------------------------------------
 def download(url: str, dest: Path) -> Path:
     if dest.exists():
         return dest

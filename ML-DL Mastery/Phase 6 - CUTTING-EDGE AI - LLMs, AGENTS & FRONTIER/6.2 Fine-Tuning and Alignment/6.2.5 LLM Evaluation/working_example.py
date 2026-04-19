@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_llm_eval")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Benchmark overview ─────────────────────────────────────────────────────
+# -- 1. Benchmark overview -----------------------------------------------------
 def benchmark_overview():
     print("=== LLM Evaluation Methods ===")
     print()
@@ -30,7 +30,7 @@ def benchmark_overview():
         print(f"  {cat:<14} {examples}")
 
 
-# ── 2. Automated metrics ──────────────────────────────────────────────────────
+# -- 2. Automated metrics ------------------------------------------------------
 def automated_metrics():
     print("\n=== Automated Evaluation Metrics ===")
     print()
@@ -78,7 +78,7 @@ def automated_metrics():
         print(f"  {m:<20} {d}")
 
 
-# ── 3. LLM-as-judge ───────────────────────────────────────────────────────────
+# -- 3. LLM-as-judge -----------------------------------------------------------
 def llm_as_judge():
     print("\n=== LLM-as-Judge Evaluation ===")
     print()
@@ -86,8 +86,8 @@ def llm_as_judge():
     print()
     print("  Formats:")
     formats = [
-        ("Pairwise",   "Which response A or B is better? → win rate"),
-        ("Absolute",   "Rate on 1-10 scale → mean score"),
+        ("Pairwise",   "Which response A or B is better? -> win rate"),
+        ("Absolute",   "Rate on 1-10 scale -> mean score"),
         ("Rubric",     "Structured criteria; helpfulness/accuracy/safety"),
         ("Reference",  "Compare to gold reference; factual alignment"),
     ]
@@ -123,7 +123,7 @@ Reason: Correct but superficial. Could include examples and key algorithms.
         print(f"  {b:<18} {d}")
 
 
-# ── 4. Human evaluation ───────────────────────────────────────────────────────
+# -- 4. Human evaluation -------------------------------------------------------
 def human_evaluation():
     print("\n=== Human Evaluation ===")
     print()

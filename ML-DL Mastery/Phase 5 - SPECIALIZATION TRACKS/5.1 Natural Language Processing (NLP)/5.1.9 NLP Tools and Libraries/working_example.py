@@ -5,7 +5,7 @@ all as patterns + live demos where those libraries are installed.
 """
 import re, os
 
-# ── 1. NLTK ───────────────────────────────────────────────────────────────────
+# -- 1. NLTK -------------------------------------------------------------------
 def nltk_overview():
     print("=== NLTK (Natural Language Toolkit) ===")
     print("  Install: pip install nltk")
@@ -77,7 +77,7 @@ def nltk_overview():
         """)
 
 
-# ── 2. spaCy ──────────────────────────────────────────────────────────────────
+# -- 2. spaCy ------------------------------------------------------------------
 def spacy_overview():
     print("\n=== spaCy ===")
     print("  Install: pip install spacy && python -m spacy download en_core_web_sm")
@@ -132,7 +132,7 @@ def spacy_overview():
         print(f"    - {c}")
 
 
-# ── 3. HuggingFace Transformers ───────────────────────────────────────────────
+# -- 3. HuggingFace Transformers -----------------------------------------------
 def huggingface_overview():
     print("\n=== HuggingFace Transformers ===")
     print("  Install: pip install transformers datasets tokenizers")
@@ -145,7 +145,7 @@ def huggingface_overview():
                        truncation=True)
         texts = ["I love this!", "This is terrible."]
         for t, r in zip(texts, clf(texts)):
-            print(f"    '{t}' → {r['label']} ({r['score']:.4f})")
+            print(f"    '{t}' -> {r['label']} ({r['score']:.4f})")
     except ImportError:
         pass
 
@@ -164,7 +164,7 @@ def huggingface_overview():
         ("image-classification","ViT, CLIP classification"),
     ]
     print(f"  {'Task':<28} Description")
-    print(f"  {'─'*28} {'─'*35}")
+    print(f"  {'-'*28} {'-'*35}")
     for t, d in tasks:
         print(f"  {t:<28} {d}")
 
@@ -188,7 +188,7 @@ def huggingface_overview():
     """)
 
 
-# ── 4. Gensim ────────────────────────────────────────────────────────────────
+# -- 4. Gensim ----------------------------------------------------------------
 def gensim_overview():
     print("\n=== Gensim ===")
     print("  Install: pip install gensim")
@@ -231,7 +231,7 @@ def gensim_overview():
     """)
 
 
-# ── 5. Summary comparison ────────────────────────────────────────────────────
+# -- 5. Summary comparison ----------------------------------------------------
 def library_comparison():
     print("\n=== NLP Library Comparison ===")
     rows = [
@@ -244,7 +244,7 @@ def library_comparison():
         ("LangChain",      "LLM applications",      "Chain LLMs + tools",        "Fast-moving API"),
     ]
     print(f"  {'Library':<16} {'Best for':<22} {'Strength':<28} Weakness")
-    print(f"  {'─'*16} {'─'*22} {'─'*28} {'─'*25}")
+    print(f"  {'-'*16} {'-'*22} {'-'*28} {'-'*25}")
     for r in rows:
         print(f"  {r[0]:<16} {r[1]:<22} {r[2]:<28} {r[3]}")
 

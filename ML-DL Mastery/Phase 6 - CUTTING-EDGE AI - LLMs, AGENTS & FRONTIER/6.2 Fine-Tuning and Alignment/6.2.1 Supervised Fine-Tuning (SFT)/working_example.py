@@ -10,14 +10,14 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_sft")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. What is SFT? ───────────────────────────────────────────────────────────
+# -- 1. What is SFT? -----------------------------------------------------------
 def sft_overview():
     print("=== Supervised Fine-Tuning (SFT) ===")
     print()
     print("  SFT: continue training a pre-trained LLM on")
     print("  curated (instruction, response) pairs")
     print()
-    print("  Pre-training → SFT → RLHF → Deployment")
+    print("  Pre-training -> SFT -> RLHF -> Deployment")
     print()
     print("  Why SFT?")
     why = [
@@ -45,7 +45,7 @@ def sft_overview():
         print(f"  {d:<18} {desc}")
 
 
-# ── 2. Chat templates ─────────────────────────────────────────────────────────
+# -- 2. Chat templates ---------------------------------------------------------
 def chat_templates():
     print("\n=== Chat Templates ===")
     print()
@@ -76,7 +76,7 @@ The capital of France is Paris.<|im_end|>
     print("  Key: only compute loss on assistant tokens (not user/system)")
 
 
-# ── 3. Loss masking ───────────────────────────────────────────────────────────
+# -- 3. Loss masking -----------------------------------------------------------
 def loss_masking():
     print("\n=== SFT Loss Masking ===")
     print()
@@ -101,11 +101,11 @@ def loss_masking():
     print("  -100 labels are ignored by PyTorch's CrossEntropyLoss")
 
 
-# ── 4. Catastrophic forgetting ────────────────────────────────────────────────
+# -- 4. Catastrophic forgetting ------------------------------------------------
 def catastrophic_forgetting():
     print("\n=== Catastrophic Forgetting ===")
     print()
-    print("  Fine-tuning on narrow data → model forgets base capabilities")
+    print("  Fine-tuning on narrow data -> model forgets base capabilities")
     print()
     print("  Mitigation strategies:")
     strategies = [

@@ -1,7 +1,7 @@
 """
 Working Example 2: Basic Autoencoders — encoder-decoder, bottleneck, reconstruction
 ======================================================================================
-Numpy MLP autoencoder on California Housing features: compress 8→3→8.
+Numpy MLP autoencoder on California Housing features: compress 8->3->8.
 
 Run:  python working_example2.py
 """
@@ -24,7 +24,7 @@ relu   = lambda x: np.maximum(0, x)
 relu_d = lambda x: (x > 0).astype(float)
 
 class Autoencoder:
-    """3-layer autoencoder: 8→16→3→16→8."""
+    """3-layer autoencoder: 8->16->3->16->8."""
     def __init__(self, n_in=8, n_h=16, n_z=3, seed=42):
         rng = np.random.default_rng(seed)
         self.We1 = rng.standard_normal((n_in, n_h)) * np.sqrt(2/n_in);  self.be1 = np.zeros(n_h)
@@ -66,7 +66,7 @@ class Autoencoder:
         return losses
 
 def demo():
-    print("=== Autoencoder on California Housing (8→3→8) ===")
+    print("=== Autoencoder on California Housing (8->3->8) ===")
     h = fetch_california_housing(); X = StandardScaler().fit_transform(h.data)
     X_tr, X_te = train_test_split(X, test_size=0.2, random_state=42)
 
@@ -77,7 +77,7 @@ def demo():
     test_mse = np.mean((x_hat - X_te)**2)
     print(f"  Train MSE (final): {losses[-1]:.4f}")
     print(f"  Test  MSE:         {test_mse:.4f}")
-    print(f"  Compression ratio: 8→3 ({3/8*100:.0f}% of original dims)")
+    print(f"  Compression ratio: 8->3 ({3/8*100:.0f}% of original dims)")
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))
     axes[0].plot(losses); axes[0].set_xlabel("Epoch"); axes[0].set_ylabel("MSE Loss")

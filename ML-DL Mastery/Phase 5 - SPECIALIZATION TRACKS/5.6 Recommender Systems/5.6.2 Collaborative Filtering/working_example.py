@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_collab")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. User-item rating matrix ────────────────────────────────────────────────
+# -- 1. User-item rating matrix ------------------------------------------------
 def build_rating_matrix():
     """Returns (R, user_names, item_names) where NaN = unrated."""
     users = ["Alice", "Bob", "Carol", "David", "Eve"]
@@ -27,7 +27,7 @@ def build_rating_matrix():
     return np.array(raw), users, items
 
 
-# ── 2. Memory-based CF ────────────────────────────────────────────────────────
+# -- 2. Memory-based CF --------------------------------------------------------
 def memory_based_cf():
     print("=== Memory-Based Collaborative Filtering ===")
     R, users, items = build_rating_matrix()
@@ -75,7 +75,7 @@ def memory_based_cf():
         print(f"    {items[idx]:<20} sim={sim_i[0,idx]:.3f}")
 
 
-# ── 3. Matrix factorisation (SVD) ─────────────────────────────────────────────
+# -- 3. Matrix factorisation (SVD) ---------------------------------------------
 def matrix_factorisation():
     print("\n=== Matrix Factorisation ===")
     R, users, items = build_rating_matrix()
@@ -107,7 +107,7 @@ def matrix_factorisation():
         print(f"  {u:<8} {row}")
 
 
-# ── 4. SGD matrix factorisation ───────────────────────────────────────────────
+# -- 4. SGD matrix factorisation -----------------------------------------------
 def sgd_mf():
     print("\n=== SGD Matrix Factorisation (Simon Funk style) ===")
     R, users, items = build_rating_matrix()
@@ -157,7 +157,7 @@ def sgd_mf():
     print(f"  Plot: {path}")
 
 
-# ── 5. Implicit feedback ──────────────────────────────────────────────────────
+# -- 5. Implicit feedback ------------------------------------------------------
 def implicit_feedback():
     print("\n=== Implicit Feedback CF ===")
     print()
@@ -165,17 +165,17 @@ def implicit_feedback():
     print("  Implicit: clicks, purchases, views, play counts")
     print()
     print("  iALS (Implicit Alternating Least Squares — Hu et al. 2008):")
-    print("    r_{ui} ∈ {0,1} (binary preference)")
-    print("    c_{ui} = 1 + α·click_count  (confidence weight)")
-    print("    Minimise: Σ_{u,i} c_{ui}(r_{ui} - p_u^T q_i)² + λ(||P||² + ||Q||²)")
+    print("    r_{ui} in {0,1} (binary preference)")
+    print("    c_{ui} = 1 + alpha·click_count  (confidence weight)")
+    print("    Minimise: Sigma_{u,i} c_{ui}(r_{ui} - p_u^T q_i)² + lambda(||P||² + ||Q||²)")
     print()
     print("  BPR (Bayesian Personalised Ranking — Rendle et al. 2009):")
-    print("    Maximise: Σ_{(u,i,j)} ln σ(x_{ui} - x_{uj})  + regularisation")
+    print("    Maximise: Sigma_{(u,i,j)} ln sigma(x_{ui} - x_{uj})  + regularisation")
     print("    x_{ui} = p_u^T q_i  (score)")
     print("    Sampled triplets (u, i+, i-) where i+ was interacted with")
     print()
     print("  EASE (Embarrassingly Shallow AutoEncoder):")
-    print("    B = (X^T X + λI)^{-1}  then  B̂_{ii} = 0  (no self-loops)")
+    print("    B = (X^T X + lambdaI)^{-1}  then  B_{ii} = 0  (no self-loops)")
     print("    Ŷ = XB  (closed-form; very competitive)")
     print()
     print("  Libraries:")

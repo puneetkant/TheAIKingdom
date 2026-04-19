@@ -16,7 +16,7 @@ from sklearn.preprocessing import StandardScaler
 import os
 
 
-# ── 1. The imbalance problem ──────────────────────────────────────────────────
+# -- 1. The imbalance problem --------------------------------------------------
 def imbalance_problem():
     print("=== The Class Imbalance Problem ===")
     rng = np.random.default_rng(0)
@@ -33,8 +33,8 @@ def imbalance_problem():
     # Naive model: predict always negative
     y_naive = np.zeros(len(y_te), dtype=int)
     naive_acc = (y_naive == y_te).mean()
-    print(f"\n  Naive (all-negative) accuracy: {naive_acc:.4f}  ← misleading!")
-    print(f"  Recall for minority class:    {0:.4f}  ← model is useless")
+    print(f"\n  Naive (all-negative) accuracy: {naive_acc:.4f}  <- misleading!")
+    print(f"  Recall for minority class:    {0:.4f}  <- model is useless")
 
     # Logistic Regression (default threshold)
     scaler = StandardScaler().fit(X_tr)
@@ -47,7 +47,7 @@ def imbalance_problem():
     return X, y
 
 
-# ── 2. Better evaluation metrics for imbalance ───────────────────────────────
+# -- 2. Better evaluation metrics for imbalance -------------------------------
 def evaluation_metrics(X, y):
     print("\n=== Metrics for Imbalanced Data ===")
     X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3,
@@ -70,7 +70,7 @@ def evaluation_metrics(X, y):
           f"Recall: {cm[1,1]/(cm[1,0]+cm[1,1]+1e-9):.4f}")
 
 
-# ── 3. Threshold tuning ───────────────────────────────────────────────────────
+# -- 3. Threshold tuning -------------------------------------------------------
 def threshold_tuning(X, y):
     print("\n=== Threshold Tuning ===")
     X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3,
@@ -89,7 +89,7 @@ def threshold_tuning(X, y):
         print(f"  {thresh:<12} {prec:<12.4f} {rec:<10.4f} {f1:.4f}")
 
 
-# ── 4. Class weights ─────────────────────────────────────────────────────────
+# -- 4. Class weights ---------------------------------------------------------
 def class_weights_demo(X, y):
     print("\n=== Class Weights ===")
     print("  Penalise misclassification of minority class more heavily")
@@ -107,7 +107,7 @@ def class_weights_demo(X, y):
         print(f"  {str(cw):<20} {f1m:<14.4f} {recm:.4f}")
 
 
-# ── 5. Random oversampling and undersampling ─────────────────────────────────
+# -- 5. Random oversampling and undersampling ---------------------------------
 def overunder_sampling(X, y):
     print("\n=== Random Over/Under Sampling ===")
     rng = np.random.default_rng(1)
@@ -149,11 +149,11 @@ def overunder_sampling(X, y):
         print(f"  {name:<20} {len(yr):<13} {f1m:.4f}")
 
 
-# ── 6. SMOTE (conceptual + imblearn if available) ────────────────────────────
+# -- 6. SMOTE (conceptual + imblearn if available) ----------------------------
 def smote_demo(X, y):
     print("\n=== SMOTE (Synthetic Minority Over-sampling) ===")
     print("  Generates synthetic minority samples by interpolating between neighbours")
-    print("  New sample: x_new = x_i + λ·(x_j - x_i)  where x_j is a k-NN of x_i")
+    print("  New sample: x_new = x_i + lambda·(x_j - x_i)  where x_j is a k-NN of x_i")
     print()
     try:
         from imblearn.over_sampling import SMOTE, ADASYN
@@ -182,10 +182,10 @@ def smote_demo(X, y):
         print("  SMOTE concept: for each minority sample x_i:")
         print("    1. Find k nearest minority neighbours")
         print("    2. Pick random neighbour x_j")
-        print("    3. Create x_new = x_i + λ(x_j - x_i) where λ∈[0,1]")
+        print("    3. Create x_new = x_i + lambda(x_j - x_i) where lambdain[0,1]")
 
 
-# ── 7. Algorithm selection for imbalance ─────────────────────────────────────
+# -- 7. Algorithm selection for imbalance -------------------------------------
 def algorithm_comparison(X, y):
     print("\n=== Algorithm Comparison for Imbalanced Data ===")
     X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.3,

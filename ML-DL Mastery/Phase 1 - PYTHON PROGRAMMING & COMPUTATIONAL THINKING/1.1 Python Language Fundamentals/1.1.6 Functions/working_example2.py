@@ -22,7 +22,7 @@ DATA_DIR.mkdir(exist_ok=True)
 T = TypeVar("T")
 
 
-# ── 1. Decorators for ML utilities ────────────────────────────────────────────
+# -- 1. Decorators for ML utilities --------------------------------------------
 def timer(func: Callable) -> Callable:
     """Decorator: measure and print function execution time."""
     @functools.wraps(func)
@@ -30,7 +30,7 @@ def timer(func: Callable) -> Callable:
         start  = time.perf_counter()
         result = func(*args, **kwargs)
         elapsed = time.perf_counter() - start
-        print(f"  ⏱  {func.__name__} took {elapsed*1000:.2f} ms")
+        print(f"  [T]  {func.__name__} took {elapsed*1000:.2f} ms")
         return result
     return wrapper
 
@@ -84,7 +84,7 @@ def demo_decorators():
     print(f"  Cache info: {fibonacci.cache_info()}")
 
 
-# ── 2. Generators for memory-efficient data streaming ─────────────────────────
+# -- 2. Generators for memory-efficient data streaming -------------------------
 def csv_stream(path: Path, chunk_size: int = 100) -> Generator[list[dict], None, None]:
     """Yield chunks of rows from a CSV without loading all into RAM."""
     with open(path, newline="", encoding="utf-8") as f:
@@ -140,7 +140,7 @@ def demo_generators():
     print(f"  Fares > £100: {len(high_fares)} — avg: £{sum(high_fares)/max(len(high_fares),1):.2f}")
 
 
-# ── 3. Closures — stateful metric trackers ────────────────────────────────────
+# -- 3. Closures — stateful metric trackers ------------------------------------
 def make_metric_tracker(name: str) -> Callable:
     """Closure: returns a function that tracks running mean."""
     values: list[float] = []
@@ -170,7 +170,7 @@ def demo_closures():
               f"acc={acc:.4f} (best={acc_state['best']:.4f})")
 
 
-# ── 4. Partial functions and function composition ─────────────────────────────
+# -- 4. Partial functions and function composition -----------------------------
 def demo_partial_and_composition():
     print("\n=== Partial Functions & Composition ===")
 
@@ -184,7 +184,7 @@ def demo_partial_and_composition():
     fares = [7.25, 71.28, 53.1, 0.0, 512.32]
     print("  Fares normalized [0, 512]:")
     for f in fares:
-        print(f"    {f:>8.2f} → {normalize_fare(f):.4f}")
+        print(f"    {f:>8.2f} -> {normalize_fare(f):.4f}")
 
     # Function composition
     strip_lower   = lambda s: s.strip().lower()
@@ -194,7 +194,7 @@ def demo_partial_and_composition():
     names = ["  Ada Lovelace  ", "Alan Turing", " Grace Hopper "]
     print("\n  Cleaned names (pipeline):")
     for n in names:
-        print(f"    {n!r:25} → {clean_name(n)!r}")
+        print(f"    {n!r:25} -> {clean_name(n)!r}")
 
 
 if __name__ == "__main__":

@@ -46,7 +46,7 @@ def neural_predict_digit(input_vec, noise_std=0.3, rng=None):
 
 
 def hybrid_predict(input_a, input_b, op, noise_std=0.3, rng=None):
-    """Full hybrid pipeline: neural digit prediction → symbolic solve."""
+    """Full hybrid pipeline: neural digit prediction -> symbolic solve."""
     digit_a, probs_a = neural_predict_digit(input_a, noise_std, rng)
     digit_b, probs_b = neural_predict_digit(input_b, noise_std, rng)
     solver = SymbolicSolver()
@@ -114,7 +114,7 @@ def demo():
     # Noise sensitivity
     axes[0].plot(noise_levels, hybrid_accs, "o-", color="steelblue", lw=2, label="Hybrid")
     axes[0].plot(noise_levels, neural_accs, "s--", color="tomato", lw=2, label="Neural Only")
-    axes[0].set(xlabel="Noise σ", ylabel="Accuracy",
+    axes[0].set(xlabel="Noise sigma", ylabel="Accuracy",
                 title="Neurosymbolic vs Neural: Noise Robustness")
     axes[0].legend()
     axes[0].grid(True, alpha=0.3)

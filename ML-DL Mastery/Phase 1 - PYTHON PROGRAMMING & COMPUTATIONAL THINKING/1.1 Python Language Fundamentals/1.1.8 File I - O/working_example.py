@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 
 
-# ── Text files ────────────────────────────────────────────────────────────────
+# -- Text files ----------------------------------------------------------------
 def text_file_demo():
     print("=== Text File Read/Write ===")
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt",
@@ -39,7 +39,7 @@ def text_file_demo():
     path.unlink()
 
 
-# ── Binary files ──────────────────────────────────────────────────────────────
+# -- Binary files --------------------------------------------------------------
 def binary_file_demo():
     print("\n=== Binary File ===")
     data = bytes(range(16))          # 16 bytes: 0x00 – 0x0F
@@ -53,7 +53,7 @@ def binary_file_demo():
     path.unlink()
 
 
-# ── CSV ───────────────────────────────────────────────────────────────────────
+# -- CSV -----------------------------------------------------------------------
 def csv_demo():
     print("\n=== CSV File ===")
     rows = [
@@ -82,7 +82,7 @@ def csv_demo():
     path.unlink()
 
 
-# ── JSON ──────────────────────────────────────────────────────────────────────
+# -- JSON ----------------------------------------------------------------------
 def json_demo():
     print("\n=== JSON File ===")
     config = {
@@ -113,7 +113,7 @@ def json_demo():
     print(f"  loads back    = {json.loads(s)}")
 
 
-# ── pathlib ───────────────────────────────────────────────────────────────────
+# -- pathlib -------------------------------------------------------------------
 def pathlib_demo():
     print("\n=== pathlib ===")
     p = Path(".")
@@ -137,7 +137,7 @@ def pathlib_demo():
     shutil.rmtree(tmp)
 
 
-# ── Context manager (custom) ──────────────────────────────────────────────────
+# -- Context manager (custom) --------------------------------------------------
 class ManagedFile:
     def __init__(self, path, mode="r"):
         self.path = path

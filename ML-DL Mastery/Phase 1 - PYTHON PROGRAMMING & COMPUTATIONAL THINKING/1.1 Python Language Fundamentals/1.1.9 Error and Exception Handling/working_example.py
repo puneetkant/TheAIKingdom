@@ -8,7 +8,7 @@ import contextlib
 import traceback
 
 
-# ── Basic try/except ──────────────────────────────────────────────────────────
+# -- Basic try/except ----------------------------------------------------------
 def basic_try_except():
     print("=== Basic try / except ===")
     test_cases = ["42", "3.14", "abc", "0"]
@@ -17,12 +17,12 @@ def basic_try_except():
             result = 100 / int(s)
             print(f"  100 / int({s!r:5}) = {result:.2f}")
         except ValueError:
-            print(f"  int({s!r}) → ValueError: cannot convert")
+            print(f"  int({s!r}) -> ValueError: cannot convert")
         except ZeroDivisionError:
-            print(f"  100 / 0    → ZeroDivisionError: division by zero")
+            print(f"  100 / 0    -> ZeroDivisionError: division by zero")
 
 
-# ── else / finally ────────────────────────────────────────────────────────────
+# -- else / finally ------------------------------------------------------------
 def else_and_finally():
     print("\n=== else / finally ===")
     def safe_divide(a, b):
@@ -43,7 +43,7 @@ def else_and_finally():
     safe_divide(10, 0)
 
 
-# ── Catching multiple exceptions ──────────────────────────────────────────────
+# -- Catching multiple exceptions ----------------------------------------------
 def multiple_exceptions():
     print("\n=== Catching Multiple Exceptions ===")
     risky = [
@@ -62,17 +62,17 @@ def multiple_exceptions():
             print(f"  {type(e).__name__}: {e}")
 
 
-# ── Exception hierarchy ───────────────────────────────────────────────────────
+# -- Exception hierarchy -------------------------------------------------------
 def exception_hierarchy():
     print("\n=== Exception Hierarchy ===")
     print("  BaseException")
-    print("  ├─ SystemExit, KeyboardInterrupt, GeneratorExit")
-    print("  └─ Exception")
-    print("     ├─ ArithmeticError → ZeroDivisionError, OverflowError")
-    print("     ├─ LookupError    → IndexError, KeyError")
-    print("     ├─ TypeError, ValueError, AttributeError")
-    print("     ├─ OSError        → FileNotFoundError, PermissionError")
-    print("     └─ RuntimeError   → RecursionError, NotImplementedError")
+    print("  ├- SystemExit, KeyboardInterrupt, GeneratorExit")
+    print("  +- Exception")
+    print("     ├- ArithmeticError -> ZeroDivisionError, OverflowError")
+    print("     ├- LookupError    -> IndexError, KeyError")
+    print("     ├- TypeError, ValueError, AttributeError")
+    print("     ├- OSError        -> FileNotFoundError, PermissionError")
+    print("     +- RuntimeError   -> RecursionError, NotImplementedError")
 
     # Catching broad base class
     try:
@@ -81,7 +81,7 @@ def exception_hierarchy():
         print(f"\n  Caught via ArithmeticError base: {e}")
 
 
-# ── Raising exceptions ────────────────────────────────────────────────────────
+# -- Raising exceptions --------------------------------------------------------
 def raising_exceptions():
     print("\n=== Raising Exceptions ===")
     def set_age(age):
@@ -94,9 +94,9 @@ def raising_exceptions():
     for val in [25, -1, 200, "old"]:
         try:
             a = set_age(val)
-            print(f"  set_age({val!r:5}) → {a}")
+            print(f"  set_age({val!r:5}) -> {a}")
         except (TypeError, ValueError) as e:
-            print(f"  set_age({val!r:5}) → {type(e).__name__}: {e}")
+            print(f"  set_age({val!r:5}) -> {type(e).__name__}: {e}")
 
     # Re-raise
     try:
@@ -108,7 +108,7 @@ def raising_exceptions():
         print(f"\n  Chained exception: {e}")
 
 
-# ── Custom exceptions ─────────────────────────────────────────────────────────
+# -- Custom exceptions ---------------------------------------------------------
 class InsufficientFundsError(Exception):
     """Raised when a bank account has insufficient funds."""
     def __init__(self, balance, amount):
@@ -147,14 +147,14 @@ def custom_exceptions():
                 acct.deposit(amount)
             else:
                 acct.withdraw(amount)
-            print(f"  {action}({amount}) → balance={acct.balance:.2f}")
+            print(f"  {action}({amount}) -> balance={acct.balance:.2f}")
         except InsufficientFundsError as e:
-            print(f"  {action}({amount}) → InsufficientFundsError: {e}")
+            print(f"  {action}({amount}) -> InsufficientFundsError: {e}")
         except ValueError as e:
-            print(f"  {action}({amount}) → ValueError: {e}")
+            print(f"  {action}({amount}) -> ValueError: {e}")
 
 
-# ── contextlib.suppress ───────────────────────────────────────────────────────
+# -- contextlib.suppress -------------------------------------------------------
 def suppress_demo():
     print("\n=== contextlib.suppress ===")
     d = {"a": 1}
@@ -168,7 +168,7 @@ def suppress_demo():
     print("  FileNotFoundError suppressed")
 
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# -- Logging ------------------------------------------------------------------
 def logging_demo():
     print("\n=== Logging ===")
     logging.basicConfig(

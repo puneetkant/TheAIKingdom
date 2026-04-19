@@ -1,7 +1,7 @@
 """
 Working Example: Autoencoder Variants
 Covers Variational Autoencoder (VAE), Sparse Autoencoder, Contractive AE,
-VQ-VAE concepts, and β-VAE.  VAE implemented from scratch with numpy.
+VQ-VAE concepts, and beta-VAE.  VAE implemented from scratch with numpy.
 """
 import numpy as np
 from sklearn.datasets import load_digits
@@ -19,12 +19,12 @@ def relu(z):    return np.maximum(0, z)
 def softplus(z): return np.log(1 + np.exp(z.clip(-500, 200)))
 
 
-# ── VAE helper ────────────────────────────────────────────────────────────────
+# -- VAE helper ----------------------------------------------------------------
 class VAE:
     """
     Variational Autoencoder (numpy, simplified MLP).
-    Encoder: X → μ, log σ²
-    Decoder: z → X̂
+    Encoder: X -> mu, log sigma²
+    Decoder: z -> X
     ELBO = E[log p(X|z)] - KL(q(z|X) || N(0,I))
     """
     def __init__(self, input_dim, hidden_dim, latent_dim, rng=None):
@@ -61,7 +61,7 @@ class VAE:
         return X_hat, h
 
     def elbo(self, X, X_hat, mu, lv, beta=1.0):
-        """ELBO = recon_loss - β·KL.  We minimise -ELBO."""
+        """ELBO = recon_loss - beta·KL.  We minimise -ELBO."""
         recon = -np.mean(X * np.log(X_hat + 1e-9) + (1-X)*np.log(1-X_hat+1e-9))
         kl    = -0.5 * np.mean(1 + lv - mu**2 - np.exp(lv))
         return recon + beta * kl, recon, kl
@@ -103,28 +103,28 @@ class VAE:
         return losses
 
 
-# ── 1. VAE theory ─────────────────────────────────────────────────────────────
+# -- 1. VAE theory -------------------------------------------------------------
 def vae_theory():
     print("=== Variational Autoencoder (VAE) ===")
     print("  Standard AE: deterministic encoding — cannot sample new data")
-    print("  VAE: encoder outputs a distribution q(z|X) = N(μ, σ²)")
+    print("  VAE: encoder outputs a distribution q(z|X) = N(mu, sigma²)")
     print()
     print("  Key equations:")
-    print("    Encoder:     μ, log σ² = Encoder(X)")
-    print("    Reparameterise: z = μ + σ·ε,  ε ~ N(0,I)  (allows backprop!)")
-    print("    Decoder:     X̂ = Decoder(z)")
+    print("    Encoder:     mu, log sigma² = Encoder(X)")
+    print("    Reparameterise: z = mu + sigma·epsilon,  epsilon ~ N(0,I)  (allows backprop!)")
+    print("    Decoder:     X = Decoder(z)")
     print()
     print("  Objective — ELBO (Evidence Lower BOund):")
     print("    ELBO = E[log p(X|z)] - KL(q(z|X) || N(0,I))")
     print("         = Reconstruction term - Regularisation term")
     print()
-    print("  KL term: -½ Σ (1 + log σ² - μ² - σ²)")
+    print("  KL term: -½ Sigma (1 + log sigma² - mu² - sigma²)")
     print("  Forces the latent space to be organised and continuous")
     print()
-    print("  β-VAE: ELBO = E[log p(X|z)] - β·KL   (β > 1 → more disentangled)")
+    print("  beta-VAE: ELBO = E[log p(X|z)] - beta·KL   (beta > 1 -> more disentangled)")
 
 
-# ── 2. VAE demo ───────────────────────────────────────────────────────────────
+# -- 2. VAE demo ---------------------------------------------------------------
 def vae_demo():
     print("\n=== VAE Training Demo (Digits) ===")
     digits = load_digits()
@@ -149,7 +149,7 @@ def vae_demo():
     print(f"  End loss:   {losses[-1]:.4f}")
     print(f"  Recon MSE (test): {recon_mse:.5f}")
     print(f"  Mean latent mu norm: {mu_norm:.4f}  (should be ~0 after training)")
-    print(f"  Mean log-var:        {lv_mean:.4f}  (should be ~0 → σ≈1)")
+    print(f"  Mean log-var:        {lv_mean:.4f}  (should be ~0 -> sigma~=1)")
 
     # Sample from prior
     z_prior = rng.standard_normal((10, 8))
@@ -157,21 +157,21 @@ def vae_demo():
     print(f"\n  Generated samples from prior z~N(0,I): shape {X_gen.shape}")
 
 
-# ── 3. Sparse Autoencoder ────────────────────────────────────────────────────
+# -- 3. Sparse Autoencoder ----------------------------------------------------
 def sparse_ae():
     print("\n=== Sparse Autoencoder ===")
-    print("  Overcomplete latent space (hidden_dim ≥ input_dim)")
-    print("  Add L1 regularisation on activations → sparse code")
-    print("  L = ||X - X̂||² + λ·||H||₁")
+    print("  Overcomplete latent space (hidden_dim >= input_dim)")
+    print("  Add L1 regularisation on activations -> sparse code")
+    print("  L = ||X - X||² + lambda·||H||1")
     print()
     print("  KL-sparsity (alternative):")
-    print("    Target average activation ρ (e.g. 0.05)")
-    print("    Penalty: KL(ρ || ρ̂_j) for each neuron j")
+    print("    Target average activation rho (e.g. 0.05)")
+    print("    Penalty: KL(rho || rho_j) for each neuron j")
     print()
     print("  Applications:")
-    print("    Dictionary learning: each latent dim → an 'atom' of the input")
+    print("    Dictionary learning: each latent dim -> an 'atom' of the input")
     print("    Interpretable features: neurons specialise in one concept")
-    print("    Sparse coding for images → Gabor-like edge detectors (similar to V1)")
+    print("    Sparse coding for images -> Gabor-like edge detectors (similar to V1)")
 
     # Quick demo: L1 on hidden activations
     rng = np.random.default_rng(9)
@@ -186,19 +186,19 @@ def sparse_ae():
     print(f"\n  Overcomplete random (untrained):")
     print(f"  H mean activation: {avg_activation:.4f}")
     print(f"  Dead neurons (%):  {sparsity_pct:.1f}%")
-    print(f"\n  With L1 λ={lam}: penalty = {lam * H_all.mean():.5f} per sample")
+    print(f"\n  With L1 lambda={lam}: penalty = {lam * H_all.mean():.5f} per sample")
 
 
-# ── 4. Contractive Autoencoder (CAE) ─────────────────────────────────────────
+# -- 4. Contractive Autoencoder (CAE) -----------------------------------------
 def contractive_ae():
     print("\n=== Contractive Autoencoder (CAE) ===")
     print("  Add Frobenius norm of Jacobian of encoder to loss:")
-    print("    L = ||X - X̂||² + λ·||∂H/∂X||²_F")
+    print("    L = ||X - X||² + lambda·||dH/dX||²_F")
     print()
-    print("  ∂H/∂X = diag(σ'(z))·W_enc   (Jacobian)")
-    print("  ||J||²_F = Σ_{i,j} (∂h_i/∂x_j)²")
+    print("  dH/dX = diag(sigma'(z))·W_enc   (Jacobian)")
+    print("  ||J||²_F = Sigma_{i,j} (dh_i/dx_j)²")
     print()
-    print("  Effect: small changes in X → small changes in H (robust encoding)")
+    print("  Effect: small changes in X -> small changes in H (robust encoding)")
     print("  Learned features are locally invariant to input perturbations")
     print()
     print("  Difference from DAE:")
@@ -217,24 +217,24 @@ def contractive_ae():
     # Jacobian Frobenius norm per sample
     J_frob_sq = np.sum(dH[:, None, :]**2 * W[None, :, :]**2, axis=(1, 2))
     print(f"  Mean Jacobian Frobenius norm²: {J_frob_sq.mean():.4f}")
-    print(f"  This is added × λ to the reconstruction loss")
+    print(f"  This is added x lambda to the reconstruction loss")
 
 
-# ── 5. VQ-VAE concept ────────────────────────────────────────────────────────
+# -- 5. VQ-VAE concept --------------------------------------------------------
 def vqvae_concept():
     print("\n=== VQ-VAE (Vector Quantized VAE) ===")
-    print("  Discrete latent space: z ∈ {e_1, ..., e_K}  (codebook)")
+    print("  Discrete latent space: z in {e_1, ..., e_K}  (codebook)")
     print()
     print("  Forward pass:")
-    print("    1. Encoder: X → z_e  (continuous)")
-    print("    2. Quantise: z_q = argmin_k ||z_e - e_k||₂")
-    print("    3. Decoder: z_q → X̂")
+    print("    1. Encoder: X -> z_e  (continuous)")
+    print("    2. Quantise: z_q = argmin_k ||z_e - e_k||2")
+    print("    3. Decoder: z_q -> X")
     print()
     print("  Problem: argmin is not differentiable")
     print("  Trick: straight-through estimator — copy gradient from z_q to z_e")
     print()
-    print("  Loss = recon_loss + ||z_e - stopgrad(z_q)||² + β·||stopgrad(z_e) - z_q||²")
-    print("                  ↑ encoder    ↑ commitment                 ↑ codebook update")
+    print("  Loss = recon_loss + ||z_e - stopgrad(z_q)||² + beta·||stopgrad(z_e) - z_q||²")
+    print("                  ^ encoder    ^ commitment                 ^ codebook update")
     print()
     print("  Applications: image generation (DALL-E), audio (Encodec, SoundStream)")
 

@@ -26,7 +26,7 @@ except ImportError:
     HAS_MLFLOW = False
 
 
-# ── Minimal in-memory experiment tracker ──────────────────────────────────────
+# -- Minimal in-memory experiment tracker --------------------------------------
 @dataclass
 class Run:
     run_id:    str
@@ -93,7 +93,7 @@ class Tracker:
         return rows
 
 
-# ── 1. Basic tracking demo ────────────────────────────────────────────────────
+# -- 1. Basic tracking demo ----------------------------------------------------
 def basic_tracking():
     print("=== Basic Experiment Tracking Demo ===")
 
@@ -148,7 +148,7 @@ def basic_tracking():
     param_cols  = [k for k in keys if k.startswith("param_")]
 
     print(f"  {'Name':<20} {'Acc':>6} {'F1':>6} {'AUC':>6} | Params")
-    print(f"  {'─'*20} {'─'*6} {'─'*6} {'─'*6}   {'─'*30}")
+    print(f"  {'-'*20} {'-'*6} {'-'*6} {'-'*6}   {'-'*30}")
     for r in tracker.runs:
         params_str = ", ".join(f"{k}={v}" for k, v in r.params.items())[:40]
         print(f"  {r.name:<20} {r.metrics['accuracy']:>6.4f} "
@@ -159,7 +159,7 @@ def basic_tracking():
     return tracker
 
 
-# ── 2. Hyperparameter sweep ───────────────────────────────────────────────────
+# -- 2. Hyperparameter sweep ---------------------------------------------------
 def hyperparameter_sweep():
     print("\n=== Hyperparameter Sweep ===")
     X, y = make_classification(n_samples=600, n_features=15, random_state=7)
@@ -194,7 +194,7 @@ def hyperparameter_sweep():
     print(f"  Top-5 AUCs: {[f'{a:.4f}' for a in aucs[:5]]}")
 
 
-# ── 3. MLflow concepts ────────────────────────────────────────────────────────
+# -- 3. MLflow concepts --------------------------------------------------------
 def mlflow_concepts():
     print("\n=== MLflow Concepts ===")
     concepts = [
@@ -208,7 +208,7 @@ def mlflow_concepts():
         ("Autolog",      "mlflow.sklearn.autolog() — automatic param/metric capture"),
     ]
     print(f"  {'Concept':<15} Description")
-    print(f"  {'─'*15} {'─'*50}")
+    print(f"  {'-'*15} {'-'*50}")
     for c, d in concepts:
         print(f"  {c:<15} {d}")
 
@@ -234,7 +234,7 @@ def mlflow_concepts():
         """)
 
 
-# ── 4. Weights & Biases overview ──────────────────────────────────────────────
+# -- 4. Weights & Biases overview ----------------------------------------------
 def wandb_overview():
     print("\n=== Weights & Biases (W&B) Overview ===")
     features = [
@@ -248,7 +248,7 @@ def wandb_overview():
         ("wandb.Image",          "Log images; compare across runs visually"),
     ]
     print(f"  {'API':<28} Description")
-    print(f"  {'─'*28} {'─'*40}")
+    print(f"  {'-'*28} {'-'*40}")
     for api, desc in features:
         print(f"  {api:<28} {desc}")
 
@@ -266,7 +266,7 @@ def wandb_overview():
     """)
 
 
-# ── 5. TensorBoard overview ───────────────────────────────────────────────────
+# -- 5. TensorBoard overview ---------------------------------------------------
 def tensorboard_overview():
     print("=== TensorBoard Overview ===")
     print("  Launch: tensorboard --logdir=runs/")
@@ -282,7 +282,7 @@ def tensorboard_overview():
         ("PR Curves",   "Precision-recall curves at different thresholds"),
     ]
     print(f"  {'Panel':<14} Description")
-    print(f"  {'─'*14} {'─'*45}")
+    print(f"  {'-'*14} {'-'*45}")
     for panel, desc in panels:
         print(f"  {panel:<14} {desc}")
 
@@ -301,7 +301,7 @@ def tensorboard_overview():
     """)
 
 
-# ── 6. Reproducibility checklist ─────────────────────────────────────────────
+# -- 6. Reproducibility checklist ---------------------------------------------
 def reproducibility():
     print("=== Reproducibility Checklist ===")
     checks = [
@@ -315,7 +315,7 @@ def reproducibility():
         ("Containers",      "Docker image pins OS + CUDA + Python environment"),
     ]
     print(f"  {'Area':<20} Action")
-    print(f"  {'─'*20} {'─'*45}")
+    print(f"  {'-'*20} {'-'*45}")
     for area, action in checks:
         print(f"  {area:<20} {action}")
 

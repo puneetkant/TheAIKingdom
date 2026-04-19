@@ -17,15 +17,15 @@ def softmax(z):
     return e / e.sum(-1, keepdims=True)
 
 
-# ── 1. Autoregressive modelling principle ─────────────────────────────────────
+# -- 1. Autoregressive modelling principle -------------------------------------
 def autoregressive_principle():
     print("=== Autoregressive Generative Models ===")
     print()
     print("  Factorise joint distribution via chain rule:")
-    print("    p(x_1, ..., x_T) = Π_{t=1}^T p(x_t | x_1, ..., x_{t-1})")
+    print("    p(x_1, ..., x_T) = Pi_{t=1}^T p(x_t | x_1, ..., x_{t-1})")
     print()
     print("  Training: teacher forcing — predict next token given context")
-    print("    L = -Σ_t log p_θ(x_t | x_{<t})")
+    print("    L = -Sigma_t log p_theta(x_t | x_{<t})")
     print()
     print("  Generation: sample autoregressively")
     print("    x_1 ~ p(x_1)")
@@ -45,7 +45,7 @@ def autoregressive_principle():
         print(f"  {dom:<10} {ex}")
 
 
-# ── 2. N-gram language model (numpy) ─────────────────────────────────────────
+# -- 2. N-gram language model (numpy) -----------------------------------------
 def ngram_lm_demo():
     print("\n=== N-Gram Language Model ===")
     corpus = [
@@ -97,12 +97,12 @@ def ngram_lm_demo():
     print(f"  Generated: '{generate()}'")
 
 
-# ── 3. Transformer-based autoregressive LM ────────────────────────────────────
+# -- 3. Transformer-based autoregressive LM ------------------------------------
 def transformer_lm_overview():
     print("\n=== Transformer Autoregressive LM (GPT-style) ===")
     print()
     print("  Architecture:")
-    print("    Input tokens → embedding + positional → N × decoder blocks → logits")
+    print("    Input tokens -> embedding + positional -> N x decoder blocks -> logits")
     print()
     print("  Decoder block:")
     print("    1. Masked multi-head self-attention (causal mask)")
@@ -111,7 +111,7 @@ def transformer_lm_overview():
     print("    4. Add & LayerNorm")
     print()
     print("  Causal mask: attention only to left context")
-    print("    A[i,j] = -∞ if j > i  (prevents peeking at future)")
+    print("    A[i,j] = -inf if j > i  (prevents peeking at future)")
     print()
 
     # Simulate GPT-2 scale
@@ -129,7 +129,7 @@ def transformer_lm_overview():
         print(f"  {m:<18} {str(p):>10} {str(l):>7} {str(h):>6} {str(d):>8}")
 
 
-# ── 4. Decoding strategies ────────────────────────────────────────────────────
+# -- 4. Decoding strategies ----------------------------------------------------
 def decoding_strategies():
     print("\n=== Decoding Strategies ===")
     V = 20  # vocabulary size
@@ -177,10 +177,10 @@ def decoding_strategies():
     print("    Maintain top-B partial sequences at each step")
     print("    Select B×V candidates, keep best B")
     print("    Returns best complete sequence by log-prob")
-    print("    B=1: greedy  B=∞: exact search (intractable)")
+    print("    B=1: greedy  B=inf: exact search (intractable)")
 
 
-# ── 5. PixelCNN ───────────────────────────────────────────────────────────────
+# -- 5. PixelCNN ---------------------------------------------------------------
 def pixelcnn_overview():
     print("\n=== PixelCNN ===")
     print("  van den Oord et al. (2016)")
@@ -210,12 +210,12 @@ def pixelcnn_overview():
         print(f"    {' '.join(['■' if v else '□' for v in row])}")
     print()
     print("  PixelCNN++ improvements:")
-    print("    Discretised logistic mixture → better density")
+    print("    Discretised logistic mixture -> better density")
     print("    Skip connections (ResNet style)")
     print("    Downsampling paths for larger receptive field")
 
 
-# ── 6. WaveNet overview ───────────────────────────────────────────────────────
+# -- 6. WaveNet overview -------------------------------------------------------
 def wavenet_overview():
     print("\n=== WaveNet (Audio Autoregressive) ===")
     print("  van den Oord et al. (2016) — raw audio waveform generation")

@@ -16,7 +16,7 @@ DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 
-# ── 1. Download data ──────────────────────────────────────────────────────────
+# -- 1. Download data ----------------------------------------------------------
 def get_titanic() -> list[dict]:
     dest = DATA_DIR / "titanic.csv"
     if not dest.exists():
@@ -39,7 +39,7 @@ def get_titanic() -> list[dict]:
     return rows
 
 
-# ── 2. Data validation pipeline (if/elif chains) ──────────────────────────────
+# -- 2. Data validation pipeline (if/elif chains) ------------------------------
 def validate_passengers(rows: list[dict]) -> tuple[list, list]:
     print("=== Data Validation Pipeline ===")
     valid, invalid = [], []
@@ -78,7 +78,7 @@ def validate_passengers(rows: list[dict]) -> tuple[list, list]:
     return valid, invalid
 
 
-# ── 3. Simulate ML training loop ──────────────────────────────────────────────
+# -- 3. Simulate ML training loop ----------------------------------------------
 def simulate_training_loop():
     print("\n=== Simulated Training Loop ===")
     import math, random
@@ -98,7 +98,7 @@ def simulate_training_loop():
         if val_loss < best_loss - 0.001:
             best_loss  = val_loss
             no_improve = 0
-            status = "✓ improved"
+            status = "[OK] improved"
         else:
             no_improve += 1
             status = f"no improve ({no_improve}/{patience})"
@@ -106,12 +106,12 @@ def simulate_training_loop():
         print(f"  {epoch:<6} {train_loss:<12.4f} {val_loss:<12.4f} {status}")
 
         if no_improve >= patience:
-            print(f"  → Early stopping at epoch {epoch}")
+            print(f"  -> Early stopping at epoch {epoch}")
             break
     print(f"  Best val loss: {best_loss:.4f}")
 
 
-# ── 4. for/while/break/continue on real data ──────────────────────────────────
+# -- 4. for/while/break/continue on real data ----------------------------------
 def analyze_passengers(valid: list[dict]) -> None:
     print("\n=== Control Flow on Passenger Data ===")
 
@@ -162,7 +162,7 @@ def analyze_passengers(valid: list[dict]) -> None:
         print(f"    |{a:.0f} - {b:.0f}| = {abs(a - b):.0f}")
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# -- Entry point ---------------------------------------------------------------
 if __name__ == "__main__":
     rows = get_titanic()
     valid, invalid = validate_passengers(rows)

@@ -7,7 +7,7 @@ import re, string, math
 from collections import Counter
 
 
-# ── 1. Raw text pipeline steps ────────────────────────────────────────────────
+# -- 1. Raw text pipeline steps ------------------------------------------------
 SAMPLE = """Natural Language Processing (NLP) is a subfield of Artificial Intelligence.
 It enables computers to understand, interpret, and generate human language.
 The challenges include: ambiguity, context-dependence, and sarcasm!
@@ -52,7 +52,7 @@ def tokenization():
         print(f"    {i+1}: {s[:70]}...")
 
 
-# ── 2. Stopword removal ───────────────────────────────────────────────────────
+# -- 2. Stopword removal -------------------------------------------------------
 STOPWORDS = set("""
 a an the is are was were be been being have has had do does did
 will would could should may might shall can need dare ought used
@@ -73,7 +73,7 @@ def stopword_removal():
     print(f"  Removed: {sorted(removed)}")
 
 
-# ── 3. Stemming (Porter algorithm simplified) ─────────────────────────────────
+# -- 3. Stemming (Porter algorithm simplified) ---------------------------------
 def stem_word(word: str) -> str:
     """Simplified Porter-like stemming rules."""
     word = word.lower()
@@ -100,13 +100,13 @@ def stemming():
     words = ["running", "runs", "ran", "easily", "fairly", "processing",
              "processed", "processes", "happiness", "happily", "studies"]
     print(f"  {'Word':<15} Stem")
-    print(f"  {'─'*15} {'─'*12}")
+    print(f"  {'-'*15} {'-'*12}")
     for w in words:
         print(f"  {w:<15} {stem_word(w)}")
     print("\n  Note: stemming is fast but may produce non-words ('happi', 'studi')")
 
 
-# ── 4. Lemmatization (rule-based) ─────────────────────────────────────────────
+# -- 4. Lemmatization (rule-based) ---------------------------------------------
 LEMMA_MAP = {
     "running": "run", "runs": "run", "ran": "run",
     "flies": "fly", "flying": "fly", "flew": "fly",
@@ -122,7 +122,7 @@ def lemmatization():
     print("\n=== Lemmatization ===")
     words = list(LEMMA_MAP.keys())
     print(f"  {'Word':<15} Lemma")
-    print(f"  {'─'*15} {'─'*10}")
+    print(f"  {'-'*15} {'-'*10}")
     for w in words:
         print(f"  {w:<15} {LEMMA_MAP.get(w, w)}")
     print("\n  Note: proper lemmatization requires a full morphological lexicon + POS tags")
@@ -130,12 +130,12 @@ def lemmatization():
 
     print("\n  Stemming vs Lemmatization:")
     print(f"  {'Word':<12} {'Stem':<12} {'Lemma':<12}")
-    print(f"  {'─'*12} {'─'*12} {'─'*12}")
+    print(f"  {'-'*12} {'-'*12} {'-'*12}")
     for w in ["running", "better", "studies", "flies"]:
         print(f"  {w:<12} {stem_word(w):<12} {LEMMA_MAP.get(w, w):<12}")
 
 
-# ── 5. Text normalisation ────────────────────────────────────────────────────
+# -- 5. Text normalisation ----------------------------------------------------
 def text_normalisation():
     print("\n=== Text Normalisation ===")
     rules = [
@@ -148,7 +148,7 @@ def text_normalisation():
         ("Extra space",  r"\s+",                       " "),
     ]
     print(f"  {'Pattern':<14} {'Replacement':<12} Example")
-    print(f"  {'─'*14} {'─'*12} {'─'*20}")
+    print(f"  {'-'*14} {'-'*12} {'-'*20}")
     examples = {
         "URLs":         "Visit https://openai.com now",
         "Emails":       "Contact me@example.com",
@@ -159,10 +159,10 @@ def text_normalisation():
     for name, pattern, repl in rules[:-1]:
         if name in examples:
             out = re.sub(pattern, repl, examples[name])
-            print(f"  {name:<14} {repr(repl):<12} '{examples[name]}' → '{out}'")
+            print(f"  {name:<14} {repr(repl):<12} '{examples[name]}' -> '{out}'")
 
 
-# ── 6. Full pipeline ──────────────────────────────────────────────────────────
+# -- 6. Full pipeline ----------------------------------------------------------
 def full_pipeline(text: str, stop=True, lower=True, stem=False) -> list:
     text = re.sub(r"https?://\S+", "[URL]", text)
     text = re.sub(r"\S+@\S+\.\S+", "[EMAIL]", text)
@@ -184,7 +184,7 @@ def pipeline_demo():
         "The quick brown fox jumps over the lazy dog.",
     ]
     print(f"  {'Config':<30} Tokens")
-    print(f"  {'─'*30} {'─'*50}")
+    print(f"  {'-'*30} {'-'*50}")
     for text in corpus:
         tokens = full_pipeline(text, stop=True, lower=True, stem=False)
         print(f"  IN:  {text[:55]}")

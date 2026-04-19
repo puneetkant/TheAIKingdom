@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_t2i")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Landscape ──────────────────────────────────────────────────────────────
+# -- 1. Landscape --------------------------------------------------------------
 def t2i_landscape():
     print("=== Text-to-Image Generation ===")
     print()
@@ -32,21 +32,21 @@ def t2i_landscape():
         print(f"  {m:<24} {d}")
 
 
-# ── 2. Diffusion process ──────────────────────────────────────────────────────
+# -- 2. Diffusion process ------------------------------------------------------
 def diffusion_process():
     print("\n=== Diffusion Model Mechanics ===")
     print()
     print("  Forward process (add noise):")
-    print("    q(x_t | x_{t-1}) = N(x_t; sqrt(1-β_t)*x_{t-1}, β_t*I)")
+    print("    q(x_t | x_{t-1}) = N(x_t; sqrt(1-beta_t)*x_{t-1}, beta_t*I)")
     print("    At T=1000 steps, image becomes pure Gaussian noise")
     print()
     print("  Reverse process (denoise):")
-    print("    p_θ(x_{t-1} | x_t, c) = N(μ_θ(x_t, t, c), Σ_θ)")
+    print("    p_theta(x_{t-1} | x_t, c) = N(mu_theta(x_t, t, c), Sigma_theta)")
     print("    c = text conditioning (CLIP or T5 embeddings)")
     print()
     print("  Training objective (simplified):")
-    print("    L = E[|| ε - ε_θ(x_t, t, c) ||²]")
-    print("    Predict noise ε added at step t; condition on text c")
+    print("    L = E[|| epsilon - epsilon_theta(x_t, t, c) ||²]")
+    print("    Predict noise epsilon added at step t; condition on text c")
     print()
 
     # Simulate denoising trajectory
@@ -61,28 +61,28 @@ def diffusion_process():
 
     print()
     print("  Latent diffusion (Stable Diffusion):")
-    print("    Encode image → latent z with VAE (8x spatial compression)")
+    print("    Encode image -> latent z with VAE (8x spatial compression)")
     print("    Diffuse in latent space (much cheaper!)")
     print("    UNet or DiT denoiser in latent space")
-    print("    Decode z → image with VAE decoder")
+    print("    Decode z -> image with VAE decoder")
 
     print()
     print("  Classifier-free guidance (CFG):")
-    print("    ε_cond = ε_θ(x_t, c)")
-    print("    ε_uncond = ε_θ(x_t, ∅)")
-    print("    ε_final = ε_uncond + w * (ε_cond - ε_uncond)")
-    print("    w=7.5 → strong adherence; w=1 → diversity; w=0 → unconditional")
+    print("    epsilon_cond = epsilon_theta(x_t, c)")
+    print("    epsilon_uncond = epsilon_theta(x_t, {})")
+    print("    epsilon_final = epsilon_uncond + w * (epsilon_cond - epsilon_uncond)")
+    print("    w=7.5 -> strong adherence; w=1 -> diversity; w=0 -> unconditional")
 
 
-# ── 3. Stable Diffusion components ───────────────────────────────────────────
+# -- 3. Stable Diffusion components -------------------------------------------
 def sd_components():
     print("\n=== Stable Diffusion Architecture ===")
     print()
     components = [
-        ("Text encoder",  "CLIP ViT-L or OpenCLIP H/G; tokenise → embed (77 tokens)"),
-        ("VAE",           "Encoder 512→64 latent; Decoder 64→512; KL loss"),
+        ("Text encoder",  "CLIP ViT-L or OpenCLIP H/G; tokenise -> embed (77 tokens)"),
+        ("VAE",           "Encoder 512->64 latent; Decoder 64->512; KL loss"),
         ("U-Net",         "Latent denoiser; skip connections; cross-attn to text"),
-        ("Scheduler",     "DDPM / DDIM / DPM-Solver; 1000→50→20 steps"),
+        ("Scheduler",     "DDPM / DDIM / DPM-Solver; 1000->50->20 steps"),
     ]
     for c, d in components:
         print(f"  {c:<16} {d}")
@@ -110,7 +110,7 @@ def sd_components():
         print(f"  • {imp}")
 
 
-# ── 4. Evaluation ─────────────────────────────────────────────────────────────
+# -- 4. Evaluation -------------------------------------------------------------
 def t2i_evaluation():
     print("\n=== Text-to-Image Evaluation ===")
     print()
@@ -132,7 +132,7 @@ def t2i_evaluation():
     print("  Common issues:")
     issues = [
         ("Text rendering",    "Models struggle with legible text in images"),
-        ("Attribute binding", "'Red cube and blue sphere' → attribute confusion"),
+        ("Attribute binding", "'Red cube and blue sphere' -> attribute confusion"),
         ("Counting",          "More than 3-4 of any object causes errors"),
         ("Hands/fingers",     "Historically poor; Flux.1 significantly improved"),
         ("Prompt adherence",  "Complex scenes with many conditions"),

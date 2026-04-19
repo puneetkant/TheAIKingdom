@@ -81,7 +81,7 @@ def stdin_stdin_demo():
         [sys.executable, "-c", script],
         input=input_data, capture_output=True, text=True
     )
-    print(f"  stdin→uppercase:\n    {result.stdout.strip()}")
+    print(f"  stdin->uppercase:\n    {result.stdout.strip()}")
 
 
 def exit_codes():
@@ -95,12 +95,12 @@ def exit_codes():
         130: "terminated by Ctrl+C",
     }
     for code, meaning in codes.items():
-        print(f"  exit {code:<4} → {meaning}")
+        print(f"  exit {code:<4} -> {meaning}")
 
     # Check return code
     r = subprocess.run([sys.executable, "-c", "raise SystemExit(42)"],
                        capture_output=True)
-    print(f"\n  script exit 42 → returncode={r.returncode}")
+    print(f"\n  script exit 42 -> returncode={r.returncode}")
 
 
 def shell_patterns():

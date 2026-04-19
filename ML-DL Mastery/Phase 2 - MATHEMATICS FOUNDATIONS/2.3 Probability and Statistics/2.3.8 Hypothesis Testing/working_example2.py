@@ -24,7 +24,7 @@ def t_statistic_pvalue(data, mu0):
     # p-value via t-distribution CDF approximation (two-sided)
     # Use Student-t quantile via normal approximation for df>30
     df = n - 1
-    # Approximation: p ≈ 2 * P(Z > |t|) for large df
+    # Approximation: p ~= 2 * P(Z > |t|) for large df
     p = 2 * (1 - 0.5 * (1 + math.erf(abs(t) / math.sqrt(2))))
     return t, p
 
@@ -35,7 +35,7 @@ def demo_one_sample_t():
     for mu0 in [5.0, 5.3, 6.0]:
         t, p = t_statistic_pvalue(data, mu0)
         reject = "REJECT H0" if p < 0.05 else "FAIL TO REJECT"
-        print(f"  H0: μ={mu0}: t={t:.3f}  p={p:.4f}  → {reject}")
+        print(f"  H0: mu={mu0}: t={t:.3f}  p={p:.4f}  -> {reject}")
 
 def demo_two_sample_t():
     print("\n=== Two-Sample t-test (A/B Test) ===")
@@ -51,7 +51,7 @@ def demo_two_sample_t():
         p = 2 * (1 - 0.5*(1 + math.erf(abs(t)/math.sqrt(2))))
         return t, p
 
-    for name, trt in [("trt1 (Δ=0.5)", trt1), ("trt2 (Δ=2.0)", trt2)]:
+    for name, trt in [("trt1 (Delta=0.5)", trt1), ("trt2 (Delta=2.0)", trt2)]:
         t, p = two_sample_t(ctrl, trt)
         print(f"  {name}: t={t:.3f}  p={p:.4f}  {'SIGNIFICANT' if p<0.05 else 'NOT SIG'}")
 
@@ -69,7 +69,7 @@ def demo_type1_type2():
         abs(np.mean(np.random.normal(0.5,1,n))) <= 1.96/math.sqrt(n)
         for _ in range(10_000)
     ) / 10_000
-    print(f"  Type I error (false positive): {type1:.4f}  (α={alpha})")
+    print(f"  Type I error (false positive): {type1:.4f}  (alpha={alpha})")
     print(f"  Type II error (false negative): {type2:.4f}  (power={1-type2:.4f})")
 
 def demo_chi_squared():
@@ -83,7 +83,7 @@ def demo_chi_squared():
     chi2 = np.sum((obs - expected)**2 / expected)
     print(f"  Observed:\n{obs}")
     print(f"  Expected:\n{expected.round(2)}")
-    print(f"  χ² = {chi2:.4f}  (df=1, critical value at p=0.05: 3.841)")
+    print(f"  chi² = {chi2:.4f}  (df=1, critical value at p=0.05: 3.841)")
     print(f"  Result: {'SIGNIFICANT (p<0.05)' if chi2 > 3.841 else 'NOT SIGNIFICANT'}")
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ from sklearn.model_selection import cross_val_score
 import os
 
 
-# ── Simulate pretrained CNN features ─────────────────────────────────────────
+# -- Simulate pretrained CNN features -----------------------------------------
 def make_pretrained_features(n_samples, n_classes, n_features=2048, rng=None):
     """Simulate high-quality features from a pretrained model."""
     rng = rng or np.random.default_rng(42)
@@ -29,7 +29,7 @@ def make_random_features(n_samples, n_classes, n_features=2048, rng=None):
     return X, labels
 
 
-# ── 1. Motivation ─────────────────────────────────────────────────────────────
+# -- 1. Motivation -------------------------------------------------------------
 def motivation():
     print("=== Transfer Learning: Motivation ===")
     print("  Deep networks learn hierarchical representations:")
@@ -38,7 +38,7 @@ def motivation():
     print("    Layer 3: object parts (eyes, wheels, ...)")
     print("    Layer 4-N: high-level semantics")
     print()
-    print("  These low-level features are universal → reuse across tasks!")
+    print("  These low-level features are universal -> reuse across tasks!")
     print()
     print("  Without transfer learning:")
     print("    • Need millions of labelled examples per task")
@@ -50,10 +50,10 @@ def motivation():
     print("    • Often outperforms scratch training with limited data")
 
 
-# ── 2. Feature extraction ─────────────────────────────────────────────────────
+# -- 2. Feature extraction -----------------------------------------------------
 def feature_extraction():
     print("\n=== Strategy 1: Feature Extraction ===")
-    print("  Freeze all pretrained layers → pass data through → extract embeddings")
+    print("  Freeze all pretrained layers -> pass data through -> extract embeddings")
     print("  Train only a small classifier on top")
     print()
 
@@ -85,11 +85,11 @@ def feature_extraction():
     print("  1. Load pretrained model (ResNet, VGG, EfficientNet)")
     print("  2. Remove final classification head")
     print("  3. Freeze all weights (requires_grad=False in PyTorch)")
-    print("  4. Run all images through frozen model → save embeddings")
+    print("  4. Run all images through frozen model -> save embeddings")
     print("  5. Train LR / SVM / small MLP on embeddings")
 
 
-# ── 3. Fine-tuning ────────────────────────────────────────────────────────────
+# -- 3. Fine-tuning ------------------------------------------------------------
 def fine_tuning():
     print("\n=== Strategy 2: Fine-tuning ===")
     print("  Unfreeze some/all pretrained layers; retrain with small LR")
@@ -121,13 +121,13 @@ def fine_tuning():
         print(f"  {name:<24} {params:<12.3f} {p1:<12} {p2:<12} {p3}")
 
 
-# ── 4. When to use transfer learning ─────────────────────────────────────────
+# -- 4. When to use transfer learning -----------------------------------------
 def when_to_transfer():
     print("\n=== Decision Guide: Transfer Learning Strategy ===")
     print()
     print(f"  {'Dataset size':<20} {'Similar to source?':<22} {'Recommended strategy'}")
     rows = [
-        ("Small (<1K)",      "Yes (e.g. dogs→cats)",  "Feature extraction only — risk overfitting if fine-tuning"),
+        ("Small (<1K)",      "Yes (e.g. dogs->cats)",  "Feature extraction only — risk overfitting if fine-tuning"),
         ("Small (<1K)",      "No (medical imaging)",  "Feature extraction; try top few layers only"),
         ("Medium (1K-100K)", "Yes",                   "Fine-tune top layers (Phase 1+2)"),
         ("Medium (1K-100K)", "No",                    "Fine-tune more layers with low LR"),
@@ -138,7 +138,7 @@ def when_to_transfer():
         print(f"  {ds:<20} {sim:<22} {strat}")
 
 
-# ── 5. Popular pretrained models ──────────────────────────────────────────────
+# -- 5. Popular pretrained models ----------------------------------------------
 def pretrained_models():
     print("\n=== Popular Pretrained Models (ImageNet) ===")
     models = [
@@ -157,15 +157,15 @@ def pretrained_models():
         print(f"  {name:<20} {params:<10} {acc:<16} {note}")
 
 
-# ── 6. Domain adaptation ──────────────────────────────────────────────────────
+# -- 6. Domain adaptation ------------------------------------------------------
 def domain_adaptation():
     print("\n=== Domain Adaptation ===")
-    print("  Source domain ≠ Target domain (different data distributions)")
+    print("  Source domain != Target domain (different data distributions)")
     print()
     print("  Examples:")
-    print("    Synthetic → Real (GAN rendered cars → real photos)")
-    print("    RGB photos → Medical scans (X-ray, MRI)")
-    print("    Daytime → Nighttime driving")
+    print("    Synthetic -> Real (GAN rendered cars -> real photos)")
+    print("    RGB photos -> Medical scans (X-ray, MRI)")
+    print("    Daytime -> Nighttime driving")
     print()
     print("  Techniques:")
     techniques = [
@@ -179,7 +179,7 @@ def domain_adaptation():
         print(f"    {name:<28}: {desc}")
 
 
-# ── 7. Practical example ──────────────────────────────────────────────────────
+# -- 7. Practical example ------------------------------------------------------
 def practical_example():
     print("\n=== Practical Transfer Learning Example ===")
     print("  Task: classify 5 flower types (200 training images per class)")
@@ -197,7 +197,7 @@ def practical_example():
   for param in model.parameters():
       param.requires_grad = False
 
-  # 3. Replace final FC layer (1000 classes → 5)
+  # 3. Replace final FC layer (1000 classes -> 5)
   num_features = model.fc.in_features       # 2048
   model.fc = torch.nn.Linear(num_features, 5)
   # Only model.fc parameters have requires_grad=True

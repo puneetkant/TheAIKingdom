@@ -22,21 +22,21 @@ def demo_inner_products():
     y = np.array([4., 5., 6.])
 
     # Standard (Euclidean) inner product
-    print(f"  ⟨x,y⟩_E = {np.dot(x, y):.4f}")
+    print(f"  <x,y>_E = {np.dot(x, y):.4f}")
 
-    # Weighted inner product ⟨x,y⟩_W = x^T W y  (W diagonal)
+    # Weighted inner product <x,y>_W = x^T W y  (W diagonal)
     w = np.diag([2., 0.5, 1.])
-    print(f"  ⟨x,y⟩_W = {x @ w @ y:.4f}")
+    print(f"  <x,y>_W = {x @ w @ y:.4f}")
 
     # Angle between vectors
     cos_theta = np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y))
     theta = np.degrees(np.arccos(np.clip(cos_theta, -1, 1)))
     print(f"  Angle = {theta:.2f}°  (cos = {cos_theta:.4f})")
 
-    # Cauchy-Schwarz: |⟨x,y⟩| ≤ ‖x‖·‖y‖
+    # Cauchy-Schwarz: |<x,y>| <= ||x||·||y||
     lhs = abs(np.dot(x, y))
     rhs = np.linalg.norm(x) * np.linalg.norm(y)
-    print(f"  Cauchy-Schwarz: |⟨x,y⟩|={lhs:.4f} ≤ ‖x‖‖y‖={rhs:.4f}  ✓={lhs<=rhs+1e-9}")
+    print(f"  Cauchy-Schwarz: |<x,y>|={lhs:.4f} <= ||x||||y||={rhs:.4f}  [OK]={lhs<=rhs+1e-9}")
 
 def demo_kernel_trick():
     print("\n=== Kernel Trick ===")
@@ -46,7 +46,7 @@ def demo_kernel_trick():
     # Polynomial kernel: k(x,y) = (x·y + c)^d
     def k_poly(x, y, c=1, d=2): return (np.dot(x, y) + c) ** d
 
-    # RBF (Gaussian) kernel: k(x,y) = exp(-γ‖x-y‖²)
+    # RBF (Gaussian) kernel: k(x,y) = exp(-gamma||x-y||²)
     def k_rbf(x, y, gamma=0.5):
         diff = x - y
         return float(np.exp(-gamma * np.dot(diff, diff)))
@@ -63,7 +63,7 @@ def demo_kernel_trick():
     K = np.array([[k_rbf(X[i], X[j]) for j in range(5)] for i in range(5)])
     print(f"\n  RBF Gram matrix (5×5):\n{K.round(4)}")
     print(f"  Symmetric: {np.allclose(K, K.T)}")
-    print(f"  PSD (all eigenvalues ≥ 0): {all(np.linalg.eigvalsh(K) >= -1e-10)}")
+    print(f"  PSD (all eigenvalues >= 0): {all(np.linalg.eigvalsh(K) >= -1e-10)}")
 
 def demo_orthogonal_projection():
     print("\n=== Orthogonal Projection (Hilbert space) ===")

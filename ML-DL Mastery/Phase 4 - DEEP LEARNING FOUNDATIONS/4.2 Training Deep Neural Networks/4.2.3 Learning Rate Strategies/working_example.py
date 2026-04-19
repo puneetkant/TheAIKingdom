@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_lr_strategies")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── Learning rate schedulers ──────────────────────────────────────────────────
+# -- Learning rate schedulers --------------------------------------------------
 def constant_lr(epoch, base_lr=0.01, **_):
     return base_lr
 
@@ -54,7 +54,7 @@ def one_cycle(epoch, base_lr=1e-5, max_lr=0.1, total=100, **_):
         return base_lr + (max_lr - base_lr) * 0.5*(1 + np.cos(np.pi*t))
 
 
-# ── 1. Plot all schedules ─────────────────────────────────────────────────────
+# -- 1. Plot all schedules -----------------------------------------------------
 def plot_schedules():
     print("=== Learning Rate Schedules ===")
     epochs = np.arange(100)
@@ -84,7 +84,7 @@ def plot_schedules():
     print(f"\n  Plot saved: {path}")
 
 
-# ── 2. Why learning rate matters ──────────────────────────────────────────────
+# -- 2. Why learning rate matters ----------------------------------------------
 def lr_sensitivity():
     print("\n=== Learning Rate Sensitivity ===")
     print("  Too small: slow convergence, may get stuck")
@@ -109,7 +109,7 @@ def lr_sensitivity():
         print(f"  {lr:<10} {losses[-1]:<15.6f} {label}")
 
 
-# ── 3. Warm-up strategy ───────────────────────────────────────────────────────
+# -- 3. Warm-up strategy -------------------------------------------------------
 def warmup_strategy():
     print("\n=== Learning Rate Warm-up ===")
     print("  Start with very small LR; linearly/cosine increase to target LR")
@@ -121,13 +121,13 @@ def warmup_strategy():
     base_lr = 0.1
     epochs  = np.arange(100)
     lrs = [cosine_with_warmup(e, base_lr=base_lr, warmup=warmup_epochs) for e in epochs]
-    print(f"  Warmup ({warmup_epochs} epochs): LR goes 0 → {base_lr}")
+    print(f"  Warmup ({warmup_epochs} epochs): LR goes 0 -> {base_lr}")
     print(f"  Then cosine decay to min_lr=1e-5")
     for e in [0, 5, 10, 25, 50, 75, 99]:
         print(f"  Epoch {e:>3}: LR={lrs[e]:.6f}")
 
 
-# ── 4. Cyclical LR (Smith 2017) ───────────────────────────────────────────────
+# -- 4. Cyclical LR (Smith 2017) -----------------------------------------------
 def cyclical_lr_demo():
     print("\n=== Cyclical Learning Rates (CLR) ===")
     print("  Oscillates LR between base_lr and max_lr")
@@ -141,7 +141,7 @@ def cyclical_lr_demo():
         print(f"  Epoch {e:>3}: LR={lrs[e]:.5f}")
 
 
-# ── 5. LR Finder ──────────────────────────────────────────────────────────────
+# -- 5. LR Finder --------------------------------------------------------------
 def lr_finder():
     print("\n=== Learning Rate Finder (Smith, fast.ai) ===")
     print("  Exponentially increase LR from min to max; plot loss vs LR")
@@ -170,7 +170,7 @@ def lr_finder():
     losses = np.array(losses) + np.random.default_rng(0).normal(0, 0.05, len(lrs_tried))
     best_idx = np.argmin(losses)
     opt_lr   = lrs_tried[best_idx]
-    print(f"\n  (Simulated) Optimal LR ≈ {opt_lr:.2e}")
+    print(f"\n  (Simulated) Optimal LR ~= {opt_lr:.2e}")
 
     fig, ax = plt.subplots(figsize=(9, 4))
     ax.semilogx(lrs_tried, losses, lw=2)
@@ -183,7 +183,7 @@ def lr_finder():
     print(f"  Plot saved: {path}")
 
 
-# ── 6. One-Cycle Policy ───────────────────────────────────────────────────────
+# -- 6. One-Cycle Policy -------------------------------------------------------
 def one_cycle_policy():
     print("\n=== One-Cycle Policy (Smith 2018) ===")
     print("  Phase 1: increase LR from base to max (30% of steps)")

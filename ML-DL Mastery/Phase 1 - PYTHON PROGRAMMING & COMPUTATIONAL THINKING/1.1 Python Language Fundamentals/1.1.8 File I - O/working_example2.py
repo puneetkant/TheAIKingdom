@@ -2,7 +2,7 @@
 Working Example 2: File I/O — Real-World Data Pipeline
 =======================================================
 Demonstrates production file-handling patterns:
-  - Download Titanic CSV → parse with csv module
+  - Download Titanic CSV -> parse with csv module
   - Write cleaned data back to CSV
   - Serialize/deserialize run artifacts as JSON
   - Read/write binary files (pickle)
@@ -26,7 +26,7 @@ DATA.mkdir(exist_ok=True)
 OUT.mkdir(exist_ok=True)
 
 
-# ── 1. Download & parse CSV ────────────────────────────────────────────────────
+# -- 1. Download & parse CSV ----------------------------------------------------
 def download_titanic() -> Path:
     dest = DATA / "titanic.csv"
     if not dest.exists():
@@ -90,7 +90,7 @@ def demo_csv(path: Path) -> list[dict]:
     return cleaned
 
 
-# ── 2. JSON: save run artifact ────────────────────────────────────────────────
+# -- 2. JSON: save run artifact ------------------------------------------------
 def demo_json(rows: list[dict]) -> None:
     print("\n=== JSON: Run Artifact ===")
 
@@ -116,7 +116,7 @@ def demo_json(rows: list[dict]) -> None:
     print(f"  Loaded back: {loaded}")
 
 
-# ── 3. Pickle: binary serialisation ──────────────────────────────────────────
+# -- 3. Pickle: binary serialisation ------------------------------------------
 def demo_pickle(rows: list[dict]) -> None:
     print("\n=== Pickle: Binary Serialisation ===")
 
@@ -125,7 +125,7 @@ def demo_pickle(rows: list[dict]) -> None:
         pickle.dump(rows, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     size_kb = path.stat().st_size / 1024
-    print(f"  Pickled {len(rows)} rows → {size_kb:.1f} KB")
+    print(f"  Pickled {len(rows)} rows -> {size_kb:.1f} KB")
 
     with open(path, "rb") as f:
         loaded = pickle.load(f)
@@ -133,7 +133,7 @@ def demo_pickle(rows: list[dict]) -> None:
     print(f"  First row: {loaded[0]}")
 
 
-# ── 4. pathlib operations ─────────────────────────────────────────────────────
+# -- 4. pathlib operations -----------------------------------------------------
 def demo_pathlib() -> None:
     print("\n=== pathlib: File Management ===")
     p = OUT

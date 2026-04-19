@@ -104,7 +104,7 @@ def type_conversion():
         ("int(3.9)",     int(3.9)),   # truncates, not rounds
     ]
     for expr, result in pairs:
-        print(f"  {expr:<22} → {result!r:<15} type={type(result).__name__}")
+        print(f"  {expr:<22} -> {result!r:<15} type={type(result).__name__}")
 
 
 def type_introspection():

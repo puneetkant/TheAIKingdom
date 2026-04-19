@@ -27,7 +27,7 @@ OUTPUT = Path(__file__).parent / "output"
 DATA.mkdir(exist_ok=True); OUTPUT.mkdir(exist_ok=True)
 
 
-# ── Download ────────────────────────────────────────────────────────────────
+# -- Download ----------------------------------------------------------------
 def download_cal_housing() -> Path:
     dest = DATA / "cal_housing.csv"
     if dest.exists(): return dest
@@ -60,7 +60,7 @@ def load_feature_matrix(path: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:
     return X, y, feature_cols
 
 
-# ── 1. Basic vector ops ───────────────────────────────────────────────────────
+# -- 1. Basic vector ops -------------------------------------------------------
 def demo_basic_ops() -> None:
     print("=== Basic Vector Operations ===")
     a = np.array([1.0, 2.0, 3.0])
@@ -71,19 +71,19 @@ def demo_basic_ops() -> None:
     print(f"  a + b   = {a + b}")
     print(f"  2 * a   = {2 * a}")
     print(f"  a · b   = {np.dot(a, b):.4f}  (dot product)")
-    print(f"  |a|₂    = {np.linalg.norm(a):.4f}  (L2 norm)")
-    print(f"  |a|₁    = {np.linalg.norm(a, 1):.4f}  (L1 norm)")
-    print(f"  |a|∞    = {np.linalg.norm(a, np.inf):.4f}  (L∞ norm)")
+    print(f"  |a|2    = {np.linalg.norm(a):.4f}  (L2 norm)")
+    print(f"  |a|1    = {np.linalg.norm(a, 1):.4f}  (L1 norm)")
+    print(f"  |a|inf    = {np.linalg.norm(a, np.inf):.4f}  (Linf norm)")
 
 
-# ── 2. Norms and normalisation (feature scaling) ─────────────────────────────
+# -- 2. Norms and normalisation (feature scaling) -----------------------------
 def demo_normalisation(X: np.ndarray, col_names: list[str]) -> None:
     print("\n=== Norms & Normalisation ===")
     # L2-normalise each sample (row)
     norms = np.linalg.norm(X, axis=1, keepdims=True)
     X_unit = X / (norms + 1e-9)
     print(f"  Original row norm: mean={np.mean(norms):.3f}")
-    print(f"  After L2-norm:     mean={np.mean(np.linalg.norm(X_unit, axis=1)):.6f}  (≈ 1.0)")
+    print(f"  After L2-norm:     mean={np.mean(np.linalg.norm(X_unit, axis=1)):.6f}  (~= 1.0)")
 
     # Min-max normalise each column
     col_min  = X.min(axis=0)
@@ -92,7 +92,7 @@ def demo_normalisation(X: np.ndarray, col_names: list[str]) -> None:
     print(f"  Min-max col ranges: {X_minmax.min(axis=0).round(3)} … {X_minmax.max(axis=0).round(3)}")
 
 
-# ── 3. Cosine similarity (feature comparison) ─────────────────────────────────
+# -- 3. Cosine similarity (feature comparison) ---------------------------------
 def demo_cosine_similarity(X: np.ndarray) -> None:
     print("\n=== Cosine Similarity ===")
     def cosine(u: np.ndarray, v: np.ndarray) -> float:
@@ -105,7 +105,7 @@ def demo_cosine_similarity(X: np.ndarray) -> None:
             print(f"  cos(x[{i}], x[{j}]) = {sim:.4f}")
 
 
-# ── 4. Vector projection ───────────────────────────────────────────────────────
+# -- 4. Vector projection -------------------------------------------------------
 def demo_projection() -> None:
     print("\n=== Vector Projection ===")
     # Project b onto a: proj_a(b) = (a·b/|a|²) * a
@@ -116,10 +116,10 @@ def demo_projection() -> None:
     print(f"  a = {a},  b = {b}")
     print(f"  proj_a(b) = {proj}  (parallel component)")
     print(f"  rejection = {rejection}  (perpendicular component)")
-    print(f"  Check dot(proj, rejection) ≈ 0: {np.dot(proj, rejection):.10f}")
+    print(f"  Check dot(proj, rejection) ~= 0: {np.dot(proj, rejection):.10f}")
 
 
-# ── 5. SGD gradient vector demo ───────────────────────────────────────────────
+# -- 5. SGD gradient vector demo -----------------------------------------------
 def demo_sgd_gradient(X: np.ndarray, y: np.ndarray) -> None:
     print("\n=== SGD Gradient Vector ===")
     n, d = X.shape
@@ -130,7 +130,7 @@ def demo_sgd_gradient(X: np.ndarray, y: np.ndarray) -> None:
     for epoch in range(50):
         y_hat  = X @ w
         error  = y_hat - y
-        grad   = X.T @ error / n    # gradient vector ∈ ℝ^d
+        grad   = X.T @ error / n    # gradient vector in ℝ^d
         w     -= lr * grad
         loss   = float(np.mean(error ** 2))
         losses.append(loss)
@@ -141,7 +141,7 @@ def demo_sgd_gradient(X: np.ndarray, y: np.ndarray) -> None:
     print(f"  Weight vector: {w.round(4)}")
 
 
-# ── 6. Speed: vectorised vs Python loops ─────────────────────────────────────
+# -- 6. Speed: vectorised vs Python loops -------------------------------------
 def demo_speed() -> None:
     print("\n=== Speed: Vectorised vs Python Loops ===")
     n = 10_000
@@ -161,7 +161,7 @@ def demo_speed() -> None:
     print(f"  Speedup: {t_py/max(t_np, 1e-9):.1f}×")
 
 
-# ── 7. Visualise 2-D vectors ─────────────────────────────────────────────────
+# -- 7. Visualise 2-D vectors -------------------------------------------------
 def plot_vectors() -> None:
     origin = np.zeros(2)
     vectors = {

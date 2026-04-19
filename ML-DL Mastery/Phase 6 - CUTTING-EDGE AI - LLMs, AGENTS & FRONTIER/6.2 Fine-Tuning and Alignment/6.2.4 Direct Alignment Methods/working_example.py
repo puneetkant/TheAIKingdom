@@ -11,7 +11,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def sigmoid(x): return 1 / (1 + np.exp(-np.clip(x, -30, 30)))
 
 
-# ── 1. Why direct alignment? ──────────────────────────────────────────────────
+# -- 1. Why direct alignment? --------------------------------------------------
 def direct_alignment_intro():
     print("=== Direct Alignment Methods ===")
     print()
@@ -29,20 +29,20 @@ def direct_alignment_intro():
     print("  No separate reward model needed")
 
 
-# ── 2. DPO ────────────────────────────────────────────────────────────────────
+# -- 2. DPO --------------------------------------------------------------------
 def dpo_demo():
     print("\n=== DPO (Direct Preference Optimisation) ===")
     print()
     print("  Rafailov et al. 2023 — most widely adopted direct method")
     print()
     print("  Key insight: RLHF's optimal policy is closed-form")
-    print("    π*(y|x) ∝ π_ref(y|x) · exp(R*(y,x) / β)")
+    print("    pi*(y|x) ∝ pi_ref(y|x) · exp(R*(y,x) / beta)")
     print()
     print("  Re-parameterize reward as ratio of policies:")
-    print("    R*(y,x) = β log π*(y|x)/π_ref(y|x) + β log Z(x)")
+    print("    R*(y,x) = beta log pi*(y|x)/pi_ref(y|x) + beta log Z(x)")
     print()
     print("  DPO loss:")
-    print("    L_DPO = -E log σ(β log π(y_w)/π_ref(y_w) - β log π(y_l)/π_ref(y_l))")
+    print("    L_DPO = -E log sigma(beta log pi(y_w)/pi_ref(y_w) - beta log pi(y_l)/pi_ref(y_l))")
     print()
 
     rng = np.random.default_rng(0)
@@ -63,7 +63,7 @@ def dpo_demo():
     print()
     print("  DPO variants:")
     variants = [
-        ("DPO",     "Original; β controls KL penalty strength"),
+        ("DPO",     "Original; beta controls KL penalty strength"),
         ("IPO",     "Identity PO; regularises to avoid probability collapse"),
         ("cDPO",    "Conservative; soft labels; handles annotation noise"),
         ("TDPO",    "Token-level DPO; better credit assignment"),
@@ -73,31 +73,31 @@ def dpo_demo():
         print(f"  {v:<12} {d}")
 
 
-# ── 3. SimPO ──────────────────────────────────────────────────────────────────
+# -- 3. SimPO ------------------------------------------------------------------
 def simpo_demo():
     print("\n=== SimPO (Simple Preference Optimisation) ===")
     print()
     print("  Meng et al. 2024 — no reference model needed")
     print()
     print("  Key differences from DPO:")
-    print("    1. Length-normalised reward: r(x,y) = 1/|y| Σ log π(y_t|x,y<t)")
-    print("    2. Target reward margin γ: prefer y_w over y_l by at least γ")
+    print("    1. Length-normalised reward: r(x,y) = 1/|y| Sigma log pi(y_t|x,y<t)")
+    print("    2. Target reward margin gamma: prefer y_w over y_l by at least gamma")
     print()
     print("  Loss:")
-    print("    L_SimPO = -E log σ(β/|y_w| Σlog π(y_w) - β/|y_l| Σlog π(y_l) - γ)")
+    print("    L_SimPO = -E log sigma(beta/|y_w| Sigmalog pi(y_w) - beta/|y_l| Sigmalog pi(y_l) - gamma)")
     print()
     print("  Benefits:")
     benefits = [
         ("No reference model", "Half the memory; simpler training"),
         ("Length normalisation","Prevents preference for longer responses"),
-        ("Margin γ",           "Explicit gap encourages clear separation"),
+        ("Margin gamma",           "Explicit gap encourages clear separation"),
         ("Performance",        "Often outperforms DPO on AlpacaEval/MT-Bench"),
     ]
     for b, d in benefits:
         print(f"  {b:<22} {d}")
 
 
-# ── 4. ORPO and KTO ──────────────────────────────────────────────────────────
+# -- 4. ORPO and KTO ----------------------------------------------------------
 def orpo_kto():
     print("\n=== ORPO and KTO ===")
     print()
@@ -105,16 +105,16 @@ def orpo_kto():
     print("    Combines SFT loss and preference optimisation in one step")
     print("    No reference model needed")
     print()
-    print("    Loss = SFT_loss + λ · OR_loss")
-    print("    OR_loss = -log σ(log(odds_ratio(y_w)) - log(odds_ratio(y_l)))")
+    print("    Loss = SFT_loss + lambda · OR_loss")
+    print("    OR_loss = -log sigma(log(odds_ratio(y_w)) - log(odds_ratio(y_l)))")
     print("    odds_ratio(y) = P(y) / (1-P(y))  where P = per-token probability")
     print()
     print("  KTO (Kahneman-Tversky Optimisation, Ethayarajh et al. 2024):")
     print("    No preference pairs needed — just (prompt, response, label) triples")
     print("    Based on prospect theory: humans are loss-averse")
     print()
-    print("    Loss = E_good[1-σ(R-z_ref)] + E_bad[1-σ(z_ref-R)]")
-    print("    z_ref = KL[π || π_ref]  (reference point)")
+    print("    Loss = E_good[1-sigma(R-z_ref)] + E_bad[1-sigma(z_ref-R)]")
+    print("    z_ref = KL[pi || pi_ref]  (reference point)")
     print()
 
     print("  Method comparison:")

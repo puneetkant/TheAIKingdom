@@ -42,7 +42,7 @@ class SimpleRun:
                   "params": self.params, "metrics": self.metrics, "duration_s": self.duration}
         path = RUN_DIR / f"{self.run_id}.json"
         path.write_text(json.dumps(record, indent=2))
-        print(f"  [run {self.run_id}] {self.params}  →  {', '.join(f'{k}={v[-1]:.4f}' for k,v in self.metrics.items())}")
+        print(f"  [run {self.run_id}] {self.params}  ->  {', '.join(f'{k}={v[-1]:.4f}' for k,v in self.metrics.items())}")
         return record
 
 def demo():

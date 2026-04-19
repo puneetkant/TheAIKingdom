@@ -54,7 +54,7 @@ def demo():
 
     fig, ax = plt.subplots(figsize=(10, 4))
     ax.plot(ts, label="Observed", alpha=0.6)
-    ax.plot(ses, label="SES (α=0.3)")
+    ax.plot(ses, label="SES (alpha=0.3)")
     ax.plot(holt, label="Holt linear")
     ax.legend(); ax.set_title("Classical Smoothing Methods")
     plt.tight_layout(); plt.savefig(OUTPUT / "classical_ts.png"); plt.close()

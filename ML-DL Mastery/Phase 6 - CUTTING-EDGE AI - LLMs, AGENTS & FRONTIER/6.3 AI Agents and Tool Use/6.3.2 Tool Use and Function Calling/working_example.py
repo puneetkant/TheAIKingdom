@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_tool_use")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Function calling overview ──────────────────────────────────────────────
+# -- 1. Function calling overview ----------------------------------------------
 def function_calling_overview():
     print("=== Tool Use and Function Calling ===")
     print()
@@ -28,7 +28,7 @@ def function_calling_overview():
         print(f"  {p:<12} {d}")
 
 
-# ── 2. Tool schema ────────────────────────────────────────────────────────────
+# -- 2. Tool schema ------------------------------------------------------------
 def tool_schema_demo():
     print("\n=== Tool Schema Definition ===")
     print()
@@ -76,12 +76,12 @@ def tool_schema_demo():
     print(f"  Tool result: {result}")
 
 
-# ── 3. Parallel tool use ──────────────────────────────────────────────────────
+# -- 3. Parallel tool use ------------------------------------------------------
 def parallel_tool_use():
     print("\n=== Parallel Tool Use ===")
     print()
     print("  Modern models can call multiple tools in one response")
-    print("  Execute concurrently → lower latency")
+    print("  Execute concurrently -> lower latency")
     print()
 
     # Simulate parallel tool calls
@@ -108,7 +108,7 @@ def parallel_tool_use():
         return {"temperature": 18, "condition": "sunny"}
 
     print(f"  {'Call ID':<10} {'Tool':<14} {'Args':<35} {'Result'}")
-    print(f"  {'─'*10} {'─'*14} {'─'*35} {'─'*30}")
+    print(f"  {'-'*10} {'-'*14} {'-'*35} {'-'*30}")
     for tc in tool_calls:
         if tc.name == "search_web":
             result = search_web(**tc.args)
@@ -118,7 +118,7 @@ def parallel_tool_use():
         print(f"  {tc.id:<10} {tc.name:<14} {args_str:<35} {result[:30]}")
 
 
-# ── 4. Structured output ──────────────────────────────────────────────────────
+# -- 4. Structured output ------------------------------------------------------
 def structured_output():
     print("\n=== Structured Output (JSON Mode) ===")
     print()

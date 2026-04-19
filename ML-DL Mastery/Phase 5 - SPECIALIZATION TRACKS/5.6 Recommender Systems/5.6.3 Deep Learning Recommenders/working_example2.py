@@ -21,7 +21,7 @@ def relu(x): return np.maximum(0, x)
 def sigmoid(x): return 1 / (1 + np.exp(-np.clip(x, -30, 30)))
 
 class SimpleNCF:
-    """Minimal NCF: user emb + item emb → MLP → binary prediction."""
+    """Minimal NCF: user emb + item emb -> MLP -> binary prediction."""
     def __init__(self, n_users, n_items, emb_dim=8, lr=0.01, seed=0):
         rng = np.random.default_rng(seed)
         self.U = rng.normal(0, 0.1, (n_users, emb_dim))

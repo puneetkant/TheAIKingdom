@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split, cross_val_score
 import os
 
 
-# ── 1. Why scaling matters ────────────────────────────────────────────────────
+# -- 1. Why scaling matters ----------------------------------------------------
 def why_scaling():
     print("=== Why Feature Scaling Matters ===")
     rng = np.random.default_rng(0)
@@ -47,10 +47,10 @@ def why_scaling():
         print(f"  {name:<20} {acc_us:<16.4f} {acc_s:.4f}")
 
 
-# ── 2. Standard Scaler (Z-score normalisation) ───────────────────────────────
+# -- 2. Standard Scaler (Z-score normalisation) -------------------------------
 def standard_scaler_demo():
     print("\n=== StandardScaler (Z-score) ===")
-    print("  X' = (X - μ) / σ   →   mean=0, std=1")
+    print("  X' = (X - mu) / sigma   ->   mean=0, std=1")
     rng = np.random.default_rng(1)
     X   = rng.normal(50, 20, (100, 3))
 
@@ -62,10 +62,10 @@ def standard_scaler_demo():
     print(f"  Learned std:  {scaler.scale_.round(2)}")
 
 
-# ── 3. MinMax Scaler ─────────────────────────────────────────────────────────
+# -- 3. MinMax Scaler ---------------------------------------------------------
 def minmax_scaler_demo():
     print("\n=== MinMaxScaler ===")
-    print("  X' = (X - X_min) / (X_max - X_min)  →  range [0,1]")
+    print("  X' = (X - X_min) / (X_max - X_min)  ->  range [0,1]")
     rng = np.random.default_rng(2)
     X   = rng.normal(100, 30, (50, 2))
     # Inject outlier
@@ -84,10 +84,10 @@ def minmax_scaler_demo():
     print(f"\n  Custom range [-1,1]: [{X_sr[:,0].min():.4f}, {X_sr[:,0].max():.4f}]")
 
 
-# ── 4. Robust Scaler ─────────────────────────────────────────────────────────
+# -- 4. Robust Scaler ---------------------------------------------------------
 def robust_scaler_demo():
     print("\n=== RobustScaler (median + IQR) ===")
-    print("  X' = (X - median) / IQR  →  robust to outliers")
+    print("  X' = (X - median) / IQR  ->  robust to outliers")
     rng = np.random.default_rng(3)
     X   = rng.normal(0, 1, (100, 2))
     X   = np.vstack([X, [[10, 10], [-10, -10]]])   # outliers
@@ -100,7 +100,7 @@ def robust_scaler_demo():
               f"max={X_s.max(0).round(2)}")
 
 
-# ── 5. Normalizer (L1, L2 per sample) ───────────────────────────────────────
+# -- 5. Normalizer (L1, L2 per sample) ---------------------------------------
 def normalizer_demo():
     print("\n=== Normalizer (per-sample norm) ===")
     print("  Scales each sample to unit norm (NOT each feature)")
@@ -112,7 +112,7 @@ def normalizer_demo():
         print(f"  norm={norm}: row norms={norms.round(4)}  X[0]={X_n[0].round(4)}")
 
 
-# ── 6. Power and Quantile transformers ───────────────────────────────────────
+# -- 6. Power and Quantile transformers ---------------------------------------
 def power_quantile_transform():
     print("\n=== Power and Quantile Transforms (for Gaussianising skewed data) ===")
     rng = np.random.default_rng(4)
@@ -133,7 +133,7 @@ def power_quantile_transform():
               f"range=[{X_t.min():.2f}, {X_t.max():.2f}]")
 
 
-# ── 7. Scaler comparison on ML performance ───────────────────────────────────
+# -- 7. Scaler comparison on ML performance -----------------------------------
 def scaler_comparison():
     print("\n=== Scaler Comparison on ML Accuracy ===")
     rng = np.random.default_rng(5)
@@ -165,7 +165,7 @@ def scaler_comparison():
         print(f"  {name:<22} {cv:.4f}")
 
 
-# ── 8. When to scale / not scale ─────────────────────────────────────────────
+# -- 8. When to scale / not scale ---------------------------------------------
 def when_to_scale():
     print("\n=== When to Scale (and When Not To) ===")
     print("  SCALE:")
@@ -179,7 +179,7 @@ def when_to_scale():
     print("    - Naive Bayes (density-based, not distance-based)")
     print()
     print("  CRITICAL: fit scaler on TRAIN set only, then transform train and test!")
-    print("    → Prevents data leakage from test into scaler statistics")
+    print("    -> Prevents data leakage from test into scaler statistics")
 
 
 if __name__ == "__main__":

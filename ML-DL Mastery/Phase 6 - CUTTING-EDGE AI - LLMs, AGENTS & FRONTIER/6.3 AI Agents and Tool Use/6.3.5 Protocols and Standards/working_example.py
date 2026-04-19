@@ -9,11 +9,11 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_protocols")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Model Context Protocol (MCP) ──────────────────────────────────────────
+# -- 1. Model Context Protocol (MCP) ------------------------------------------
 def mcp_overview():
     print("=== Model Context Protocol (MCP) ===")
     print()
-    print("  Anthropic (2024) open standard for LLM ↔ tool/data source communication")
+    print("  Anthropic (2024) open standard for LLM <-> tool/data source communication")
     print("  Analogy: USB-C for AI — one connector for all data sources")
     print()
     print("  Three primitives:")
@@ -60,7 +60,7 @@ server.run()  # starts stdio or HTTP transport
     print("    Registry: mcp.so (community server discovery)")
 
 
-# ── 2. Agent-to-Agent (A2A) protocol ─────────────────────────────────────────
+# -- 2. Agent-to-Agent (A2A) protocol -----------------------------------------
 def a2a_protocol():
     print("\n=== Agent-to-Agent (A2A) Protocol ===")
     print()
@@ -99,7 +99,7 @@ def a2a_protocol():
     print(json.dumps(agent_card, indent=2))
 
 
-# ── 3. OpenAI Swarm handoff pattern ──────────────────────────────────────────
+# -- 3. OpenAI Swarm handoff pattern ------------------------------------------
 def swarm_handoff():
     print("\n=== Handoff Pattern (OpenAI Swarm) ===")
     print()
@@ -129,7 +129,7 @@ response = client.run(
     agent=support_agent,
     messages=[{"role": "user", "content": "I need a refund for my last invoice"}],
 )
-print(response.agent.name)  # → "Billing Agent" (after handoff)
+print(response.agent.name)  # -> "Billing Agent" (after handoff)
 '''
     print(swarm_code)
 
@@ -145,13 +145,13 @@ print(response.agent.name)  # → "Billing Agent" (after handoff)
         print(f"  • {g}")
 
 
-# ── 4. Standardisation landscape ──────────────────────────────────────────────
+# -- 4. Standardisation landscape ----------------------------------------------
 def standards_landscape():
     print("\n=== Agent Standards and Interoperability Landscape ===")
     print()
     standards = [
-        ("MCP",             "Anthropic; LLM ↔ tools/data; widely adopted 2025"),
-        ("A2A",             "Google; agent ↔ agent; cross-vendor"),
+        ("MCP",             "Anthropic; LLM <-> tools/data; widely adopted 2025"),
+        ("A2A",             "Google; agent <-> agent; cross-vendor"),
         ("OpenAI plugins",  "Deprecated; replaced by function calling"),
         ("AgentConnect",    "Microsoft; agent registry in Azure"),
         ("OCSF",            "Security events; threat sharing across agents"),
@@ -163,7 +163,7 @@ def standards_landscape():
         print(f"  {s:<18} {d}")
     print()
     print("  Key principle: agents should be composable building blocks")
-    print("  → Design agents with well-defined interfaces, not monolithic pipelines")
+    print("  -> Design agents with well-defined interfaces, not monolithic pipelines")
 
 
 if __name__ == "__main__":

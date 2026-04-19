@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_pretraining")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Pre-training objectives ────────────────────────────────────────────────
+# -- 1. Pre-training objectives ------------------------------------------------
 def training_objectives():
     print("=== LLM Pre-training Objectives ===")
     print()
@@ -27,7 +27,7 @@ def training_objectives():
 
     print()
     print("  CLM cross-entropy loss:")
-    print("    L = -1/T Σ_t log P(x_t | x_<t)")
+    print("    L = -1/T Sigma_t log P(x_t | x_<t)")
     print()
 
     # Simulate a training loss curve
@@ -37,20 +37,20 @@ def training_objectives():
     for t in tokens_seen:
         # Rough Chinchilla-inspired loss curve
         perp = 200 * (t / 1e9)**(-0.076) + rng.normal(0, 0.5)
-        print(f"  {t/1e9:>8.1f}B tokens: perplexity ≈ {perp:.1f}")
+        print(f"  {t/1e9:>8.1f}B tokens: perplexity ~= {perp:.1f}")
 
 
-# ── 2. Scaling laws ───────────────────────────────────────────────────────────
+# -- 2. Scaling laws -----------------------------------------------------------
 def scaling_laws():
     print("\n=== Scaling Laws (Chinchilla) ===")
     print()
     print("  Kaplan et al. (2020) OpenAI scaling laws:")
-    print("    L(N) = (N_c / N)^α  + L_∞   (model size)")
-    print("    L(D) = (D_c / D)^β  + L_∞   (dataset size)")
-    print("    α ≈ 0.076, β ≈ 0.095, L_∞ ≈ 1.69 (irreducible entropy)")
+    print("    L(N) = (N_c / N)^alpha  + L_inf   (model size)")
+    print("    L(D) = (D_c / D)^beta  + L_inf   (dataset size)")
+    print("    alpha ~= 0.076, beta ~= 0.095, L_inf ~= 1.69 (irreducible entropy)")
     print()
     print("  Hoffmann et al. (2022) Chinchilla — REVISED laws:")
-    print("    Optimal: N_tokens ≈ 20 × N_params")
+    print("    Optimal: N_tokens ~= 20 x N_params")
     print("    Previous GPT-3 models were undertrained!")
     print()
     print("  Compute-optimal frontier:")
@@ -65,21 +65,21 @@ def scaling_laws():
     for m, p, tok, fl in models:
         print(f"  {m:<16} {p:<10} {tok:<12} {fl}")
     print()
-    print("  FLOPs for training ≈ 6 × N × D  (N=params, D=tokens)")
+    print("  FLOPs for training ~= 6 x N x D  (N=params, D=tokens)")
     N = 7e9; D = 1e12
     flops = 6 * N * D
     print(f"    7B model × 1T tokens: {flops:.2e} FLOPs")
     print(f"    On 1000× A100 (312 TFLOP/s), 50% MFU:")
     hours = flops / (1000 * 312e12 * 0.5) / 3600
-    print(f"    Training time ≈ {hours:.0f} hours = {hours/24:.0f} days")
+    print(f"    Training time ~= {hours:.0f} hours = {hours/24:.0f} days")
 
 
-# ── 3. Data curation ──────────────────────────────────────────────────────────
+# -- 3. Data curation ----------------------------------------------------------
 def data_curation():
     print("\n=== Training Data Curation ===")
     print()
     sources = [
-        ("Common Crawl",   "Web; raw HTML → text; ~petabytes; majority of tokens"),
+        ("Common Crawl",   "Web; raw HTML -> text; ~petabytes; majority of tokens"),
         ("C4",             "Cleaned CC; English; 305GB; T5"),
         ("The Pile",       "825GB; 22 diverse sources; EleutherAI"),
         ("RedPajama",      "Reproduction of LLaMA training data; open"),
@@ -101,7 +101,7 @@ def data_curation():
         ("Other",         2),
     ]
     for domain, pct in mix:
-        bar = "█" * (pct // 3)
+        bar = "#" * (pct // 3)
         print(f"  {domain:<14} {pct:>3}% {bar}")
     print()
     print("  Data quality steps:")
@@ -117,7 +117,7 @@ def data_curation():
         print(f"  • {s}")
 
 
-# ── 4. Distributed training ───────────────────────────────────────────────────
+# -- 4. Distributed training ---------------------------------------------------
 def distributed_training():
     print("\n=== Distributed Training Strategies ===")
     print()

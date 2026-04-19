@@ -16,7 +16,7 @@ def tokenise(text):
     return re.sub(r"[^\w\s]", "", text.lower()).split()
 
 
-# ── 1. Sentiment Analysis ────────────────────────────────────────────────────
+# -- 1. Sentiment Analysis ----------------------------------------------------
 def sentiment_analysis():
     print("=== Sentiment Analysis ===")
     texts = [
@@ -51,7 +51,7 @@ def sentiment_analysis():
     print()
     for t, prob in zip(test, probs):
         label = "positive" if prob[1] > 0.5 else "negative"
-        print(f"  '{t[:45]}' → {label} ({prob[1]:.3f})")
+        print(f"  '{t[:45]}' -> {label} ({prob[1]:.3f})")
 
     print()
     print("  Tasks in sentiment analysis:")
@@ -60,7 +60,7 @@ def sentiment_analysis():
     print("    Aspect-level: sentiment per aspect (service, food, ambience)")
 
 
-# ── 2. Named Entity Recognition (rule-based) ─────────────────────────────────
+# -- 2. Named Entity Recognition (rule-based) ---------------------------------
 def ner_demo():
     print("\n=== Named Entity Recognition (NER) ===")
 
@@ -114,7 +114,7 @@ def ner_demo():
     print("  State-of-art: BERT-CRF, spaCy en_core_web_trf ~90 F1 on CoNLL-2003")
 
 
-# ── 3. Question Answering (extractive) ───────────────────────────────────────
+# -- 3. Question Answering (extractive) ---------------------------------------
 def question_answering():
     print("\n=== Extractive Question Answering ===")
     print("  Given: context paragraph + question")
@@ -161,7 +161,7 @@ def question_answering():
     print("  Dataset: SQuAD 2.0  Metric: Exact Match, F1")
 
 
-# ── 4. Text Summarisation ─────────────────────────────────────────────────────
+# -- 4. Text Summarisation -----------------------------------------------------
 def text_summarisation():
     print("\n=== Text Summarisation ===")
     print("  Extractive: select important sentences from original text")
@@ -203,7 +203,7 @@ def text_summarisation():
     print("  Models: T5, BART, Pegasus, LLaMA-summarise")
 
 
-# ── 5. Text Similarity ───────────────────────────────────────────────────────
+# -- 5. Text Similarity -------------------------------------------------------
 def text_similarity():
     print("\n=== Text Similarity ===")
 
@@ -222,10 +222,10 @@ def text_similarity():
     sim   = X_n @ X_n.T
 
     print(f"  {'Pair':<55} Cosine Sim")
-    print(f"  {'─'*55} {'─'*10}")
+    print(f"  {'-'*55} {'-'*10}")
     pairs = [(0,1), (0,2), (3,4), (0,3)]
     for i, j in pairs:
-        print(f"  '{sentences[i][:25]}' ↔ '{sentences[j][:25]}' {sim[i,j]:.4f}")
+        print(f"  '{sentences[i][:25]}' <-> '{sentences[j][:25]}' {sim[i,j]:.4f}")
 
     print()
     print("  Methods for semantic similarity:")

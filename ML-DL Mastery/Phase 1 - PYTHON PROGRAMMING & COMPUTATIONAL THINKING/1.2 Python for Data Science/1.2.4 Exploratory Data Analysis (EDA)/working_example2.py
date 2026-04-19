@@ -31,7 +31,7 @@ DATA.mkdir(exist_ok=True)
 OUTPUT.mkdir(exist_ok=True)
 
 
-# ── Download ───────────────────────────────────────────────────────────────────
+# -- Download -------------------------------------------------------------------
 def download_titanic() -> Path:
     dest = DATA / "titanic.csv"
     if dest.exists(): return dest
@@ -50,7 +50,7 @@ def download_titanic() -> Path:
     return dest
 
 
-# ── Load raw data ──────────────────────────────────────────────────────────────
+# -- Load raw data --------------------------------------------------------------
 def load_rows(path: Path) -> tuple[list[dict], list[str]]:
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -58,7 +58,7 @@ def load_rows(path: Path) -> tuple[list[dict], list[str]]:
     return rows, list(reader.fieldnames or [])
 
 
-# ── 1. Data quality report ────────────────────────────────────────────────────
+# -- 1. Data quality report ----------------------------------------------------
 def data_quality_report(rows: list[dict], cols: list[str]) -> dict:
     report: dict = {"n_rows": len(rows), "n_cols": len(cols), "columns": {}}
     for col in cols:
@@ -101,7 +101,7 @@ def print_quality_report(report: dict) -> None:
               f"{info['unique']:>7} {mean_s} {std_s}")
 
 
-# ── 2. Univariate: outlier detection via IQR ─────────────────────────────────
+# -- 2. Univariate: outlier detection via IQR ---------------------------------
 def find_outliers(values: list[float], label: str) -> None:
     vals = sorted(values)
     q1   = vals[len(vals) // 4]
@@ -126,11 +126,11 @@ def demo_univariate(rows: list[dict]) -> None:
     total = sum(survived_counts.values())
     print(f"\n  Survived: {dict(survived_counts)}")
     for k, v in sorted(survived_counts.items()):
-        bar = "█" * int(v * 30 / total)
+        bar = "#" * int(v * 30 / total)
         print(f"    {k}: {bar} {v} ({100*v/total:.1f}%)")
 
 
-# ── 3. Bivariate: survival rate by groups ────────────────────────────────────
+# -- 3. Bivariate: survival rate by groups ------------------------------------
 def demo_bivariate(rows: list[dict]) -> None:
     print("\n=== Bivariate Analysis ===")
 
@@ -152,11 +152,11 @@ def demo_bivariate(rows: list[dict]) -> None:
     # Age vs Survived — compare means
     survived_ages     = [float(r["Age"]) for r in rows if r["Age"].strip() and int(r["Survived"]) == 1]
     not_survived_ages = [float(r["Age"]) for r in rows if r["Age"].strip() and int(r["Survived"]) == 0]
-    print(f"\n  Mean age — survived: {statistics.mean(survived_ages):.2f}   "
+    print(f"\n  Mean age -- survived: {statistics.mean(survived_ages):.2f}   "
           f"not survived: {statistics.mean(not_survived_ages):.2f}")
 
 
-# ── 4. Visualization ──────────────────────────────────────────────────────────
+# -- 4. Visualization ----------------------------------------------------------
 def plot_eda_charts(rows: list[dict]) -> None:
     ages  = np.array([float(r["Age"])  for r in rows if r["Age"].strip()])
     fares = np.array([float(r["Fare"]) for r in rows if r["Fare"].strip()])
@@ -182,7 +182,7 @@ def plot_eda_charts(rows: list[dict]) -> None:
     plt.close(fig)
 
 
-# ── 5. Markdown EDA report ────────────────────────────────────────────────────
+# -- 5. Markdown EDA report ----------------------------------------------------
 def save_markdown_report(rows: list[dict], report: dict) -> None:
     md = f"""# Titanic EDA Report
 

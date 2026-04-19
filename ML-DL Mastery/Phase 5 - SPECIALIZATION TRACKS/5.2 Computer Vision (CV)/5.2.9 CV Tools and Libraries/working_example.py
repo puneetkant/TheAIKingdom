@@ -20,7 +20,7 @@ def make_image(H=64, W=64, seed=0):
     return img
 
 
-# ── 1. OpenCV patterns ────────────────────────────────────────────────────────
+# -- 1. OpenCV patterns --------------------------------------------------------
 def opencv_patterns():
     print("=== OpenCV (cv2) Patterns ===")
     print("  Default channel order: BGR (not RGB!)")
@@ -29,8 +29,8 @@ def opencv_patterns():
     code = [
         ("import cv2",                               "Import OpenCV"),
         ("img = cv2.imread('file.jpg')",             "Load as BGR uint8"),
-        ("rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)","BGR → RGB"),
-        ("gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)","BGR → grayscale"),
+        ("rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)","BGR -> RGB"),
+        ("gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)","BGR -> grayscale"),
         ("small = cv2.resize(img, (224, 224))",      "Resize to target"),
         ("blur = cv2.GaussianBlur(img, (5,5), 0)",   "Gaussian blur"),
         ("_, th = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)", "Thresholding"),
@@ -60,7 +60,7 @@ def opencv_patterns():
         print(f"    img: {img.shape}  gray: {gray.shape}")
 
 
-# ── 2. Pillow (PIL) patterns ──────────────────────────────────────────────────
+# -- 2. Pillow (PIL) patterns --------------------------------------------------
 def pillow_patterns():
     print("\n=== Pillow (PIL) Patterns ===")
     print("  Default channel order: RGB")
@@ -73,8 +73,8 @@ def pillow_patterns():
         ("img = img.crop((x1, y1, x2, y2))",         "Crop"),
         ("img = img.rotate(angle=30)",                "Rotate"),
         ("img = img.transpose(Image.FLIP_LEFT_RIGHT)","Horizontal flip"),
-        ("arr = np.array(img)",                       "PIL → numpy (H, W, 3) uint8"),
-        ("img = Image.fromarray(arr)",                "numpy → PIL"),
+        ("arr = np.array(img)",                       "PIL -> numpy (H, W, 3) uint8"),
+        ("img = Image.fromarray(arr)",                "numpy -> PIL"),
         ("img.save('out.png')",                       "Save"),
     ]
     for c, d in code:
@@ -95,7 +95,7 @@ def pillow_patterns():
         print("  Pillow not installed (pip install Pillow)")
 
 
-# ── 3. torchvision transforms ─────────────────────────────────────────────────
+# -- 3. torchvision transforms -------------------------------------------------
 def torchvision_transforms():
     print("\n=== torchvision.transforms ===")
     print("  Standard training pipeline for PyTorch models:")
@@ -108,7 +108,7 @@ def torchvision_transforms():
         T.RandomHorizontalFlip(p=0.5),
         T.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
         T.RandAugment(num_ops=2, magnitude=9),
-        T.ToTensor(),           # PIL/numpy → float32 [0,1] (C, H, W)
+        T.ToTensor(),           # PIL/numpy -> float32 [0,1] (C, H, W)
         T.Normalize(mean=[0.485, 0.456, 0.406],    # ImageNet mean
                     std =[0.229, 0.224, 0.225]),    # ImageNet std
     ])
@@ -135,12 +135,12 @@ def torchvision_transforms():
         from PIL import Image
         pil = Image.fromarray(arr)
         tensor = t(pil)
-        print(f"  ToTensor: PIL {arr.shape} → tensor {tuple(tensor.shape)}  dtype={tensor.dtype}")
+        print(f"  ToTensor: PIL {arr.shape} -> tensor {tuple(tensor.shape)}  dtype={tensor.dtype}")
     except ImportError:
         print("  torchvision not installed (pip install torchvision)")
 
 
-# ── 4. Albumentations ────────────────────────────────────────────────────────
+# -- 4. Albumentations --------------------------------------------------------
 def albumentations_overview():
     print("\n=== Albumentations ===")
     print("  Fast, flexible, albumentations.ai — for segmentation/detection")
@@ -171,12 +171,12 @@ def albumentations_overview():
         arr = make_image(64, 64)
         t = A.Compose([A.HorizontalFlip(p=1.0), A.Resize(32, 32)])
         out = t(image=arr)["image"]
-        print(f"\n  albumentations demo: {arr.shape} → {out.shape}")
+        print(f"\n  albumentations demo: {arr.shape} -> {out.shape}")
     except ImportError:
         print("\n  albumentations not installed (pip install albumentations)")
 
 
-# ── 5. TIMM (PyTorch Image Models) ───────────────────────────────────────────
+# -- 5. TIMM (PyTorch Image Models) -------------------------------------------
 def timm_overview():
     print("\n=== TIMM (timm.fast.ai) ===")
     print("  Collection of 700+ pretrained image models")
@@ -216,7 +216,7 @@ def timm_overview():
         print("\n  TIMM not installed (pip install timm)")
 
 
-# ── 6. Detection / segmentation frameworks ───────────────────────────────────
+# -- 6. Detection / segmentation frameworks -----------------------------------
 def detection_frameworks():
     print("\n=== Detection & Segmentation Frameworks ===")
     frameworks = [

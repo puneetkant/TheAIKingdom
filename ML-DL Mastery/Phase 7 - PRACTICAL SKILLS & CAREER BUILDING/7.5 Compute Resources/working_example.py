@@ -9,7 +9,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_compute")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. GPU overview ───────────────────────────────────────────────────────────
+# -- 1. GPU overview -----------------------------------------------------------
 def gpu_overview():
     print("=== Compute Resources for ML ===")
     print()
@@ -31,7 +31,7 @@ def gpu_overview():
         print(f"  {name:<14} {vram:<8} {tflops:<8} {bw:<10} {nv:<8} {cost}")
 
 
-# ── 2. Cloud platforms ────────────────────────────────────────────────────────
+# -- 2. Cloud platforms --------------------------------------------------------
 def cloud_platforms():
     print("\n=== Cloud Compute Platforms ===")
     print()
@@ -52,7 +52,7 @@ def cloud_platforms():
         print(f"  {p:<18} {d}")
 
 
-# ── 3. Free resources ─────────────────────────────────────────────────────────
+# -- 3. Free resources ---------------------------------------------------------
 def free_resources():
     print("\n=== Free Compute Resources ===")
     print()
@@ -82,7 +82,7 @@ def free_resources():
         print(f"  • {t}")
 
 
-# ── 4. Cost optimisation ──────────────────────────────────────────────────────
+# -- 4. Cost optimisation ------------------------------------------------------
 def cost_optimisation():
     print("\n=== Cost Optimisation Strategies ===")
     print()

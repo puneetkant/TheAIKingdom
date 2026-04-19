@@ -10,7 +10,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_ethics")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Principles overview ────────────────────────────────────────────────────
+# -- 1. Principles overview ----------------------------------------------------
 def ethics_overview():
     print("=== Ethics and Responsible AI ===")
     print()
@@ -28,7 +28,7 @@ def ethics_overview():
         print(f"  {p:<18} {d}")
 
 
-# ── 2. Fairness metrics ───────────────────────────────────────────────────────
+# -- 2. Fairness metrics -------------------------------------------------------
 def fairness_metrics():
     print("\n=== Fairness Metrics Demo ===")
     print()
@@ -59,7 +59,7 @@ def fairness_metrics():
     acc_B, appr_B, tpr_B, fpr_B = metrics(group_B_y, group_B_pred)
 
     print(f"  {'Metric':<22} {'Group A':>10} {'Group B':>10} {'Ratio':>10}")
-    print(f"  {'─'*55}")
+    print(f"  {'-'*55}")
     for name, vA, vB in [
         ("Accuracy",          acc_A,  acc_B),
         ("Approval rate",     appr_A, appr_B),
@@ -81,7 +81,7 @@ def fairness_metrics():
         print(f"  {d:<26} {desc}")
 
 
-# ── 3. Bias sources and mitigations ──────────────────────────────────────────
+# -- 3. Bias sources and mitigations ------------------------------------------
 def bias_sources():
     print("\n=== Bias Sources and Mitigations ===")
     print()
@@ -109,7 +109,7 @@ def bias_sources():
         print(f"  {m:<18} {d}")
 
 
-# ── 4. Privacy and data governance ───────────────────────────────────────────
+# -- 4. Privacy and data governance -------------------------------------------
 def privacy_and_governance():
     print("\n=== Privacy and Data Governance ===")
     print()
@@ -137,7 +137,7 @@ def privacy_and_governance():
         print(f"  {r:<26} {d}")
 
 
-# ── 5. Environmental impact ───────────────────────────────────────────────────
+# -- 5. Environmental impact ---------------------------------------------------
 def environmental_impact():
     print("\n=== Environmental Impact of AI ===")
     print()

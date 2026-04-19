@@ -26,7 +26,7 @@ def demo_numerical_derivative():
         # Central difference: more accurate than forward
         df_num = (f(x0 + h) - f(x0 - h)) / (2 * h)
         df_exact = df_true(x0)
-        print(f"  h={h:.0e}: f'(1) ≈ {df_num:.8f}  err={abs(df_num - df_exact):.2e}")
+        print(f"  h={h:.0e}: f'(1) ~= {df_num:.8f}  err={abs(df_num - df_exact):.2e}")
 
 def demo_chain_rule():
     print("\n=== Chain Rule Verification ===")
@@ -44,7 +44,7 @@ def demo_chain_rule():
 
 def demo_taylor_series():
     print("\n=== Taylor Series Approximation ===")
-    # sin(x) ≈ x - x^3/6 + x^5/120 - x^7/5040
+    # sin(x) ~= x - x^3/6 + x^5/120 - x^7/5040
     x = np.linspace(-np.pi, np.pi, 300)
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.plot(x, np.sin(x), "k", lw=2, label="sin(x)")
@@ -69,8 +69,8 @@ def demo_gradient_descent_1d():
         x = x - lr * df(x)
         path.append(x)
 
-    print(f"  Minimum at x ≈ {path[-1]:.6f}  (true: 3.0)")
-    print(f"  f(x*) ≈ {f(path[-1]):.6f}  (true: 2.0)")
+    print(f"  Minimum at x ~= {path[-1]:.6f}  (true: 3.0)")
+    print(f"  f(x*) ~= {f(path[-1]):.6f}  (true: 2.0)")
 
     xs = np.linspace(-1, 6, 200)
     fig, axes = plt.subplots(1, 2, figsize=(10, 4))

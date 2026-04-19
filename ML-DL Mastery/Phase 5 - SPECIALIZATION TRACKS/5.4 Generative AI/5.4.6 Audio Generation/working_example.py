@@ -12,7 +12,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_audio_gen")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Audio fundamentals ─────────────────────────────────────────────────────
+# -- 1. Audio fundamentals -----------------------------------------------------
 def audio_fundamentals():
     print("=== Audio Fundamentals ===")
     SR = 22050  # sample rate
@@ -49,7 +49,7 @@ def audio_fundamentals():
     print()
     print("  Mel frequency scale:")
     for hz in [100, 500, 1000, 2000, 4000, 8000]:
-        print(f"    {hz:>5} Hz → {hz_to_mel(hz):.1f} mel")
+        print(f"    {hz:>5} Hz -> {hz_to_mel(hz):.1f} mel")
 
     print()
     print("  Audio representations:")
@@ -77,20 +77,20 @@ def audio_fundamentals():
     print(f"\n  Audio basics plot: {path}")
 
 
-# ── 2. Text-to-Speech (TTS) architectures ────────────────────────────────────
+# -- 2. Text-to-Speech (TTS) architectures ------------------------------------
 def tts_architectures():
     print("\n=== Text-to-Speech (TTS) Architectures ===")
     print()
     print("  Classic pipeline:")
-    print("    Text → Text Preprocessing → Acoustic Model → Vocoder → Audio")
+    print("    Text -> Text Preprocessing -> Acoustic Model -> Vocoder -> Audio")
     print()
-    print("  Acoustic model: text/phonemes → mel-spectrogram")
-    print("  Vocoder: mel-spectrogram → waveform")
+    print("  Acoustic model: text/phonemes -> mel-spectrogram")
+    print("  Vocoder: mel-spectrogram -> waveform")
     print()
 
     models = [
         ("WaveNet",      2016, "Autoregressive; 16kHz; gold standard; slow"),
-        ("Tacotron",     2017, "Seq2Seq; attention; mel output → Griffin-Lim"),
+        ("Tacotron",     2017, "Seq2Seq; attention; mel output -> Griffin-Lim"),
         ("Tacotron 2",   2018, "Tacotron + WaveNet vocoder; natural speech"),
         ("FastSpeech",   2019, "Non-autoregressive; duration predictor; fast"),
         ("FastSpeech 2", 2020, "+ pitch, energy; more expressive"),
@@ -101,18 +101,18 @@ def tts_architectures():
         ("ElevenLabs",   2024, "Commercial; voice cloning; multilingual"),
     ]
     print(f"  {'Model':<18} {'Year'} {'Notes'}")
-    print(f"  {'─'*18} {'─'*4} {'─'*50}")
+    print(f"  {'-'*18} {'-'*4} {'-'*50}")
     for m, y, d in models:
         print(f"  {m:<18} {y}  {d}")
 
 
-# ── 3. Vocoders ───────────────────────────────────────────────────────────────
+# -- 3. Vocoders ---------------------------------------------------------------
 def vocoders():
     print("\n=== Neural Vocoders ===")
-    print("  Convert mel-spectrogram → waveform")
+    print("  Convert mel-spectrogram -> waveform")
     print()
     vocoders_list = [
-        ("WaveNet",      "Autoregressive; 22kHz; 750ms/s on GPU → slow"),
+        ("WaveNet",      "Autoregressive; 22kHz; 750ms/s on GPU -> slow"),
         ("WaveGlow",     "Normalising flow; fast; good quality; 2019"),
         ("WaveGrad",     "Diffusion vocoder; controllable quality/speed"),
         ("HiFi-GAN",     "GAN-based; very fast; high quality; default for TTS"),
@@ -132,7 +132,7 @@ def vocoders():
     print("    Feature matching loss + mel spectrogram loss + adversarial loss")
 
 
-# ── 4. Music generation ───────────────────────────────────────────────────────
+# -- 4. Music generation -------------------------------------------------------
 def music_generation():
     print("\n=== Music Generation Models ===")
     models = [
@@ -146,35 +146,35 @@ def music_generation():
         ("Stable Audio",  2024, "Stability AI; 44kHz; stereo; up to 3 min"),
     ]
     print(f"  {'Model':<16} {'Year'} {'Notes'}")
-    print(f"  {'─'*16} {'─'*4} {'─'*50}")
+    print(f"  {'-'*16} {'-'*4} {'-'*50}")
     for m, y, d in models:
         print(f"  {m:<16} {y}  {d}")
     print()
     print("  Typical pipeline:")
-    print("    Text → Language model embedding → Audio token LM → EnCodec decode → Waveform")
+    print("    Text -> Language model embedding -> Audio token LM -> EnCodec decode -> Waveform")
 
 
-# ── 5. Voice cloning demo (conceptual) ───────────────────────────────────────
+# -- 5. Voice cloning demo (conceptual) ---------------------------------------
 def voice_cloning():
     print("\n=== Voice Cloning ===")
     print("  Goal: synthesise speech in target speaker's voice")
     print("         from just a few seconds of reference audio")
     print()
     print("  Speaker encoding:")
-    print("    Reference audio → speaker embedding (d-vector or x-vector)")
+    print("    Reference audio -> speaker embedding (d-vector or x-vector)")
     print("    Speaker embedding conditions acoustic model and vocoder")
     print()
     print("  Zero-shot (from one utterance):")
-    print("    3-5 seconds reference → embedding → condition TTS")
+    print("    3-5 seconds reference -> embedding -> condition TTS")
     print("    YourTTS, XTTS, ElevenLabs, VALL-E")
     print()
     print("  VALL-E (Microsoft 2023):")
-    print("    3 second prompt → in-context learning in codec LM")
+    print("    3 second prompt -> in-context learning in codec LM")
     print("    Acoustic tokens at 75 Hz from EnCodec")
     print("    Multi-level codebooks: coarse (AR) + fine (NAR)")
     print()
     print("  Codec LM approach (EnCodec tokens):")
-    print("    Encode speech → discrete tokens (8 codebooks × 75Hz)")
+    print("    Encode speech -> discrete tokens (8 codebooks x 75Hz)")
     print("    Train LM on token sequences")
     print("    Condition on speaker embedding + text phonemes")
     print()

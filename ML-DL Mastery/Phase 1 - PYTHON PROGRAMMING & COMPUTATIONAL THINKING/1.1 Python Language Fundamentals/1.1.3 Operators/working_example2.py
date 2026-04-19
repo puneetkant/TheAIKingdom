@@ -19,7 +19,7 @@ DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 
-# ── 1. Custom Vector with operator overloading ────────────────────────────────
+# -- 1. Custom Vector with operator overloading --------------------------------
 class Vector:
     """2D vector with full operator overloading."""
     def __init__(self, x: float, y: float):
@@ -58,7 +58,7 @@ def demo_vector_operators():
     print(f"  Sorted by |v|: {sorted_v}")
 
 
-# ── 2. Bitwise operators — feature flags ─────────────────────────────────────
+# -- 2. Bitwise operators — feature flags -------------------------------------
 def demo_bitwise_flags():
     print("\n=== Bitwise Operators — Feature Flags ===")
     # Imagine ML model features encoded as bitmask
@@ -84,7 +84,7 @@ def demo_bitwise_flags():
     print(f"  Right shift : model_b >> 1 = {model_b >> 1:04b} = {model_b >> 1}")
 
 
-# ── 3. Download Boston housing → operator-heavy data analysis ─────────────────
+# -- 3. Download Boston housing -> operator-heavy data analysis -----------------
 HOUSING_URL = (
     "https://huggingface.co/datasets/scikit-learn/california-housing/resolve/main/"
     "cal_housing.csv"
@@ -98,9 +98,9 @@ def download_housing() -> Path:
     print("\nDownloading California Housing dataset …")
     try:
         urllib.request.urlretrieve(HOUSING_URL, dest)
-        print(f"  ✓ {dest.stat().st_size // 1024} KB saved")
+        print(f"  [OK] {dest.stat().st_size // 1024} KB saved")
     except Exception as e:
-        print(f"  ✗ Download failed ({e}). Using synthetic data.")
+        print(f"  [X] Download failed ({e}). Using synthetic data.")
         import random
         random.seed(42)
         lines = ["MedInc,HouseAge,AveRooms,AveBedrms,Population,AveOccup,Latitude,Longitude,MedHouseVal"]
@@ -158,7 +158,7 @@ def demo_operator_data_analysis(path: Path) -> None:
               f"Rooms={r['AveRooms']:.1f}")
 
 
-# ── 4. Operator precedence demo ────────────────────────────────────────────────
+# -- 4. Operator precedence demo ------------------------------------------------
 def demo_precedence():
     print("\n=== Operator Precedence ===")
     examples = [

@@ -6,55 +6,55 @@ Rosenblatt perceptron, multi-input neuron computation, and linear separability.
 import numpy as np
 
 
-# ── 1. Biological inspiration ─────────────────────────────────────────────────
+# -- 1. Biological inspiration -------------------------------------------------
 def biological_inspiration():
     print("=== Biological Inspiration ===")
     print("  Biological neuron:")
-    print("    Dendrites    → receive signals (inputs)")
-    print("    Soma (body)  → integrate signals")
-    print("    Axon         → transmit output to other neurons")
-    print("    Synapse      → connection strength (= weight)")
+    print("    Dendrites    -> receive signals (inputs)")
+    print("    Soma (body)  -> integrate signals")
+    print("    Axon         -> transmit output to other neurons")
+    print("    Synapse      -> connection strength (= weight)")
     print()
     print("  Mathematical abstraction:")
-    print("    z = w₁x₁ + w₂x₂ + ... + wₙxₙ + b  (weighted sum + bias)")
+    print("    z = w1x1 + w2x2 + ... + wnxn + b  (weighted sum + bias)")
     print("    a = f(z)                              (activation function)")
 
 
-# ── 2. McCulloch-Pitts neuron ─────────────────────────────────────────────────
+# -- 2. McCulloch-Pitts neuron -------------------------------------------------
 def mcculloch_pitts():
     print("\n=== McCulloch-Pitts Neuron (1943) ===")
     print("  Binary inputs, binary output, threshold activation")
-    print("  y = 1 if Σwᵢxᵢ ≥ θ else 0")
+    print("  y = 1 if Sigmawᵢxᵢ >= theta else 0")
 
     def mp_neuron(x, w, theta):
         return int(np.dot(x, w) >= theta)
 
     # AND gate
-    print("\n  AND gate (w=[1,1], θ=2):")
+    print("\n  AND gate (w=[1,1], theta=2):")
     for x in [(0,0),(0,1),(1,0),(1,1)]:
         y = mp_neuron(x, [1,1], 2)
         print(f"    x={x}: y={y}")
 
     # OR gate
-    print("\n  OR gate (w=[1,1], θ=1):")
+    print("\n  OR gate (w=[1,1], theta=1):")
     for x in [(0,0),(0,1),(1,0),(1,1)]:
         y = mp_neuron(x, [1,1], 1)
         print(f"    x={x}: y={y}")
 
     # NOT gate
-    print("\n  NOT gate (w=[-1], θ=0):")
+    print("\n  NOT gate (w=[-1], theta=0):")
     for x in [0, 1]:
         y = mp_neuron([x], [-1], 0)
         print(f"    x={x}: y={y}")
 
-    print("\n  XOR is NOT linearly separable → single MP neuron fails!")
+    print("\n  XOR is NOT linearly separable -> single MP neuron fails!")
 
 
-# ── 3. Rosenblatt Perceptron ──────────────────────────────────────────────────
+# -- 3. Rosenblatt Perceptron --------------------------------------------------
 def rosenblatt_perceptron():
     print("\n=== Rosenblatt Perceptron (1958) ===")
     print("  First learnable neural model")
-    print("  Update rule: w ← w + η(y - ŷ)x   b ← b + η(y - ŷ)")
+    print("  Update rule: w <- w + eta(y - ŷ)x   b <- b + eta(y - ŷ)")
 
     class Perceptron:
         def __init__(self, lr=0.1, max_iter=100):
@@ -101,14 +101,14 @@ def rosenblatt_perceptron():
     p2.fit(X, y_xor)
     preds2 = p2.predict(X)
     print(f"\n  XOR gate ({len(p2.errors_)} epochs, never 0 errors): preds={preds2}  target={y_xor}")
-    print(f"  Not linearly separable → perceptron cannot converge")
+    print(f"  Not linearly separable -> perceptron cannot converge")
 
 
-# ── 4. Multi-input neuron computation ────────────────────────────────────────
+# -- 4. Multi-input neuron computation ----------------------------------------
 def neuron_computation():
     print("\n=== Single Neuron Forward Pass ===")
-    print("  z = Σ wᵢxᵢ + b = w·x + b")
-    print("  a = σ(z) = 1/(1+e^{-z})  (sigmoid)")
+    print("  z = Sigma wᵢxᵢ + b = w·x + b")
+    print("  a = sigma(z) = 1/(1+e^{-z})  (sigmoid)")
 
     rng = np.random.default_rng(0)
     n   = 5   # 5 inputs
@@ -125,12 +125,12 @@ def neuron_computation():
     print(f"  Weights w: {w.round(4)}")
     print(f"  Bias b:    {b}")
     print(f"  z = w·x+b = {z:.4f}")
-    print(f"  σ(z)  = {a:.4f}")
+    print(f"  sigma(z)  = {a:.4f}")
     print(f"  ReLU(z)= {a_r:.4f}")
     print(f"  tanh(z)= {a_t:.4f}")
 
 
-# ── 5. Linear separability ───────────────────────────────────────────────────
+# -- 5. Linear separability ---------------------------------------------------
 def linear_separability():
     print("\n=== Linear Separability ===")
     print("  A dataset is linearly separable if a hyperplane can divide classes")
@@ -147,13 +147,13 @@ def linear_separability():
         print(f"  {name:<6}: {'Linearly separable' if sep else 'NOT linearly separable'}")
 
 
-# ── 6. From perceptron to MLP ─────────────────────────────────────────────────
+# -- 6. From perceptron to MLP -------------------------------------------------
 def to_mlp():
     print("\n=== From Perceptron to Multi-Layer Perceptron ===")
     print("  Solution to XOR and non-linear problems: add hidden layer(s)")
     print()
     print("  MLP structure:")
-    print("    Input layer  →  Hidden layer(s)  →  Output layer")
+    print("    Input layer  ->  Hidden layer(s)  ->  Output layer")
     print("    Each hidden neuron: aₕ = f(Wₕ·x + bₕ)")
     print("    Output neuron:      ŷ  = f(Wₒ·aₕ + bₒ)")
     print()

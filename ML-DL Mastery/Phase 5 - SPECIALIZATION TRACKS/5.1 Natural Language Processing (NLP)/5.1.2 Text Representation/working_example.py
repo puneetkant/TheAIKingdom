@@ -23,7 +23,7 @@ def tokenise(text):
     return re.sub(r"[^\w\s]", "", text.lower()).split()
 
 
-# ── 1. Bag of Words ───────────────────────────────────────────────────────────
+# -- 1. Bag of Words -----------------------------------------------------------
 def bag_of_words():
     print("=== Bag of Words (BoW) ===")
     tokens_list = [tokenise(d) for d in CORPUS]
@@ -40,7 +40,7 @@ def bag_of_words():
             bow[di, v_idx[t]] += 1
 
     print(f"  {'Doc':<45} {'a':>2} {'cat':>3} {'chased':>6} {'dog':>3} {'floor':>5} ...")
-    print(f"  {'─'*45} {'─'*2} {'─'*3} {'─'*6} {'─'*3} {'─'*5}")
+    print(f"  {'-'*45} {'-'*2} {'-'*3} {'-'*6} {'-'*3} {'-'*5}")
     for di, doc in enumerate(CORPUS):
         row = bow[di, [v_idx[w] for w in ["a", "cat", "chased", "dog", "floor"]]]
         print(f"  {doc:<45} {row[0]:>2} {row[1]:>3} {row[2]:>6} {row[3]:>3} {row[4]:>5}")
@@ -53,7 +53,7 @@ def bag_of_words():
         print(f"    [{i}] {sim[0, i]:.4f}  {d}")
 
 
-# ── 2. TF-IDF from scratch ────────────────────────────────────────────────────
+# -- 2. TF-IDF from scratch ----------------------------------------------------
 def tfidf_scratch():
     print("\n=== TF-IDF (from scratch) ===")
     N = len(CORPUS)
@@ -91,7 +91,7 @@ def tfidf_scratch():
     print(f"  Scratch cosine (doc 0 vs all): {[f'{s:.3f}' for s in sim]}")
 
 
-# ── 3. N-grams ────────────────────────────────────────────────────────────────
+# -- 3. N-grams ----------------------------------------------------------------
 def ngrams_demo():
     print("\n=== N-grams ===")
     text = "the cat sat on the mat"
@@ -118,7 +118,7 @@ def ngrams_demo():
     print(f"  First 10 features: {features}")
 
 
-# ── 4. Co-occurrence matrix ───────────────────────────────────────────────────
+# -- 4. Co-occurrence matrix ---------------------------------------------------
 def cooccurrence_matrix():
     print("\n=== Co-occurrence Matrix ===")
     window = 2
@@ -148,7 +148,7 @@ def cooccurrence_matrix():
         print(f"  {word:>6} " + " ".join(f"{int(v):>6}" for v in row))
 
 
-# ── 5. PMI (Pointwise Mutual Information) ────────────────────────────────────
+# -- 5. PMI (Pointwise Mutual Information) ------------------------------------
 def pmi_demo():
     print("\n=== Pointwise Mutual Information (PMI) ===")
     print("  PMI(w1, w2) = log P(w1, w2) / (P(w1) · P(w2))")
@@ -176,7 +176,7 @@ def pmi_demo():
     # PPMI for a few pairs
     pairs = [("cat", "dog"), ("cat", "mat"), ("cat", "sat"), ("dog", "mat")]
     print(f"  {'Pair':<18} PMI   PPMI")
-    print(f"  {'─'*18} {'─'*5} {'─'*5}")
+    print(f"  {'-'*18} {'-'*5} {'-'*5}")
     for w1, w2 in pairs:
         p_w1 = word_cnt[w1] / N_total
         p_w2 = word_cnt[w2] / N_total

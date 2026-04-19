@@ -72,7 +72,7 @@ def demo_target_encoding():
     print("\n=== Target Encoding (manual mean encoding) ===")
     np.random.seed(42)
     zones = np.random.choice(["urban", "suburban", "rural"], 1000)
-    y = np.where(zones=="urban", 500000, np.where(zones=="suburban", 300000, 150000))
+    y = np.where(zones=="urban", 500000.0, np.where(zones=="suburban", 300000.0, 150000.0))
     y += np.random.normal(0, 20000, 1000)
 
     # Train split for target encoding (to avoid leakage)

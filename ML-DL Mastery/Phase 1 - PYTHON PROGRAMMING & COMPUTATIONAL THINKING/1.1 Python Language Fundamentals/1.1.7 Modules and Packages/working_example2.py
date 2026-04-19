@@ -20,18 +20,19 @@ from pathlib import Path
 BASE = Path(__file__).parent
 
 
-# ── 1. Simulate a mini ml package ─────────────────────────────────────────────
+# -- 1. Simulate a mini ml package ---------------------------------------------
 def create_mini_package() -> None:
     """Write a tiny `mlutils` package to disk to demo package structure."""
     pkg = BASE / "mlutils"
     pkg.mkdir(exist_ok=True)
 
     (pkg / "__init__.py").write_text(
-        '"""mlutils — a demo ML utilities package."""\n'
+        '"""mlutils - a demo ML utilities package."""\n'
         "from .metrics import accuracy, f1\n"
         "from .preprocessing import normalize, standardize\n"
         "__all__ = ['accuracy', 'f1', 'normalize', 'standardize']\n"
-        "__version__ = '0.1.0'\n"
+        "__version__ = '0.1.0'\n",
+        encoding='utf-8',
     )
 
     (pkg / "metrics.py").write_text(
@@ -64,7 +65,7 @@ def create_mini_package() -> None:
         print(f"  {indent}{f.name}")
 
 
-# ── 2. Import the mini package ─────────────────────────────────────────────────
+# -- 2. Import the mini package -------------------------------------------------
 def demo_package_import() -> None:
     print("\n=== Importing mlutils Package ===")
     # Add BASE to sys.path so `mlutils` is findable
@@ -86,7 +87,7 @@ def demo_package_import() -> None:
     print(f"  standardize([1..5])  : {[round(x, 3) for x in mlutils.standardize(data)]}")
 
 
-# ── 3. Introspection ───────────────────────────────────────────────────────────
+# -- 3. Introspection -----------------------------------------------------------
 def demo_introspection() -> None:
     print("\n=== Module Introspection ===")
     if str(BASE) not in sys.path:
@@ -105,7 +106,7 @@ def demo_introspection() -> None:
     print(f"  Public names: {public}")
 
 
-# ── 4. Dynamic import with importlib ──────────────────────────────────────────
+# -- 4. Dynamic import with importlib ------------------------------------------
 def demo_dynamic_import() -> None:
     print("\n=== Dynamic Import (importlib) ===")
     module_name = "mlutils.preprocessing"
@@ -123,7 +124,7 @@ def demo_dynamic_import() -> None:
     print(f"  Reloaded {mod.__name__}")
 
 
-# ── 5. Standard library highlights ────────────────────────────────────────────
+# -- 5. Standard library highlights --------------------------------------------
 def demo_stdlib_highlights() -> None:
     print("\n=== Useful Standard Library Modules ===")
     modules = {

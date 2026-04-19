@@ -73,18 +73,18 @@ def demo_pseudo_inverse(X):
     print("\n=== Moore-Penrose Pseudo-Inverse ===")
     A = X[:10, :4]        # 10×4 overdetermined
     b = X[:10, 0]
-    # A⁺ = V Σ⁻¹ U^T
+    # A⁺ = V Sigma^-1 U^T
     Ap = np.linalg.pinv(A)
     w  = Ap @ b
     print(f"  w = {w.round(4)}")
-    print(f"  Aw-b ≈ 0: {np.allclose(A @ w, b, atol=1e-6)}")
+    print(f"  Aw-b ~= 0: {np.allclose(A @ w, b, atol=1e-6)}")
 
 def demo_condition():
     print("\n=== Condition Number via SVD ===")
     for name, A in [("Well-conditioned", np.eye(4)), ("Ill-conditioned", np.array([[1.,1.],[1.,1.+1e-9]]))]:
         _, s, _ = np.linalg.svd(A)
         cond = s[0] / (s[-1] + 1e-15)
-        print(f"  {name}: σ_max/σ_min = {cond:.3e}")
+        print(f"  {name}: sigma_max/sigma_min = {cond:.3e}")
 
 if __name__ == "__main__":
     X = download()

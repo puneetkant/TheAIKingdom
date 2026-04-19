@@ -51,7 +51,7 @@ def demo():
     betas_cosine = cosine_schedule(T)
 
     print(f"  Image shape: {x0.shape}")
-    print(f"  T={T}, β_start={betas_linear[0]:.5f}, β_end={betas_linear[-1]:.4f}")
+    print(f"  T={T}, beta_start={betas_linear[0]:.5f}, beta_end={betas_linear[-1]:.4f}")
 
     alpha_bar_l = np.cumprod(1 - betas_linear)
     alpha_bar_c = np.cumprod(1 - betas_cosine)
@@ -75,10 +75,10 @@ def demo():
     axes[1][0].legend()
     axes[1][0].grid(True, alpha=0.3)
 
-    # β schedules
-    axes[1][1].plot(t_range, betas_linear, label="Linear β", color="steelblue")
-    axes[1][1].plot(t_range, betas_cosine, label="Cosine β", color="tomato")
-    axes[1][1].set(xlabel="Timestep", ylabel="β_t", title="Beta Schedules")
+    # beta schedules
+    axes[1][1].plot(t_range, betas_linear, label="Linear beta", color="steelblue")
+    axes[1][1].plot(t_range, betas_cosine, label="Cosine beta", color="tomato")
+    axes[1][1].set(xlabel="Timestep", ylabel="beta_t", title="Beta Schedules")
     axes[1][1].legend()
     axes[1][1].grid(True, alpha=0.3)
 

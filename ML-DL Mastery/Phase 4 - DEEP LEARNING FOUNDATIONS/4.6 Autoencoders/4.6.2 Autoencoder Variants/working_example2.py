@@ -57,19 +57,19 @@ def demo():
     X_tr_noisy = X_tr + rng.standard_normal(X_tr.shape) * noise_std
     X_te_noisy  = X_te  + rng.standard_normal(X_te.shape) * noise_std
 
-    # Standard AE (clean→clean)
+    # Standard AE (clean->clean)
     l_std, p_std = train_ae(X_tr, X_tr, epochs=150)
-    # Denoising AE (noisy input → clean target)
+    # Denoising AE (noisy input -> clean target)
     l_dae, p_dae = train_ae(X_tr, X_tr_noisy, epochs=150)
 
     mse_std = np.mean((infer_ae(X_te, p_std) - X_te)**2)
     mse_dae_noisy = np.mean((infer_ae(X_te_noisy, p_dae) - X_te)**2)
     mse_std_noisy = np.mean((infer_ae(X_te_noisy, p_std) - X_te)**2)
 
-    print(f"  Standard AE (clean→clean test):       {mse_std:.4f}")
-    print(f"  Standard AE (noisy input → target):   {mse_std_noisy:.4f}")
-    print(f"  Denoising AE (noisy input → target):  {mse_dae_noisy:.4f}")
-    print("  → DAE reconstructs clean signal better from noisy input")
+    print(f"  Standard AE (clean->clean test):       {mse_std:.4f}")
+    print(f"  Standard AE (noisy input -> target):   {mse_std_noisy:.4f}")
+    print(f"  Denoising AE (noisy input -> target):  {mse_dae_noisy:.4f}")
+    print("  -> DAE reconstructs clean signal better from noisy input")
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(l_std, label="Standard AE"); ax.plot(l_dae, label="Denoising AE")

@@ -14,7 +14,7 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Single layer forward pass ─────────────────────────────────────────────
+# -- 1. Single layer forward pass ---------------------------------------------
 def single_layer():
     print("=== Single Layer Forward Pass ===")
     print("  Z = X @ W + b    (linear transformation)")
@@ -34,16 +34,16 @@ def single_layer():
     print(f"  W shape:  {W.shape}  (in=3, out=2)")
     print(f"  b shape:  {b.shape}  (out=2)")
     print(f"  Z = X@W+b shape: {Z.shape}")
-    print(f"  A = σ(Z) shape:  {A.shape}")
+    print(f"  A = sigma(Z) shape:  {A.shape}")
     print()
     print(f"  Z[:2]:\n{Z[:2].round(4)}")
     print(f"  A[:2]:\n{A[:2].round(4)}")
 
 
-# ── 2. Multi-layer MLP forward pass ──────────────────────────────────────────
+# -- 2. Multi-layer MLP forward pass ------------------------------------------
 def mlp_forward():
     print("\n=== MLP Forward Pass (from scratch) ===")
-    print("  Architecture: 3 → 8 → 4 → 2 (binary output)")
+    print("  Architecture: 3 -> 8 -> 4 -> 2 (binary output)")
 
     class MLP:
         def __init__(self, layer_sizes, seed=0):
@@ -82,7 +82,7 @@ def mlp_forward():
     print(f"  Output (probs):\n{out.round(4)}")
 
 
-# ── 3. Vectorised batch computation ──────────────────────────────────────────
+# -- 3. Vectorised batch computation ------------------------------------------
 def batch_vs_single():
     print("\n=== Vectorised vs Loop Forward Pass ===")
     rng = np.random.default_rng(2)
@@ -112,7 +112,7 @@ def batch_vs_single():
     print(f"  Max abs diff:    {np.abs(Z_loop - Z_vec).max():.2e}  (should be ~0)")
 
 
-# ── 4. Computation graph ─────────────────────────────────────────────────────
+# -- 4. Computation graph -----------------------------------------------------
 def computation_graph():
     print("\n=== Computation Graph ===")
     print("  Forward pass builds a directed acyclic graph (DAG)")
@@ -120,17 +120,17 @@ def computation_graph():
     print()
     print("  Example: 2-layer net, one sample")
     print()
-    print("  x ─┐")
-    print("      ├─ Z1 = W1·x + b1 ─→ A1 = relu(Z1) ─┐")
-    print("  W1 ─┘                                      ├─ Z2 = W2·A1+b2 ─→ A2 = σ(Z2) ─→ L(A2,y)")
-    print("  b1 ─┘                                  W2 ─┘")
-    print("                                         b2 ─┘")
+    print("  x -+")
+    print("      ├- Z1 = W1·x + b1 --> A1 = relu(Z1) -+")
+    print("  W1 -+                                      ├- Z2 = W2·A1+b2 --> A2 = sigma(Z2) --> L(A2,y)")
+    print("  b1 -+                                  W2 -+")
+    print("                                         b2 -+")
     print()
     print("  Autograd frameworks (PyTorch, JAX) record this graph")
     print("  Backward pass traverses it in reverse to compute gradients")
 
 
-# ── 5. Complete classification forward pass ────────────────────────────────────
+# -- 5. Complete classification forward pass ------------------------------------
 def classification_example():
     print("\n=== Classification Example: Iris (3-class) ===")
     from sklearn.datasets import load_iris
@@ -147,7 +147,7 @@ def classification_example():
     d_in = X_tr.shape[1]  # 4 features
     K    = 3               # classes
 
-    # 4 → 8 → K architecture
+    # 4 -> 8 -> K architecture
     W1 = rng.standard_normal((d_in, 8)) * np.sqrt(2/d_in)
     b1 = np.zeros(8)
     W2 = rng.standard_normal((8, K)) * np.sqrt(2/8)

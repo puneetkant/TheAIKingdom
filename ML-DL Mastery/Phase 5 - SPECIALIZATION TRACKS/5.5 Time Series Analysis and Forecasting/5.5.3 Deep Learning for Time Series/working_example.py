@@ -17,7 +17,7 @@ def softmax(z):
     return e / e.sum(-1, keepdims=True)
 
 
-# ── Helper: generate dataset ──────────────────────────────────────────────────
+# -- Helper: generate dataset --------------------------------------------------
 def gen_dataset(T=500, lookback=24, horizon=12, seed=0):
     rng = np.random.default_rng(seed)
     t   = np.arange(T)
@@ -36,7 +36,7 @@ def gen_dataset(T=500, lookback=24, horizon=12, seed=0):
     return np.array(X), np.array(Y)
 
 
-# ── 1. LSTM for time series ───────────────────────────────────────────────────
+# -- 1. LSTM for time series ---------------------------------------------------
 class LSTMCell:
     """Single LSTM cell — numpy implementation."""
     def __init__(self, input_dim, hidden_dim, seed=0):
@@ -74,10 +74,10 @@ def lstm_demo():
     print("=== LSTM Time Series Forecasting ===")
     print()
     print("  LSTM gate equations:")
-    print("    f_t = σ(W_f·[h_{t-1}, x_t] + b_f)   — forget gate")
-    print("    i_t = σ(W_i·[h_{t-1}, x_t] + b_i)   — input gate")
+    print("    f_t = sigma(W_f·[h_{t-1}, x_t] + b_f)   — forget gate")
+    print("    i_t = sigma(W_i·[h_{t-1}, x_t] + b_i)   — input gate")
     print("    g_t = tanh(W_g·[h_{t-1}, x_t] + b_g) — cell gate")
-    print("    o_t = σ(W_o·[h_{t-1}, x_t] + b_o)   — output gate")
+    print("    o_t = sigma(W_o·[h_{t-1}, x_t] + b_o)   — output gate")
     print("    c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t")
     print("    h_t = o_t ⊙ tanh(c_t)")
     print()
@@ -121,13 +121,13 @@ def lstm_demo():
     print(f"  Test MSE: {test_mse:.4f}")
 
 
-# ── 2. 1D CNN for time series ─────────────────────────────────────────────────
+# -- 2. 1D CNN for time series -------------------------------------------------
 def cnn1d_demo():
     print("\n=== 1D-CNN Time Series Forecasting ===")
     print()
     print("  Causal 1D convolution: each output depends only on past inputs")
     print("  Dilated 1D conv: receptive field grows exponentially")
-    print("  WaveNet-style: d=1,2,4,8,... → large context window")
+    print("  WaveNet-style: d=1,2,4,8,... -> large context window")
     print()
 
     # Simple 1D convolution
@@ -154,10 +154,10 @@ def cnn1d_demo():
     print("    Stack of dilated causal convolutions + residual connections")
     print("    Receptive field = (k-1) * 2^{L-1} * n_stacks + 1")
     rf = (k-1) * (2**4 - 1) * 2 + 1
-    print(f"    k={k}, L=4 layers, 2 stacks → RF={rf}")
+    print(f"    k={k}, L=4 layers, 2 stacks -> RF={rf}")
 
 
-# ── 3. Transformer-based models ───────────────────────────────────────────────
+# -- 3. Transformer-based models -----------------------------------------------
 def transformer_ts():
     print("\n=== Transformer Models for Time Series ===")
     models = [
@@ -166,7 +166,7 @@ def transformer_ts():
         ("FEDformer",     2022, "Frequency-enhanced decomposed attention"),
         ("PatchTST",      2023, "Time series patching; channel-independent; SOTA"),
         ("iTransformer",  2024, "Inverted: variate tokens; multivariate focus"),
-        ("TimesNet",      2023, "1D→2D transformation; CNNs on 2D spectrum"),
+        ("TimesNet",      2023, "1D->2D transformation; CNNs on 2D spectrum"),
         ("N-BEATS",       2020, "Pure MLP; basis expansion; interpretable"),
         ("N-HiTS",        2022, "Multi-scale sampling + interpolation; SOTA"),
         ("TimesFM",       2024, "Google; foundation model; 200M params"),
@@ -174,7 +174,7 @@ def transformer_ts():
         ("Chronos",       2024, "Amazon; tokenised time series LM"),
     ]
     print(f"  {'Model':<14} {'Year'} {'Notes'}")
-    print(f"  {'─'*14} {'─'*4} {'─'*55}")
+    print(f"  {'-'*14} {'-'*4} {'-'*55}")
     for m, y, d in models:
         print(f"  {m:<14} {y}  {d}")
     print()
@@ -193,8 +193,8 @@ def transformer_ts():
     # N-BEATS overview
     print()
     print("  N-BEATS (Neural Basis Expansion Analysis):")
-    print("    Residual blocks: FC layers → backcast θ_b and forecast θ_f")
-    print("    Basis expansion: backcast = Σ θ_b · v_b(t)  (e.g. polynomials/Fourier)")
+    print("    Residual blocks: FC layers -> backcast theta_b and forecast theta_f")
+    print("    Basis expansion: backcast = Sigma theta_b · v_b(t)  (e.g. polynomials/Fourier)")
     print("    Stack: Trend stack (polynomial bases) + Seasonality stack (Fourier)")
     print("    Fully interpretable; no domain knowledge required")
 

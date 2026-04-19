@@ -12,17 +12,17 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output_diffusion")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# ── 1. Forward diffusion process ──────────────────────────────────────────────
+# -- 1. Forward diffusion process ----------------------------------------------
 def forward_process():
     print("=== DDPM Forward Process ===")
     print("  Ho et al. (2020)")
     print()
     print("  Gradually add Gaussian noise over T steps:")
-    print("    q(x_t | x_{t-1}) = N(x_t; √(1-β_t)·x_{t-1}, β_t·I)")
+    print("    q(x_t | x_{t-1}) = N(x_t; sqrt(1-beta_t)·x_{t-1}, beta_t·I)")
     print()
     print("  Closed form (from x_0 directly):")
-    print("    ᾱ_t = Π_{s=1}^t (1-β_s)   (cumulative product)")
-    print("    x_t = √ᾱ_t · x_0 + √(1-ᾱ_t) · ε,   ε ~ N(0,I)")
+    print("    ᾱ_t = Pi_{s=1}^t (1-beta_s)   (cumulative product)")
+    print("    x_t = sqrtᾱ_t · x_0 + sqrt(1-ᾱ_t) · epsilon,   epsilon ~ N(0,I)")
     print()
 
     T    = 1000
@@ -32,7 +32,7 @@ def forward_process():
     alpha_bars = np.cumprod(alphas)
 
     # Key schedule stats
-    print(f"  Noise schedule: T={T}, β ∈ [{beta_min:.4f}, {beta_max:.4f}]")
+    print(f"  Noise schedule: T={T}, beta in [{beta_min:.4f}, {beta_max:.4f}]")
     for t_idx in [0, 99, 249, 499, 749, 999]:
         ab  = alpha_bars[t_idx]
         snr = ab / (1 - ab)
@@ -68,20 +68,20 @@ def forward_process():
     print(f"\n  Noise schedule plot: {path}")
 
 
-# ── 2. Reverse process / denoising ────────────────────────────────────────────
+# -- 2. Reverse process / denoising --------------------------------------------
 def reverse_process():
     print("\n=== Reverse Process (Denoising) ===")
-    print("  Goal: learn p_θ(x_{t-1}|x_t) to reverse forward process")
+    print("  Goal: learn p_theta(x_{t-1}|x_t) to reverse forward process")
     print()
     print("  Parameterisation (noise prediction):")
-    print("    ε_θ(x_t, t)  ← predicted noise")
+    print("    epsilon_theta(x_t, t)  <- predicted noise")
     print()
     print("  Training objective (simplified ELBO):")
-    print("    L_simple = E_{t,x_0,ε}[||ε - ε_θ(x_t, t)||²]")
+    print("    L_simple = E_{t,x_0,epsilon}[||epsilon - epsilon_theta(x_t, t)||²]")
     print()
     print("  Reverse sampling step (DDPM):")
-    print("    x_{t-1} = (1/√α_t) · (x_t - β_t/√(1-ᾱ_t) · ε_θ) + σ_t·z")
-    print("    σ_t = √β_t  or  √(β̃_t)  where β̃_t = (1-ᾱ_{t-1})/(1-ᾱ_t)·β_t")
+    print("    x_{t-1} = (1/sqrtalpha_t) · (x_t - beta_t/sqrt(1-ᾱ_t) · epsilon_theta) + sigma_t·z")
+    print("    sigma_t = sqrtbeta_t  or  sqrt(beta_t)  where beta_t = (1-ᾱ_{t-1})/(1-ᾱ_t)·beta_t")
     print()
 
     # Simulate reverse step
@@ -105,48 +105,48 @@ def reverse_process():
         sigma = np.sqrt(b)
         x_curr = mu + sigma * rng.standard_normal(4)
 
-    print(f"  After 5 reverse steps: x ≈ {x_curr.round(3)} (should approach 0)")
+    print(f"  After 5 reverse steps: x ~= {x_curr.round(3)} (should approach 0)")
 
 
-# ── 3. DDIM (fast sampling) ───────────────────────────────────────────────────
+# -- 3. DDIM (fast sampling) ---------------------------------------------------
 def ddim_overview():
     print("\n=== DDIM (Denoising Diffusion Implicit Models) ===")
     print("  Song et al. (2020)")
     print()
-    print("  Non-Markovian forward process → deterministic reverse ODE")
+    print("  Non-Markovian forward process -> deterministic reverse ODE")
     print()
-    print("  DDIM update (η=0: deterministic):")
-    print("    x_{t-1} = √ᾱ_{t-1} · (x_t - √(1-ᾱ_t)·ε_θ) / √ᾱ_t")
-    print("             + √(1-ᾱ_{t-1} - σ_t²) · ε_θ  +  σ_t·ε")
-    print("    σ_t = η · √((1-ᾱ_{t-1})/(1-ᾱ_t)) · √(1 - ᾱ_t/ᾱ_{t-1})")
+    print("  DDIM update (eta=0: deterministic):")
+    print("    x_{t-1} = sqrtᾱ_{t-1} · (x_t - sqrt(1-ᾱ_t)·epsilon_theta) / sqrtᾱ_t")
+    print("             + sqrt(1-ᾱ_{t-1} - sigma_t²) · epsilon_theta  +  sigma_t·epsilon")
+    print("    sigma_t = eta · sqrt((1-ᾱ_{t-1})/(1-ᾱ_t)) · sqrt(1 - ᾱ_t/ᾱ_{t-1})")
     print()
     print("  Speed advantage:")
     print("    DDPM requires T=1000 steps")
     print("    DDIM uses T'=50-100 steps with comparable quality")
     print("    Acceleration: 10-50×")
     print()
-    print("  η=0:   deterministic; same latent → same output; invertible")
-    print("  η=1:   matches DDPM variance schedule")
+    print("  eta=0:   deterministic; same latent -> same output; invertible")
+    print("  eta=1:   matches DDPM variance schedule")
     print()
     print("  DDIM enables:")
     print("    Image interpolation in latent space")
     print("    Image editing via inversion + guided denoising")
 
 
-# ── 4. Score matching and guidance ────────────────────────────────────────────
+# -- 4. Score matching and guidance --------------------------------------------
 def score_matching_guidance():
     print("\n=== Score Matching & Classifier-Free Guidance ===")
     print("  Score function: s(x,t) = ∇_x log p_t(x)")
-    print("  Equivalent to learning the noise: ε_θ ≈ -σ_t · s_θ(x_t, t)")
+    print("  Equivalent to learning the noise: epsilon_theta ~= -sigma_t · s_theta(x_t, t)")
     print()
     print("  Classifier guidance (Dhariwal & Nichol 2021):")
-    print("    ε_guided = ε_θ(x_t, t) - w · σ_t · ∇_x log p_φ(y|x_t)")
-    print("    Requires a noisy classifier p_φ")
+    print("    epsilon_guided = epsilon_theta(x_t, t) - w · sigma_t · ∇_x log p_phi(y|x_t)")
+    print("    Requires a noisy classifier p_phi")
     print()
     print("  Classifier-free guidance (Ho & Salimans 2022):")
-    print("    ε_guided = ε_θ(x_t, t, ∅) + w · (ε_θ(x_t, t, c) - ε_θ(x_t, t, ∅))")
+    print("    epsilon_guided = epsilon_theta(x_t, t, {}) + w · (epsilon_theta(x_t, t, c) - epsilon_theta(x_t, t, {}))")
     print("    w = guidance scale (typically 7.5 for Stable Diffusion)")
-    print("    ∅ = null condition (unconditional); c = text/class condition")
+    print("    {} = null condition (unconditional); c = text/class condition")
     print()
 
     # Simulate guidance
@@ -155,14 +155,14 @@ def score_matching_guidance():
     eps_cond   = rng.standard_normal(4)
     for w in [1.0, 3.0, 7.5, 15.0]:
         eps_guided = eps_uncond + w * (eps_cond - eps_uncond)
-        print(f"    w={w:>4}: ||ε_guided||={np.linalg.norm(eps_guided):.3f}  "
-              f"||ε_uncond||={np.linalg.norm(eps_uncond):.3f}")
+        print(f"    w={w:>4}: ||epsilon_guided||={np.linalg.norm(eps_guided):.3f}  "
+              f"||epsilon_uncond||={np.linalg.norm(eps_uncond):.3f}")
 
     print()
-    print("  Trade-off: higher w → better quality / prompt adherence, lower diversity")
+    print("  Trade-off: higher w -> better quality / prompt adherence, lower diversity")
 
 
-# ── 5. Major diffusion models ─────────────────────────────────────────────────
+# -- 5. Major diffusion models -------------------------------------------------
 def major_models():
     print("\n=== Major Diffusion Models ===")
     models = [
@@ -179,13 +179,13 @@ def major_models():
         ("CogVideoX",        2024, "Open video diffusion; 3D-full attention"),
     ]
     print(f"  {'Model':<22} {'Year'} {'Notes'}")
-    print(f"  {'─'*22} {'─'*4} {'─'*50}")
+    print(f"  {'-'*22} {'-'*4} {'-'*50}")
     for m, y, d in models:
         print(f"  {m:<22} {y}  {d}")
 
     print()
     print("  Architecture progression:")
-    print("    U-Net (DDPM/SD) → U-ViT → DiT → MMDiT (Flux)")
+    print("    U-Net (DDPM/SD) -> U-ViT -> DiT -> MMDiT (Flux)")
     print("    DiT: Diffusion Transformer; scales with compute")
     print("    MMDiT: Multimodal DiT; joint attention over text + image tokens")
 

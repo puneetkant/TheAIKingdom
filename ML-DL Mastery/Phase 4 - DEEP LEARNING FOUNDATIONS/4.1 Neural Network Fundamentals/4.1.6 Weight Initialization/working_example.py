@@ -15,11 +15,11 @@ def softmax(z):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-# ── 1. Zero initialization failure ───────────────────────────────────────────
+# -- 1. Zero initialization failure -------------------------------------------
 def zero_init_failure():
     print("=== Zero Initialization Failure (Symmetry Breaking) ===")
     print("  If all weights = 0, all neurons in a layer produce identical output")
-    print("  Identical gradients → all neurons learn the same thing")
+    print("  Identical gradients -> all neurons learn the same thing")
     print("  Network collapses to a single neuron effectively")
     print()
 
@@ -38,14 +38,14 @@ def zero_init_failure():
     print(f"  A1 (all zeros):  {A1.ravel()}")
     print(f"  Z2 (all zeros):  {Z2.ravel()}")
     print(f"  Output (uniform):{A2.ravel()}")
-    print(f"  → Gradient ∂L/∂W1 = Xᵀ·δ1 will also be identical for all neurons")
+    print(f"  -> Gradient dL/dW1 = Xᵀ·delta1 will also be identical for all neurons")
 
 
-# ── 2. Naive random init (too large/small) ───────────────────────────────────
+# -- 2. Naive random init (too large/small) -----------------------------------
 def naive_random_init():
     print("\n=== Naive Random Initialization ===")
-    print("  Small σ → vanishing activations/gradients")
-    print("  Large σ → exploding activations/gradients")
+    print("  Small sigma -> vanishing activations/gradients")
+    print("  Large sigma -> exploding activations/gradients")
     rng = np.random.default_rng(0)
     X   = rng.standard_normal((64, 100))
 
@@ -58,10 +58,10 @@ def naive_random_init():
               f"std={A.std():.4e}  {'DEAD' if A.std()<1e-10 else ('EXPLODE' if A.std()>1e7 else 'OK')}")
 
 
-# ── 3. Xavier / Glorot initialization ────────────────────────────────────────
+# -- 3. Xavier / Glorot initialization ----------------------------------------
 def xavier_init():
     print("\n=== Xavier / Glorot Initialization (tanh/sigmoid) ===")
-    print("  W ~ Uniform(-√(6/(n_in+n_out)), √(6/(n_in+n_out)))")
+    print("  W ~ Uniform(-sqrt(6/(n_in+n_out)), sqrt(6/(n_in+n_out)))")
     print("  or W ~ N(0, 2/(n_in+n_out))")
     print("  Keeps variance of activations ~constant across layers")
     print("  Optimal for linear / tanh / sigmoid activations")
@@ -83,7 +83,7 @@ def xavier_init():
                   f"dead={( np.abs(A)<0.01 ).mean()*100:.1f}%")
 
 
-# ── 4. He initialization (ReLU) ───────────────────────────────────────────────
+# -- 4. He initialization (ReLU) -----------------------------------------------
 def he_init():
     print("\n=== He Initialization (ReLU networks) ===")
     print("  W ~ N(0, 2/n_in)    (Kaiming He 2015)")
@@ -106,7 +106,7 @@ def he_init():
                   f"dead={(A==0).mean()*100:.1f}%")
 
 
-# ── 5. LeCun initialization (SELU) ───────────────────────────────────────────
+# -- 5. LeCun initialization (SELU) -------------------------------------------
 def lecun_init():
     print("\n=== LeCun Initialization (SELU) ===")
     print("  W ~ N(0, 1/n_in)")
@@ -130,7 +130,7 @@ def lecun_init():
             print(f"  Layer {l+1}: mean={A.mean():+.4f}  std={A.std():.4f}  (should stay near 0,1)")
 
 
-# ── 6. Orthogonal initialization ──────────────────────────────────────────────
+# -- 6. Orthogonal initialization ----------------------------------------------
 def orthogonal_init():
     print("\n=== Orthogonal Initialization ===")
     print("  W = Q from QR decomposition of a random matrix")
@@ -141,26 +141,26 @@ def orthogonal_init():
     M   = rng.standard_normal((n, n))
     Q, _ = np.linalg.qr(M)
 
-    # Check orthogonality: Q^T @ Q ≈ I
+    # Check orthogonality: Q^T @ Q ~= I
     diff = np.abs(Q.T @ Q - np.eye(n)).max()
     print(f"\n  n={n}x{n} orthogonal matrix")
     print(f"  |QᵀQ - I|_max = {diff:.2e}  (should be ~0)")
     print(f"  Singular values: min={np.linalg.svd(Q, compute_uv=False).min():.4f}  "
-          f"max={np.linalg.svd(Q, compute_uv=False).max():.4f}  (all ≈1)")
+          f"max={np.linalg.svd(Q, compute_uv=False).max():.4f}  (all ~=1)")
 
 
-# ── 7. Comparison summary ─────────────────────────────────────────────────────
+# -- 7. Comparison summary -----------------------------------------------------
 def init_comparison():
     print("\n=== Initialization Comparison ===")
     print(f"  {'Method':<22} {'Formula':<30} {'Best for'}")
     rows = [
         ("Zeros",       "W = 0",                        "NEVER (symmetry breaking)"),
-        ("Constant",    "W = c ≠ 0",                   "NEVER (same reason)"),
+        ("Constant",    "W = c != 0",                   "NEVER (same reason)"),
         ("Small random","W ~ N(0, 0.01)",               "Shallow nets only"),
-        ("Xavier uniform","Uniform(±√(6/(n_in+n_out)))","tanh / sigmoid"),
+        ("Xavier uniform","Uniform(+/-sqrt(6/(n_in+n_out)))","tanh / sigmoid"),
         ("Xavier normal","N(0, 2/(n_in+n_out))",        "tanh / sigmoid"),
         ("He normal",   "N(0, 2/n_in)",                 "ReLU / Leaky ReLU"),
-        ("He uniform",  "Uniform(±√(6/n_in))",          "ReLU / Leaky ReLU"),
+        ("He uniform",  "Uniform(+/-sqrt(6/n_in))",          "ReLU / Leaky ReLU"),
         ("LeCun",       "N(0, 1/n_in)",                 "SELU"),
         ("Orthogonal",  "QR decomposition",             "RNNs, linear nets"),
         ("Pre-trained", "Transfer learning weights",    "Fine-tuning tasks"),
