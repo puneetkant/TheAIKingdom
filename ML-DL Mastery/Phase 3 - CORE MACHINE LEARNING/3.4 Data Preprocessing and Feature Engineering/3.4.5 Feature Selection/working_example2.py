@@ -80,8 +80,39 @@ def demo_permutation():
     for i in order:
         print(f"  {h.feature_names[i]:15s}: {result.importances_mean[i]:.4f} ± {result.importances_std[i]:.4f}")
 
+def demo_mutual_info():
+    """Mutual information is non-parametric: captures non-linear dependencies."""
+    print("\n=== Mutual Information Filter ===")
+    from sklearn.feature_selection import mutual_info_regression
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    mi_scores = mutual_info_regression(X, y, random_state=42)
+    order = mi_scores.argsort()[::-1]
+    for i in order:
+        print(f"  {h.feature_names[i]:15s}: MI={mi_scores[i]:.4f}")
+
+
+def demo_rfecv():
+    """RFECV: Recursive Feature Elimination with Cross-Validation to auto-pick k."""
+    print("\n=== RFECV (auto k selection) ===")
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    scaler = StandardScaler()
+    X_tr_s = scaler.fit_transform(X_train)
+    X_te_s  = scaler.transform(X_test)
+    rfecv = RFECV(Ridge(1.0), cv=5, scoring="neg_root_mean_squared_error", min_features_to_select=1)
+    rfecv.fit(X_tr_s, y_train)
+    selected = np.array(h.feature_names)[rfecv.support_]
+    rmse = mean_squared_error(y_test, rfecv.predict(X_te_s))**0.5
+    print(f"  Optimal k={rfecv.n_features_}  Selected: {list(selected)}")
+    print(f"  RMSE: {rmse:.4f}")
+
+
 if __name__ == "__main__":
     demo_filter()
     demo_rfe()
     demo_embedded()
     demo_permutation()
+    demo_mutual_info()
+    demo_rfecv()

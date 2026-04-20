@@ -86,8 +86,61 @@ def demo_chi_squared():
     print(f"  chi² = {chi2:.4f}  (df=1, critical value at p=0.05: 3.841)")
     print(f"  Result: {'SIGNIFICANT (p<0.05)' if chi2 > 3.841 else 'NOT SIGNIFICANT'}")
 
+def demo_permutation_test():
+    print("=== Permutation Test ===")
+    import numpy as np
+    rng = np.random.default_rng(42)
+    a = rng.normal(50, 10, 30)
+    b = rng.normal(55, 10, 30)
+    obs_diff = a.mean() - b.mean()
+    combined = np.concatenate([a, b])
+    null_diffs = [rng.permutation(combined)[:30].mean() - rng.permutation(combined)[:30].mean() for _ in range(1000)]
+    p_val = np.mean(np.abs(null_diffs) >= abs(obs_diff))
+    print(f"  Observed diff: {obs_diff:.3f}")
+    print(f"  Permutation p-value: {p_val:.4f}")
+
+def demo_type1_type2():
+    print("\n=== Type I and Type II Errors ===")
+    import numpy as np
+    rng = np.random.default_rng(0)
+    n_sims = 1000; n = 30; alpha = 0.05
+    # Under H0 (p=0.5): count Type I errors
+    type1 = 0
+    for _ in range(n_sims):
+        x = rng.binomial(1, 0.5, n)
+        t_stat = (x.mean() - 0.5) / (x.std()+1e-9) * np.sqrt(n)
+        if abs(t_stat) > 1.96:
+            type1 += 1
+    # Under H1 (p=0.6): count Type II errors
+    type2 = 0
+    for _ in range(n_sims):
+        x = rng.binomial(1, 0.6, n)
+        t_stat = (x.mean() - 0.5) / (x.std()+1e-9) * np.sqrt(n)
+        if abs(t_stat) <= 1.96:
+            type2 += 1
+    print(f"  Type I error rate:  {type1/n_sims:.4f}  (nominal alpha={alpha})")
+    print(f"  Type II error rate: {type2/n_sims:.4f}  (power={1-type2/n_sims:.4f})")
+
+def demo_multiple_testing():
+    print("\n=== Multiple Testing & Bonferroni Correction ===")
+    import numpy as np
+    rng = np.random.default_rng(7)
+    n_tests = 100; n = 50; alpha = 0.05
+    # All nulls true - H0: mu=0 for all tests
+    fp_no_corr = 0; fp_bonf = 0
+    for _ in range(n_tests):
+        x = rng.normal(0, 1, n)
+        t = x.mean() / (x.std()/np.sqrt(n))
+        p_approx = 2*(1 - min(abs(t)/4, 1))  # crude p-value approx
+        if p_approx < alpha: fp_no_corr += 1
+        if p_approx < alpha/n_tests: fp_bonf += 1
+    print(f"  False positives (no correction):  {fp_no_corr}/{n_tests}")
+    print(f"  False positives (Bonferroni):      {fp_bonf}/{n_tests}")
+
 if __name__ == "__main__":
     demo_one_sample_t()
     demo_two_sample_t()
     demo_type1_type2()
     demo_chi_squared()
+    demo_permutation_test()
+    demo_multiple_testing()

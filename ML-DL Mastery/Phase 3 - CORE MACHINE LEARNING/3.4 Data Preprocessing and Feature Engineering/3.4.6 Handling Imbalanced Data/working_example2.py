@@ -82,7 +82,47 @@ def demo_stratified_cv():
     scores = cross_val_score(pipe, X, y, cv=skf, scoring="average_precision")
     print(f"  PR-AUC: {scores.mean():.4f} ± {scores.std():.4f} (5-fold stratified)")
 
+def demo_cost_sensitive():
+    """Cost-sensitive learning: vary misclassification cost via sample_weight."""
+    print("\n=== Cost-Sensitive Learning ===")
+    from sklearn.ensemble import GradientBoostingClassifier
+    X, y = load_imbalanced()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+                                                        stratify=y, random_state=42)
+    # Give minority class 5x weight
+    weights = np.where(y_train == 1, 5.0, 1.0)
+    gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
+    gb.fit(X_train, y_train, sample_weight=weights)
+    probs = gb.predict_proba(X_test)[:, 1]
+    roc = roc_auc_score(y_test, probs)
+    pr  = average_precision_score(y_test, probs)
+    print(f"  GBM (cost-sensitive 5x): ROC-AUC={roc:.4f}  PR-AUC={pr:.4f}")
+
+
+def demo_pr_curve_plot():
+    """Plot and compare PR curves for balanced vs unbalanced models."""
+    print("\n=== Precision-Recall Curve ===")
+    X, y = load_imbalanced()
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
+                                                        stratify=y, random_state=42)
+    fig, ax = plt.subplots(figsize=(6, 5))
+    for cw, label in [(None, "Unweighted"), ("balanced", "Balanced")]:
+        pipe = make_pipeline(StandardScaler(),
+                             LogisticRegression(class_weight=cw, max_iter=1000))
+        pipe.fit(X_train, y_train)
+        probs = pipe.predict_proba(X_test)[:, 1]
+        p, r, _ = precision_recall_curve(y_test, probs)
+        ap = average_precision_score(y_test, probs)
+        ax.plot(r, p, label=f"{label} AP={ap:.3f}")
+    ax.set_xlabel("Recall"); ax.set_ylabel("Precision")
+    ax.set_title("Precision-Recall Curve"); ax.legend()
+    fig.savefig(OUTPUT / "pr_curve.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: pr_curve.png")
+
+
 if __name__ == "__main__":
     demo_class_weight()
     demo_threshold_tuning()
     demo_stratified_cv()
+    demo_cost_sensitive()
+    demo_pr_curve_plot()

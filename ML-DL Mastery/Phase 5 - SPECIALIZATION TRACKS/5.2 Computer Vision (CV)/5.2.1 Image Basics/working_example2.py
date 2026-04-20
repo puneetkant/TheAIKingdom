@@ -57,5 +57,46 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "image_basics.png"); plt.close()
     print("  Saved image_basics.png")
 
+def demo_edge_detection():
+    """Sobel-like edge detection using numpy convolution."""
+    print("\n=== Edge Detection (Sobel-style) ===")
+    img = make_synthetic_image()
+    gray = 0.299*img[:,:,0] + 0.587*img[:,:,1] + 0.114*img[:,:,2]
+    Kx = np.array([[-1,0,1],[-2,0,2],[-1,0,1]], dtype=float)
+    Ky = np.array([[-1,-2,-1],[0,0,0],[1,2,1]], dtype=float)
+
+    def convolve2d(im, kernel):
+        H, W = im.shape; kh, kw = kernel.shape
+        ph, pw = kh//2, kw//2
+        padded = np.pad(im, ((ph,ph),(pw,pw)), mode="reflect")
+        out = np.zeros_like(im)
+        for i in range(H):
+            for j in range(W):
+                out[i,j] = (padded[i:i+kh, j:j+kw] * kernel).sum()
+        return out
+
+    Gx = convolve2d(gray, Kx); Gy = convolve2d(gray, Ky)
+    G  = np.sqrt(Gx**2 + Gy**2)
+    G_norm = G / (G.max() + 1e-8)
+    print(f"  Gradient magnitude: min={G_norm.min():.4f}  max={G_norm.max():.4f}")
+    print(f"  Strong edge pixels (>0.3): {(G_norm > 0.3).sum()}")
+
+
+def demo_color_spaces():
+    """Analyse RGB channels and derive HSV-style value/saturation."""
+    print("\n=== Colour Space Analysis ===")
+    img = make_synthetic_image()
+    R, G, B = img[:,:,0], img[:,:,1], img[:,:,2]
+    Cmax = img.max(axis=2); Cmin = img.min(axis=2)
+    V = Cmax
+    S = np.where(Cmax > 0, (Cmax - Cmin) / (Cmax + 1e-8), 0)
+    print(f"  RGB means: R={R.mean():.3f} G={G.mean():.3f} B={B.mean():.3f}")
+    print(f"  Value (brightness): mean={V.mean():.3f} std={V.std():.3f}")
+    print(f"  Saturation:         mean={S.mean():.3f} std={S.std():.3f}")
+    print(f"  Most saturated pixel: {np.unravel_index(S.argmax(), S.shape)}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_edge_detection()
+    demo_color_spaces()

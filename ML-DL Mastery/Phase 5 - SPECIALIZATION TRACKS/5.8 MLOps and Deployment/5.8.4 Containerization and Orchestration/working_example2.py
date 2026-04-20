@@ -88,5 +88,64 @@ def demo():
     plt.savefig(OUTPUT / "containerisation.png"); plt.close()
     print("  Saved containerisation.png")
 
+def demo_kubernetes_manifest():
+    """Generate a minimal Kubernetes Deployment and HPA YAML."""
+    print("\n=== Kubernetes Manifest Generation ===")
+    def k8s_deployment(name, image, replicas=2, cpu_req="500m", mem_req="512Mi"):
+        return f"""apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {name}
+spec:
+  replicas: {replicas}
+  selector:
+    matchLabels:
+      app: {name}
+  template:
+    spec:
+      containers:
+      - name: {name}
+        image: {image}
+        resources:
+          requests:
+            cpu: {cpu_req}
+            memory: {mem_req}"""
+
+    def k8s_hpa(name, min_rep=1, max_rep=10, cpu_target=70):
+        return f"""apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {name}-hpa
+spec:
+  scaleTargetRef:
+    name: {name}
+  minReplicas: {min_rep}
+  maxReplicas: {max_rep}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        averageUtilization: {cpu_target}"""
+
+    print(k8s_deployment("ml-inference", "ml-api:v2", replicas=3))
+    print(); print(k8s_hpa("ml-inference", min_rep=2, max_rep=8))
+
+
+def demo_scaling_estimation():
+    """Estimate required replicas for given throughput requirements."""
+    print("\n=== Autoscaling Estimation ===")
+    latency_ms = 50   # avg inference latency
+    qps_per_pod = 1000 / latency_ms  # requests/sec per pod
+    print(f"  Latency: {latency_ms}ms -> {qps_per_pod:.0f} RPS per pod")
+    print(f"\n  {'Target RPS':>12}  {'Min Pods':>10}  {'w/ 2x headroom':>16}")
+    for target_rps in [10, 100, 500, 2000, 10000]:
+        min_pods = int(np.ceil(target_rps / qps_per_pod))
+        with_headroom = min_pods * 2
+        print(f"  {target_rps:>12}  {min_pods:>10}  {with_headroom:>16}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_kubernetes_manifest()
+    demo_scaling_estimation()

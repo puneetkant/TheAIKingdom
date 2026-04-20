@@ -80,7 +80,46 @@ def demo_domain_features():
     r2   = r2_score(y_test, pipe.predict(X_test))
     print(f"  Domain features + Ridge: RMSE={rmse:.4f}  R²={r2:.4f}  (from 8 -> {Xf.shape[1]} features)")
 
+def demo_date_features():
+    """Extract calendar features from a synthetic date column."""
+    print("\n=== Date / Time Feature Extraction ===")
+    import datetime
+    np.random.seed(42)
+    base = datetime.date(2020, 1, 1)
+    dates = [base + datetime.timedelta(days=int(d)) for d in np.random.randint(0, 730, 500)]
+    day_of_week = np.array([d.weekday() for d in dates])
+    month       = np.array([d.month for d in dates])
+    is_weekend  = (day_of_week >= 5).astype(int)
+    # Cyclic encoding
+    dow_sin = np.sin(2 * np.pi * day_of_week / 7)
+    dow_cos = np.cos(2 * np.pi * day_of_week / 7)
+    mo_sin  = np.sin(2 * np.pi * month / 12)
+    mo_cos  = np.cos(2 * np.pi * month / 12)
+    print(f"  Extracted features: day_of_week, month, is_weekend, cyclic sin/cos")
+    print(f"  dow_sin sample: {dow_sin[:5].round(3)}")
+    print(f"  month_sin sample: {mo_sin[:5].round(3)}")
+
+
+def demo_binning_features():
+    """Binning continuous features into categories (KBinsDiscretizer)."""
+    print("\n=== Binning (KBinsDiscretizer) ===")
+    from sklearn.preprocessing import KBinsDiscretizer
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    for n_bins in [4, 8, 16]:
+        kbd = KBinsDiscretizer(n_bins=n_bins, encode="onehot-dense", strategy="quantile")
+        X_binned_tr = kbd.fit_transform(X_train)
+        X_binned_te = kbd.transform(X_test)
+        pipe = make_pipeline(StandardScaler(), Ridge(1.0))
+        pipe.fit(X_binned_tr, y_train)
+        rmse = mean_squared_error(y_test, pipe.predict(X_binned_te))**0.5
+        print(f"  {n_bins} bins per feature ({X_binned_tr.shape[1]} total): RMSE={rmse:.4f}")
+
+
 if __name__ == "__main__":
     demo_polynomial()
     demo_log_transform()
     demo_domain_features()
+    demo_date_features()
+    demo_binning_features()

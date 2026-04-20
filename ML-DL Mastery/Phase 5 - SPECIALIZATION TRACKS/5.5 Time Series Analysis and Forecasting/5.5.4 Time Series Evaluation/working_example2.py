@@ -63,5 +63,47 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "ts_evaluation.png"); plt.close()
     print("\n  Saved ts_evaluation.png")
 
+def demo_walk_forward_validation():
+    """Walk-forward (expanding window) validation for time series."""
+    print("\n=== Walk-Forward Validation ===")
+    ts = make_series()
+    min_train = 150; step = 25
+    splits = [(min_train + i*step, min_train + (i+1)*step)
+              for i in range((len(ts)-min_train)//step)]
+
+    print(f"  {'Fold':>5}  {'Train end':>10}  {'MAE':>8}  {'RMSE':>8}")
+    for fold, (tr_end, te_end) in enumerate(splits):
+        if te_end > len(ts): break
+        train = ts[:tr_end]; test = ts[tr_end:te_end]
+        h = len(test)
+        pred = seasonal_naive(train, h, period=25)
+        print(f"  {fold+1:>5}  {tr_end:>10}  {mae(test, pred):>8.4f}  {rmse(test, pred):>8.4f}")
+
+
+def demo_prediction_intervals():
+    """Bootstrap prediction intervals for naive forecast."""
+    print("\n=== Prediction Intervals (Bootstrap) ===")
+    ts = make_series()
+    split = int(len(ts)*0.8)
+    train = ts[:split]; test = ts[split:]
+    rng = np.random.default_rng(42)
+    n_boot = 200; h = min(10, len(test))
+    boot_preds = []
+    for _ in range(n_boot):
+        residuals = train[1:] - train[:-1]  # first-difference residuals
+        sampled = rng.choice(residuals, size=h, replace=True)
+        pred = train[-1] + np.cumsum(sampled)
+        boot_preds.append(pred)
+    boot_arr = np.array(boot_preds)
+    lo = np.percentile(boot_arr, 5, axis=0)
+    hi = np.percentile(boot_arr, 95, axis=0)
+    coverage = np.mean((test[:h] >= lo) & (test[:h] <= hi))
+    print(f"  90% PI coverage on {h} steps: {coverage:.3f}  (target: ~0.90)")
+    for i in range(min(3, h)):
+        print(f"    step {i+1}: true={test[i]:.3f}  [{lo[i]:.3f}, {hi[i]:.3f}]")
+
+
 if __name__ == "__main__":
     demo()
+    demo_walk_forward_validation()
+    demo_prediction_intervals()

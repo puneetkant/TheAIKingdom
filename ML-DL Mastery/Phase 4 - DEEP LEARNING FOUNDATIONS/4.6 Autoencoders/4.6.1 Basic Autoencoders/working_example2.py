@@ -88,5 +88,45 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "autoencoder.png"); plt.close()
     print("  Saved autoencoder.png")
 
+def demo_bottleneck_sweep():
+    """Show how bottleneck size affects reconstruction quality."""
+    print("\n=== Bottleneck Size Sweep ===")
+    h = fetch_california_housing(); X = StandardScaler().fit_transform(h.data)
+    X_tr, X_te = X[:16000], X[16000:]
+    bottlenecks = [1, 2, 3, 4, 6, 8]
+    print(f"  {'Bottleneck':>12s} {'Train MSE':>12s} {'Test MSE':>10s} {'Compression':>12s}")
+    for n_z in bottlenecks:
+        ae = Autoencoder(n_in=8, n_h=32, n_z=n_z)
+        losses = ae.train(X_tr, lr=0.005, epochs=150)
+        x_hat, _ = ae.forward(X_te)
+        te_mse = float(np.mean((x_hat - X_te) ** 2))
+        print(f"  {n_z:>12d} {losses[-1]:>12.4f} {te_mse:>10.4f} {n_z/8*100:>11.0f}%")
+
+
+def demo_latent_space_viz():
+    """Visualise 2D bottleneck encoding to see how features cluster."""
+    print("\n=== Latent Space Visualisation (2D bottleneck) ===")
+    h = fetch_california_housing()
+    X = StandardScaler().fit_transform(h.data)
+    y_med = h.target  # median house value
+    X_sample = X[:3000]
+    ae = Autoencoder(n_in=8, n_h=32, n_z=2)
+    ae.train(X_sample, lr=0.005, epochs=200)
+    Z = ae.encode(X_sample)  # (n, 2)
+    print(f"  Latent shape: {Z.shape}")
+    print(f"  Z range: [{Z.min():.2f}, {Z.max():.2f}]")
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    sc = ax.scatter(Z[:, 0], Z[:, 1], c=y_med[:3000], cmap="RdYlGn", s=5, alpha=0.6)
+    plt.colorbar(sc, ax=ax, label="Median House Value")
+    ax.set(xlabel="Latent dim 1", ylabel="Latent dim 2",
+           title="2D Autoencoder Latent Space (Cal Housing)")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "latent_space.png"); plt.close()
+    print("  Saved latent_space.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_bottleneck_sweep()
+    demo_latent_space_viz()

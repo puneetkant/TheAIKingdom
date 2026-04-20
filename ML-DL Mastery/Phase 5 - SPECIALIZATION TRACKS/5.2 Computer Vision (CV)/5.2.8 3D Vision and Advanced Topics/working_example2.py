@@ -65,5 +65,53 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "3d_vision.png"); plt.close()
     print("  Saved 3d_vision.png")
 
+def demo_icp_iteration():
+    """One iteration of Iterative Closest Point (ICP) alignment."""
+    print("\n=== ICP: Point Cloud Alignment ===")
+    rng = np.random.default_rng(7)
+    pts_src = make_point_cloud(n=100)
+    # Apply known rotation (90 deg around Z) to create target
+    theta = np.pi / 8
+    R = np.array([[np.cos(theta), -np.sin(theta), 0],
+                  [np.sin(theta),  np.cos(theta), 0],
+                  [0,              0,             1]])
+    pts_tgt = pts_src @ R.T + rng.normal(0, 0.05, pts_src.shape)
+
+    # One ICP step: match each source to nearest target, compute rigid transform
+    from scipy.spatial import cKDTree  # type: ignore
+    try:
+        tree = cKDTree(pts_tgt)
+        dists, idx = tree.query(pts_src)
+        matched_tgt = pts_tgt[idx]
+        # Align centroids
+        c_src = pts_src.mean(0); c_tgt = matched_tgt.mean(0)
+        A = (pts_src - c_src).T @ (matched_tgt - c_tgt)
+        U, S, Vt = np.linalg.svd(A)
+        R_est = Vt.T @ U.T
+        t_est = c_tgt - R_est @ c_src
+        residuals = np.linalg.norm((pts_src @ R_est.T + t_est) - matched_tgt, axis=1)
+        print(f"  Mean nearest-point distance before: {dists.mean():.4f}")
+        print(f"  Mean residual after 1 ICP step:     {residuals.mean():.4f}")
+    except ImportError:
+        print("  (scipy not available — skipping ICP)")
+
+
+def demo_depth_estimation():
+    """Simulate stereo depth estimation from disparity."""
+    print("\n=== Stereo Depth Estimation ===")
+    # Simulated disparity map (closer objects have higher disparity)
+    H, W = 16, 32
+    rng = np.random.default_rng(1)
+    disparity = rng.uniform(1, 20, (H, W))
+    focal_length = 700.0  # pixels
+    baseline = 0.12       # metres (12 cm stereo camera)
+    depth = (focal_length * baseline) / (disparity + 1e-8)
+    print(f"  Disparity range: {disparity.min():.2f} - {disparity.max():.2f} px")
+    print(f"  Depth range:     {depth.min():.2f} - {depth.max():.2f} m")
+    print(f"  Mean depth: {depth.mean():.2f} m  (f={focal_length}, b={baseline}m)")
+
+
 if __name__ == "__main__":
     demo()
+    demo_icp_iteration()
+    demo_depth_estimation()

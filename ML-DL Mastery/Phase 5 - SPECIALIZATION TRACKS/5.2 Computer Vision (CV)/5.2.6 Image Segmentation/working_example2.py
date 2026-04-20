@@ -59,5 +59,37 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "segmentation.png"); plt.close()
     print("  Saved segmentation.png")
 
+def demo_iou_metric():
+    """Compute Intersection-over-Union between predicted and ground truth masks."""
+    print("\n=== Intersection-over-Union (IoU) ===")
+    img = make_synthetic_scene()
+    seg = segment_kmeans(img, n_clusters=3)
+    H, W = seg.shape
+    gt = np.zeros_like(seg); gt[:H//2, :W//2] = 1
+    pred_mask = (seg == seg[H//4, W//4]).astype(int)
+    intersection = (gt & pred_mask).sum()
+    union = (gt | pred_mask).sum()
+    iou = intersection / (union + 1e-8)
+    print(f"  GT mask pixels:   {gt.sum()}")
+    print(f"  Pred mask pixels: {pred_mask.sum()}")
+    print(f"  IoU: {iou:.4f}")
+
+
+def demo_segmentation_types():
+    """Describe semantic, instance, and panoptic segmentation."""
+    print("\n=== Segmentation Task Types ===")
+    tasks = [
+        ("Semantic",  "Every pixel gets a class label", "DeepLab, FCN"),
+        ("Instance",  "Each object instance labelled separately", "Mask R-CNN"),
+        ("Panoptic",  "Semantic + instance unified", "Panoptic FPN"),
+        ("K-means",   "Unsupervised colour-based cluster", "This demo"),
+    ]
+    print(f"  {'Type':12s}  {'Description':45s}  {'Example'}")
+    for t, d, e in tasks:
+        print(f"  {t:12s}  {d:45s}  {e}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_iou_metric()
+    demo_segmentation_types()

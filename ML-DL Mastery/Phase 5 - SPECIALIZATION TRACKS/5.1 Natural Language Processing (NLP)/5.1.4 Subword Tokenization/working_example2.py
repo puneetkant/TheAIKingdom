@@ -64,5 +64,49 @@ def demo():
     (OUTPUT / "bpe_merges.txt").write_text("\n".join(f"{a} {b}" for a,b in merges))
     print(f"\nSaved {len(merges)} BPE merges to bpe_merges.txt")
 
+def demo_tokenize_word(word, merges):
+    """Apply learned BPE merges to tokenize an unseen word."""
+    tokens = list(word) + ["</w>"]
+    for merge_a, merge_b in merges:
+        merged = merge_a + merge_b
+        i = 0
+        new_tokens = []
+        while i < len(tokens):
+            if i < len(tokens)-1 and tokens[i] == merge_a and tokens[i+1] == merge_b:
+                new_tokens.append(merged); i += 2
+            else:
+                new_tokens.append(tokens[i]); i += 1
+        tokens = new_tokens
+    return tokens
+
+
+def demo_apply_bpe():
+    """Apply BPE merges to new words not in training corpus."""
+    print("\n=== Applying BPE to New Words ===")
+    _, merges = bpe(CORPUS, n_merges=12)
+    test_words = ["lower", "newest", "widen", "unknown"]
+    for w in test_words:
+        toks = demo_tokenize_word(w, merges)
+        print(f"  '{w}' -> {toks}")
+
+
+def demo_sentencepiece_comparison():
+    """Compare BPE characteristics with SentencePiece / WordPiece design choices."""
+    print("\n=== Tokenization Algorithm Comparison ===")
+    rows = [
+        ("BPE",          "Frequency-based merge",       "GPT-2, Llama, Mistral"),
+        ("WordPiece",    "Likelihood-maximising merge", "BERT, DistilBERT"),
+        ("SentencePiece","Language-agnostic, unigram",  "T5, ALBERT, mBERT"),
+        ("Unigram LM",   "Prune from large vocab",      "XLNet, Gemma"),
+        ("Char-level",   "Every character is a token",  "ByT5"),
+    ]
+    print(f"  {'Algorithm':18s}  {'Strategy':35s}  {'Used in'}")
+    print("  " + "-"*75)
+    for r in rows:
+        print(f"  {r[0]:18s}  {r[1]:35s}  {r[2]}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_apply_bpe()
+    demo_sentencepiece_comparison()

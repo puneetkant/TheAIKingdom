@@ -85,5 +85,40 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "monitoring.png"); plt.close()
     print("  Saved monitoring.png")
 
+def demo_concept_drift():
+    """Simulate concept drift: prediction distribution shifts over time."""
+    print("\n=== Concept Drift Detection ===")
+    np.random.seed(0)
+    n_weeks = 16; drift_start = 10
+    ref_pred = np.random.randint(0, 2, 500)  # reference predictions
+    print(f"  {'Week':>6}  {'PSI':>8}  {'Drift?':>8}")
+    for w in range(n_weeks):
+        # After drift, positive class probability increases
+        p = 0.5 + (w - drift_start) * 0.08 if w >= drift_start else 0.5
+        p = min(max(p, 0.0), 1.0)
+        prod_pred = np.random.binomial(1, p, 300)
+        psi_score = psi(ref_pred, prod_pred, bins=2)
+        flag = "YES" if psi_score > 0.1 else "no"
+        print(f"  {w:>6}  {psi_score:>8.3f}  {flag:>8}")
+
+
+def demo_sla_tracking():
+    """Track P50/P95/P99 latency and SLA compliance over time."""
+    print("\n=== SLA Latency Tracking ===")
+    rng = np.random.default_rng(7)
+    sla_p95_ms = 200
+    print(f"  {'Hour':>6}  {'P50 ms':>8}  {'P95 ms':>8}  {'SLA met':>8}")
+    for hour in range(12):
+        # Simulate latency increasing with load in business hours
+        base = 50 + hour * 5 if hour < 8 else 50 + (12 - hour) * 5
+        latencies = rng.gamma(shape=2, scale=base/2, size=200)
+        p50 = np.percentile(latencies, 50)
+        p95 = np.percentile(latencies, 95)
+        sla_ok = "YES" if p95 < sla_p95_ms else "NO"
+        print(f"  {hour:>6}  {p50:>8.1f}  {p95:>8.1f}  {sla_ok:>8}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_concept_drift()
+    demo_sla_tracking()

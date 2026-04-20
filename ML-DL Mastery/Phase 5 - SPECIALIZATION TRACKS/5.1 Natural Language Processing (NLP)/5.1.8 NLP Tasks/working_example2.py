@@ -58,6 +58,52 @@ def demo_classification():
     preds = clf.predict(vect.transform(te.data))
     print(classification_report(te.target, preds, target_names=cats))
 
+def demo_summarisation():
+    """Extractive summarisation via TF-IDF sentence scoring."""
+    print("\n=== Extractive Summarisation ===")
+    doc = (
+        "Natural language processing (NLP) is a subfield of linguistics and AI. "
+        "NLP focuses on the interaction between computers and human language. "
+        "Key tasks include translation, summarisation, and sentiment analysis. "
+        "Modern NLP relies heavily on large language models such as BERT and GPT. "
+        "These models are pre-trained on vast text corpora and fine-tuned for tasks."
+    )
+    sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", doc) if s.strip()]
+    import numpy as np
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    vect = TfidfVectorizer()
+    tfidf_mat = vect.fit_transform(sentences)
+    sim = cosine_similarity(tfidf_mat)
+    scores = sim.mean(axis=1)
+    top_k = np.argsort(scores)[::-1][:2]
+    summary = " ".join(sentences[i] for i in sorted(top_k))
+    print(f"  Summary: {summary}")
+
+
+def demo_pos_tagging():
+    """Simple rule-based POS tagging using suffix patterns."""
+    print("\n=== Rule-based POS Tagging ===")
+    rules = [
+        (r".*ing$",   "VBG"),
+        (r".*ed$",    "VBD"),
+        (r".*ly$",    "RB"),
+        (r".*ion$",   "NN"),
+        (r".*ness$",  "NN"),
+        (r"^[A-Z]",   "NNP"),
+        (r"^\d+$",    "CD"),
+    ]
+    tokens = ["Apple", "announced", "quickly", "rising", "innovation", "in", "2024"]
+    for tok in tokens:
+        tag = "NN"
+        for pat, t in rules:
+            if re.match(pat, tok):
+                tag = t; break
+        print(f"  {tok:15s} -> {tag}")
+
+
 if __name__ == "__main__":
     demo_ner()
     demo_classification()
+    demo_summarisation()
+    demo_pos_tagging()

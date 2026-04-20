@@ -86,5 +86,55 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "advanced_gnn.png"); plt.close()
     print("  Saved advanced_gnn.png")
 
+def demo_multi_head_attention():
+    """Multi-head GAT: average attention across K heads."""
+    print("\n=== Multi-Head GAT ===")
+    np.random.seed(12)
+    N, F_in, F_out = 6, 4, 3
+    K = 3  # number of heads
+    A = np.array([[0,1,1,0,0,0],[1,0,1,1,0,0],[1,1,0,0,0,0],[0,1,0,0,1,0],[0,0,0,1,0,1],[0,0,0,0,1,0]], float)
+    X = np.random.randn(N, F_in)
+    all_H = []
+    all_alpha = []
+    for _ in range(K):
+        W = np.random.randn(F_in, F_out) * 0.3
+        a_src = np.random.randn(F_out) * 0.3
+        a_dst = np.random.randn(F_out) * 0.3
+        H_k, alpha_k = gat_layer(A, X, W, a_src, a_dst)
+        all_H.append(H_k); all_alpha.append(alpha_k)
+    H_multi = np.mean(all_H, axis=0)
+    alpha_mean = np.mean(all_alpha, axis=0)
+    print(f"  Multi-head ({K} heads) output shape: {H_multi.shape}")
+    print(f"  Mean attention entropy: {-np.sum(alpha_mean * np.log(alpha_mean+1e-9), axis=1).mean():.4f}")
+
+
+def demo_dropout_regularization():
+    """Simulate DropEdge: randomly remove edges during training."""
+    print("\n=== DropEdge Regularization ===")
+    np.random.seed(77)
+    N, F_in, F_out = 8, 4, 3
+    A = (np.random.rand(N, N) < 0.35).astype(float)
+    A = np.tril(A, -1); A = A + A.T
+    X = np.random.randn(N, F_in)
+    W = np.random.randn(F_in, F_out) * 0.3
+
+    def gcn_layer_local(A_in, X_in, W_in):
+        A_hat = A_in + np.eye(N); D_inv_sqrt = np.diag(1/np.sqrt(A_hat.sum(1)))
+        return np.tanh((D_inv_sqrt @ A_hat @ D_inv_sqrt) @ X_in @ W_in)
+
+    H_full = gcn_layer_local(A, X, W)
+    print(f"  {'Drop rate':>10}  {'Output change (L2)':>20}")
+    for p_drop in [0.0, 0.1, 0.3, 0.5]:
+        A_drop = A.copy()
+        mask = np.random.rand(*A.shape) > p_drop
+        mask = mask & mask.T; np.fill_diagonal(mask, True)
+        A_drop = A * mask.astype(float)
+        H_drop = gcn_layer_local(A_drop, X, W)
+        change = np.linalg.norm(H_full - H_drop)
+        print(f"  {p_drop:>10.1f}  {change:>20.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_multi_head_attention()
+    demo_dropout_regularization()

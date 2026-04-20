@@ -80,5 +80,59 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "gnn_tools.png"); plt.close()
     print("  Saved gnn_tools.png")
 
+def demo_edge_features():
+    """Extend message passing to incorporate edge weights."""
+    print("\n=== Edge-Feature Message Passing ===")
+    np.random.seed(5)
+    N, F_in, F_out = 5, 3, 4
+    A = np.array([
+        [0,1,1,0,0],[1,0,0,1,0],[1,0,0,1,1],[0,1,1,0,1],[0,0,1,1,0]
+    ], float)
+    edge_weights = A * np.random.uniform(0.5, 2.0, A.shape)  # weighted adjacency
+    edge_weights = (edge_weights + edge_weights.T) / 2
+    X = np.random.randn(N, F_in)
+    W = np.random.randn(F_in, F_out) * 0.3
+
+    # Standard GCN
+    H_standard = MessagePassingLayer(W).forward(GraphData(X, np.array(np.where(A))))
+
+    # Weighted GCN: use edge_weights instead of binary A
+    A_hat = edge_weights + np.eye(N)
+    D_inv = np.diag(1 / A_hat.sum(1))
+    H_weighted = np.tanh((D_inv @ A_hat) @ X @ W)
+
+    print(f"  Standard GCN output norm: {np.linalg.norm(H_standard):.4f}")
+    print(f"  Weighted GCN output norm: {np.linalg.norm(H_weighted):.4f}")
+
+
+def demo_graph_batching():
+    """Show how multiple graphs can be batched via block-diagonal adjacency."""
+    print("\n=== Graph Batching ===")
+    np.random.seed(8)
+    graph_sizes = [4, 5, 3]
+    F_in, F_out = 3, 2
+    W = np.random.randn(F_in, F_out) * 0.3
+    layer = MessagePassingLayer(W)
+
+    # Batched processing
+    batch_repr = []
+    total_nodes = 0
+    for sz in graph_sizes:
+        A = (np.random.rand(sz, sz) < 0.4).astype(float)
+        A = np.tril(A, -1); A = A + A.T
+        edges = np.array(np.where(A > 0))
+        g = GraphData(np.random.randn(sz, F_in), edges)
+        H = layer.forward(g)
+        batch_repr.append(H.mean(axis=0))   # mean readout
+        total_nodes += sz
+
+    batch_out = np.array(batch_repr)
+    print(f"  Graphs batched: {len(graph_sizes)}  Total nodes: {total_nodes}")
+    print(f"  Batch output shape: {batch_out.shape}")
+    print(f"  Readout norms: {np.linalg.norm(batch_out, axis=1).round(3)}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_edge_features()
+    demo_graph_batching()

@@ -129,5 +129,63 @@ def demo():
     print("  Saved research_skills.png")
 
 
+def demo_h_index():
+    """Calculate h-index and g-index from a citation list."""
+    print("\n=== h-index and g-index ===")
+    rng = np.random.default_rng(7)
+    # Simulate citation counts for 20 papers
+    citations = sorted(rng.integers(0, 2000, 20).tolist(), reverse=True)
+    # h-index: largest h such that h papers have >= h citations
+    h = sum(1 for i, c in enumerate(citations) if c >= i + 1)
+    # g-index: largest g such that top-g papers have >= g^2 citations total
+    g = 0
+    cum = 0
+    for i, c in enumerate(citations):
+        cum += c
+        if cum >= (i + 1) ** 2:
+            g = i + 1
+    print(f"  Citations (sorted): {citations}")
+    print(f"  h-index: {h}")
+    print(f"  g-index: {g}")
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.bar(range(1, len(citations)+1), citations, color="steelblue", alpha=0.8)
+    ax.plot([0, len(citations)+1], [0, len(citations)+1], "r--", lw=1.5, label="y=x (h-index line)")
+    ax.axvline(h, color="tomato", lw=2, label=f"h-index={h}")
+    ax.set(xlabel="Paper rank", ylabel="Citations", title="h-index Visualisation")
+    ax.legend(); ax.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "h_index.png", dpi=100); plt.close()
+    print("  Saved h_index.png")
+
+
+def demo_experiment_tracking():
+    """Simulate tracking multiple experiment runs and selecting the best."""
+    print("\n=== Experiment Tracking ===")
+    rng = np.random.default_rng(99)
+    runs = []
+    for i in range(10):
+        lr = 10 ** rng.uniform(-4, -2)
+        dropout = rng.uniform(0.0, 0.5)
+        epochs = rng.integers(10, 50)
+        val_acc = 0.75 + 0.15 * (1 - abs(np.log10(lr) + 3)) - 0.1 * dropout + rng.normal(0, 0.02)
+        runs.append({"run": i+1, "lr": lr, "dropout": dropout, "epochs": int(epochs), "val_acc": float(np.clip(val_acc, 0, 1))})
+    runs_sorted = sorted(runs, key=lambda r: r["val_acc"], reverse=True)
+    print(f"  {'Run':>4} {'LR':>10} {'Dropout':>8} {'Epochs':>7} {'Val Acc':>8}")
+    for r in runs_sorted[:5]:
+        print(f"  {r['run']:>4} {r['lr']:>10.2e} {r['dropout']:>8.3f} {r['epochs']:>7} {r['val_acc']:>8.4f}")
+    best = runs_sorted[0]
+    print(f"  Best: Run {best['run']} with val_acc={best['val_acc']:.4f}")
+    accs = [r["val_acc"] for r in runs]
+    plt.figure(figsize=(6, 3))
+    plt.bar(range(1, 11), accs, color=["mediumseagreen" if r["run"] == best["run"] else "steelblue" for r in runs])
+    plt.xlabel("Run"); plt.ylabel("Val Accuracy"); plt.title("Experiment Tracking: Val Accuracy per Run")
+    plt.grid(True, axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "experiment_tracking.png", dpi=100); plt.close()
+    print("  Saved experiment_tracking.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_h_index()
+    demo_experiment_tracking()

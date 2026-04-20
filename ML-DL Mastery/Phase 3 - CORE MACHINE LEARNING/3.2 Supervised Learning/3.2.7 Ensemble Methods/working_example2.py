@@ -75,7 +75,76 @@ def demo_adaboost():
     auc = roc_auc_score(y_test, ab.predict_proba(X_test)[:,1])
     print(f"  AdaBoost (100 trees): AUC={auc:.4f}")
 
+def demo_voting_ensemble():
+    """VotingRegressor combines multiple base models by averaging."""
+    print("\n=== Voting Regressor ===")
+    from sklearn.ensemble import VotingRegressor
+    from sklearn.linear_model import Ridge
+    from sklearn.neighbors import KNeighborsRegressor
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.pipeline import make_pipeline
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    from sklearn.metrics import mean_squared_error
+    scaler = StandardScaler()
+    X_tr_s = scaler.fit_transform(X_tr); X_te_s = scaler.transform(X_te)
+    rf  = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+    gb  = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, random_state=42)
+    knn = KNeighborsRegressor(n_neighbors=10, weights="distance")
+    voters = VotingRegressor([("rf", rf), ("gb", gb), ("knn", knn)])
+    voters.fit(X_tr_s, y_tr)
+    rmse = mean_squared_error(y_te, voters.predict(X_te_s))**0.5
+    print(f"  VotingRegressor (RF+GB+KNN): RMSE={rmse:.4f}")
+    # Also show individual
+    for name, m in [("RF", rf), ("GB", gb), ("KNN", knn)]:
+        m.fit(X_tr_s, y_tr)
+        r = mean_squared_error(y_te, m.predict(X_te_s))**0.5
+        print(f"    {name}: RMSE={r:.4f}")
+
+
+def demo_stacking():
+    """StackingRegressor uses a meta-learner on top of base estimators."""
+    print("\n=== Stacking Regressor ===")
+    from sklearn.ensemble import StackingRegressor
+    from sklearn.linear_model import Ridge, Lasso
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.metrics import mean_squared_error
+    scaler = StandardScaler()
+    X_tr_s = scaler.fit_transform(X_tr); X_te_s = scaler.transform(X_te)
+    base = [
+        ("rf",  RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)),
+        ("gb",  GradientBoostingRegressor(n_estimators=100, random_state=42)),
+        ("lasso", Lasso(alpha=0.1, max_iter=5000)),
+    ]
+    stack = StackingRegressor(estimators=base, final_estimator=Ridge(1.0), cv=5)
+    stack.fit(X_tr_s, y_tr)
+    rmse = mean_squared_error(y_te, stack.predict(X_te_s))**0.5
+    print(f"  StackingRegressor: RMSE={rmse:.4f}")
+
+
+def demo_hist_gradient_boosting():
+    """HistGradientBoostingRegressor: sklearn's fast native GBM."""
+    print("\n=== HistGradientBoosting (native GBM) ===")
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    from sklearn.metrics import mean_squared_error
+    for lr in [0.05, 0.1, 0.2]:
+        hgb = HistGradientBoostingRegressor(learning_rate=lr, max_iter=200, random_state=42)
+        hgb.fit(X_tr, y_tr)
+        rmse = mean_squared_error(y_te, hgb.predict(X_te))**0.5
+        print(f"  lr={lr}: RMSE={rmse:.4f}")
+
+
 if __name__ == "__main__":
     demo_random_forest()
     demo_gradient_boosting()
     demo_adaboost()
+    demo_voting_ensemble()
+    demo_stacking()
+    demo_hist_gradient_boosting()

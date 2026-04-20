@@ -76,5 +76,39 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "rnn_fundamentals.png"); plt.close()
     print("  Saved rnn_fundamentals.png")
 
+def demo_vanishing_gradient_rnn():
+    """Demonstrate vanishing gradient through time in RNNs."""
+    print("\n=== Vanishing Gradient Through Time ===")
+    rng = np.random.default_rng(42)
+    hidden_sizes = 16
+
+    # Gradient = product of Jacobians: ||dh_t/dh_0|| ~ ||W_hh||^T
+    for W_scale in [0.5, 0.9, 1.0, 1.1]:
+        W = rng.standard_normal((hidden_sizes, hidden_sizes)) * W_scale
+        spectral_radius = np.max(np.abs(np.linalg.eigvals(W)))
+        grad_100 = spectral_radius ** 100
+        trend = "vanishes" if spectral_radius < 1 else "explodes" if spectral_radius > 1 else "stable"
+        print(f"  W_scale={W_scale}  spectral_radius={spectral_radius:.3f}  "
+              f"||grad|| after 100 steps ~ {min(grad_100, 1e15):.2e}  [{trend}]")
+
+
+def demo_sequence_lengths():
+    """Show how RNN processes sequences of different lengths."""
+    print("\n=== Variable-Length Sequence Processing ===")
+    rnn = VanillaRNN(input_size=1, hidden_size=8, output_size=1, seed=7)
+
+    # Simulate 3 sequences of different lengths
+    rng = np.random.default_rng(0)
+    for seq_len in [5, 15, 30]:
+        t = np.linspace(0, seq_len * 0.3, seq_len)
+        xs = np.sin(t).reshape(-1, 1)
+        ys, hs = rnn.forward(xs)
+        hs_arr = np.array(hs)
+        print(f"  seq_len={seq_len:3d}: last hidden norm={np.linalg.norm(hs_arr[-1]):.4f}  "
+              f"output range=[{ys.min():.3f}, {ys.max():.3f}]")
+
+
 if __name__ == "__main__":
     demo()
+    demo_vanishing_gradient_rnn()
+    demo_sequence_lengths()

@@ -65,7 +65,59 @@ def demo_cross_validate_detail():
     gap = test_rmse.mean() - train_rmse.mean()
     print(f"  Generalization gap: {gap:.4f}  ({'overfit' if gap>0.05 else 'ok'})")
 
+def demo_stratified_cv():
+    """StratifiedKFold preserves class distribution across folds."""
+    print("\n=== StratifiedKFold vs plain KFold ===")
+    h = fetch_california_housing()
+    X, y = h.data, (h.target > np.median(h.target)).astype(int)
+    pipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from pathlib import Path
+    out = Path(__file__).parent / "output"; out.mkdir(exist_ok=True)
+    for CVClass, name in [(KFold, "KFold"), (StratifiedKFold, "StratifiedKFold")]:
+        cv = CVClass(5, shuffle=True, random_state=42)
+        scores = cross_val_score(pipe, X, y, cv=cv, scoring="roc_auc")
+        print(f"  {name:20s}: AUC={scores.mean():.4f} ± {scores.std():.4f}")
+
+
+def demo_nested_cv():
+    """Nested CV: outer loop estimates generalisation, inner loop selects model."""
+    print("\n=== Nested Cross-Validation ===")
+    from sklearn.model_selection import GridSearchCV
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    pipe = make_pipeline(StandardScaler(), Ridge())
+    inner_cv  = KFold(3, shuffle=True, random_state=1)
+    outer_cv  = KFold(5, shuffle=True, random_state=2)
+    grid = {"ridge__alpha": [0.01, 0.1, 1.0, 10.0]}
+    gs   = GridSearchCV(pipe, grid, cv=inner_cv, scoring="neg_root_mean_squared_error")
+    scores = cross_val_score(gs, X, y, cv=outer_cv,
+                              scoring="neg_root_mean_squared_error")
+    print(f"  Nested CV RMSE: {-scores.mean():.4f} ± {scores.std():.4f}")
+    print("  (Inner loop picks alpha; outer loop estimates true generalisation)")
+
+
+def demo_leave_one_group_out():
+    """GroupKFold — keep entire groups (e.g. geographic blocks) together."""
+    print("\n=== GroupKFold (geographic blocks) ===")
+    from sklearn.model_selection import GroupKFold
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    # Use latitude quintiles as groups
+    groups = np.digitize(h.data[:, 6], np.percentile(h.data[:, 6], [20, 40, 60, 80]))
+    pipe  = make_pipeline(StandardScaler(), Ridge(1.0))
+    gkf   = GroupKFold(n_splits=5)
+    scores = cross_val_score(pipe, X, y, cv=gkf, groups=groups,
+                              scoring="neg_root_mean_squared_error")
+    print(f"  GroupKFold RMSE: {-scores.mean():.4f} ± {scores.std():.4f}")
+
+
 if __name__ == "__main__":
     demo_cv_strategies()
     demo_time_series_cv()
     demo_cross_validate_detail()
+    demo_stratified_cv()
+    demo_nested_cv()
+    demo_leave_one_group_out()

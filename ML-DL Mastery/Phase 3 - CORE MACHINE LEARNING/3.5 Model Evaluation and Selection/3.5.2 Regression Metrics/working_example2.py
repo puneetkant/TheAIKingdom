@@ -72,6 +72,47 @@ def demo_residuals():
     plt.tight_layout(); plt.savefig(OUTPUT / "residuals_analysis.png"); plt.close()
     print("  Saved residuals_analysis.png")
 
+def demo_huber_loss_sensitivity():
+    """Demonstrate how MAE vs RMSE differ under outliers."""
+    print("\n=== Outlier Sensitivity: MAE vs RMSE ===")
+    np.random.seed(42)
+    y_true  = np.random.normal(0, 1, 100)
+    y_pred  = y_true + np.random.normal(0, 0.2, 100)
+    # Inject outliers
+    outlier_idx = [5, 20, 50]
+    y_pred_out = y_pred.copy()
+    y_pred_out[outlier_idx] += 10.0
+
+    for desc, yp in [("Clean", y_pred), ("With outliers", y_pred_out)]:
+        mae  = mean_absolute_error(y_true, yp)
+        rmse = mean_squared_error(y_true, yp)**0.5
+        r2   = r2_score(y_true, yp)
+        print(f"  {desc:15s}: MAE={mae:.4f}  RMSE={rmse:.4f}  R\u00b2={r2:.4f}")
+
+
+def demo_prediction_intervals():
+    """Bootstrap prediction intervals for a Ridge model."""
+    print("\n=== Bootstrap Prediction Intervals ===")
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    n_boot = 50
+    preds  = np.zeros((n_boot, len(y_te)))
+    rng = np.random.default_rng(0)
+    scaler = StandardScaler().fit(X_tr)
+    X_tr_s, X_te_s = scaler.transform(X_tr), scaler.transform(X_te)
+    for b in range(n_boot):
+        idx = rng.integers(0, len(X_tr_s), len(X_tr_s))
+        m   = Ridge(1.0).fit(X_tr_s[idx], y_tr[idx])
+        preds[b] = m.predict(X_te_s)
+    lo, hi = np.percentile(preds, [2.5, 97.5], axis=0)
+    coverage = ((y_te >= lo) & (y_te <= hi)).mean()
+    mean_width = (hi - lo).mean()
+    print(f"  95% PI coverage={coverage:.3f}  mean width={mean_width:.4f}")
+
+
 if __name__ == "__main__":
     demo_metrics_comparison()
     demo_residuals()
+    demo_huber_loss_sensitivity()
+    demo_prediction_intervals()

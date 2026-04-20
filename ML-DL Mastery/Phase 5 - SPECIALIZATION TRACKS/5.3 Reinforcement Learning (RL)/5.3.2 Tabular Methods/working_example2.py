@@ -79,5 +79,38 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "tabular_rl.png"); plt.close()
     print("  Saved tabular_rl.png")
 
+def demo_double_q_learning(episodes=1000, alpha=0.1, gamma=0.9, eps=0.1):
+    """Double Q-Learning to reduce maximisation bias."""
+    print("\n=== Double Q-Learning ===")
+    Q1 = np.zeros((N_STATES, N_ACTIONS))
+    Q2 = np.zeros((N_STATES, N_ACTIONS))
+    returns_dq = []
+    for _ in range(episodes):
+        s = 0; total = 0
+        for __ in range(200):
+            a = eps_greedy(Q1 + Q2, s, eps)
+            ns, r = step(s, a)
+            if np.random.rand() < 0.5:
+                Q1[s, a] += alpha * (r + gamma * Q2[ns, Q1[ns].argmax()] - Q1[s, a])
+            else:
+                Q2[s, a] += alpha * (r + gamma * Q1[ns, Q2[ns].argmax()] - Q2[s, a])
+            s = ns; total += r
+            if ns == N_STATES - 1: break
+        returns_dq.append(total)
+    _, rq = q_learning(episodes, alpha, gamma, eps)
+    print(f"  Q-Learning   avg return (last 100): {np.mean(rq[-100:]):.3f}")
+    print(f"  Double-Q     avg return (last 100): {np.mean(returns_dq[-100:]):.3f}")
+
+
+def demo_learning_rate_comparison():
+    """Compare different alpha values for convergence speed."""
+    print("\n=== Learning Rate Comparison ===")
+    for alpha in [0.01, 0.1, 0.5, 0.9]:
+        _, rr = q_learning(episodes=1000, alpha=alpha)
+        print(f"  alpha={alpha:.2f}: final avg={np.mean(rr[-100:]):.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_double_q_learning()
+    demo_learning_rate_comparison()

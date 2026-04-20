@@ -87,7 +87,50 @@ def demo_orthogonal_projection():
     fig.savefig(OUTPUT / "inner_product_projection.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: inner_product_projection.png")
 
+def demo_gram_schmidt():
+    print("\n=== Gram-Schmidt Orthogonalisation ===")
+    np.random.seed(10)
+    # Start with 3 linearly independent vectors
+    V = np.random.randn(4, 3)  # columns are vectors in R^4
+    Q = np.zeros_like(V, dtype=float)
+    for i in range(V.shape[1]):
+        q = V[:, i].astype(float)
+        for j in range(i):
+            q -= np.dot(q, Q[:, j]) * Q[:, j]
+        Q[:, i] = q / np.linalg.norm(q)
+    print(f"  Q^T Q (should be I_3x3):\n{(Q.T @ Q).round(10)}")
+    print(f"  Orthonormal: {np.allclose(Q.T @ Q, np.eye(3))}")
+
+
+def demo_kernel_comparison():
+    print("\n=== Kernel Comparison on 2D Grid ===")
+    np.random.seed(0)
+    # Show how different kernels change the similarity landscape
+    x0 = np.array([0.0, 0.0])
+    grid = np.array([[i/5, j/5] for i in range(-5, 6) for j in range(-5, 6)])
+
+    def k_linear(x, y): return np.dot(x, y)
+    def k_rbf(x, y, g=1.0): return np.exp(-g * np.dot(x-y, x-y))
+    def k_poly(x, y, d=2): return (np.dot(x, y) + 1) ** d
+
+    for name, kfn in [("Linear", k_linear), ("RBF", k_rbf), ("Poly d=2", k_poly)]:
+        sims = np.array([kfn(x0, g) for g in grid])
+        print(f"  {name}: min={sims.min():.3f}  max={sims.max():.3f}  mean={sims.mean():.3f}")
+
+    fig, axes = plt.subplots(1, 3, figsize=(12, 3))
+    for ax, (name, kfn) in zip(axes, [("Linear", k_linear), ("RBF", k_rbf), ("Poly d=2", k_poly)]):
+        sims = np.array([kfn(x0, g) for g in grid]).reshape(11, 11)
+        im = ax.imshow(sims, cmap="RdYlGn", origin="lower")
+        ax.set_title(f"{name} Kernel (center=origin)")
+        plt.colorbar(im, ax=ax)
+    plt.tight_layout()
+    fig.savefig(OUTPUT / "kernel_comparison.png", dpi=100, bbox_inches="tight")
+    plt.close(fig); print("  Saved: kernel_comparison.png")
+
+
 if __name__ == "__main__":
     demo_inner_products()
     demo_kernel_trick()
     demo_orthogonal_projection()
+    demo_gram_schmidt()
+    demo_kernel_comparison()

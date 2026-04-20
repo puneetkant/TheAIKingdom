@@ -75,6 +75,37 @@ def demo_outlier_removal():
     rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
     print(f"  Ridge on cleaned data: RMSE={rmse:.4f}")
 
+def demo_duplicate_detection():
+    """Detect and remove duplicate rows — a common real-world issue."""
+    print("\n=== Duplicate Row Detection ===")
+    h = fetch_california_housing()
+    X, y = h.data.copy(), h.target.copy()
+    # Inject duplicates
+    dup_idx = np.arange(50)
+    X_dup = np.vstack([X, X[dup_idx]])
+    y_dup = np.concatenate([y, y[dup_idx]])
+    print(f"  Before dedup: {len(X_dup)} rows")
+    # Use pandas-style with numpy: identify duplicates by finding unique rows
+    _, unique_idx = np.unique(X_dup, axis=0, return_index=True)
+    X_dedup = X_dup[np.sort(unique_idx)]
+    y_dedup = y_dup[np.sort(unique_idx)]
+    print(f"  After dedup:  {len(X_dedup)} rows  (removed {len(X_dup)-len(X_dedup)})")
+
+
+def demo_schema_validation():
+    """Check data schema: ranges, types, and unexpected values."""
+    print("\n=== Schema / Range Validation ===")
+    h = fetch_california_housing()
+    X = h.data
+    # Expected non-negative columns
+    for i, name in enumerate(h.feature_names):
+        neg_count = (X[:, i] < 0).sum()
+        min_v, max_v = X[:, i].min(), X[:, i].max()
+        print(f"  {name:15s}: min={min_v:.3f}  max={max_v:.3f}  negatives={neg_count}")
+
+
 if __name__ == "__main__":
     demo_missing_data()
     demo_outlier_removal()
+    demo_duplicate_detection()
+    demo_schema_validation()

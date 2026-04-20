@@ -75,5 +75,60 @@ def demo():
     print(f"  LayerNorm mean: {out.mean(axis=-1).round(4)}  (~=0 after norm)")
     print(f"  LayerNorm std:  {out.std(axis=-1).round(4)}  (~=1 after norm)")
 
+def demo_positional_encoding():
+    """Sinusoidal positional encoding as described in 'Attention Is All You Need'."""
+    print("\n=== Positional Encoding ===")
+    def get_positional_encoding(seq_len, d_model):
+        PE = np.zeros((seq_len, d_model))
+        pos = np.arange(seq_len)[:, None]
+        div = np.exp(np.arange(0, d_model, 2) * -(np.log(10000.0) / d_model))
+        PE[:, 0::2] = np.sin(pos * div)
+        PE[:, 1::2] = np.cos(pos * div[:d_model//2])
+        return PE
+
+    seq_len, d_model = 8, 16
+    PE = get_positional_encoding(seq_len, d_model)
+    print(f"  PE shape: {PE.shape}  (seq_len={seq_len}, d_model={d_model})")
+    # Adjacent positions should be similar
+    for i in range(1, 4):
+        sim = (PE[0] @ PE[i]) / (np.linalg.norm(PE[0]) * np.linalg.norm(PE[i]))
+        print(f"  cosine(pos 0, pos {i}): {sim:.4f}")
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.imshow(PE.T, aspect="auto", cmap="RdBu")
+    ax.set_xlabel("Position"); ax.set_ylabel("Embedding dim")
+    ax.set_title("Sinusoidal Positional Encoding")
+    plt.tight_layout(); plt.savefig(OUTPUT / "positional_encoding.png"); plt.close()
+    print("  Saved positional_encoding.png")
+
+
+def demo_stacked_blocks():
+    """Pass data through 4 stacked transformer encoder blocks."""
+    print("\n=== Stacked Transformer Blocks ===")
+    rng = np.random.default_rng(99)
+    seq_len, d_model, n_heads, d_ff, n_layers = 6, 16, 2, 32, 4
+
+    def make_params():
+        return {
+            "Wq": rng.standard_normal((d_model, d_model)) * 0.1,
+            "Wk": rng.standard_normal((d_model, d_model)) * 0.1,
+            "Wv": rng.standard_normal((d_model, d_model)) * 0.1,
+            "Wo": rng.standard_normal((d_model, d_model)) * 0.1,
+            "W1": rng.standard_normal((d_model, d_ff)) * 0.1,
+            "b1": np.zeros(d_ff),
+            "W2": rng.standard_normal((d_ff, d_model)) * 0.1,
+            "b2": np.zeros(d_model),
+            "n_heads": n_heads,
+        }
+
+    X = rng.standard_normal((seq_len, d_model))
+    print(f"  Input  std: {X.std():.4f}")
+    for i in range(n_layers):
+        X = transformer_encoder_block(X, make_params())
+        print(f"  After block {i+1}: std={X.std():.4f}  mean={X.mean():.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_positional_encoding()
+    demo_stacked_blocks()

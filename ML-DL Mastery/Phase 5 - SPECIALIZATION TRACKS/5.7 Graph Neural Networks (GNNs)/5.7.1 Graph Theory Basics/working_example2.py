@@ -67,5 +67,63 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "graph_theory.png"); plt.close()
     print("  Saved graph_theory.png")
 
+def demo_shortest_path():
+    """BFS-based shortest paths and diameter computation."""
+    print("\n=== Shortest Paths ===")
+    A = make_graph(n=10, p=0.4, seed=1)
+
+    def bfs_distances(A, src):
+        dist = [-1] * len(A); dist[src] = 0; q = deque([src])
+        while q:
+            v = q.popleft()
+            for u in np.where(A[v] > 0)[0]:
+                if dist[u] == -1:
+                    dist[u] = dist[v] + 1; q.append(u)
+        return dist
+
+    all_dists = [bfs_distances(A, s) for s in range(len(A))]
+    finite = [d for row in all_dists for d in row if d > 0]
+    if finite:
+        diameter = max(finite)
+        avg_path = np.mean(finite)
+        print(f"  Diameter: {diameter}  Avg shortest path: {avg_path:.2f}")
+    else:
+        print("  Graph is disconnected")
+
+
+def demo_centrality():
+    """Degree vs betweenness centrality (approx) for each node."""
+    print("\n=== Node Centrality ===")
+    A = make_graph(n=10, p=0.4, seed=2)
+    degree_centrality = A.sum(axis=1) / (len(A) - 1)
+
+    # Approx betweenness via BFS path counting (simplified)
+    N = len(A)
+    betweenness = np.zeros(N)
+    for s in range(N):
+        dist = [-1]*N; pred = [[] for _ in range(N)]
+        sigma = np.zeros(N); sigma[s] = 1; dist[s] = 0
+        q = deque([s])
+        stack = []
+        while q:
+            v = q.popleft(); stack.append(v)
+            for w in np.where(A[v] > 0)[0]:
+                if dist[w] < 0: dist[w] = dist[v]+1; q.append(w)
+                if dist[w] == dist[v]+1: sigma[w] += sigma[v]; pred[w].append(v)
+        delta = np.zeros(N)
+        while stack:
+            w = stack.pop()
+            for v in pred[w]:
+                delta[v] += (sigma[v]/sigma[w]) * (1 + delta[w])
+            if w != s: betweenness[w] += delta[w]
+
+    betweenness /= (N-1)*(N-2) if N > 2 else 1
+    print(f"  {'Node':>6}  {'Degree C':>10}  {'Betweenness':>12}")
+    for v in range(N):
+        print(f"  {v:>6}  {degree_centrality[v]:>10.3f}  {betweenness[v]:>12.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_shortest_path()
+    demo_centrality()

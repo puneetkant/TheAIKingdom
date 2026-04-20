@@ -79,5 +79,49 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "gnn_applications.png"); plt.close()
     print("  Saved gnn_applications.png")
 
+def demo_link_prediction():
+    """Link prediction via dot product of spectral embeddings."""
+    print("\n=== Link Prediction ===")
+    A, labels = build_community_graph(n_per=8, n_communities=3)
+    Z = spectral_embedding(A, k=4)
+    # Score all non-edges by dot product similarity
+    N = len(A)
+    scores = Z @ Z.T
+    existing_edges = set(zip(*np.where(A > 0)))
+    preds = []
+    for i in range(N):
+        for j in range(i+1, N):
+            s = scores[i, j]
+            label = 1 if (i, j) in existing_edges else 0
+            preds.append((s, label))
+    preds.sort(key=lambda x: -x[0])
+    # AUC via rank correlation
+    top50 = preds[:50]
+    prec = np.mean([lbl for _, lbl in top50])
+    print(f"  Precision@50 (link prediction): {prec:.3f}")
+    print(f"  Total edges: {len(existing_edges)//2}  Non-edges: {N*(N-1)//2 - len(existing_edges)//2}")
+
+
+def demo_graph_classification():
+    """Classify graphs by community structure using GCN mean-pooling."""
+    print("\n=== Graph Classification ===")
+    np.random.seed(42)
+    results = []
+    for label, p_in, p_out in [(0, 0.6, 0.05), (1, 0.2, 0.2)]:
+        A, _ = build_community_graph(n_per=4, n_communities=2, p_in=p_in, p_out=p_out)
+        N, F = len(A), 3
+        X = np.random.randn(N, F)
+        W = np.random.randn(F, 2) * 0.3
+        H = gcn_layer(A, X, W)
+        graph_repr = H.mean(axis=0)
+        results.append((label, graph_repr))
+    # Check embeddings differ
+    d = np.linalg.norm(results[0][1] - results[1][1])
+    print(f"  Embedding distance between class-0 and class-1 graph: {d:.4f}")
+    print(f"  (Larger distance = more discriminative GCN representation)")
+
+
 if __name__ == "__main__":
     demo()
+    demo_link_prediction()
+    demo_graph_classification()

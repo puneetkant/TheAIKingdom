@@ -80,7 +80,34 @@ def demo_target_encoding():
     zone_means = {z: y[train_mask & (zones==z)].mean() for z in ["urban","suburban","rural"]}
     print("  Zone target means:", {k: f"{v:.0f}" for k,v in zone_means.items()})
 
+def demo_cardinality_effect():
+    """Show how high-cardinality categories affect OHE dimensionality."""
+    print("\n=== High-Cardinality Effect ===")
+    np.random.seed(7)
+    cardinalities = [2, 5, 10, 50, 100, 500]
+    n_rows = 1000
+    for k in cardinalities:
+        ohe_dim = k  # OHE adds k columns
+        # Target encoding always adds 1 column
+        print(f"  cardinality={k:4d}: OHE cols={ohe_dim:4d}  TargetEnc cols=1  "
+              f"OHE memory ratio={ohe_dim:.0f}x")
+
+
+def demo_embedding_size_heuristic():
+    """Show the common sqrt(cardinality) or min(50, k//2) embedding size rules."""
+    print("\n=== Embedding Size Heuristics ===")
+    cardinalities = [2, 5, 10, 20, 50, 100, 500, 1000]
+    print(f"  {'Cardinality':>14s} {'OHE':>6s} {'sqrt rule':>10s} {'k//2 rule':>10s} {'min50 rule':>11s}")
+    for k in cardinalities:
+        sqrt_rule  = max(2, int(round(k ** 0.5)))
+        half_rule  = max(2, k // 2)
+        min50_rule = min(50, max(2, k // 2))
+        print(f"  {k:>14d} {k:>6d} {sqrt_rule:>10d} {half_rule:>10d} {min50_rule:>11d}")
+
+
 if __name__ == "__main__":
     demo_encoding_manual()
     demo_column_transformer()
     demo_target_encoding()
+    demo_cardinality_effect()
+    demo_embedding_size_heuristic()

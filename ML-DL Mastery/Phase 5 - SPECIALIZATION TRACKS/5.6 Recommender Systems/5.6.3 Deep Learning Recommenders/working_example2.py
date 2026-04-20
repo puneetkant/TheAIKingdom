@@ -78,5 +78,52 @@ def demo():
     plt.savefig(OUTPUT / "ncf_training.png"); plt.close()
     print("  Saved ncf_training.png")
 
+def demo_embedding_similarity():
+    """Visualise learned user/item embedding distances."""
+    print("\n=== Embedding Space Analysis ===")
+    n_users, n_items = 50, 30
+    rng = np.random.default_rng(0)
+    pos = [(rng.integers(n_users), rng.integers(n_items)) for _ in range(300)]
+    neg = [(rng.integers(n_users), rng.integers(n_items)) for _ in range(300)]
+    data = [(u, i, 1) for u, i in pos] + [(u, i, 0) for u, i in neg]
+    model = SimpleNCF(n_users, n_items, emb_dim=8)
+    for epoch in range(20):
+        np.random.shuffle(data)
+        for u, i, y in data: model.train_step(u, i, y)
+
+    # Positive pair avg dot product vs negative
+    pos_scores = [model.forward(u, i) for u, i in pos[:50]]
+    neg_scores = [model.forward(u, i) for u, i in neg[:50]]
+    print(f"  Avg score for positive pairs: {np.mean(pos_scores):.3f}")
+    print(f"  Avg score for negative pairs: {np.mean(neg_scores):.3f}")
+    print(f"  Separation: {np.mean(pos_scores) - np.mean(neg_scores):.3f}")
+
+
+def demo_two_tower_sketch():
+    """Two-tower: separate user and item encoders, dot-product scoring."""
+    print("\n=== Two-Tower Recommender Sketch ===")
+    rng = np.random.default_rng(42)
+    # Random user/item feature vectors (simulate pre-processed features)
+    n_users, n_items, d = 30, 20, 8
+    user_feats = rng.normal(0, 1, (n_users, d))
+    item_feats = rng.normal(0, 1, (n_items, d))
+
+    # Simple linear towers (W_u, W_i)
+    W_u = rng.normal(0, 0.1, (d, 4))
+    W_i = rng.normal(0, 0.1, (d, 4))
+
+    user_embs = np.tanh(user_feats @ W_u)  # (n_users, 4)
+    item_embs = np.tanh(item_feats @ W_i)  # (n_items, 4)
+
+    # All-pairs dot product scores
+    scores = user_embs @ item_embs.T  # (n_users, n_items)
+    top_item = scores.argmax(axis=1)
+    print(f"  User emb shape: {user_embs.shape}  Item emb shape: {item_embs.shape}")
+    print(f"  Top item per user (first 5): {top_item[:5].tolist()}")
+    print(f"  Score range: [{scores.min():.3f}, {scores.max():.3f}]")
+
+
 if __name__ == "__main__":
     demo()
+    demo_embedding_similarity()
+    demo_two_tower_sketch()

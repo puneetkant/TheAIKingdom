@@ -86,5 +86,59 @@ def demo():
         nn = sorted(sims, key=sims.get, reverse=True)[:5]
         print(f"  Nearest to '{target}':", nn)
 
+def demo_analogy():
+    """Word analogy: king - man + woman ≈ queen (via cosine similarity)."""
+    print("\n=== Word Analogy Test ===")
+    vocab, w2i = build_vocab(CORPUS)
+    pairs = make_cbow_pairs(CORPUS, w2i)
+    embeddings = train_cbow(vocab, w2i, pairs, dim=8, epochs=150)
+
+    def cosine(a, b):
+        return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-9)
+
+    # Find pairs of semantically similar words in our tiny corpus
+    print("  Top cosine similarity pairs (excluding self):")
+    found = 0
+    for i in range(len(vocab)):
+        for j in range(i+1, len(vocab)):
+            sim = cosine(embeddings[i], embeddings[j])
+            if sim > 0.7:
+                print(f"    '{vocab[i]}' ~ '{vocab[j]}': {sim:.3f}")
+                found += 1
+                if found >= 5: break
+        if found >= 5: break
+    if found == 0:
+        print("  (no high-sim pairs after short training)")
+
+
+def demo_cooccurrence_glove():
+    """Build GloVe-style co-occurrence matrix and factorize it."""
+    print("\n=== GloVe-style Co-occurrence Matrix ===")
+    vocab, w2i = build_vocab(CORPUS)
+    V = len(vocab); window = 2
+    X_coo = np.zeros((V, V))
+    for sent in CORPUS:
+        words = [w for w in sent.split() if w in w2i]
+        ids = [w2i[w] for w in words]
+        for i, wi in enumerate(ids):
+            for d in range(1, window+1):
+                if i + d < len(ids):
+                    X_coo[wi, ids[i+d]] += 1/d
+                    X_coo[ids[i+d], wi] += 1/d
+    # SVD-based factorization
+    U, S, Vt = np.linalg.svd(X_coo)
+    dim = 4
+    emb = U[:, :dim] * S[:dim]
+    print(f"  Vocab: {V}  Co-occurrence matrix density: {(X_coo>0).mean():.2f}")
+    print(f"  GloVe-like embeddings shape: {emb.shape}")
+    # Most similar to 'the'
+    if 'the' in w2i:
+        v = emb[w2i['the']]
+        sims = {w: np.dot(v, emb[w2i[w]]) for w in vocab if w != 'the'}
+        print(f"  Words most similar to 'the': {sorted(sims, key=sims.get, reverse=True)[:3]}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_analogy()
+    demo_cooccurrence_glove()

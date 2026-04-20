@@ -138,5 +138,64 @@ def demo():
     print("\n  Saved compute_resources.png")
 
 
+def demo_multi_gpu_scaling():
+    """Show training speedup and efficiency for different GPU counts."""
+    print("\n=== Multi-GPU Scaling Efficiency ===")
+    gpu_counts = [1, 2, 4, 8, 16, 32, 64]
+    # Amdahl's law: parallel fraction p=0.95
+    p = 0.95
+    ideal_speedup  = np.array(gpu_counts, dtype=float)
+    actual_speedup = np.array([1 / ((1-p) + p/n) for n in gpu_counts])
+    efficiency     = actual_speedup / ideal_speedup * 100
+    print(f"  {'GPUs':>6} {'Ideal':>8} {'Actual':>8} {'Efficiency':>12}")
+    for n, ideal, actual, eff in zip(gpu_counts, ideal_speedup, actual_speedup, efficiency):
+        print(f"  {n:>6} {ideal:>8.1f}x {actual:>8.2f}x {eff:>11.1f}%")
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+    axes[0].plot(gpu_counts, ideal_speedup,  "o--", color="gray",       lw=2, label="Ideal")
+    axes[0].plot(gpu_counts, actual_speedup, "o-",  color="steelblue",  lw=2, label="Actual (Amdahl p=0.95)")
+    axes[0].set(xlabel="GPU Count", ylabel="Speedup", title="Multi-GPU Speedup")
+    axes[0].legend(); axes[0].grid(True, alpha=0.3)
+    axes[1].plot(gpu_counts, efficiency, "o-", color="tomato", lw=2)
+    axes[1].axhline(100, color="gray", linestyle="--", lw=1)
+    axes[1].set(xlabel="GPU Count", ylabel="Efficiency (%)", title="Parallel Efficiency")
+    axes[1].grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "multi_gpu_scaling.png", dpi=100); plt.close()
+    print("  Saved multi_gpu_scaling.png")
+
+
+def demo_cost_comparison():
+    """Compare cloud GPU instance costs for training a 1.3B model."""
+    print("\n=== Cloud GPU Cost Comparison ===")
+    instances = [
+        {"name": "A100 80GB",  "flops_tflops": 312, "cost_per_hr": 3.06},
+        {"name": "H100 80GB",  "flops_tflops": 989, "cost_per_hr": 9.80},
+        {"name": "A10G 24GB",  "flops_tflops":  31, "cost_per_hr": 0.76},
+        {"name": "T4 16GB",    "flops_tflops":  65, "cost_per_hr": 0.35},
+        {"name": "RTX 4090",   "flops_tflops": 165, "cost_per_hr": 0.74},
+    ]
+    n_params, n_tokens = 1.3e9, 26e9  # Chinchilla-optimal
+    total_flops = 6 * n_params * n_tokens
+    mfu = 0.4
+    print(f"  {'Instance':14s} {'Time (hr)':10s} {'Cost ($)':10s} {'$/TFLOP':10s}")
+    for inst in instances:
+        eff_tflops = inst["flops_tflops"] * 1e12 * mfu
+        train_hr = total_flops / eff_tflops / 3600
+        cost = train_hr * inst["cost_per_hr"]
+        cost_per_tflop = inst["cost_per_hr"] / (inst["flops_tflops"] * mfu)
+        print(f"  {inst['name']:14s} {train_hr:10.1f} {cost:10.2f} {cost_per_tflop:10.4f}")
+    costs = [inst["cost_per_hr"] / (inst["flops_tflops"] * mfu) for inst in instances]
+    plt.figure(figsize=(6, 3))
+    plt.bar([i["name"] for i in instances], costs, color="steelblue", edgecolor="white")
+    plt.xlabel("Instance"); plt.ylabel("$/Effective TFLOP-hr")
+    plt.title("Cloud GPU Cost Efficiency (lower=better)")
+    plt.xticks(rotation=20, ha="right"); plt.grid(True, axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "gpu_cost_comparison.png", dpi=100); plt.close()
+    print("  Saved gpu_cost_comparison.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_multi_gpu_scaling()
+    demo_cost_comparison()

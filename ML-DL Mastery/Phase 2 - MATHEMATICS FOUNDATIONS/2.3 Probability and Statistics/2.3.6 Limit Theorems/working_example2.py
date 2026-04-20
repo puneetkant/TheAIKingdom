@@ -9,6 +9,8 @@ Run:  python working_example2.py
 from pathlib import Path
 try:
     import numpy as np
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 except ImportError:
     raise SystemExit("pip install numpy matplotlib")
@@ -83,8 +85,79 @@ def demo_mc_integration():
         se  = np.std(x**2) / np.sqrt(N)
         print(f"  N={N:>7}: est={est:.6f}  ±{1.96*se:.6f}  err={abs(est-true_val):.6f}")
 
+def demo_clt_dice():
+    print("\n=== CLT: Sum of Dice Rolls ===")
+    np.random.seed(10)
+    N = 5000
+    ns = [1, 2, 5, 10, 30]
+    fig, axes = plt.subplots(1, len(ns), figsize=(15, 4))
+    for ax, n in zip(axes, ns):
+        rolls = np.random.randint(1, 7, size=(N, n))
+        sums = rolls.sum(axis=1)
+        bins = range(n, 6 * n + 2)
+        ax.hist(sums, bins=list(bins), density=True, alpha=0.75,
+                color="steelblue", edgecolor="white")
+        ax.set_title(f"n={n}")
+        ax.set_xlabel("Sum")
+    axes[0].set_ylabel("Density")
+    plt.suptitle("CLT: Sum of n fair dice (N=5000 trials each)")
+    plt.tight_layout()
+    fig.savefig(OUTPUT / "clt_dice.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    print("  Saved: clt_dice.png")
+
+
+def demo_lln_coin():
+    print("\n=== LLN: Biased Coin (p=0.3) ===")
+    np.random.seed(20)
+    p = 0.3
+    n_flips = 1000
+    flips = np.random.binomial(1, p, n_flips)
+    running_mean = np.cumsum(flips) / np.arange(1, n_flips + 1)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(running_mean, color="steelblue", lw=1, label="Running mean")
+    ax.axhline(p, color="red", ls="--", lw=2, label=f"True p={p}")
+    ax.set_xlabel("Number of flips")
+    ax.set_ylabel("Estimated P(Heads)")
+    ax.set_title("LLN: Running mean of biased coin flips (p=0.3)")
+    ax.legend()
+    fig.savefig(OUTPUT / "lln_convergence.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  Final estimate: {running_mean[-1]:.4f}  (true: {p})")
+    print("  Saved: lln_convergence.png")
+
+
+def demo_clt_exponential():
+    print("\n=== CLT: Averaging Exponential(1) Samples ===")
+    np.random.seed(30)
+    ns = [1, 5, 30]
+    x_range = np.linspace(-4, 4, 200)
+    normal_pdf = np.exp(-0.5 * x_range ** 2) / np.sqrt(2 * np.pi)
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    for ax, n in zip(axes, ns):
+        samples = np.random.exponential(1.0, size=(10_000, n))
+        means = samples.mean(axis=1)
+        # E[X]=1, Var[X]=1 => std of mean = 1/sqrt(n)
+        z = (means - 1.0) / (1.0 / np.sqrt(n))
+        ax.hist(z, bins=50, density=True, alpha=0.7, color="coral", label="Empirical")
+        ax.plot(x_range, normal_pdf, "k-", lw=2, label="N(0,1)")
+        ax.set_title(f"n={n}")
+        ax.set_xlim(-4, 4)
+        ax.set_xlabel("Standardised mean")
+    axes[0].set_ylabel("Density")
+    axes[0].legend(fontsize=8)
+    plt.suptitle("CLT: Standardised mean of Exponential(1) samples")
+    plt.tight_layout()
+    fig.savefig(OUTPUT / "clt_exponential.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    print("  Saved: clt_exponential.png")
+
+
 if __name__ == "__main__":
     demo_lln()
     demo_clt()
     demo_bootstrap()
     demo_mc_integration()
+    demo_clt_dice()
+    demo_lln_coin()
+    demo_clt_exponential()

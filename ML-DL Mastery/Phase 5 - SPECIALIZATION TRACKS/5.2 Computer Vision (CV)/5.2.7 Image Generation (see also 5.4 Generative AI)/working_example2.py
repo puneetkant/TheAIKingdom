@@ -75,5 +75,56 @@ def demo():
     print("  Saved vae_samples.png")
     print(f"  Final ELBO loss: {losses[-1]:.4f}")
 
+def demo_latent_arithmetic():
+    """Show that latent vectors from different digits can be averaged."""
+    print("\n=== Latent Space Arithmetic ===")
+    digits = load_digits()
+    X = MinMaxScaler().fit_transform(digits.data)
+    params, mu, _ = train_vae_sketch(X, n_z=2, epochs=80)
+    We,be,Wmu,bmu,Wlv,blv,Wd1,bd1,Wd2,bd2 = params
+
+    for label in [0, 1, 2]:
+        mask = digits.target == label
+        h = relu(X[mask] @ We + be)
+        z_mean = (h @ Wmu + bmu).mean(axis=0)
+        print(f"  Digit {label} mean z: [{z_mean[0]:+.3f}, {z_mean[1]:+.3f}]")
+
+    # Arithmetic: z_0 + z_2 - z_1 → decode
+    def mean_z(label):
+        mask = digits.target == label
+        h = relu(X[mask] @ We + be)
+        return (h @ Wmu + bmu).mean(axis=0)
+
+    z_arith = mean_z(0) + mean_z(2) - mean_z(1)
+    h2 = relu(z_arith @ Wd1 + bd1)
+    result = sigmoid(h2 @ Wd2 + bd2).reshape(8, 8)
+    print(f"  z(0)+z(2)-z(1) decoded — pixel mean: {result.mean():.3f}")
+
+
+def demo_latent_interpolation():
+    """Interpolate between two digit classes in latent space."""
+    print("\n=== Latent Interpolation ===")
+    digits = load_digits()
+    X = MinMaxScaler().fit_transform(digits.data)
+    params, mu, _ = train_vae_sketch(X, n_z=2, epochs=80)
+    We,be,Wmu,bmu,Wlv,blv,Wd1,bd1,Wd2,bd2 = params
+
+    def mean_z(label):
+        mask = digits.target == label
+        h = relu(X[mask] @ We + be)
+        return (h @ Wmu + bmu).mean(axis=0)
+
+    za, zb = mean_z(3), mean_z(8)
+    alphas = np.linspace(0, 1, 5)
+    print(f"  Interpolating between digit 3 and digit 8:")
+    for alpha in alphas:
+        z = (1-alpha)*za + alpha*zb
+        h2 = relu(z @ Wd1 + bd1)
+        img = sigmoid(h2 @ Wd2 + bd2).reshape(8, 8)
+        print(f"    alpha={alpha:.2f}  pixel_mean={img.mean():.3f}  pixel_std={img.std():.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_latent_arithmetic()
+    demo_latent_interpolation()

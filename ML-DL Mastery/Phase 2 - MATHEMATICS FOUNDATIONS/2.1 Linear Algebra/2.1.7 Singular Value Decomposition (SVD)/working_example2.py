@@ -86,6 +86,52 @@ def demo_condition():
         cond = s[0] / (s[-1] + 1e-15)
         print(f"  {name}: sigma_max/sigma_min = {cond:.3e}")
 
+def demo_lsa(X):
+    print("\n=== Latent Semantic Analysis (LSA) via SVD ===")
+    # Build a tiny term-document matrix
+    np.random.seed(7)
+    terms = ["algebra", "matrix", "vector", "neural", "gradient", "eigen"]
+    n_docs = 8
+    # Synthetic term-frequency matrix (terms x docs)
+    TF = np.abs(np.random.randn(len(terms), n_docs))
+    U, s, Vt = np.linalg.svd(TF, full_matrices=False)
+    # Top-2 concept space
+    k = 2
+    doc_coords  = np.diag(s[:k]) @ Vt[:k, :]   # (k, n_docs)
+    term_coords = U[:, :k]                       # (n_terms, k)
+    print(f"  TF matrix: {TF.shape}  ->  LSA rank-{k} approx")
+    print(f"  Top-2 singular values: {s[:2].round(3)}")
+    # Query: similarity to 'algebra matrix'
+    query_vec = TF[:, 0]   # use first doc as query proxy
+    q_proj = U[:, :k].T @ query_vec / (np.linalg.norm(query_vec) + 1e-9)
+    sims = [np.dot(q_proj, doc_coords[:, d]) /
+            (np.linalg.norm(doc_coords[:, d]) + 1e-9) for d in range(n_docs)]
+    print(f"  LSA cosine sims to doc-0: {[round(s,3) for s in sims]}")
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.scatter(doc_coords[0], doc_coords[1], color="steelblue", s=80, label="Docs")
+    for i, tc in enumerate(term_coords):
+        ax.annotate(terms[i], tc, fontsize=8, color="tomato")
+    ax.scatter(term_coords[:, 0], term_coords[:, 1], color="tomato", s=40)
+    ax.set_title("LSA: Documents in 2D Concept Space")
+    ax.legend(); ax.grid(True, alpha=0.3)
+    fig.savefig(OUTPUT / "lsa_svd.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: lsa_svd.png")
+
+
+def demo_image_compression(X):
+    print("\n=== SVD Image Compression (synthetic) ===")
+    # Use X as a 'grayscale image patch' (300x6 -> pad to square for demo)
+    img = X[:50, :].copy()
+    U, s, Vt = np.linalg.svd(img, full_matrices=False)
+    total_e = np.sum(s**2)
+    print(f"  Image shape: {img.shape}")
+    for k in [1, 2, 3, 5]:
+        img_k = U[:, :k] @ np.diag(s[:k]) @ Vt[:k, :]
+        psnr = 20 * np.log10(img.max() / (np.linalg.norm(img - img_k) / img.size**0.5 + 1e-9))
+        var = np.sum(s[:k]**2) / total_e
+        print(f"  k={k}: var_explained={var:.3f}  PSNR~={psnr:.1f} dB")
+
+
 if __name__ == "__main__":
     X = download()
     demo_svd_basics(X)
@@ -93,3 +139,5 @@ if __name__ == "__main__":
     demo_pca_via_svd(X)
     demo_pseudo_inverse(X)
     demo_condition()
+    demo_lsa(X)
+    demo_image_compression(X)

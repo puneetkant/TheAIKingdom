@@ -86,5 +86,48 @@ def demo():
     plt.savefig(OUTPUT / "vae_loss.png"); plt.close()
     print("  Saved vae_interpolation.png, vae_loss.png")
 
+def demo_beta_vae():
+    """Beta-VAE: increasing KL weight enforces disentanglement."""
+    print("\n=== Beta-VAE: KL weight effect ===")
+    X = load_digits().data / 16.0
+    print(f"  {'Beta':>6}  {'Final loss':>12}")
+    for beta in [0.1, 1.0, 4.0]:
+        vae = LinearVAE(in_dim=64, latent_dim=4, lr=1e-3)
+        losses = []
+        for ep in range(20):
+            idx = np.random.permutation(len(X))
+            batch_losses = []
+            for i in range(0, len(X), 64):
+                b = X[idx[i:i+64]]
+                mu, logvar = vae.encode(b)
+                z = vae.reparametrize(mu, logvar)
+                xr = vae.decode(z)
+                recon = -np.mean(b * np.log(xr+1e-8) + (1-b)*np.log(1-xr+1e-8))
+                kl    = -0.5 * np.mean(1 + logvar - mu**2 - np.exp(logvar))
+                batch_losses.append(recon + beta * kl)
+            losses.append(np.mean(batch_losses))
+        print(f"  {beta:>6.1f}  {losses[-1]:>12.4f}")
+
+
+def demo_latent_dim_effect():
+    """Compare reconstruction quality at different latent dimensions."""
+    print("\n=== Latent Dimension Comparison ===")
+    X = load_digits().data / 16.0
+    for ld in [2, 4, 8, 16]:
+        vae = LinearVAE(in_dim=64, latent_dim=ld, lr=1e-3)
+        losses = []
+        for ep in range(30):
+            idx = np.random.permutation(len(X))
+            ep_loss = []
+            for i in range(0, len(X), 64):
+                b = X[idx[i:i+64]]
+                l, _, _ = vae.train_step(b)
+                ep_loss.append(l)
+            losses.append(np.mean(ep_loss))
+        print(f"  latent_dim={ld:3d}: final loss={losses[-1]:.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_beta_vae()
+    demo_latent_dim_effect()

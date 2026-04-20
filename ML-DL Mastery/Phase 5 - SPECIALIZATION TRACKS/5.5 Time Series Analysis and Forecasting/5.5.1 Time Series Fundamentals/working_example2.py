@@ -61,5 +61,39 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "ts_fundamentals.png"); plt.close()
     print("  Saved ts_fundamentals.png")
 
+def demo_stationarity_test():
+    """Augmented Dickey-Fuller proxy: compare variance in rolling windows."""
+    print("\n=== Stationarity Analysis ===")
+    stationary     = np.random.default_rng(1).normal(0, 1, 200)
+    non_stationary = np.cumsum(np.random.default_rng(2).normal(0, 1, 200))  # random walk
+
+    for name, ts in [("Stationary (white noise)", stationary),
+                     ("Non-stationary (random walk)", non_stationary)]:
+        window = 40
+        rolling_means = [ts[i:i+window].mean() for i in range(0, len(ts)-window, window//2)]
+        rolling_stds  = [ts[i:i+window].std()  for i in range(0, len(ts)-window, window//2)]
+        mean_variation = np.std(rolling_means); std_variation = np.std(rolling_stds)
+        print(f"  {name}")
+        print(f"    Rolling mean variation (std): {mean_variation:.4f}  "
+              f"Rolling std variation: {std_variation:.4f}")
+
+
+def demo_differencing():
+    """Show how differencing transforms a non-stationary series to stationary."""
+    print("\n=== Differencing for Stationarity ===")
+    rng = np.random.default_rng(0)
+    t = np.arange(300)
+    ts = 0.05 * t + 5 * np.sin(2*np.pi*t/25) + rng.normal(0, 0.5, 300)
+
+    d1 = np.diff(ts, n=1)    # first difference
+    d2 = np.diff(ts, n=2)    # second difference
+
+    for name, arr in [("Original", ts), ("1st diff", d1), ("2nd diff", d2)]:
+        trend_slope = np.polyfit(np.arange(len(arr)), arr, 1)[0]
+        print(f"  {name:12s}: std={arr.std():.4f}  trend_slope={trend_slope:.6f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_stationarity_test()
+    demo_differencing()

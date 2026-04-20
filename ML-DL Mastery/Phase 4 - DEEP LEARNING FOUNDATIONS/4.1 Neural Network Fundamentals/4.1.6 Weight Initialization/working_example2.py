@@ -78,5 +78,53 @@ def demo_init_comparison():
     plt.tight_layout(); plt.savefig(OUTPUT / "weight_init.png"); plt.close()
     print("  Saved weight_init.png")
 
+def demo_activation_statistics():
+    """Show how init strategy affects per-layer activation std across depth."""
+    print("\n=== Activation Statistics Across Depth ===")
+    rng = np.random.default_rng(0)
+    X_rand = rng.standard_normal((256, 32))
+    depth = 10
+    for strat in ["random_large", "xavier", "he"]:
+        x = X_rand.copy()
+        stds = []
+        for layer in range(depth):
+            if strat == "random_large":
+                W = rng.standard_normal((x.shape[1], 32)) * 5
+            elif strat == "xavier":
+                lim = np.sqrt(6 / (x.shape[1] + 32))
+                W = rng.uniform(-lim, lim, (x.shape[1], 32))
+            else:  # he
+                W = rng.standard_normal((x.shape[1], 32)) * np.sqrt(2 / x.shape[1])
+            b = np.zeros(32)
+            x = relu(x @ W + b)
+            stds.append(x.std())
+        trend = "exploding" if stds[-1] > stds[0]*2 else ("vanishing" if stds[-1] < stds[0]*0.5 else "stable")
+        print(f"  {strat:15s}: std layer1={stds[0]:.4f}  std layer10={stds[-1]:.4f}  [{trend}]")
+
+
+def demo_orthogonal_init():
+    """Orthogonal initialisation: preserves gradient norm through depth."""
+    print("\n=== Orthogonal Initialisation ===")
+    rng = np.random.default_rng(1)
+    n = 64
+    # Random matrix vs orthogonal
+    R = rng.standard_normal((n, n))
+    Q, _ = np.linalg.qr(R)   # orthogonal matrix
+    eigvals_rand = np.abs(np.linalg.eigvals(R))
+    eigvals_orth = np.abs(np.linalg.eigvals(Q))
+    print(f"  Random matrix eigenvalue range: [{eigvals_rand.min():.3f}, {eigvals_rand.max():.3f}]")
+    print(f"  Orthogonal matrix eigenvalue range: [{eigvals_orth.min():.3f}, {eigvals_orth.max():.3f}]")
+    print("  Orthogonal: all eigenvalues = 1 -> gradient norms preserved across layers")
+    # Forward pass std comparison
+    x = rng.standard_normal((32, n))
+    x_rand = x.copy(); x_orth = x.copy()
+    for _ in range(10):
+        x_rand = np.tanh(x_rand @ R / np.sqrt(n))
+        x_orth = np.tanh(x_orth @ Q)
+    print(f"  After 10 layers — Random std: {x_rand.std():.4f}  Orthogonal std: {x_orth.std():.4f}")
+
+
 if __name__ == "__main__":
     demo_init_comparison()
+    demo_activation_statistics()
+    demo_orthogonal_init()

@@ -80,5 +80,44 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "recsys_diversity.png"); plt.close()
     print("  Saved recsys_diversity.png")
 
+def demo_exploration_ucb():
+    """UCB1 exploration for cold-start items."""
+    print("\n=== Exploration: UCB for New Items ===")
+    rng = np.random.default_rng(42)
+    true_ctr = rng.uniform(0.05, 0.4, len(titles))  # click-through rates
+    N = np.zeros(len(titles)); Q = np.zeros(len(titles))
+    rewards_log = []
+    for t in range(1, 201):
+        ucb = Q + 2 * np.sqrt(np.log(t) / (N + 1e-9))
+        i = ucb.argmax()
+        reward = float(rng.random() < true_ctr[i])
+        N[i] += 1; Q[i] += (reward - Q[i]) / N[i]
+        rewards_log.append(reward)
+    best_ctr = true_ctr.max()
+    achieved  = np.mean(rewards_log[-50:])
+    print(f"  Optimal CTR:   {best_ctr:.3f}")
+    print(f"  UCB last-50 avg CTR: {achieved:.3f}")
+    print(f"  Regret fraction: {(best_ctr - achieved) / best_ctr:.1%}")
+
+
+def demo_temporal_dynamics():
+    """Simulate concept drift: item popularity shifts over time."""
+    print("\n=== Temporal Dynamics Simulation ===")
+    rng = np.random.default_rng(7)
+    n_items = len(titles); T = 100
+    # Popularity shifts at T=50
+    early_pop = rng.dirichlet(np.ones(n_items))
+    late_pop  = rng.dirichlet(np.ones(n_items))
+
+    early_top = np.argsort(early_pop)[::-1][:3]
+    late_top  = np.argsort(late_pop)[::-1][:3]
+    print(f"  Early top items: {[titles[i] for i in early_top]}")
+    print(f"  Late  top items: {[titles[i] for i in late_top]}")
+    overlap = len(set(early_top) & set(late_top))
+    print(f"  Top-3 overlap: {overlap}/3  (drift = {1 - overlap/3:.1%})")
+
+
 if __name__ == "__main__":
     demo()
+    demo_exploration_ucb()
+    demo_temporal_dynamics()

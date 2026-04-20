@@ -129,5 +129,59 @@ def demo():
     print("  Saved portfolio_building.png")
 
 
+def demo_readme_structure():
+    """Score README quality based on presence of key sections."""
+    print("\n=== README Quality Scoring ===")
+    readmes = [
+        {"name": "Minimal",    "sections": ["title", "install"]},
+        {"name": "Standard",   "sections": ["title", "install", "usage", "results"]},
+        {"name": "Good",       "sections": ["title", "install", "usage", "results", "demo", "tests"]},
+        {"name": "Excellent",  "sections": ["title", "install", "usage", "results", "demo", "tests",
+                                             "architecture", "contributing", "license", "citation"]},
+    ]
+    all_sections = ["title", "install", "usage", "results", "demo", "tests",
+                    "architecture", "contributing", "license", "citation"]
+    for r in readmes:
+        coverage = len(r["sections"]) / len(all_sections)
+        print(f"  {r['name']:12s}: {len(r['sections'])}/{len(all_sections)} sections  ({coverage:.0%})")
+    labels = [r["name"] for r in readmes]
+    scores_r = [len(r["sections"]) / len(all_sections) * 100 for r in readmes]
+    plt.figure(figsize=(6, 3))
+    plt.bar(labels, scores_r, color=["tomato","orange","steelblue","mediumseagreen"], edgecolor="white")
+    plt.ylabel("README Quality Score (%)"); plt.title("README Section Coverage")
+    plt.ylim(0, 110); plt.grid(True, axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "readme_quality.png", dpi=100); plt.close()
+    print("  Saved readme_quality.png")
+
+
+def demo_github_activity():
+    """Simulate a GitHub contribution heatmap (52 weeks x 7 days)."""
+    print("\n=== GitHub Activity Heatmap ===")
+    rng = np.random.default_rng(77)
+    # Simulate sparse commits: active on weekdays, rare on weekends
+    grid = np.zeros((7, 52))
+    for w in range(52):
+        for d in range(5):  # weekdays
+            grid[d, w] = rng.choice([0, 0, 0, 1, 2, 3, 5], p=[0.4, 0.15, 0.15, 0.1, 0.1, 0.05, 0.05])
+        for d in range(5, 7):  # weekends
+            grid[d, w] = rng.choice([0, 0, 1, 2], p=[0.6, 0.25, 0.1, 0.05])
+    total_commits = int(grid.sum())
+    active_days = int((grid > 0).sum())
+    print(f"  Total commits (simulated): {total_commits}")
+    print(f"  Active days: {active_days}/364")
+    fig, ax = plt.subplots(figsize=(14, 3))
+    im = ax.imshow(grid, cmap="Greens", aspect="auto", vmin=0, vmax=5)
+    ax.set_yticks(range(7))
+    ax.set_yticklabels(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], fontsize=8)
+    ax.set_xlabel("Week of Year"); ax.set_title(f"GitHub Contribution Heatmap ({total_commits} commits)")
+    plt.colorbar(im, ax=ax, label="Commits")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "github_activity.png", dpi=100); plt.close()
+    print("  Saved github_activity.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_readme_structure()
+    demo_github_activity()

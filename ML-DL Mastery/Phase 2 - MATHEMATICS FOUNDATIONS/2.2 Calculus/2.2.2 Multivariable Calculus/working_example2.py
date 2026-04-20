@@ -9,6 +9,8 @@ Run:  python working_example2.py
 from pathlib import Path
 try:
     import numpy as np
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 except ImportError:
     raise SystemExit("pip install numpy matplotlib")
@@ -111,8 +113,87 @@ def demo_contour_gd():
     fig.savefig(OUTPUT / "rosenbrock_gd.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: rosenbrock_gd.png")
 
+def demo_gradient_ascent_surface():
+    print("\n=== Gradient Ascent: maximize f(x,y) = -(x-2)^2 - (y-3)^2 ===")
+    f  = lambda v: -(v[0] - 2)**2 - (v[1] - 3)**2
+    df = lambda v: np.array([-2*(v[0] - 2), -2*(v[1] - 3)])
+
+    x = np.array([0.0, 0.0]); lr = 0.15; history = [x.copy()]
+    for _ in range(30):
+        x = x + lr * df(x)
+        history.append(x.copy())
+    path = np.array(history)
+    print(f"  Ascent converged to: {x.round(4)}  (true max: [2, 3])")
+    print(f"  f(x*) = {f(x):.6f}  (true max = 0)")
+
+    xr = np.linspace(-0.5, 4, 200); yr = np.linspace(-0.5, 5, 200)
+    XX, YY = np.meshgrid(xr, yr)
+    ZZ = -(XX - 2)**2 - (YY - 3)**2
+    fig, ax = plt.subplots(figsize=(6, 5))
+    cs = ax.contourf(XX, YY, ZZ, 20, cmap="RdYlGn", alpha=0.7)
+    ax.contour(XX, YY, ZZ, 20, colors="gray", linewidths=0.5)
+    ax.plot(path[:, 0], path[:, 1], "b-o", ms=4, lw=1.5, label="Ascent path")
+    ax.scatter(2, 3, color="red", s=100, zorder=5, label="True max (2,3)")
+    ax.legend(); ax.set_title("Gradient Ascent on -(x-2)^2-(y-3)^2")
+    plt.colorbar(cs, ax=ax)
+    fig.savefig(OUTPUT / "gradient_ascent.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: gradient_ascent.png")
+
+
+def demo_hessian_classification():
+    print("\n=== Hessian Classification: f(x,y) = x^2 + xy + y^2 ===")
+    # Critical point at (0,0): df/dx = 2x+y=0, df/dy = x+2y=0
+    # H = [[2, 1], [1, 2]]
+    H = np.array([[2., 1.], [1., 2.]])
+    eigs = np.linalg.eigvalsh(H)
+    det_H = np.linalg.det(H)
+    trace_H = np.trace(H)
+    print(f"  Hessian H = [[2,1],[1,2]]")
+    print(f"  Eigenvalues: {eigs.round(4)}")
+    print(f"  det(H) = {det_H:.4f}  trace(H) = {trace_H:.4f}")
+    if all(eigs > 0):
+        verdict = "LOCAL MINIMUM (H is positive definite)"
+    elif all(eigs < 0):
+        verdict = "LOCAL MAXIMUM (H is negative definite)"
+    else:
+        verdict = "SADDLE POINT (mixed eigenvalue signs)"
+    print(f"  Classification: {verdict}")
+    print(f"  Critical point (0,0): f(0,0) = 0")
+
+
+def demo_chain_rule_backprop():
+    print("\n=== Chain Rule: z = sigmoid(w.x + b)  dz/dw numeric vs analytic ===")
+    np.random.seed(7)
+    n = 5
+    x = np.random.randn(n)
+    w = np.random.randn(n)
+    b = 0.5
+    sigmoid = lambda u: 1.0 / (1.0 + np.exp(-u))
+
+    z_fn = lambda ww: sigmoid(np.dot(ww, x) + b)
+    a = np.dot(w, x) + b
+    sig_a = sigmoid(a)
+    dz_dw_analytic = sig_a * (1 - sig_a) * x
+
+    h = 1e-6
+    dz_dw_numeric = np.array([
+        (z_fn(w + h*np.eye(n)[i]) - z_fn(w - h*np.eye(n)[i])) / (2*h)
+        for i in range(n)
+    ])
+
+    print(f"  x = {x.round(4)}")
+    print(f"  w = {w.round(4)}, b = {b}")
+    print(f"  z = sigmoid(w.x + b) = {sig_a:.6f}")
+    print(f"  dz/dw analytic:  {dz_dw_analytic.round(6)}")
+    print(f"  dz/dw numerical: {dz_dw_numeric.round(6)}")
+    print(f"  Max error: {np.max(np.abs(dz_dw_analytic - dz_dw_numeric)):.2e}")
+
+
 if __name__ == "__main__":
     demo_gradient()
     demo_jacobian()
     demo_hessian()
     demo_contour_gd()
+    demo_gradient_ascent_surface()
+    demo_hessian_classification()
+    demo_chain_rule_backprop()

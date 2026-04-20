@@ -64,7 +64,77 @@ def demo_elastic_net():
     rmse = mean_squared_error(y_test, enet_cv.predict(X_test))**0.5
     print(f"\n  ElasticNetCV best l1_ratio={best.l1_ratio_:.3f}  alpha={best.alpha_:.4f}  RMSE={rmse:.4f}")
 
+def demo_passive_aggressive():
+    """Passive-Aggressive classifiers: update only on mistakes."""
+    print("\n=== Passive-Aggressive Classifier ===")
+    from sklearn.linear_model import PassiveAggressiveClassifier
+    h = fetch_california_housing()
+    X, y = h.data, (h.target > np.median(h.target)).astype(int)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    scaler = StandardScaler()
+    X_tr = scaler.fit_transform(X_train)
+    X_te = scaler.transform(X_test)
+    for C in [0.01, 0.1, 1.0]:
+        pa = PassiveAggressiveClassifier(C=C, max_iter=1000, random_state=42)
+        pa.fit(X_tr, y_train)
+        acc = pa.score(X_te, y_test)
+        print(f"  C={C}: accuracy={acc:.4f}")
+
+
+def demo_online_learning_curve():
+    """Simulate online (incremental) SGD learning on streaming data."""
+    print("\n=== Online Learning Curve (SGD partial_fit) ===")
+    h = fetch_california_housing()
+    X_all, y_all = h.data, (h.target > np.median(h.target)).astype(int)
+    X_tr, X_te, y_tr, y_te = train_test_split(X_all, y_all, test_size=0.2, random_state=42)
+    scaler = StandardScaler().fit(X_tr)
+    X_tr_s = scaler.transform(X_tr)
+    X_te_s  = scaler.transform(X_te)
+    clf = SGDClassifier(loss="log_loss", random_state=42)
+    batch = 200
+    accs = []
+    for start in range(0, len(X_tr_s), batch):
+        clf.partial_fit(X_tr_s[start:start+batch], y_tr[start:start+batch], classes=[0,1])
+        accs.append(clf.score(X_te_s, y_te))
+    print(f"  Start acc={accs[0]:.4f}  End acc={accs[-1]:.4f}  Batches={len(accs)}")
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.plot(accs)
+    ax.set_xlabel("Mini-batch"); ax.set_ylabel("Test accuracy")
+    ax.set_title("SGD Online Learning Curve")
+    fig.savefig(OUTPUT / "sgd_online.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: sgd_online.png")
+
+
+def demo_ridge_lasso_paths():
+    """Compare Ridge and Lasso regularisation paths (coefficient shrinkage)."""
+    print("\n=== Ridge vs Lasso Regularisation Paths ===")
+    from sklearn.linear_model import Ridge, Lasso
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    scaler = StandardScaler()
+    X_tr_s = scaler.fit_transform(X_train)
+    X_te_s  = scaler.transform(X_test)
+    alphas = [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+    ridge_rmses, lasso_rmses = [], []
+    for a in alphas:
+        for model, store in [(Ridge(alpha=a), ridge_rmses), (Lasso(alpha=a, max_iter=5000), lasso_rmses)]:
+            model.fit(X_tr_s, y_train)
+            rmse = mean_squared_error(y_test, model.predict(X_te_s))**0.5
+            store.append(rmse)
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.semilogx(alphas, ridge_rmses, "o-", label="Ridge")
+    ax.semilogx(alphas, lasso_rmses, "s--", label="Lasso")
+    ax.set_xlabel("alpha"); ax.set_ylabel("RMSE")
+    ax.set_title("Ridge vs Lasso RMSE vs alpha"); ax.legend()
+    fig.savefig(OUTPUT / "ridge_lasso_paths.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: ridge_lasso_paths.png")
+
+
 if __name__ == "__main__":
     demo_perceptron()
     demo_sgd()
     demo_elastic_net()
+    demo_passive_aggressive()
+    demo_online_learning_curve()
+    demo_ridge_lasso_paths()

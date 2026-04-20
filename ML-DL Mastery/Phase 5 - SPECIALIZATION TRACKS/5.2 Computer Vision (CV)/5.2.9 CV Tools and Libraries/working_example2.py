@@ -66,7 +66,45 @@ def tool_matrix():
     for r in rows:
         print(f"  {r[0]:15s} {r[2]:35s} {r[3]:15s}")
 
+def demo_convolution_filters():
+    """Apply low-pass (blur) and high-pass (sharpen) filters."""
+    print("\n=== Convolution Filters ===")
+    digits = load_digits()
+    img = digits.images[2] / 16.0
+
+    def conv2d_filter(img, K):
+        H, W = img.shape; kH, kW = K.shape; pad = kH // 2
+        p = np.pad(img, pad); out = np.zeros_like(img)
+        for i in range(H):
+            for j in range(W):
+                out[i, j] = (p[i:i+kH, j:j+kW] * K).sum()
+        return out
+
+    blur = np.ones((3,3)) / 9
+    sharpen = np.array([[0,-1,0],[-1,5,-1],[0,-1,0]], float)
+    blurred   = conv2d_filter(img, blur).clip(0, 1)
+    sharpened = conv2d_filter(img, sharpen).clip(0, 1)
+    print(f"  Original std:  {img.std():.4f}")
+    print(f"  Blurred  std:  {blurred.std():.4f}")
+    print(f"  Sharpened std: {sharpened.std():.4f}")
+
+
+def demo_histogram_equalization():
+    """Histogram equalisation to enhance contrast."""
+    print("\n=== Histogram Equalisation ===")
+    digits = load_digits()
+    img = (digits.images[0] / 16.0 * 255).astype(int)
+    hist, _ = np.histogram(img.ravel(), 256, [0, 256])
+    cdf = hist.cumsum().astype(float)
+    cdf_norm = (cdf - cdf.min()) / (cdf.max() - cdf.min()) * 255
+    equalized = cdf_norm[img] / 255.0
+    print(f"  Original contrast (std):  {img.std()/255:.4f}")
+    print(f"  Equalised contrast (std): {equalized.std():.4f}")
+
+
 if __name__ == "__main__":
     check_libs()
     demo_numpy_cv()
     tool_matrix()
+    demo_convolution_filters()
+    demo_histogram_equalization()

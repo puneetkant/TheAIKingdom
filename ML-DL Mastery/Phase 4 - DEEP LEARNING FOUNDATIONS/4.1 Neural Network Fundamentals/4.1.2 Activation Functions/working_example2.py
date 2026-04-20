@@ -71,8 +71,38 @@ def demo_softmax():
     probs  = softmax(logits)
     print(f"  Logits: {logits}  -> Probs: {probs.round(4)}  (sum={probs.sum():.6f})")
 
+def demo_dead_relu():
+    """Demonstrate dying ReLU: neurons with all-negative inputs produce zero gradient."""
+    print("\n=== Dead ReLU Problem ===")
+    np.random.seed(0)
+    z = np.random.normal(-2, 1, 1000)   # mostly negative inputs
+    frac_dead = (z <= 0).mean()
+    print(f"  Inputs mean={z.mean():.2f}: dead fraction (ReLU)={frac_dead:.3f}")
+    # Leaky ReLU keeps gradient alive
+    lr_out = leaky_relu(z)
+    lr_frac_dead = (lr_out == 0).mean()
+    print(f"  Leaky ReLU dead fraction:   {lr_frac_dead:.3f}")
+    # ELU
+    elu_out = elu(z)
+    elu_frac_zero = (np.abs(elu_out) < 1e-6).mean()
+    print(f"  ELU near-zero fraction:     {elu_frac_zero:.3f}")
+
+
+def demo_vanishing_gradient():
+    """Sigmoid gradient vanishes for large |z|; ReLU does not."""
+    print("\n=== Vanishing Gradient (sigmoid vs relu) ===")
+    z = np.array([-5., -3., -1., 0., 1., 3., 5.])
+    print(f"  {'z':>6}  {'sigma gradient':>18}  {'ReLU gradient':>14}")
+    for zi in z:
+        sg = float(sigmoid_d(np.array([zi]))[0])
+        rg = float(relu_d(np.array([zi]))[0])
+        print(f"  {zi:6.1f}  {sg:18.6f}  {rg:14.4f}")
+
+
 if __name__ == "__main__":
     demo_values()
     demo_gradients()
     demo_plot()
     demo_softmax()
+    demo_dead_relu()
+    demo_vanishing_gradient()

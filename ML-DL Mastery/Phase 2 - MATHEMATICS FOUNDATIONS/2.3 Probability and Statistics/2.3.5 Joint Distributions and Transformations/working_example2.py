@@ -9,6 +9,8 @@ Run:  python working_example2.py
 from pathlib import Path
 try:
     import numpy as np
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 except ImportError:
     raise SystemExit("pip install numpy matplotlib")
@@ -79,7 +81,97 @@ def demo_covariance_correlation():
     fig.savefig(OUTPUT / "correlation_heatmap.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: correlation_heatmap.png")
 
+def demo_joint_2d_gaussian():
+    print("\n=== Joint 2D Gaussian (rho=0.7) ===")
+    np.random.seed(50)
+    rho = 0.7
+    cov = np.array([[1.0, rho], [rho, 1.0]])
+    L = np.linalg.cholesky(cov)
+    z = np.random.randn(2000, 2)
+    samples = z @ L.T
+    print(f"  Sample correlation: {np.corrcoef(samples.T)[0, 1]:.4f}  (target: {rho})")
+
+    fig = plt.figure(figsize=(8, 8))
+    gs = fig.add_gridspec(2, 2, hspace=0.05, wspace=0.05)
+    ax_main  = fig.add_subplot(gs[1, 0])
+    ax_top   = fig.add_subplot(gs[0, 0], sharex=ax_main)
+    ax_right = fig.add_subplot(gs[1, 1], sharey=ax_main)
+    ax_corner = fig.add_subplot(gs[0, 1])
+    ax_corner.set_visible(False)
+
+    ax_main.scatter(samples[:, 0], samples[:, 1], s=4, alpha=0.3, color="steelblue")
+    ax_main.set_xlabel("X1")
+    ax_main.set_ylabel("X2")
+    ax_top.hist(samples[:, 0], bins=50, density=True, color="steelblue", alpha=0.7)
+    ax_top.set_title(f"Joint 2D Gaussian, rho={rho}")
+    plt.setp(ax_top.get_xticklabels(), visible=False)
+    ax_right.hist(samples[:, 1], bins=50, density=True, color="coral", alpha=0.7,
+                  orientation="horizontal")
+    plt.setp(ax_right.get_yticklabels(), visible=False)
+
+    fig.savefig(OUTPUT / "joint_bivariate.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    print("  Saved: joint_bivariate.png")
+
+
+def demo_sum_of_uniforms():
+    print("\n=== Sum of Uniforms: Z = X + Y, X,Y ~ Uniform(0,1) ===")
+    np.random.seed(60)
+    n_samples = 10_000
+    X = np.random.uniform(0, 1, n_samples)
+    Y = np.random.uniform(0, 1, n_samples)
+    Z = X + Y
+    # Triangular(0,2) PDF
+    z_range = np.linspace(0, 2, 300)
+    tri_pdf = np.where(z_range <= 1, z_range, 2.0 - z_range)
+
+    fig, ax = plt.subplots(figsize=(7, 4))
+    ax.hist(Z, bins=60, density=True, alpha=0.7, color="steelblue", label="Empirical Z=X+Y")
+    ax.plot(z_range, tri_pdf, "r-", lw=2, label="Triangular PDF")
+    ax.set_xlabel("Z = X + Y")
+    ax.set_ylabel("Density")
+    ax.set_title("Sum of two Uniform(0,1) ~ Triangular(0,2)")
+    ax.legend()
+    fig.savefig(OUTPUT / "sum_of_uniforms.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    theory_std = 1.0 / np.sqrt(6)
+    print(f"  Z mean={Z.mean():.4f}  std={Z.std():.4f}  (theory: 1.0, {theory_std:.4f})")
+    print("  Saved: sum_of_uniforms.png")
+
+
+def demo_order_statistics():
+    print("\n=== Order Statistics: Min, Median, Max of Uniform(0,1) ===")
+    np.random.seed(70)
+    n = 10
+    n_trials = 8000
+    draws = np.random.uniform(0, 1, size=(n_trials, n))
+    mins    = draws.min(axis=1)
+    medians = np.median(draws, axis=1)
+    maxs    = draws.max(axis=1)
+
+    labels = [f"Min (X_(1))", f"Median (X_({n//2}))", f"Max (X_({n}))"]
+    colors = ["steelblue", "coral", "seagreen"]
+    stats  = [mins, medians, maxs]
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    for ax, stat, label, color in zip(axes, stats, labels, colors):
+        ax.hist(stat, bins=50, density=True, alpha=0.75, color=color)
+        ax.set_title(label)
+        ax.set_xlabel("Value")
+    axes[0].set_ylabel("Density")
+    plt.suptitle(f"Order Statistics from Uniform(0,1), n={n}, trials={n_trials}")
+    plt.tight_layout()
+    fig.savefig(OUTPUT / "order_stats.png", dpi=120, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  Min:    mean={mins.mean():.4f}   (theory: 1/{n+1} = {1/(n+1):.4f})")
+    print(f"  Median: mean={medians.mean():.4f}  (theory: 0.5)")
+    print(f"  Max:    mean={maxs.mean():.4f}   (theory: {n}/{n+1} = {n/(n+1):.4f})")
+    print("  Saved: order_stats.png")
+
+
 if __name__ == "__main__":
     demo_bivariate_gaussian()
     demo_change_of_variables()
     demo_covariance_correlation()
+    demo_joint_2d_gaussian()
+    demo_sum_of_uniforms()
+    demo_order_statistics()

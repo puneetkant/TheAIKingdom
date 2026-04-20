@@ -52,5 +52,46 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "flow_coupling.png"); plt.close()
     print("  Saved flow_coupling.png")
 
+def demo_flow_matching():
+    """Flow matching: interpolate between source and target distributions."""
+    print("\n=== Flow Matching (Linear Interpolation) ===")
+    rng = np.random.default_rng(0)
+    n = 200
+    # Source: standard Gaussian
+    x0 = rng.standard_normal((n, 2))
+    # Target: two-moon-like structure
+    theta = np.linspace(0, np.pi, n)
+    x1 = np.stack([np.cos(theta), np.sin(theta) + rng.normal(0, 0.1, n)], axis=1)
+
+    # Conditional flow matching: x_t = (1-t)*x0 + t*x1  (linear interpolant)
+    for t in [0.0, 0.25, 0.5, 0.75, 1.0]:
+        xt = (1-t)*x0 + t*x1
+        print(f"  t={t:.2f}: mean={xt.mean(axis=0).round(3)}  std={xt.std(axis=0).round(3)}")
+
+    # Vector field u_t(x) = x1 - x0 (constant for linear flow)
+    u = x1 - x0
+    print(f"  Velocity field norm (mean): {np.linalg.norm(u, axis=1).mean():.4f}")
+
+
+def demo_normalizing_flow_nll():
+    """Compute negative log-likelihood for the affine coupling model."""
+    print("\n=== NLL Estimation under Affine Flow ===")
+    np.random.seed(5)
+    n = 500
+    theta = np.linspace(0, np.pi, n)
+    x = np.stack([np.cos(theta), np.sin(theta) + np.random.randn(n)*0.05], axis=1)
+    s = np.array([0.3, -0.2]); t = np.array([0.1, 0.4])
+    z, log_det = affine_coupling_forward(x, s, t)
+    # Under a standard Gaussian prior: log p(x) = log p(z) + log|det J|
+    log_pz  = -0.5 * (z**2 + np.log(2*np.pi)).sum(axis=1)
+    log_px  = log_pz + log_det
+    nll     = -log_px.mean()
+    print(f"  Mean log p(z):    {log_pz.mean():.4f}")
+    print(f"  Mean log|det J|:  {log_det.mean():.4f}")
+    print(f"  Mean NLL:         {nll:.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_flow_matching()
+    demo_normalizing_flow_nll()

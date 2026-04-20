@@ -66,5 +66,52 @@ def demo():
         print(f"  {m_clean:<20} {p:>12.1f} {'Yes' if o else 'No':>12}")
 
 
+def demo_efficiency_ratio():
+    """Performance-per-parameter: smaller models can punch above their weight."""
+    print("\n=== Efficiency Ratio ===")
+    models_short = ["GPT-3", "GPT-4", "LLaMA-2", "LLaMA-3", "Mistral",
+                    "Mixtral", "Gemma", "Phi-3", "Falcon", "Claude-3"]
+    params_b = [175, 1800, 70, 70, 7, 46.7, 7, 3.8, 40, 500]
+    # Synthetic benchmark scores (0-100) representing overall capability
+    scores   = [72, 92, 74, 80, 70, 79, 68, 69, 67, 88]
+    ratios   = [s / p for s, p in zip(scores, params_b)]
+    idx = np.argsort(ratios)[::-1]
+    print("  Score-per-billion-parameter ranking:")
+    for i in idx:
+        print(f"    {models_short[i]:<12} score={scores[i]:3d}  params={params_b[i]:6.1f}B  ratio={ratios[i]:.3f}")
+    plt.figure(figsize=(8, 4))
+    plt.bar(range(len(models_short)), [ratios[i] for i in idx],
+            color="#9b59b6", edgecolor="white")
+    plt.xticks(range(len(models_short)), [models_short[i] for i in idx], rotation=30, ha="right", fontsize=8)
+    plt.ylabel("Score / Billion Params")
+    plt.title("LLM Efficiency: Score per Billion Parameters")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "llm_efficiency.png", dpi=100); plt.close()
+    print("  Saved llm_efficiency.png")
+
+
+def demo_open_vs_closed_trend():
+    """Show the trend of open-source models closing the gap with closed models."""
+    print("\n=== Open vs Closed Model Trend ===")
+    years = [2020, 2021, 2022, 2023, 2024]
+    closed_score = [65, 72, 80, 90, 93]
+    open_score   = [30, 42, 58, 76, 85]
+    gap = [c - o for c, o in zip(closed_score, open_score)]
+    for y, g in zip(years, gap):
+        print(f"  {y}: gap = {g} points")
+    plt.figure(figsize=(6, 4))
+    plt.plot(years, closed_score, "o-", color="#e74c3c", lw=2, label="Closed Source")
+    plt.plot(years, open_score,   "o-", color="#2ecc71", lw=2, label="Open Source")
+    plt.fill_between(years, open_score, closed_score, alpha=0.15, color="gray")
+    plt.xlabel("Year"); plt.ylabel("Benchmark Score")
+    plt.title("Open vs Closed LLM Capability Gap")
+    plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "open_closed_trend.png", dpi=100); plt.close()
+    print("  Saved open_closed_trend.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_efficiency_ratio()
+    demo_open_vs_closed_trend()

@@ -85,5 +85,35 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "rl_value_iteration.png"); plt.close()
     print("\n  Saved rl_value_iteration.png")
 
+def demo_policy_evaluation():
+    """Evaluate a fixed random policy via iterative policy evaluation."""
+    print("\n=== Policy Evaluation (random policy) ===")
+    V = np.zeros(N_STATES); gamma = 0.9
+    policy = np.full(N_STATES, 1)  # always go right
+    for _ in range(200):
+        delta = 0
+        for s in range(N_STATES):
+            if s == 0 or s == N_STATES-1: continue
+            a = policy[s]
+            ns, r = step(s, a)
+            new_v = r + gamma * V[ns]
+            delta = max(delta, abs(new_v - V[s]))
+            V[s] = new_v
+    print(f"  Random-policy V (always right):")
+    print(V.reshape(N, N).round(2))
+
+
+def demo_gamma_comparison():
+    """Compare value functions for different discount factors."""
+    print("\n=== Discount Factor Comparison ===")
+    print(f"  {'Gamma':>8}  {'Max V':>8}  {'Min V (non-terminal)':>22}")
+    for gamma in [0.5, 0.7, 0.9, 0.99]:
+        V = value_iteration(gamma=gamma)
+        non_terminal = [V[s] for s in range(N_STATES) if s not in (0, N_STATES-1)]
+        print(f"  {gamma:>8.2f}  {max(V):>8.3f}  {min(non_terminal):>22.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_policy_evaluation()
+    demo_gamma_comparison()

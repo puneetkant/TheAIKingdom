@@ -93,5 +93,62 @@ def demo_backprop():
     plt.tight_layout(); plt.savefig(OUTPUT / "backprop_loss.png"); plt.close()
     print("  Saved backprop_loss.png")
 
+def demo_gradient_check():
+    """Numerical gradient check to verify backprop is correct."""
+    print("\n=== Gradient Check ===")
+    rng = np.random.default_rng(7)
+    X = rng.standard_normal((8, 2))
+    y = rng.integers(0, 2, 8)
+    net = TwoLayerNet(n_in=2, n_hidden=4, lr=0.0)
+    # Compute analytic gradient
+    net.forward(X); net.backward(y)
+    analytic_grad = net.W1.copy()
+
+    # Numerical gradient
+    eps_fd = 1e-5
+    num_grad = np.zeros_like(net.W1)
+    for i in range(net.W1.shape[0]):
+        for j in range(net.W1.shape[1]):
+            net.W1[i, j] += eps_fd
+            net.forward(X); loss_p = net.loss(y)
+            net.W1[i, j] -= 2 * eps_fd
+            net.forward(X); loss_m = net.loss(y)
+            net.W1[i, j] += eps_fd
+            num_grad[i, j] = (loss_p - loss_m) / (2 * eps_fd)
+
+    rel_err = np.linalg.norm(analytic_grad - num_grad) / (np.linalg.norm(analytic_grad) + np.linalg.norm(num_grad) + 1e-10)
+    print(f"  Analytic grad (W1) norm: {np.linalg.norm(analytic_grad):.6f}")
+    print(f"  Numerical grad (W1) norm: {np.linalg.norm(num_grad):.6f}")
+    print(f"  Relative error: {rel_err:.2e}  ({'OK' if rel_err < 1e-4 else 'FAIL'})")
+
+
+def demo_vanishing_gradient():
+    """Show how gradients shrink in deep nets with sigmoid activations."""
+    print("\n=== Vanishing Gradient (sigmoid deep net) ===")
+    rng = np.random.default_rng(0)
+    n_input = 10
+    depths = [2, 4, 8, 12]
+    X = rng.standard_normal((32, n_input))
+    for depth in depths:
+        # Init all layers with small normal weights
+        weights = [rng.standard_normal((n_input if i == 0 else 16, 16)) * 0.5
+                   for i in range(depth)]
+        # Forward pass: sigmoid at each layer
+        a = X.copy()
+        pre_acts = []
+        for W in weights:
+            z = a @ W; pre_acts.append(z)
+            a = 1 / (1 + np.exp(-np.clip(z, -500, 500)))
+        # Grad at output = 1; backprop through sigmoid derivative
+        grad = np.ones_like(a)
+        for z in reversed(pre_acts):
+            sig = 1 / (1 + np.exp(-np.clip(z, -500, 500)))
+            grad = grad * sig * (1 - sig)
+        grad_norm = float(np.linalg.norm(grad))
+        print(f"  depth={depth:3d}: gradient norm = {grad_norm:.2e}")
+
+
 if __name__ == "__main__":
     demo_backprop()
+    demo_gradient_check()
+    demo_vanishing_gradient()

@@ -76,5 +76,57 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "classical_cv.png"); plt.close()
     print("  Saved classical_cv.png")
 
+def demo_thresholding():
+    """Binary thresholding at multiple levels."""
+    print("\n=== Image Thresholding ===")
+    digits = load_digits()
+    img = digits.images[3] / 16.0
+    thresholds = [0.2, 0.4, 0.6]
+    results = [(t, (img >= t).mean()) for t in thresholds]
+    for t, frac in results:
+        print(f"  thresh={t}: {frac:.2%} pixels above threshold")
+    fig, axes = plt.subplots(1, 4, figsize=(10, 2.5))
+    axes[0].imshow(img, cmap="gray"); axes[0].set_title("Original")
+    for i, (t, _) in enumerate(results):
+        axes[i+1].imshow((img >= t).astype(float), cmap="gray")
+        axes[i+1].set_title(f"Thresh={t}")
+    for ax in axes: ax.axis("off")
+    plt.tight_layout(); plt.savefig(OUTPUT / "thresholding.png"); plt.close()
+    print("  Saved thresholding.png")
+
+
+def demo_morphological():
+    """Dilation and erosion on a binary image."""
+    print("\n=== Morphological Operations ===")
+    digits = load_digits()
+    binary = (digits.images[5] / 16.0 > 0.3).astype(float)
+
+    def dilate(img):
+        out = img.copy()
+        H, W = img.shape
+        for i in range(1, H-1):
+            for j in range(1, W-1):
+                if img[i-1:i+2, j-1:j+2].max() > 0:
+                    out[i, j] = 1
+        return out
+
+    def erode(img):
+        out = img.copy()
+        H, W = img.shape
+        for i in range(1, H-1):
+            for j in range(1, W-1):
+                if img[i-1:i+2, j-1:j+2].min() == 0:
+                    out[i, j] = 0
+        return out
+
+    dilated = dilate(binary)
+    eroded = erode(binary)
+    print(f"  Original pixels on: {binary.sum():.0f}")
+    print(f"  After dilation:     {dilated.sum():.0f}")
+    print(f"  After erosion:      {eroded.sum():.0f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_thresholding()
+    demo_morphological()

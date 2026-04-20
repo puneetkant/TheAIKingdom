@@ -60,5 +60,45 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "classical_ts.png"); plt.close()
     print("  Saved classical_ts.png")
 
+def demo_arima_components():
+    """Show AR, MA, and ARMA component behaviour on synthetic data."""
+    print("\n=== ARIMA Component Analysis ===")
+    rng = np.random.default_rng(7)
+    n = 200
+
+    # AR(1) process
+    phi = 0.7; ar_ts = ar1_simulate(phi=phi, n=n)
+    # MA(1) process
+    theta_ma = 0.6; eps = rng.normal(0, 1, n)
+    ma_ts = np.zeros(n); ma_ts[0] = eps[0]
+    for i in range(1, n):
+        ma_ts[i] = eps[i] + theta_ma * eps[i-1]
+
+    # Compute lag-1 autocorrelation as a quick check
+    def lag_acf(ts, lag=1):
+        return np.corrcoef(ts[:-lag], ts[lag:])[0,1]
+
+    print(f"  AR(1) phi={phi}: lag-1 ACF={lag_acf(ar_ts):.4f}  (expected ~{phi})")
+    print(f"  MA(1) theta={theta_ma}: lag-1 ACF={lag_acf(ma_ts):.4f}  (expected ~{theta_ma/(1+theta_ma**2):.4f})")
+    print(f"  White noise:     lag-1 ACF={lag_acf(eps):.4f}  (expected ~0)")
+
+
+def demo_forecast_horizon():
+    """Show how forecast accuracy degrades with horizon length."""
+    print("\n=== Forecast Accuracy vs Horizon ===")
+    ts = ar1_simulate(phi=0.85) + np.sin(np.arange(200)/10)*2
+    split = 160; train = ts[:split]
+    for horizon in [1, 5, 10, 20]:
+        test = ts[split:split+horizon]
+        naive = np.full(horizon, train[-1])
+        ses   = simple_exp_smooth(train, alpha=0.3)
+        ses_pred = np.full(horizon, ses[-1])
+        mae_naive = np.abs(test - naive).mean()
+        mae_ses   = np.abs(test - ses_pred).mean()
+        print(f"  h={horizon:3d}: Naive MAE={mae_naive:.4f}  SES MAE={mae_ses:.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_arima_components()
+    demo_forecast_horizon()

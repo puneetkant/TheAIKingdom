@@ -68,5 +68,48 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "content_based.png"); plt.close()
     print("\n  Saved content_based.png")
 
+def demo_genre_weighted_profile():
+    """Weight user profile by recency-decayed ratings."""
+    print("\n=== Genre-Weighted User Profile ===")
+    tfidf = TfidfVectorizer()
+    item_matrix = tfidf.fit_transform(docs)
+    sim_matrix = cosine_similarity(item_matrix)
+
+    # Simulate watch history with recency weights
+    watched = [0, 3, 7]          # Matrix, Interstellar, Blade Runner
+    recency = np.array([0.5, 0.8, 1.0])  # most recent = highest weight
+    user_vec_arr = np.zeros(item_matrix.shape[1])
+    for i, w in zip(watched, recency):
+        user_vec_arr += w * np.asarray(item_matrix[i].todense()).ravel()
+    user_vec = user_vec_arr.reshape(1, -1)
+    user_sims = cosine_similarity(user_vec, item_matrix).ravel()
+    ranked = np.argsort(user_sims)[::-1]
+    print("  Top-3 recommendations (recency-weighted profile):")
+    shown = 0
+    for i in ranked:
+        if i not in watched:
+            print(f"    {titles[i]:25s} score: {user_sims[i]:.3f}")
+            shown += 1
+            if shown >= 3: break
+
+
+def demo_keyword_expansion():
+    """Show how adding synonym keywords changes recommendations."""
+    print("\n=== Keyword Expansion ===")
+    tfidf = TfidfVectorizer()
+    item_matrix = tfidf.fit_transform(docs)
+
+    base_query    = tfidf.transform(["artificial intelligence"])
+    expanded_query = tfidf.transform(["artificial intelligence robot sci-fi"])
+    sim_base = cosine_similarity(base_query, item_matrix).ravel()
+    sim_exp  = cosine_similarity(expanded_query, item_matrix).ravel()
+
+    print(f"  {'Movie':25s}  {'Base':>6}  {'Expanded':>9}")
+    for i in np.argsort(sim_exp)[::-1][:4]:
+        print(f"  {titles[i]:25s}  {sim_base[i]:6.3f}  {sim_exp[i]:9.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_genre_weighted_profile()
+    demo_keyword_expansion()

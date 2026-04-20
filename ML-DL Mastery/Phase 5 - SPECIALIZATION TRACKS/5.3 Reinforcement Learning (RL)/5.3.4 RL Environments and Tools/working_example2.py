@@ -74,5 +74,47 @@ def demo():
     print(f"  epsilon-gr final avg: {r_eps[-1]:.3f}")
     print("  Saved rl_environments.png")
 
+def thompson_sampling_agent(env, steps=1000):
+    """Thompson sampling via Beta distribution posterior."""
+    alpha_ts = np.ones(env.k); beta_ts = np.ones(env.k)
+    rewards = []; total = 0
+    env.reset()
+    for t in range(1, steps+1):
+        samples = np.random.beta(alpha_ts, beta_ts)
+        a = samples.argmax()
+        _obs, r, _done, _info = env.step(a)
+        r_norm = np.clip((r + 3) / 6, 0, 1)
+        alpha_ts[a] += r_norm; beta_ts[a] += (1 - r_norm)
+        total += r; rewards.append(total / t)
+    return rewards
+
+
+def demo_bandit_comparison():
+    """Compare UCB, epsilon-greedy, and Thompson sampling."""
+    print("\n=== Bandit Algorithm Comparison ===")
+    env = BanditEnv(k=10, seed=7)
+    r_ucb = ucb_agent(env)
+    r_eps = eps_greedy_agent(env)
+    r_ts  = thompson_sampling_agent(env)
+    print(f"  UCB               final avg: {r_ucb[-1]:.3f}")
+    print(f"  Epsilon-greedy    final avg: {r_eps[-1]:.3f}")
+    print(f"  Thompson sampling final avg: {r_ts[-1]:.3f}")
+    print(f"  Optimal (q*)              : {env.q_star.max():.3f}")
+
+
+def demo_environment_api():
+    """Demonstrate the gym-like reset/step/done lifecycle."""
+    print("\n=== Environment API Lifecycle ===")
+    env = BanditEnv(k=5)
+    obs = env.reset()
+    print(f"  obs_shape={env.observation_space_shape}  n_actions={env.action_space_n}")
+    for t in range(3):
+        action = np.random.randint(env.action_space_n)
+        next_obs, reward, done, info = env.step(action)
+        print(f"  step {t+1}: action={action}  reward={reward:.3f}  done={done}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_bandit_comparison()
+    demo_environment_api()

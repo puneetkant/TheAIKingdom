@@ -69,7 +69,60 @@ def demo_pca_regression():
         rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
         print(f"  PCA({k}) + Ridge: RMSE={rmse:.4f}")
 
+def demo_incremental_pca():
+    """IncrementalPCA processes large data in batches without loading it all at once."""
+    print("\n=== IncrementalPCA vs PCA ===")
+    from sklearn.decomposition import IncrementalPCA
+    h = fetch_california_housing()
+    X = StandardScaler().fit_transform(h.data)
+    for k in [2, 4, 6]:
+        pca  = PCA(n_components=k).fit(X)
+        ipca = IncrementalPCA(n_components=k, batch_size=512)
+        ipca.fit(X)
+        retained = pca.explained_variance_ratio_.sum()
+        print(f"  k={k}: PCA retained var={retained:.4f}  "
+              f"IPCA retained var={ipca.explained_variance_ratio_.sum():.4f}")
+
+
+def demo_kernel_pca():
+    """Kernel PCA can separate non-linearly structured data."""
+    print("\n=== Kernel PCA ===")
+    from sklearn.decomposition import KernelPCA
+    from sklearn.model_selection import train_test_split
+    from sklearn.pipeline import make_pipeline
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    from sklearn.linear_model import Ridge
+    for kernel in ["linear", "rbf", "poly"]:
+        pipe = make_pipeline(
+            StandardScaler(),
+            KernelPCA(n_components=4, kernel=kernel, fit_inverse_transform=False),
+            Ridge(1.0),
+        )
+        pipe.fit(X_tr, y_tr)
+        from sklearn.metrics import mean_squared_error
+        rmse = mean_squared_error(y_te, pipe.predict(X_te))**0.5
+        print(f"  KernelPCA({kernel:6s}) + Ridge: RMSE={rmse:.4f}")
+
+
+def demo_truncated_svd():
+    """TruncatedSVD works on sparse matrices (LSA / text style)."""
+    print("\n=== TruncatedSVD (LSA-style) ===")
+    from scipy.sparse import random as sparse_random
+    np.random.seed(42)
+    # Simulate a sparse term-document matrix
+    X_sparse = sparse_random(500, 200, density=0.05, format="csr", random_state=42)
+    for k in [5, 10, 20, 50]:
+        svd = TruncatedSVD(n_components=k, random_state=42)
+        svd.fit(X_sparse)
+        print(f"  k={k:>2}: retained variance={svd.explained_variance_ratio_.sum():.4f}")
+
+
 if __name__ == "__main__":
     demo_pca()
     demo_reconstruction()
     demo_pca_regression()
+    demo_incremental_pca()
+    demo_kernel_pca()
+    demo_truncated_svd()

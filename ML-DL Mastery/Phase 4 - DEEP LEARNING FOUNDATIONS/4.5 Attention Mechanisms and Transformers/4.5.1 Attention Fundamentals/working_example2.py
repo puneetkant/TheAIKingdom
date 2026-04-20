@@ -65,6 +65,46 @@ def demo_causal_mask():
     print("  Causal attention weights (lower triangle only):")
     print(np.round(w, 3))
 
+def demo_multi_head_attention():
+    """Show multi-head attention as parallel attention over sub-spaces."""
+    print("\n=== Multi-Head Attention ===")
+    rng = np.random.default_rng(1)
+    seq_len, d_model, n_heads = 6, 16, 4
+    d_k = d_model // n_heads
+
+    X = rng.standard_normal((seq_len, d_model))
+    all_weights = []
+    for h in range(n_heads):
+        Wq = rng.standard_normal((d_model, d_k)) * 0.1
+        Wk = rng.standard_normal((d_model, d_k)) * 0.1
+        Wv = rng.standard_normal((d_model, d_k)) * 0.1
+        Q = X @ Wq; K = X @ Wk; V = X @ Wv
+        _, weights = scaled_dot_product_attention(Q, K, V)
+        all_weights.append(weights)
+        print(f"  Head {h+1}: max attention weight = {weights.max():.4f}  "
+              f"entropy = {-(weights * np.log(weights + 1e-9)).sum(axis=-1).mean():.4f}")
+
+    # Different heads attend to different patterns
+    print(f"  Pairwise correlation of head weights: "
+          f"{np.corrcoef([w.ravel() for w in all_weights]).mean():.4f} (lower = more diverse)")
+
+
+def demo_attention_score_temperature():
+    """Show effect of temperature (sqrt(d_k) scaling) on attention sharpness."""
+    print("\n=== Temperature Effect on Attention ===")
+    rng = np.random.default_rng(42)
+    Q = rng.standard_normal((4, 16)); K = rng.standard_normal((4, 16)); V = rng.standard_normal((4, 8))
+    raw_scores = Q @ K.T
+    for temp in [1, 4, 8, 16]:
+        scaled = raw_scores / temp
+        w = softmax(scaled)
+        entropy = -(w * np.log(w + 1e-9)).sum(axis=-1).mean()
+        print(f"  temp=sqrt({temp:2d}^2)={temp:2d}: weight entropy={entropy:.4f}  "
+              f"({'sharp' if entropy < 1.0 else 'diffuse'} attention)")
+
+
 if __name__ == "__main__":
     demo_attention()
     demo_causal_mask()
+    demo_multi_head_attention()
+    demo_attention_score_temperature()

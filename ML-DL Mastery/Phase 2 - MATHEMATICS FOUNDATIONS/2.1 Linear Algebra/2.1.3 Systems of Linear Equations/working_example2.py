@@ -91,9 +91,45 @@ def demo_condition_number():
         cond = np.linalg.cond(A)
         print(f"  scale={scale:.0e}  cond(A)={cond:.3e}  {'ILL-CONDITIONED' if cond > 1e8 else 'ok'}")
 
+def demo_iterative_refinement(X, y):
+    print("\n=== Iterative Refinement ===")
+    Xb = np.hstack([np.ones((len(X),1)), X])
+    # Initial solution via normal equations
+    w = np.linalg.lstsq(Xb, y, rcond=None)[0]
+    A = Xb.T @ Xb; b_rhs = Xb.T @ y
+    # One step of iterative refinement: w_new = w + A^-1 (b - Aw)
+    residual0 = np.linalg.norm(b_rhs - A @ w)
+    correction = np.linalg.solve(A, b_rhs - A @ w)
+    w_refined = w + correction
+    residual1 = np.linalg.norm(b_rhs - A @ w_refined)
+    print(f"  Residual before refinement: {residual0:.3e}")
+    print(f"  Residual after  refinement: {residual1:.3e}")
+    print(f"  Improvement factor: {residual0/(residual1+1e-30):.1f}x")
+
+
+def demo_underdetermined():
+    print("\n=== Underdetermined System (minimum-norm solution) ===")
+    # More unknowns than equations -> infinitely many solutions
+    A = np.array([[1., 2., 3.],
+                  [4., 5., 6.]])
+    b = np.array([1., 2.])
+    # Minimum-norm solution: x = A^T (A A^T)^-1 b
+    x_min = A.T @ np.linalg.solve(A @ A.T, b)
+    print(f"  A shape: {A.shape}  (underdetermined)")
+    print(f"  Min-norm solution x: {x_min.round(6)}")
+    print(f"  Ax = b: {np.allclose(A @ x_min, b)}")
+    print(f"  ||x||_min = {np.linalg.norm(x_min):.6f}")
+    # Verify another solution has larger norm
+    x_other = x_min + np.array([1., -2., 1.])  # in null space of A
+    print(f"  ||x_other|| = {np.linalg.norm(x_other):.6f}  (should be >= min)")
+    print(f"  A @ x_other = b: {np.allclose(A @ x_other, b)}")
+
+
 if __name__ == "__main__":
     X, y = download()
     demo_solve()
     demo_lstsq(X, y)
     demo_gaussian()
     demo_condition_number()
+    demo_iterative_refinement(X, y)
+    demo_underdetermined()

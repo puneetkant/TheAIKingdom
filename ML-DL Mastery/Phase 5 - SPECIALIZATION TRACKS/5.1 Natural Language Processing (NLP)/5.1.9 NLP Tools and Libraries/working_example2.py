@@ -54,9 +54,44 @@ def demo_tool_matrix():
     for r in rows:
         print(f"  {r[0]:15s} {r[1]:40s} {r[2]:25s}")
 
+def demo_text_similarity():
+    """Compute pairwise sentence similarity with TF-IDF cosine."""
+    print("\n=== Text Similarity (TF-IDF Cosine) ===")
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    sentences = [
+        "Deep learning revolutionises natural language processing.",
+        "Neural networks transform NLP research and applications.",
+        "The stock market closed higher on Friday.",
+        "Machine learning is a subset of artificial intelligence.",
+    ]
+    vect = TfidfVectorizer()
+    mat = vect.fit_transform(sentences)
+    sim = cosine_similarity(mat)
+    header = f"  {'':35s}" + "  ".join(f"S{i+1}" for i in range(4))
+    print(header)
+    for i, row in enumerate(sim):
+        print(f"  S{i+1} {sentences[i][:30]:30s}  " + "  ".join(f"{v:.2f}" for v in row))
+
+
+def demo_preprocessing_pipeline():
+    """Full pipeline: clean -> tokenize -> remove stopwords -> vectorise."""
+    print("\n=== Full Preprocessing Pipeline ===")
+    from sklearn.feature_extraction.text import CountVectorizer
+    corpus = [TEXT, "Natural language processing uses machine learning.",
+              "Text classification identifies categories in documents."]
+    cleaned = [re.sub(r"[^\w\s]", "", t).lower() for t in corpus]
+    cv = CountVectorizer(ngram_range=(1, 2), max_features=20)
+    X = cv.fit_transform(cleaned)
+    print(f"  Count vectorised: {X.shape[0]} docs x {X.shape[1]} (1-2)-gram features")
+    print(f"  Top features: {cv.get_feature_names_out()[:10].tolist()}")
+
+
 if __name__ == "__main__":
     print("=== NLP Tools and Libraries ===\n")
     demo_nltk()
     demo_sklearn()
     demo_regex()
     demo_tool_matrix()
+    demo_text_similarity()
+    demo_preprocessing_pipeline()

@@ -95,5 +95,59 @@ def demo():
     print("  Saved dpo_demo.png")
 
 
+def demo_beta_sensitivity():
+    """Show how DPO beta controls alignment strength vs diversity."""
+    print("\n=== DPO Beta Sensitivity ===")
+    rng = np.random.default_rng(10)
+    n_pairs = 500
+    log_ref_w = rng.normal(-2, 0.5, n_pairs)
+    log_ref_l = rng.normal(-3, 0.5, n_pairs)
+    betas = [0.01, 0.05, 0.1, 0.2, 0.5, 1.0]
+    final_losses = []
+    for b in betas:
+        log_pi_w = log_ref_w + 0.5
+        log_pi_l = log_ref_l - 0.3
+        loss = dpo_loss(log_pi_w, log_pi_l, log_ref_w, log_ref_l, beta=b).mean()
+        final_losses.append(loss)
+        print(f"  beta={b:.2f}: DPO loss={loss:.4f}")
+    plt.figure(figsize=(5, 3))
+    plt.plot(betas, final_losses, "o-", color="darkorange", lw=2)
+    plt.xlabel("Beta"); plt.ylabel("DPO Loss")
+    plt.title("DPO: Loss vs Beta")
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "dpo_beta_sensitivity.png", dpi=100); plt.close()
+    print("  Saved dpo_beta_sensitivity.png")
+
+
+def demo_dpo_vs_ipo():
+    """Compare DPO and IPO loss functions over implicit reward margin."""
+    print("\n=== DPO vs IPO Loss ===")
+    margins = np.linspace(-3, 3, 200)
+    beta = 0.1
+    # DPO: -log sigmoid(beta * margin)
+    dpo_l = -np.log(1 / (1 + np.exp(-beta * margins)))
+    # IPO: (beta * margin - 1)^2  (simplified identity preference optimisation)
+    ipo_l = (beta * margins - 1) ** 2
+    # Normalise for comparison
+    ipo_l_norm = ipo_l / ipo_l.max() * dpo_l.max()
+    plt.figure(figsize=(6, 4))
+    plt.plot(margins, dpo_l,      lw=2, color="steelblue",  label="DPO loss")
+    plt.plot(margins, ipo_l_norm, lw=2, color="darkorange", label="IPO loss (scaled)")
+    plt.axvline(0, color="gray", linestyle="--", lw=1)
+    plt.xlabel("Implicit Reward Margin")
+    plt.ylabel("Loss")
+    plt.title("DPO vs IPO Loss Functions")
+    plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "dpo_vs_ipo.png", dpi=100); plt.close()
+    print("  Saved dpo_vs_ipo.png")
+    # Print crossover point
+    crossover = margins[np.argmin(np.abs(dpo_l - ipo_l_norm))]
+    print(f"  Approximate crossover margin: {crossover:.2f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_beta_sensitivity()
+    demo_dpo_vs_ipo()

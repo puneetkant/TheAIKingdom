@@ -66,6 +66,58 @@ def demo_digits_cnn_proxy():
     print(f"  Quad pooled (4 feat): acc={pool_acc:.4f}")
     print("  (Raw >> pooled — confirms pooling reduces info for classif)")
 
+def demo_resnet_skip_connection():
+    """Demonstrate ResNet skip connection concept with numpy."""
+    print("\n=== ResNet Skip Connection (numpy) ===")
+    rng = np.random.default_rng(42)
+    n, d = 64, 32
+    X = rng.standard_normal((n, d))
+
+    def residual_block(x, W1, b1, W2, b2):
+        """F(x) + x  — identity shortcut."""
+        h = np.maximum(0, x @ W1 + b1)   # relu
+        Fx = h @ W2 + b2
+        return np.maximum(0, Fx + x)     # relu(F(x) + x)
+
+    W1 = rng.standard_normal((d, d)) * np.sqrt(2/d)
+    b1 = np.zeros(d)
+    W2 = rng.standard_normal((d, d)) * np.sqrt(2/d)
+    b2 = np.zeros(d)
+
+    out = residual_block(X, W1, b1, W2, b2)
+    print(f"  Input std:  {X.std():.4f}")
+    print(f"  Output std: {out.std():.4f}  (skip preserves scale better)")
+    print(f"  Fraction of neurons active: {(out > 0).mean():.3f}")
+
+    # Stack 20 residual blocks — no vanishing signal
+    x = X.copy()
+    for _ in range(20):
+        W1 = rng.standard_normal((d, d)) * np.sqrt(2/d)
+        W2 = rng.standard_normal((d, d)) * np.sqrt(2/d)
+        x = residual_block(x, W1, np.zeros(d), W2, np.zeros(d))
+    print(f"  After 20 residual blocks: std={x.std():.4f}  (stable without skip: often 0 or inf)")
+
+
+def demo_parameter_count():
+    """Compare parameter counts across famous CNN architectures."""
+    print("\n=== CNN Architecture Parameter Counts ===")
+    models = [
+        ("LeNet-5",      60_000),
+        ("AlexNet",      62_000_000),
+        ("VGG-16",       138_000_000),
+        ("GoogLeNet",    6_800_000),
+        ("ResNet-50",    25_600_000),
+        ("MobileNetV2", 3_400_000),
+        ("EfficientNet-B0", 5_300_000),
+    ]
+    print(f"  {'Model':25s}  {'Params':>15s}  {'Size (MB)':>10s}")
+    for name, params in models:
+        mb = params * 4 / 1e6   # float32
+        print(f"  {name:25s}  {params:>15,d}  {mb:>10.1f}")
+
+
 if __name__ == "__main__":
     demo_lenet_description()
     demo_digits_cnn_proxy()
+    demo_resnet_skip_connection()
+    demo_parameter_count()

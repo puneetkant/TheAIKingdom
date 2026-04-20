@@ -74,5 +74,54 @@ def demo():
     print("  Saved inference_optimization.png")
 
 
+def demo_quantization_tradeoff():
+    """Show model size vs accuracy tradeoff for different quantization levels."""
+    print("\n=== Quantization Tradeoff ===")
+    bits = [32, 16, 8, 4, 2]
+    # Relative model size (FP32 = 1.0)
+    size_ratio = [b / 32 for b in bits]
+    # Simulated accuracy degradation (higher bits = better accuracy)
+    accuracy = [95.0, 94.8, 94.2, 92.5, 85.0]
+    for b, s, a in zip(bits, size_ratio, accuracy):
+        print(f"  {b:2d}-bit: size={s:.2f}x  accuracy={a:.1f}%")
+
+    fig, ax1 = plt.subplots(figsize=(6, 4))
+    ax2 = ax1.twinx()
+    ax1.bar([str(b) for b in bits], size_ratio, color="steelblue", alpha=0.7, label="Relative Size")
+    ax2.plot([str(b) for b in bits], accuracy, "o-", color="tomato", lw=2, label="Accuracy (%)")
+    ax1.set_xlabel("Bit Width"); ax1.set_ylabel("Relative Model Size", color="steelblue")
+    ax2.set_ylabel("Accuracy (%)", color="tomato")
+    ax1.set_title("Quantization: Size vs Accuracy")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "quantization_tradeoff.png", dpi=100); plt.close()
+    print("  Saved quantization_tradeoff.png")
+
+
+def demo_speculative_decoding():
+    """Simulate speculative decoding speedup vs acceptance rate."""
+    print("\n=== Speculative Decoding ===")
+    # Draft model proposes k tokens; accepted with probability p each
+    k_values = [1, 2, 4, 8]
+    acceptance_rates = np.linspace(0.5, 1.0, 50)
+    plt.figure(figsize=(6, 4))
+    for k in k_values:
+        # Expected speedup = (1 - p^(k+1)) / ((1-p) * (1 + k * cost_ratio))
+        cost_ratio = 0.1  # draft model is 10x cheaper
+        speedup = (1 - acceptance_rates**(k+1)) / \
+                  ((1 - acceptance_rates + 1e-9) * (1 + k * cost_ratio))
+        speedup = np.clip(speedup, 1.0, None)
+        plt.plot(acceptance_rates, speedup, lw=2, label=f"k={k}")
+        print(f"  k={k}: speedup at p=0.9 ~ {float(speedup[np.argmin(np.abs(acceptance_rates-0.9))]):.2f}x")
+    plt.xlabel("Draft Token Acceptance Rate")
+    plt.ylabel("Speedup vs Autoregressive")
+    plt.title("Speculative Decoding Speedup")
+    plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "speculative_decoding.png", dpi=100); plt.close()
+    print("  Saved speculative_decoding.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_quantization_tradeoff()
+    demo_speculative_decoding()

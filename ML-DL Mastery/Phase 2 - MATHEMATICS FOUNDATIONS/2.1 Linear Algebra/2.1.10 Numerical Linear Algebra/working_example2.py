@@ -88,7 +88,65 @@ def demo_jacobi(tol=1e-6, max_iter=1000):
     fig.savefig(OUTPUT / "jacobi_convergence.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: jacobi_convergence.png")
 
+def demo_power_iteration():
+    print("\n=== Power Iteration (Dominant Eigenvector) ===")
+    np.random.seed(5)
+    A = np.array([[4., 1., 0.],
+                  [1., 3., 1.],
+                  [0., 1., 2.]])
+    # True dominant eigenvector
+    vals, vecs = np.linalg.eigh(A)
+    true_vec = vecs[:, -1]  # largest eigenvalue
+    true_val = vals[-1]
+
+    # Power iteration
+    b = np.random.randn(3); b /= np.linalg.norm(b)
+    eigenvalue_est = []
+    for _ in range(30):
+        b_new = A @ b
+        lam_est = np.dot(b, A @ b)
+        eigenvalue_est.append(lam_est)
+        b = b_new / np.linalg.norm(b_new)
+    print(f"  True dominant eigenvalue: {true_val:.6f}")
+    print(f"  Power iter estimate:      {eigenvalue_est[-1]:.6f}")
+    print(f"  Eigenvector match (|cos|): {abs(np.dot(b, true_vec)):.6f}")
+
+    fig, ax = plt.subplots(figsize=(6, 3))
+    ax.plot(eigenvalue_est, color="darkorange", lw=2)
+    ax.axhline(true_val, color="red", linestyle="--", label=f"True={true_val:.4f}")
+    ax.set_xlabel("Iteration"); ax.set_ylabel("Eigenvalue Estimate")
+    ax.set_title("Power Iteration Convergence")
+    ax.legend(); ax.grid(True, alpha=0.3)
+    fig.savefig(OUTPUT / "power_iteration.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: power_iteration.png")
+
+
+def demo_lu_factorization():
+    print("\n=== LU Factorisation ===")
+    A = np.array([[2., 1., 1.],
+                  [4., 3., 3.],
+                  [8., 7., 9.]])
+    b = np.array([1., 1., 1.])
+    # Manual LU without pivoting (A is nicely conditioned here)
+    n = A.shape[0]
+    L = np.eye(n); U = A.astype(float).copy()
+    for k in range(n - 1):
+        for i in range(k+1, n):
+            L[i, k] = U[i, k] / U[k, k]
+            U[i, k:] -= L[i, k] * U[k, k:]
+    print(f"  L:\n{L.round(4)}")
+    print(f"  U:\n{U.round(4)}")
+    print(f"  LU == A: {np.allclose(L @ U, A)}")
+    # Solve: Ly = b (forward), Ux = y (backward)
+    y = np.linalg.solve(L, b)
+    x = np.linalg.solve(U, y)
+    print(f"  Solution x: {x.round(6)}")
+    print(f"  Residual:   {np.linalg.norm(A @ x - b):.3e}")
+
+
 if __name__ == "__main__":
     demo_condition_and_stability()
     demo_sparse()
     demo_jacobi()
+    demo_power_iteration()
+    demo_lu_factorization()

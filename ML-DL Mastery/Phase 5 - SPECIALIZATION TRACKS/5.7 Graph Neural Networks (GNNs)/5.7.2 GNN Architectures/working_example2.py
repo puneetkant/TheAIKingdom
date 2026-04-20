@@ -76,5 +76,45 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "gnn_architectures.png"); plt.close()
     print("  Saved gnn_architectures.png")
 
+def demo_multi_layer_gcn():
+    """Stack two GCN layers and observe feature smoothing."""
+    print("\n=== Multi-Layer GCN ===")
+    np.random.seed(42)
+    N, F_in, F_h, F_out = 6, 4, 6, 3
+    A = np.array([
+        [0,1,1,0,0,0],[1,0,1,0,0,0],[1,1,0,1,0,0],
+        [0,0,1,0,1,1],[0,0,0,1,0,1],[0,0,0,1,1,0],
+    ], float)
+    X = np.random.randn(N, F_in)
+    W1 = np.random.randn(F_in, F_h) * 0.3
+    W2 = np.random.randn(F_h, F_out) * 0.3
+    H1 = gcn_layer(A, X, W1)
+    H2 = gcn_layer(A, H1, W2)
+    print(f"  Input variance:   {X.var():.4f}")
+    print(f"  After layer 1:    {H1.var():.4f}")
+    print(f"  After layer 2:    {H2.var():.4f}  (smoothing = variance decrease)")
+
+
+def demo_feature_propagation():
+    """Show how GCN spreads features across graph hops."""
+    print("\n=== Feature Propagation Depth ===")
+    np.random.seed(1)
+    N, F = 8, 3
+    # Path graph: 0-1-2-3-4-5-6-7
+    A = np.zeros((N, N))
+    for i in range(N-1): A[i, i+1] = A[i+1, i] = 1
+    X = np.eye(N, F)   # one-hot node features
+    print("  Node 0 feature influence after k hops:")
+    H = X.copy()
+    for k in range(1, 5):
+        W = np.eye(F) * 0.9  # identity to track propagation
+        H = gcn_layer(A, H, W)
+        influence = H[:, 0]  # how much of node-0's feature has spread
+        nonzero = (influence > 1e-6).sum()
+        print(f"    k={k}: {nonzero} nodes have node-0 influence")
+
+
 if __name__ == "__main__":
     demo()
+    demo_multi_layer_gcn()
+    demo_feature_propagation()

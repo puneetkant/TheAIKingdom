@@ -77,7 +77,53 @@ def demo_shap_manual():
         drop = rmse_perm - base_rmse
         print(f"  {name:20s}  {drop:>12.4f}  {'*' * max(0, int(drop*20))}")
 
+def demo_ice_plots():
+    """Individual Conditional Expectation (ICE) plots show per-instance PD."""
+    print("\n=== ICE Plots (Individual Conditional Expectation) ===")
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    gbm = GradientBoostingRegressor(n_estimators=100, random_state=42)
+    gbm.fit(X_train, y_train)
+    # Feature 0 = MedInc (most important)
+    perm = permutation_importance(gbm, X_test, y_test, n_repeats=5, random_state=42)
+    top_feat = int(perm.importances_mean.argmax())
+    print(f"  Plotting ICE for feature: {h.feature_names[top_feat]}")
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+    PartialDependenceDisplay.from_estimator(
+        gbm, X_train, [top_feat], kind="both", ax=axes[0],
+        feature_names=h.feature_names, subsample=100, random_state=42,
+    )
+    PartialDependenceDisplay.from_estimator(
+        gbm, X_train, [top_feat], kind="average", ax=axes[1],
+        feature_names=h.feature_names,
+    )
+    axes[0].set_title("ICE + PDP"); axes[1].set_title("PDP only")
+    plt.tight_layout(); fig.savefig(OUTPUT / "ice_plots.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: ice_plots.png")
+
+
+def demo_feature_interaction():
+    """2D partial dependence reveals feature interactions."""
+    print("\n=== 2D Partial Dependence (interaction) ===")
+    h = fetch_california_housing()
+    X, y = h.data, h.target
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    gbm = GradientBoostingRegressor(n_estimators=100, random_state=42)
+    gbm.fit(X_train, y_train)
+    # MedInc (0) x Latitude (6)
+    fig, ax = plt.subplots(figsize=(6, 5))
+    PartialDependenceDisplay.from_estimator(
+        gbm, X_train, [(0, 6)], ax=ax, feature_names=h.feature_names,
+    )
+    ax.set_title("2D PDP: MedInc x Latitude")
+    fig.savefig(OUTPUT / "pdp_2d.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: pdp_2d.png")
+
+
 if __name__ == "__main__":
     demo_permutation_importance()
     demo_partial_dependence()
     demo_shap_manual()
+    demo_ice_plots()
+    demo_feature_interaction()

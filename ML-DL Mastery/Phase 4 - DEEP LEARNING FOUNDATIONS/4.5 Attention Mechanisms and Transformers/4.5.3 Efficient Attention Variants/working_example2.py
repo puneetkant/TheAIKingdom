@@ -66,5 +66,43 @@ def demo():
     ax.legend(); plt.tight_layout(); plt.savefig(OUTPUT / "attention_variants.png"); plt.close()
     print("  Saved attention_variants.png")
 
+def demo_causal_local_window():
+    """Causal variant of local window attention (for autoregressive models)."""
+    print("\n=== Causal Local Window Attention ===")
+    rng = np.random.default_rng(42)
+    seq, d_k, d_v, window = 10, 8, 8, 4
+    Q = rng.standard_normal((seq, d_k))
+    K = rng.standard_normal((seq, d_k))
+    V = rng.standard_normal((seq, d_v))
+
+    out = np.zeros((seq, d_v))
+    for i in range(seq):
+        # Causal: only look at past tokens within window
+        start = max(0, i - window + 1)
+        end   = i + 1   # can't attend to future
+        scores = Q[i:i+1] @ K[start:end].T / np.sqrt(d_k)
+        w = softmax(scores)
+        out[i] = w @ V[start:end]
+    print(f"  Causal window output shape: {out.shape}")
+    print(f"  Token 0 attends to 1 token, token 5 attends to {min(5, window)} tokens")
+
+
+def demo_complexity_summary():
+    """Print attention complexity comparison table."""
+    print("\n=== Attention Complexity Summary ===")
+    variants = [
+        ("Full (Vanilla)",     "O(n²d)",  "O(n²)",  "All tokens"),
+        ("Linear",             "O(nd²)",  "O(nd)",  "All (approx)"),
+        ("Local Window",       "O(n·w·d)","O(n·w)", "Nearby tokens"),
+        ("Sparse (Longformer)","O(n·w)",  "O(n·w)", "Local + global"),
+        ("Random (BigBird)",   "O(n·r)",  "O(n·r)", "Random + local + global"),
+    ]
+    print(f"  {'Variant':25s}  {'Compute':12s}  {'Memory':10s}  {'Coverage'}")
+    for name, comp, mem, cov in variants:
+        print(f"  {name:25s}  {comp:12s}  {mem:10s}  {cov}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_causal_local_window()
+    demo_complexity_summary()

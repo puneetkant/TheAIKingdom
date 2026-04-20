@@ -69,5 +69,55 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "collaborative_filtering.png"); plt.close()
     print("  Saved collaborative_filtering.png")
 
+def demo_user_user_cf():
+    """User-user CF: recommend based on most-similar users."""
+    print("\n=== User-User Collaborative Filtering ===")
+    R, full = make_rating_matrix(n_users=20, n_items=15)
+
+    # Fill NaN with row mean for similarity
+    row_means = np.nanmean(R, axis=1, keepdims=True)
+    R_filled = np.where(np.isnan(R), row_means, R)
+
+    # Cosine similarity between users
+    norms = np.linalg.norm(R_filled, axis=1, keepdims=True) + 1e-9
+    R_norm = R_filled / norms
+    sim = R_norm @ R_norm.T  # (n_users, n_users)
+    np.fill_diagonal(sim, 0)
+
+    target_user = 0
+    top_sim_users = np.argsort(sim[target_user])[::-1][:3]
+    print(f"  Target user: {target_user}")
+    print(f"  Top-3 similar users: {top_sim_users.tolist()}")
+    for u in top_sim_users:
+        print(f"    user {u}: similarity={sim[target_user, u]:.3f}")
+
+    # Predict unrated items for target_user
+    unrated = np.where(np.isnan(R[target_user]))[0]
+    if len(unrated):
+        weights = sim[target_user, top_sim_users]
+        pred = np.average(R_filled[np.ix_(top_sim_users, unrated)], axis=0, weights=weights)
+        best = unrated[pred.argmax()]
+        print(f"  Best predicted item for user {target_user}: item {best} (score={pred.max():.2f})")
+
+
+def demo_sparsity_effect():
+    """Show how data sparsity impacts reconstruction quality."""
+    print("\n=== Sparsity Effect on MF ===")
+    print(f"  {'Sparsity':>10}  {'Observed':>10}  {'RMSE':>8}")
+    for keep_frac in [0.9, 0.7, 0.5, 0.3, 0.1]:
+        R_base, full = make_rating_matrix(n_users=20, n_items=15)
+        rng = np.random.default_rng(99)
+        mask_extra = rng.random(R_base.shape) > keep_frac
+        R_sparse = np.where(mask_extra, np.nan, R_base)
+        obs = (~np.isnan(R_sparse)).sum()
+        P, Q, _ = sgd_mf(R_sparse, k=3, epochs=100)
+        pred = P @ Q.T
+        m = ~np.isnan(R_sparse)
+        rmse = np.sqrt(np.mean((R_sparse[m] - pred[m])**2)) if m.any() else float("nan")
+        print(f"  {1-keep_frac:>10.0%}  {obs:>10}  {rmse:>8.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_user_user_cf()
+    demo_sparsity_effect()

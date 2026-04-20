@@ -62,8 +62,64 @@ def demo_regularisation(X_train, X_test, y_train, y_test):
         acc = pipe.score(X_test, y_test)
         print(f"  C={C:>6}: accuracy={acc:.4f}")
 
+def demo_multiclass():
+    """One-vs-Rest multiclass logistic regression on synthetic 4-class data."""
+    print("\n=== Multiclass Logistic Regression (OvR & Multinomial) ===")
+    from sklearn.datasets import make_classification
+    from sklearn.metrics import accuracy_score
+    X, y = make_classification(n_samples=2000, n_features=10, n_classes=4,
+                                 n_informative=6, random_state=42)
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    for multi_class, solver in [("ovr", "lbfgs"), ("multinomial", "lbfgs")]:
+        pipe = make_pipeline(
+            StandardScaler(),
+            LogisticRegression(multi_class=multi_class, solver=solver,
+                               max_iter=1000, random_state=42),
+        )
+        pipe.fit(X_tr, y_tr)
+        acc = pipe.score(X_te, y_te)
+        print(f"  {multi_class:12s}: accuracy={acc:.4f}")
+
+
+def demo_confusion_heatmap(X_train, X_test, y_train, y_test):
+    """Confusion matrix heatmap."""
+    print("\n=== Confusion Matrix ===")
+    pipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+    pipe.fit(X_train, y_train)
+    cm = confusion_matrix(y_test, pipe.predict(X_test))
+    print(f"  TN={cm[0,0]}  FP={cm[0,1]}  FN={cm[1,0]}  TP={cm[1,1]}")
+    fig, ax = plt.subplots(figsize=(4, 4))
+    ax.imshow(cm, cmap="Blues")
+    for i in range(2):
+        for j in range(2):
+            ax.text(j, i, str(cm[i, j]), ha="center", va="center", fontsize=14)
+    ax.set_xticks([0,1]); ax.set_yticks([0,1])
+    ax.set_xticklabels(["Pred 0","Pred 1"]); ax.set_yticklabels(["True 0","True 1"])
+    ax.set_title("Confusion Matrix")
+    fig.savefig(OUTPUT / "confusion_matrix.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: confusion_matrix.png")
+
+
+def demo_coefficient_analysis(X_train, y_train):
+    """Show feature coefficients after fitting logistic regression."""
+    print("\n=== Feature Coefficients ===")
+    h = fetch_california_housing()
+    scaler = StandardScaler()
+    X_s = scaler.fit_transform(X_train)
+    lr = LogisticRegression(max_iter=1000)
+    lr.fit(X_s, y_train)
+    feature_names = h.feature_names
+    coefs = lr.coef_[0]
+    order = np.argsort(np.abs(coefs))[::-1]
+    for i in order:
+        print(f"  {feature_names[i]:12s}: coef={coefs[i]:+.4f}")
+
+
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = load_binary()
     demo_sigmoid()
     demo_logistic(X_train, X_test, y_train, y_test)
     demo_regularisation(X_train, X_test, y_train, y_test)
+    demo_multiclass()
+    demo_confusion_heatmap(X_train, X_test, y_train, y_test)
+    demo_coefficient_analysis(X_train, y_train)

@@ -74,6 +74,41 @@ def demo_roc_pr():
     plt.tight_layout(); plt.savefig(OUTPUT / "roc_pr_curves.png"); plt.close()
     print("  Saved roc_pr_curves.png")
 
+def demo_multiclass_metrics():
+    """Classification metrics for a 4-class problem (macro vs weighted averaging)."""
+    print("\n=== Multiclass Metrics ===")
+    from sklearn.datasets import make_classification
+    X, y = make_classification(n_samples=2000, n_classes=4, n_features=10,
+                                 n_informative=6, random_state=42)
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+    pipe = make_pipeline(StandardScaler(),
+                          RandomForestClassifier(n_estimators=50, random_state=42))
+    pipe.fit(X_tr, y_tr)
+    preds = pipe.predict(X_te)
+    print(classification_report(y_te, preds, digits=3))
+    auc_ovr = roc_auc_score(y_te, pipe.predict_proba(X_te), multi_class="ovr", average="macro")
+    auc_ovo = roc_auc_score(y_te, pipe.predict_proba(X_te), multi_class="ovo", average="macro")
+    print(f"  ROC-AUC OvR={auc_ovr:.4f}  OvO={auc_ovo:.4f}")
+
+
+def demo_cohen_kappa():
+    """Cohen's kappa measures agreement beyond chance."""
+    print("\n=== Cohen's Kappa ===")
+    from sklearn.metrics import cohen_kappa_score, matthews_corrcoef
+    X, y = load_binary()
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+    for name, model in [("LR", LogisticRegression(max_iter=1000)),
+                          ("RF", RandomForestClassifier(n_estimators=50, random_state=42))]:
+        pipe = make_pipeline(StandardScaler(), model)
+        pipe.fit(X_tr, y_tr)
+        preds = pipe.predict(X_te)
+        kappa = cohen_kappa_score(y_te, preds)
+        mcc   = matthews_corrcoef(y_te, preds)
+        print(f"  {name}: kappa={kappa:.4f}  MCC={mcc:.4f}")
+
+
 if __name__ == "__main__":
     demo_classification_report()
     demo_roc_pr()
+    demo_multiclass_metrics()
+    demo_cohen_kappa()

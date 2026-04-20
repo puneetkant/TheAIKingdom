@@ -83,9 +83,44 @@ def demo_residuals(pipe, X_test, y_test):
     fig.savefig(OUTPUT / "residuals.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: residuals.png")
 
+def demo_lasso_polynomial(X_train, X_test, y_train, y_test):
+    """Polynomial features + Lasso to demonstrate automatic feature selection."""
+    print("\n=== Polynomial Features + Lasso ===")
+    from sklearn.preprocessing import PolynomialFeatures
+    from sklearn.linear_model import Lasso
+    for alpha in [0.001, 0.01, 0.1]:
+        pipe = make_pipeline(
+            StandardScaler(), PolynomialFeatures(degree=2, include_bias=False),
+            StandardScaler(), Lasso(alpha=alpha, max_iter=5000)
+        )
+        pipe.fit(X_train, y_train)
+        rmse = mean_squared_error(y_test, pipe.predict(X_test))**0.5
+        nnz  = (pipe.named_steps["lasso"].coef_ != 0).sum()
+        print(f"  alpha={alpha:.3f}: RMSE={rmse:.4f}  non-zero coefs={nnz}")
+
+
+def demo_huber_robust(X_train, X_test, y_train, y_test):
+    """HuberRegressor is robust to outliers in y."""
+    print("\n=== HuberRegressor (robust to outliers) ===")
+    from sklearn.linear_model import HuberRegressor, LinearRegression
+    # Inject outliers into y_train
+    y_noisy = y_train.copy()
+    idx = np.random.default_rng(99).choice(len(y_noisy), 50, replace=False)
+    y_noisy[idx] += 20.0
+    scaler  = StandardScaler()
+    X_tr_s  = scaler.fit_transform(X_train)
+    X_te_s  = scaler.transform(X_test)
+    for Model, name in [(LinearRegression(), "OLS"), (HuberRegressor(epsilon=1.35), "Huber")]:
+        Model.fit(X_tr_s, y_noisy)
+        rmse = mean_squared_error(y_test, Model.predict(X_te_s))**0.5
+        print(f"  {name:6s}: RMSE={rmse:.4f}  (trained on noisy labels)")
+
+
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test, names = load_data()
     pipe = demo_ols_sklearn(X_train, X_test, y_train, y_test, names)
     demo_ridge(X_train, X_test, y_train, y_test)
     demo_gd_from_scratch(X_train, X_test, y_train, y_test)
     demo_residuals(pipe, X_test, y_test)
+    demo_lasso_polynomial(X_train, X_test, y_train, y_test)
+    demo_huber_robust(X_train, X_test, y_train, y_test)

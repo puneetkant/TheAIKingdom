@@ -74,5 +74,55 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "tokenization.png"); plt.close()
     print("  Saved tokenization.png")
 
+def demo_subword_fertility():
+    """Fertility = avg tokens per word. Lower = more efficient tokenisation."""
+    print("\n=== Subword Fertility ===")
+    corpus = ("the cat sat on the mat the cat is on the mat "
+              "lower lower lower lowest lowest the the the")
+    words = corpus.split()
+    # Char-level: each character is a token
+    char_tokens = sum(len(w) for w in words)
+    char_fertility = char_tokens / len(words)
+    # Word-level: each word is a token (fertility = 1 by definition)
+    word_fertility = 1.0
+    # BPE-level: run BPE and count tokens from vocabulary entries
+    vocab, merges = bpe(corpus, n_merges=15)
+    bpe_token_count = sum(len(k.split()) * v for k, v in vocab.items())
+    bpe_fertility = bpe_token_count / len(words)
+    print(f"  Char-level  fertility: {char_fertility:.2f} tokens/word")
+    print(f"  BPE         fertility: {bpe_fertility:.2f} tokens/word")
+    print(f"  Word-level  fertility: {word_fertility:.2f} tokens/word")
+
+    methods = ["Char", "BPE", "Word"]
+    values  = [char_fertility, bpe_fertility, word_fertility]
+    plt.figure(figsize=(5, 3))
+    plt.bar(methods, values, color=["#e74c3c", "#3498db", "#2ecc71"], edgecolor="white")
+    plt.ylabel("Fertility (tokens / word)")
+    plt.title("Tokenisation Fertility Comparison")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "fertility.png", dpi=100); plt.close()
+    print("  Saved fertility.png")
+
+
+def demo_vocab_coverage():
+    """What fraction of test words appear unsplit in the BPE vocab?"""
+    print("\n=== Vocabulary Coverage ===")
+    train_corpus = ("the cat sat on the mat lower lower lowest the the ")
+    test_words   = ["the", "cat", "sat", "mat", "lower", "lowest",
+                    "running", "jumped", "unknown", "rare"]
+    vocab, _ = bpe(train_corpus, n_merges=10)
+    # Flatten vocabulary tokens (remove </w> marker for comparison)
+    known = {k.replace(" </w>", "").replace(" ", "") for k in vocab}
+    covered = [w for w in test_words if w in known]
+    oov     = [w for w in test_words if w not in known]
+    coverage = len(covered) / len(test_words)
+    print(f"  Test words:   {test_words}")
+    print(f"  Covered ({len(covered)}):  {covered}")
+    print(f"  OOV     ({len(oov)}):  {oov}")
+    print(f"  Coverage: {coverage:.0%}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_subword_fertility()
+    demo_vocab_coverage()

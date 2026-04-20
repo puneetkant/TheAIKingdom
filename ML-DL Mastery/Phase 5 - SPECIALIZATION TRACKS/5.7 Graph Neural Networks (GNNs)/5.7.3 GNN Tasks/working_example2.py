@@ -89,5 +89,55 @@ def main():
     plt.savefig(OUTPUT / "gnn_tasks.png"); plt.close()
     print("  Saved gnn_tasks.png")
 
+def demo_node_feature_importance():
+    """Ablate input features and measure node classification drop."""
+    print("\n=== Node Feature Importance (ablation) ===")
+    np.random.seed(1)
+    N = 8; F_in, F_h, F_out = 4, 3, 2
+    A = np.array([
+        [0,1,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,1,0,1,0,0,0,0],[0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,1,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,1,0,1],[0,0,0,0,0,0,1,0],
+    ], float)
+    labels = np.array([0,0,0,0,1,1,1,1])
+    X_full = np.random.randn(N, F_in)
+    W1 = np.random.randn(F_in, F_h) * 0.3
+    W2 = np.random.randn(F_h, F_out) * 0.3
+
+    def run_gcn(X_in):
+        H = gcn_layer(A, gcn_layer(A, X_in, W1), W2)
+        return softmax(H).argmax(axis=1)
+
+    base_acc = (run_gcn(X_full) == labels).mean()
+    print(f"  Baseline accuracy: {base_acc:.2f}")
+    for feat_idx in range(F_in):
+        X_masked = X_full.copy(); X_masked[:, feat_idx] = 0
+        acc = (run_gcn(X_masked) == labels).mean()
+        drop = base_acc - acc
+        print(f"  Feature {feat_idx} masked: acc={acc:.2f}  drop={drop:+.2f}")
+
+
+def demo_readout_functions():
+    """Compare sum, mean, max readout for graph-level tasks."""
+    print("\n=== Graph Readout Functions ===")
+    np.random.seed(99)
+    results = {"sum": [], "mean": [], "max": []}
+    n_graphs, N, F = 30, 6, 4
+    labels = np.random.randint(0, 2, n_graphs)
+    for y in labels:
+        A = (np.random.rand(N, N) < 0.35).astype(float)
+        A = np.tril(A, -1); A = A + A.T
+        X = np.random.randn(N, F)
+        W = np.random.randn(F, 2) * 0.3
+        H = gcn_layer(A, X, W)
+        for name, fn in [("sum", np.sum), ("mean", np.mean), ("max", np.max)]:
+            g = fn(H, axis=0)
+            pred = int(g[0] > g[1])
+            results[name].append(int(pred == y))
+    for name, hits in results.items():
+        print(f"  {name:5s} readout accuracy: {np.mean(hits):.2f}")
+
+
 if __name__ == "__main__":
     main()
+    demo_node_feature_importance()
+    demo_readout_functions()

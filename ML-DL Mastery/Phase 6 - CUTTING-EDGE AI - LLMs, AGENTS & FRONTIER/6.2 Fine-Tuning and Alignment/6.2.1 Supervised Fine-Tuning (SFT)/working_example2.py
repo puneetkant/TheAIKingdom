@@ -87,5 +87,57 @@ def demo():
     print("  Saved sft_comparison.png")
 
 
+def demo_learning_rate_sensitivity():
+    """Show how learning rate affects SFT convergence on a simple proxy."""
+    print("\n=== Learning Rate Sensitivity ===")
+    epochs = 40
+    lrs = {"lr=0.001": (0.65, 0.15), "lr=0.01": (0.65, 0.10), "lr=0.1": (0.65, 0.25)}
+    plt.figure(figsize=(6, 4))
+    for label, (start, end) in lrs.items():
+        loss = simulated_loss(epochs, start, end, noise_std=0.02)
+        plt.plot(range(epochs), loss, lw=2, label=label)
+        print(f"  {label}: final loss = {loss[-1]:.4f}")
+    plt.xlabel("Epoch"); plt.ylabel("Loss")
+    plt.title("SFT: Learning Rate Sensitivity")
+    plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "sft_lr_sensitivity.png", dpi=100); plt.close()
+    print("  Saved sft_lr_sensitivity.png")
+
+
+def demo_catastrophic_forgetting():
+    """Proxy: fine-tuning on small domain hurts performance on general task."""
+    print("\n=== Catastrophic Forgetting ===")
+    rng = np.random.default_rng(5)
+    X_full, y_full = make_classification(n_samples=2000, n_features=20,
+                                          n_informative=10, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_full, y_full, test_size=0.3, random_state=42)
+    # Base model on full training set
+    base = LogisticRegression(max_iter=500, random_state=42)
+    base.fit(X_train, y_train)
+    base_acc = accuracy_score(y_test, base.predict(X_test))
+    # Fine-tune on tiny biased subset (class 0 heavily overrepresented)
+    class0_idx = np.where(y_train == 0)[0][:28]
+    class1_idx = np.where(y_train == 1)[0][:2]
+    biased_idx = np.concatenate([class0_idx, class1_idx])
+    ft = LogisticRegression(max_iter=500, random_state=42, C=0.1)
+    ft.fit(X_train[biased_idx], y_train[biased_idx])
+    ft_acc = accuracy_score(y_test, ft.predict(X_test))
+    print(f"  Base model test accuracy:          {base_acc:.3f}")
+    print(f"  After biased fine-tune accuracy:   {ft_acc:.3f}")
+    print(f"  Forgetting degradation:            {base_acc - ft_acc:.3f}")
+    plt.figure(figsize=(5, 3))
+    plt.bar(["Base Model", "Fine-tuned (biased)"], [base_acc, ft_acc],
+            color=["steelblue", "tomato"], edgecolor="white")
+    plt.ylabel("Test Accuracy"); plt.title("Catastrophic Forgetting Demo")
+    plt.ylim(0.4, 1.0); plt.grid(True, axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "catastrophic_forgetting.png", dpi=100); plt.close()
+    print("  Saved catastrophic_forgetting.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_learning_rate_sensitivity()
+    demo_catastrophic_forgetting()

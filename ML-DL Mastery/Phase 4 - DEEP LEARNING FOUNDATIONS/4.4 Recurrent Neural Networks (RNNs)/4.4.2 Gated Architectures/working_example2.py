@@ -85,5 +85,56 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "lstm_gru.png"); plt.close()
     print("  Saved lstm_gru.png")
 
+def demo_gate_values():
+    """Trace individual gate activations through a sequence."""
+    print("\n=== LSTM Gate Value Traces ===")
+    np.random.seed(0)
+    seq_len = 50
+    t = np.linspace(0, 4 * np.pi, seq_len)
+    xs = np.sin(t)  # input signal
+
+    lstm = LSTMCell(1, 4, seed=99)
+    f_vals, i_vals, o_vals, c_vals = [], [], [], []
+    for x in xs:
+        xh = np.concatenate([np.array([x]), lstm.h])
+        f = sigmoid(xh @ lstm.Wf + lstm.bf)
+        i = sigmoid(xh @ lstm.Wi + lstm.bi)
+        g = np.tanh(xh @ lstm.Wg + lstm.bg)
+        o = sigmoid(xh @ lstm.Wo + lstm.bo)
+        lstm.c = f * lstm.c + i * g
+        lstm.h = o * np.tanh(lstm.c)
+        f_vals.append(f[0]); i_vals.append(i[0])
+        o_vals.append(o[0]); c_vals.append(lstm.c[0])
+
+    fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=True)
+    axes[0].plot(xs, label="Input (sin)", color="steelblue")
+    axes[0].set_ylabel("Input"); axes[0].legend()
+    axes[1].plot(f_vals, label="Forget gate", color="tomato")
+    axes[1].plot(i_vals, label="Input gate",  color="green", linestyle="--")
+    axes[1].plot(o_vals, label="Output gate", color="purple", linestyle=":")
+    axes[1].set_ylabel("Gate (0-1)"); axes[1].legend()
+    axes[2].plot(c_vals, label="Cell state c[0]", color="darkorange")
+    axes[2].set_ylabel("Cell state"); axes[2].set_xlabel("Time step"); axes[2].legend()
+    plt.suptitle("LSTM Gate Values over Sequence")
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "lstm_gate_traces.png"); plt.close()
+    print("  Saved lstm_gate_traces.png")
+
+
+def demo_gru_vs_lstm_params():
+    """Compare parameter counts for LSTM vs GRU at various hidden sizes."""
+    print("\n=== LSTM vs GRU Parameter Count ===")
+    input_size = 1
+    hidden_sizes = [8, 16, 32, 64, 128]
+    print(f"  {'Hidden':>8s} {'LSTM params':>14s} {'GRU params':>13s} {'Ratio':>8s}")
+    for h in hidden_sizes:
+        n = input_size + h
+        lstm_params = 4 * (n * h + h)   # 4 gates: Wf,Wi,Wg,Wo + biases
+        gru_params  = 3 * (n * h + h)   # 3 gates: Wz,Wr,Wn + biases
+        print(f"  {h:>8d} {lstm_params:>14,d} {gru_params:>13,d} {lstm_params/gru_params:>8.2f}x")
+
+
 if __name__ == "__main__":
     demo()
+    demo_gate_values()
+    demo_gru_vs_lstm_params()

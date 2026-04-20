@@ -68,5 +68,42 @@ def demo():
     plt.savefig(OUTPUT / "cloud_platforms.png"); plt.close()
     print("\n  Saved cloud_platforms.png")
 
+def demo_spot_strategy():
+    """Show break-even analysis for spot vs on-demand instances."""
+    print("\n=== Spot Instance Break-even Analysis ===")
+    print(f"  {'Instance':30s}  {'On-demand':>10}  {'Spot(70%)':>10}  {'Break-even hrs':>15}")
+    for inst, price in INSTANCE_PRICES.items():
+        spot = price * 0.30
+        # Break even: if interrupted and re-started, overhead = 15min per restart
+        overhead_hrs = 0.25  # 15 min to re-checkpoint and restart
+        # At what job length does spot savings outweigh restart risk?
+        # Assume 10% interruption probability: E[loss] = 0.1 * overhead
+        e_loss = 0.10 * overhead_hrs * price
+        savings_per_hr = price - spot
+        if savings_per_hr > 0:
+            breakeven = e_loss / savings_per_hr
+        else:
+            breakeven = float("inf")
+        print(f"  {inst:30s}  ${price:>9.3f}  ${spot:>9.3f}  {breakeven:>14.2f}h")
+
+
+def demo_multi_cloud_comparison():
+    """Compare equivalent GPU instances across cloud providers."""
+    print("\n=== Multi-Cloud Comparison (1 V100 equivalent) ===")
+    v100_instances = {
+        "AWS p3.2xlarge":  3.06,
+        "GCP n1-standard (V100)": 2.48,
+        "Azure NC6s_v3":   3.06,
+    }
+    hours_per_month = 730
+    print(f"  {'Provider':30s}  {'$/hr':>6}  {'$/month':>9}  {'Spot ~$/month':>14}")
+    for provider, rate in v100_instances.items():
+        monthly = rate * hours_per_month
+        spot_monthly = rate * 0.30 * hours_per_month
+        print(f"  {provider:30s}  {rate:>6.3f}  {monthly:>9.0f}  {spot_monthly:>14.0f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_spot_strategy()
+    demo_multi_cloud_comparison()

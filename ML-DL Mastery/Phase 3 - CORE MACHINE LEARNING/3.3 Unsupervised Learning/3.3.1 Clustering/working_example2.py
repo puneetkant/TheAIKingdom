@@ -62,7 +62,63 @@ def demo_agglomerative():
         sil = silhouette_score(X, labels, sample_size=1000, random_state=42)
         print(f"  linkage={linkage:8s}: silhouette={sil:.4f}")
 
+def demo_gaussian_mixture():
+    """Gaussian Mixture Model as a soft clustering method."""
+    print("\n=== Gaussian Mixture Model ===")
+    from sklearn.mixture import GaussianMixture
+    h = fetch_california_housing()
+    X = StandardScaler().fit_transform(h.data)
+    for n in [2, 4, 6, 8]:
+        gmm = GaussianMixture(n_components=n, covariance_type="full", random_state=42, n_init=3)
+        gmm.fit(X)
+        bic = gmm.bic(X)
+        sil = silhouette_score(X, gmm.predict(X), sample_size=2000, random_state=42)
+        print(f"  components={n}: BIC={bic:.1f}  silhouette={sil:.4f}")
+
+
+def demo_minibatch_kmeans():
+    """MiniBatchKMeans — faster approximation for large datasets."""
+    print("\n=== MiniBatchKMeans (speed comparison) ===")
+    import time
+    from sklearn.cluster import MiniBatchKMeans
+    h = fetch_california_housing()
+    X = StandardScaler().fit_transform(h.data)   # full 20 640 rows
+    for k in [4, 8]:
+        t0 = time.perf_counter()
+        km = KMeans(n_clusters=k, random_state=42, n_init=5)
+        km.fit(X); t_km = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
+        mbkm = MiniBatchKMeans(n_clusters=k, random_state=42, n_init=5, batch_size=1024)
+        mbkm.fit(X); t_mb = time.perf_counter() - t0
+
+        inertia_diff = abs(km.inertia_ - mbkm.inertia_) / km.inertia_ * 100
+        print(f"  k={k}: KMeans {t_km:.2f}s  MiniBatch {t_mb:.2f}s  "
+              f"inertia diff={inertia_diff:.2f}%")
+
+
+def demo_cluster_pca_plot():
+    """Visualise K-Means clusters in 2-D PCA space."""
+    print("\n=== Cluster Visualisation (PCA 2D) ===")
+    h = fetch_california_housing()
+    X = StandardScaler().fit_transform(h.data)
+    km = KMeans(n_clusters=4, random_state=42, n_init=10)
+    labels = km.fit_predict(X)
+    X2d = PCA(n_components=2, random_state=42).fit_transform(X)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for c in range(4):
+        mask = labels == c
+        ax.scatter(X2d[mask, 0], X2d[mask, 1], s=5, alpha=0.4, label=f"Cluster {c}")
+    ax.set_title("K-Means (k=4) — PCA 2D projection")
+    ax.legend(markerscale=4)
+    fig.savefig(OUTPUT / "kmeans_pca.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: kmeans_pca.png")
+
+
 if __name__ == "__main__":
     demo_kmeans()
     demo_dbscan()
     demo_agglomerative()
+    demo_gaussian_mixture()
+    demo_minibatch_kmeans()
+    demo_cluster_pca_plot()

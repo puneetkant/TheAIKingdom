@@ -137,5 +137,61 @@ def demo():
     print("\n  Saved staying_current.png")
 
 
+def demo_conference_calendar():
+    """Show top AI conference submission deadlines and their prestige tiers."""
+    print("\n=== AI Conference Calendar ===")
+    conferences = [
+        {"name": "NeurIPS",  "tier": 1, "acceptance": 25, "month_submit": 5,  "month_notify": 9},
+        {"name": "ICML",     "tier": 1, "acceptance": 27, "month_submit": 1,  "month_notify": 5},
+        {"name": "ICLR",     "tier": 1, "acceptance": 30, "month_submit": 10, "month_notify": 1},
+        {"name": "CVPR",     "tier": 1, "acceptance": 25, "month_submit": 11, "month_notify": 3},
+        {"name": "EMNLP",    "tier": 2, "acceptance": 22, "month_submit": 6,  "month_notify": 9},
+        {"name": "AAAI",     "tier": 2, "acceptance": 23, "month_submit": 8,  "month_notify": 12},
+        {"name": "COLM",     "tier": 2, "acceptance": 30, "month_submit": 2,  "month_notify": 5},
+    ]
+    print(f"  {'Conference':10s} {'Tier':6s} {'Acceptance %':14s} {'Submit':8s} {'Notify':8s}")
+    for c in conferences:
+        print(f"  {c['name']:10s} {'Top' if c['tier']==1 else 'Strong':6s} {c['acceptance']:14d}%"
+              f" {c['month_submit']:8d} {c['month_notify']:8d}")
+    fig, ax = plt.subplots(figsize=(8, 4))
+    colors = ["#e74c3c" if c["tier"]==1 else "#3498db" for c in conferences]
+    bars = ax.bar([c["name"] for c in conferences],
+                  [c["acceptance"] for c in conferences], color=colors, edgecolor="white")
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color="#e74c3c", label="Tier 1"), Patch(color="#3498db", label="Tier 2")])
+    ax.set(ylabel="Acceptance Rate (%)", title="AI Conference Acceptance Rates")
+    ax.grid(True, axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "conference_calendar.png", dpi=100); plt.close()
+    print("  Saved conference_calendar.png")
+
+
+def demo_knowledge_decay():
+    """Show how fast ML knowledge becomes outdated (half-life model)."""
+    print("\n=== Knowledge Decay in ML ===")
+    topics = {
+        "Deep Learning basics": 5.0,    # half-life in years
+        "Transformer details":  2.0,
+        "Specific LLM APIs":    0.5,
+        "Python fundamentals":  20.0,
+        "Optimization theory":  15.0,
+        "Latest SOTA benchmarks": 0.25,
+    }
+    t = np.linspace(0, 5, 100)
+    plt.figure(figsize=(8, 4))
+    for topic, half_life in topics.items():
+        relevance = 0.5 ** (t / half_life)
+        plt.plot(t, relevance * 100, lw=2, label=f"{topic} (t1/2={half_life}yr)")
+        print(f"  {topic:32s}: {relevance[-1]*100:.1f}% relevance after 5 years")
+    plt.xlabel("Years since learned"); plt.ylabel("Relevance (%)")
+    plt.title("ML Knowledge Half-Life")
+    plt.legend(fontsize=7); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "knowledge_decay.png", dpi=100); plt.close()
+    print("  Saved knowledge_decay.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_conference_calendar()
+    demo_knowledge_decay()

@@ -70,5 +70,43 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "ts_anomaly.png"); plt.close()
     print("  Saved ts_anomaly.png")
 
+def demo_lof_analog():
+    """LOF-analog: local density-based anomaly scoring on time windows."""
+    print("\n=== Local Density Anomaly Scoring ===")
+    ts, true_idx = make_series_with_anomalies()
+    window = 10; k_nn = 5; scores = []
+    # Feature: each window as a flattened vector, find k nearest distances
+    for i in range(window, len(ts) - window):
+        ref = ts[i-window:i]
+        # Compare against k non-overlapping windows
+        candidates = [ts[j-window:j] for j in range(window, len(ts)-window)
+                      if abs(j-i) > window][:20]
+        if not candidates:
+            scores.append(0); continue
+        dists = [np.linalg.norm(ref - c) for c in candidates]
+        scores.append(np.mean(sorted(dists)[:k_nn]))
+
+    scores_arr = np.array(scores)
+    threshold = np.percentile(scores_arr, 95)
+    detected = np.where(scores_arr > threshold)[0] + window
+    tp = sum(1 for d in detected if any(abs(d - t) <= 5 for t in true_idx))
+    print(f"  Detections: {len(detected)}  TPs (within 5 steps): {tp}/{len(true_idx)}")
+
+
+def demo_threshold_sensitivity():
+    """Show precision/recall tradeoff across Z-score thresholds."""
+    print("\n=== Threshold Sensitivity ===")
+    ts, true_idx = make_series_with_anomalies()
+    print(f"  {'Threshold':>10}  {'Detected':>10}  {'Precision':>10}  {'Recall':>8}")
+    for t in [2.0, 2.5, 3.0, 3.5, 4.0]:
+        _, flags = zscore_detect(ts, threshold=t)
+        det = flags.sum()
+        tp = np.sum(flags[true_idx])
+        prec = tp / (det + 1e-8); rec = tp / len(true_idx)
+        print(f"  {t:>10.1f}  {det:>10}  {prec:>10.3f}  {rec:>8.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_lof_analog()
+    demo_threshold_sensitivity()

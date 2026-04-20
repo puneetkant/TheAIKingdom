@@ -87,7 +87,61 @@ def demo_brownian_motion():
     fig.savefig(OUTPUT / "brownian_motion.png", dpi=120, bbox_inches="tight")
     plt.close(fig); print(f"  Saved: brownian_motion.png")
 
+def demo_poisson_process():
+    print("\n=== Poisson Process ===")
+    np.random.seed(3)
+    lam = 5.0  # average arrivals per unit time
+    T   = 10.0  # total time window
+    # Simulate: inter-arrival times ~ Exp(lambda)
+    arrivals = []
+    t = 0
+    while t < T:
+        t += np.random.exponential(1.0 / lam)
+        if t < T:
+            arrivals.append(t)
+    n_arrivals = len(arrivals)
+    print(f"  lambda={lam}, T={T}")
+    print(f"  Expected arrivals: {lam*T:.1f},  Observed: {n_arrivals}")
+    # Count in unit windows
+    counts = [sum(1 for a in arrivals if i <= a < i+1) for i in range(int(T))]
+    print(f"  Counts per window: {counts}")
+    print(f"  Mean={np.mean(counts):.2f} (should be ~{lam})")
+
+    fig, ax = plt.subplots(figsize=(8, 3))
+    ax.step([0] + arrivals + [T], list(range(n_arrivals+1)) + [n_arrivals],
+            where="post", color="steelblue", lw=1.5)
+    ax.set_xlabel("Time"); ax.set_ylabel("Cumulative Arrivals")
+    ax.set_title(f"Poisson Process (lambda={lam})")
+    ax.grid(True, alpha=0.3)
+    fig.savefig(OUTPUT / "poisson_process.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: poisson_process.png")
+
+
+def demo_mean_reversion():
+    print("\n=== Ornstein-Uhlenbeck (Mean-Reverting) Process ===")
+    np.random.seed(4)
+    T, n = 5.0, 500; dt = T / n
+    theta, mu_ou, sigma = 2.0, 0.5, 0.3  # speed, mean, volatility
+    t = np.linspace(0, T, n+1)
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    for _ in range(5):
+        X = np.zeros(n+1); X[0] = np.random.uniform(-1, 2)
+        for i in range(n):
+            dW = np.random.normal(0, dt**0.5)
+            X[i+1] = X[i] + theta * (mu_ou - X[i]) * dt + sigma * dW
+        ax.plot(t, X, lw=0.8, alpha=0.7)
+    ax.axhline(mu_ou, color="red", linestyle="--", lw=1.5, label=f"Long-run mean={mu_ou}")
+    ax.set_xlabel("Time"); ax.set_ylabel("X(t)")
+    ax.set_title("Ornstein-Uhlenbeck Mean-Reverting Process")
+    ax.legend(); ax.grid(True, alpha=0.3)
+    fig.savefig(OUTPUT / "mean_reversion.png", dpi=120, bbox_inches="tight")
+    plt.close(fig); print("  Saved: mean_reversion.png")
+
+
 if __name__ == "__main__":
     demo_markov_chain()
     demo_random_walk()
     demo_brownian_motion()
+    demo_poisson_process()
+    demo_mean_reversion()

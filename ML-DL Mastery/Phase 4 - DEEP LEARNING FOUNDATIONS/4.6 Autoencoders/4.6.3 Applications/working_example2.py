@@ -75,5 +75,51 @@ def demo():
     ax.legend(); plt.tight_layout(); plt.savefig(OUTPUT / "ae_anomaly.png"); plt.close()
     print("  Saved ae_anomaly.png")
 
+def demo_dimensionality_reduction_ae():
+    """Compare AE latent space with PCA for dimensionality reduction."""
+    print("\n=== AE vs PCA for Dimensionality Reduction ===")
+    from sklearn.decomposition import PCA
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.datasets import load_wine
+    from sklearn.metrics import accuracy_score
+
+    wine = load_wine()
+    X_all = StandardScaler().fit_transform(wine.data)
+    y_all = wine.target
+    X_tr, X_te, y_tr, y_te = train_test_split(X_all, y_all, test_size=0.2, random_state=42)
+
+    # PCA 4-component
+    pca = PCA(n_components=4); Xp_tr = pca.fit_transform(X_tr); Xp_te = pca.transform(X_te)
+    lr_pca = LogisticRegression(max_iter=500, random_state=42).fit(Xp_tr, y_tr)
+    acc_pca = accuracy_score(y_te, lr_pca.predict(Xp_te))
+
+    # AE 4-dim bottleneck
+    params = train_ae_simple(X_tr, n_z=4, epochs=200)
+    We1,be1,We2,be2,_,_,_,_ = params
+    Xa_tr = relu(relu(X_tr@We1+be1)@We2+be2)
+    Xa_te = relu(relu(X_te@We1+be1)@We2+be2)
+    lr_ae = LogisticRegression(max_iter=500, random_state=42).fit(Xa_tr, y_tr)
+    acc_ae = accuracy_score(y_te, lr_ae.predict(Xa_te))
+
+    print(f"  PCA (4 components) downstream accuracy:  {acc_pca:.4f}")
+    print(f"  AE  (4-dim latent) downstream accuracy:  {acc_ae:.4f}")
+
+
+def demo_reconstruction_feature_analysis():
+    """Examine which features the AE reconstructs well vs poorly."""
+    print("\n=== Feature-wise Reconstruction Error ===")
+    h = fetch_california_housing(); X = StandardScaler().fit_transform(h.data)
+    X_tr, X_te = train_test_split(X, test_size=0.2, random_state=42)
+    params = train_ae_simple(X_tr, n_z=4, epochs=200)
+    x_hat = reconstruct(X_te, params)
+    feat_errors = np.mean((x_hat - X_te)**2, axis=0)
+    feature_names = h.feature_names
+    print(f"  {'Feature':15s}  {'MSE':>8s}")
+    for name, err in sorted(zip(feature_names, feat_errors), key=lambda x: x[1], reverse=True):
+        print(f"  {name:15s}  {err:8.4f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_dimensionality_reduction_ae()
+    demo_reconstruction_feature_analysis()

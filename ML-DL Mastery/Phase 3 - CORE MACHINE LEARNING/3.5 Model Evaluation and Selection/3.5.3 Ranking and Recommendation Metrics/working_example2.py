@@ -71,6 +71,52 @@ def demo_regression_as_ranking():
         hit = len(actual_top20 & set(pred_rank[:k])) / len(actual_top20)
         print(f"  Recall of true top-20% in top-{k} predictions: {hit:.2%}")
 
+def demo_hit_rate():
+    """Hit Rate @ K: fraction of users for whom at least one relevant item is in top-K."""
+    print("\n=== Hit Rate @ K (multi-user simulation) ===")
+    np.random.seed(42)
+    n_users = 200
+    n_items = 50
+    n_relevant = 5   # each user has 5 relevant items
+    hit_counts = {k: 0 for k in [5, 10, 20]}
+    for _ in range(n_users):
+        relevant = set(np.random.choice(n_items, n_relevant, replace=False))
+        # Simulate predicted ranking (noisy)
+        scores = np.random.rand(n_items)
+        scores[list(relevant)] += 0.5   # boost relevant items
+        ranked = np.argsort(-scores)
+        for k in [5, 10, 20]:
+            if len(relevant & set(ranked[:k])) > 0:
+                hit_counts[k] += 1
+    for k, hits in hit_counts.items():
+        print(f"  HR@{k:>2} = {hits/n_users:.4f}")
+
+
+def demo_mrr():
+    """Mean Reciprocal Rank: average of 1/rank_of_first_relevant_item."""
+    print("\n=== Mean Reciprocal Rank (MRR) ===")
+    rankings = [
+        [0, 0, 1, 0, 1],   # first hit at rank 3
+        [1, 0, 0, 1, 0],   # first hit at rank 1
+        [0, 1, 0, 0, 1],   # first hit at rank 2
+        [0, 0, 0, 0, 1],   # first hit at rank 5
+    ]
+    rr_scores = []
+    for r in rankings:
+        for i, v in enumerate(r, 1):
+            if v:
+                rr_scores.append(1.0 / i)
+                break
+        else:
+            rr_scores.append(0.0)
+    mrr = np.mean(rr_scores)
+    for i, (r, rr) in enumerate(zip(rankings, rr_scores)):
+        print(f"  Query {i+1}: ranks={r}  RR={rr:.4f}")
+    print(f"  MRR = {mrr:.4f}")
+
+
 if __name__ == "__main__":
     demo_manual_metrics()
     demo_regression_as_ranking()
+    demo_hit_rate()
+    demo_mrr()

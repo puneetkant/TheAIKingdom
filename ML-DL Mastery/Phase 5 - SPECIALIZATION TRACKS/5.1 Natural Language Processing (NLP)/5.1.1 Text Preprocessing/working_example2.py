@@ -58,5 +58,40 @@ def demo():
     (OUTPUT / "token_freq.txt").write_text("\n".join(f"{w}\t{c}" for w,c in freq.most_common(20)))
     print(f"Saved token_freq.txt ({len(freq)} unique terms)")
 
+def demo_ngrams():
+    """Build character and word n-grams from corpus."""
+    print("\n=== N-gram Extraction ===")
+    text = "the cat sat on the mat and the cat ate a rat"
+    tokens = text.split()
+    for n in [2, 3]:
+        ngrams = [tuple(tokens[i:i+n]) for i in range(len(tokens)-n+1)]
+        freq   = Counter(ngrams)
+        print(f"  {n}-grams (top 3): {freq.most_common(3)}")
+    # Character 3-grams for OOV handling
+    word = "preprocessing"
+    char_ngrams = [word[i:i+3] for i in range(len(word)-2)]
+    print(f"  Char 3-grams of '{word}': {char_ngrams}")
+
+
+def demo_vocab_stats():
+    """Compute vocabulary statistics: TTR, hapax legomena."""
+    print("\n=== Vocabulary Statistics ===")
+    extended = CORPUS + [
+        "Computers process natural language using algorithms and models.",
+        "Machine translation helps humans communicate across languages.",
+    ]
+    all_tok = []
+    for doc in extended:
+        all_tok.extend(remove_stopwords(tokenize(clean(doc))))
+    total = len(all_tok)
+    unique = len(set(all_tok))
+    ttr   = unique / total
+    hapax = sum(1 for w, c in Counter(all_tok).items() if c == 1)
+    print(f"  Total tokens: {total}  Unique: {unique}  TTR: {ttr:.3f}")
+    print(f"  Hapax legomena (appear once): {hapax} ({100*hapax/unique:.1f}% of vocab)")
+
+
 if __name__ == "__main__":
     demo()
+    demo_ngrams()
+    demo_vocab_stats()

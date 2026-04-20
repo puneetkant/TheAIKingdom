@@ -89,5 +89,45 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "autoregressive_ngram.png"); plt.close()
     print("  Saved autoregressive_ngram.png")
 
+def demo_temperature_sampling():
+    """Show how temperature affects diversity vs coherence."""
+    print("\n=== Temperature Sampling ===")
+    model = build_ngram(CORPUS, n=2)
+    print("  Bigram samples at different temperatures:")
+    for temp in [0.3, 1.0, 2.0]:
+        text = generate(model, n=2, length=60, seed="th")
+        # Re-do generation with temperature
+        random.seed(42)
+        text = "th"
+        for _ in range(60):
+            ctx = text[-2:]
+            text += sample_ngram(model, ctx, temperature=temp)
+        print(f"  T={temp}: {repr(text[:50])}")
+
+
+def demo_ngram_order_comparison():
+    """Compare n=2, 3, 4 on perplexity vs generation quality."""
+    print("\n=== N-gram Order Comparison ===")
+    test = CORPUS[300:400]
+    print(f"  {'N':>4}  {'Contexts':>10}  {'Perplexity':>12}")
+    for n in [1, 2, 3, 4]:
+        model = build_ngram(CORPUS, n=n)
+        log_prob = 0; count = 0
+        for i in range(len(test) - n):
+            ctx = test[i:i+n-1] if n > 1 else ""
+            nxt = test[i+n-1]
+            if n > 1:
+                ctr = model.get(ctx, Counter()); total = sum(ctr.values()) or 1
+                p = ctr.get(nxt, 0) / total + 1e-8
+            else:
+                char_counts = Counter(CORPUS); total = len(CORPUS)
+                p = char_counts.get(nxt, 0) / total + 1e-8
+            log_prob += np.log(p); count += 1
+        ppl = np.exp(-log_prob / count) if count else float("inf")
+        print(f"  {n:>4}  {len(model):>10}  {ppl:>12.2f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_temperature_sampling()
+    demo_ngram_order_comparison()

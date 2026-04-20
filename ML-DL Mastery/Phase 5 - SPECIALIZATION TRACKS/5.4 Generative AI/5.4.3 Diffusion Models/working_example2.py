@@ -59,5 +59,52 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "diffusion_snr.png"); plt.close()
     print("  Saved diffusion_forward.png, diffusion_snr.png")
 
+def demo_ddpm_reverse_step():
+    """Simulate one DDPM denoising step (reverse process)."""
+    print("\n=== DDPM Reverse Process (one step) ===")
+    betas = linear_beta_schedule(T=200)
+    alphas = 1 - betas
+    alphas_cumprod = np.cumprod(alphas)
+
+    X = load_digits().data / 16.0
+    x0 = X[0] * 2 - 1
+    t = 100  # start mid-noise
+    xt, eps = forward_process(x0, t, alphas_cumprod)
+
+    # Simple denoising step: predict x0 directly (ideal case)
+    alpha_bar_t   = alphas_cumprod[t]
+    alpha_bar_tm1 = alphas_cumprod[t-1]
+    beta_t = betas[t]
+    # DDPM posterior mean (using true eps as oracle denoiser)
+    eps_pred = eps  # oracle: we know the true noise
+    x0_pred  = (xt - np.sqrt(1 - alpha_bar_t) * eps_pred) / np.sqrt(alpha_bar_t)
+    mu_t = (np.sqrt(alpha_bar_tm1) * beta_t / (1 - alpha_bar_t)) * x0_pred + \
+           (np.sqrt(alphas[t]) * (1 - alpha_bar_tm1) / (1 - alpha_bar_t)) * xt
+    sigma_t = np.sqrt(beta_t * (1 - alpha_bar_tm1) / (1 - alpha_bar_t))
+    x_prev = mu_t + sigma_t * np.random.randn(*xt.shape)
+    print(f"  t={t}: xt rms={np.sqrt((xt**2).mean()):.4f}")
+    print(f"  x_prev rms={np.sqrt((x_prev**2).mean()):.4f}  (one step closer to x0)")
+    print(f"  x0 rms={np.sqrt((x0**2).mean()):.4f}")
+
+
+def demo_cosine_vs_linear_schedule():
+    """Compare linear and cosine noise schedules."""
+    print("\n=== Noise Schedules: Linear vs Cosine ===")
+    T = 200
+    betas_linear = linear_beta_schedule(T)
+    # Cosine schedule (Improved DDPM)
+    s = 0.008
+    t_steps = np.linspace(0, T, T+1) / T
+    f_t = np.cos((t_steps + s) / (1 + s) * np.pi / 2) ** 2
+    alphas_cp_cos = f_t / f_t[0]
+    alphas_cp_lin = np.cumprod(1 - betas_linear)
+
+    print(f"  {'t':>6}  {'alpha_bar(linear)':>20}  {'alpha_bar(cosine)':>20}")
+    for t in [0, 50, 100, 150, 199]:
+        print(f"  {t:>6}  {alphas_cp_lin[t]:>20.6f}  {alphas_cp_cos[t]:>20.6f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_ddpm_reverse_step()
+    demo_cosine_vs_linear_schedule()

@@ -72,5 +72,42 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "object_detection_nms.png"); plt.close()
     print("  Saved object_detection_nms.png")
 
+def demo_anchor_boxes():
+    """Generate multi-scale anchor boxes at a feature map location."""
+    print("\n=== Anchor Box Generation ===")
+    scales = [32, 64, 128]; ratios = [0.5, 1.0, 2.0]
+    cx, cy = 100, 100  # anchor centre
+    print(f"  {'Scale':>8}  {'Ratio':>6}  Box (x1,y1,x2,y2)")
+    for scale in scales:
+        for ratio in ratios:
+            w = scale * np.sqrt(ratio)
+            h = scale / np.sqrt(ratio)
+            box = [cx - w/2, cy - h/2, cx + w/2, cy + h/2]
+            print(f"  {scale:>8}  {ratio:>6.1f}  [{box[0]:.1f},{box[1]:.1f},{box[2]:.1f},{box[3]:.1f}]")
+
+
+def demo_map_computation():
+    """Compute mAP@0.5 from synthetic detection results."""
+    print("\n=== mAP@0.5 Demo ===")
+    rng = np.random.default_rng(42)
+    n_gt = 10
+    gt_boxes = rng.uniform(10, 90, (n_gt, 4))
+    gt_boxes[:, 2:] += gt_boxes[:, :2]  # x2=x1+dw, y2=y1+dh
+
+    # Simulate detections with varying confidence
+    det_scores = np.sort(rng.uniform(0, 1, 12))[::-1]
+    tp_flags = rng.random(12) < 0.6  # ~60% are true positives
+
+    # Precision-recall curve
+    cum_tp = np.cumsum(tp_flags).astype(float)
+    prec = cum_tp / (np.arange(len(tp_flags)) + 1)
+    rec  = cum_tp / n_gt
+    ap = np.trapz(prec, rec)
+    print(f"  Ground truth boxes: {n_gt}")
+    print(f"  Detections: {len(det_scores)} | AP@0.5 ~ {ap:.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_anchor_boxes()
+    demo_map_computation()

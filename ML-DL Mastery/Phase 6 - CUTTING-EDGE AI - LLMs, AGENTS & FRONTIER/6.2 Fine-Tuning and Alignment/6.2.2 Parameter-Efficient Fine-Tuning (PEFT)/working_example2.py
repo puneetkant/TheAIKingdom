@@ -77,5 +77,54 @@ def demo():
     print("  Saved peft_lora.png")
 
 
+def demo_adapter_layers():
+    """Adapter layers: small bottleneck modules inserted between transformer layers."""
+    print("\n=== Adapter Layers ===")
+    d_model = 768
+    bottleneck_dims = [8, 16, 32, 64, 128]
+    for b in bottleneck_dims:
+        # Adapter: down-project (d_model -> b), up-project (b -> d_model)
+        adapter_params = d_model * b + b + b * d_model + d_model
+        pct = 100 * adapter_params / (d_model * d_model)
+        print(f"  bottleneck={b:4d}: adapter params={adapter_params:7,}  ({pct:.2f}% of one FFN weight)")
+    plt.figure(figsize=(5, 3))
+    adapter_p = [d_model*b + b + b*d_model + d_model for b in bottleneck_dims]
+    plt.plot(bottleneck_dims, [p/1000 for p in adapter_p], "o-", color="darkorange", lw=2)
+    plt.xlabel("Bottleneck Dim"); plt.ylabel("Adapter Params (K)")
+    plt.title("Adapter Layer Parameter Count")
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "adapter_layers.png", dpi=100); plt.close()
+    print("  Saved adapter_layers.png")
+
+
+def demo_rank_ablation():
+    """Compare LoRA reconstruction quality across ranks for a low-rank matrix."""
+    print("\n=== Rank Ablation on Low-Rank Target ===")
+    rng = np.random.default_rng(0)
+    d = 256
+    # Create a truly low-rank matrix (rank 4)
+    true_rank = 4
+    L = rng.standard_normal((d, true_rank))
+    R = rng.standard_normal((true_rank, d))
+    W_low = L @ R  # intrinsically rank-4
+    ranks = [1, 2, 4, 8, 16, 32]
+    for r in ranks:
+        _, err = lora_approx(W_low, r)
+        print(f"  rank={r:3d}: error={err:.6f}")
+    errors = [lora_approx(W_low, r)[1] for r in ranks]
+    plt.figure(figsize=(5, 3))
+    plt.plot(ranks, errors, "o-", color="mediumseagreen", lw=2)
+    plt.axvline(true_rank, color="red", linestyle="--", label=f"True rank={true_rank}")
+    plt.xlabel("LoRA Rank"); plt.ylabel("Reconstruction Error")
+    plt.title("Rank Ablation on Low-Rank Matrix")
+    plt.legend(); plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(OUTPUT / "rank_ablation.png", dpi=100); plt.close()
+    print("  Saved rank_ablation.png")
+
+
 if __name__ == "__main__":
     demo()
+    demo_adapter_layers()
+    demo_rank_ablation()

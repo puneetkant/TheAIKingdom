@@ -80,5 +80,59 @@ def demo():
     plt.tight_layout(); plt.savefig(OUTPUT / "recsys_evaluation.png"); plt.close()
     print("\n  Saved recsys_evaluation.png")
 
+def demo_catalog_coverage():
+    """Measure catalog coverage and long-tail exposure across users."""
+    print("\n=== Catalog Coverage ===")
+    np.random.seed(42)
+    N_USERS, N_ITEMS, K = 50, 100, 10
+    relevant_all = {u: set(np.random.choice(N_ITEMS, 5, replace=False)) for u in range(N_USERS)}
+
+    # Popularity-biased recommender (only recommends top-20 items)
+    popular_items = list(range(20))
+    def pop_rec(u): return popular_items + list(np.random.choice(
+        [i for i in range(N_ITEMS) if i >= 20], N_ITEMS - 20, replace=False))
+
+    # Diverse recommender
+    def diverse_rec(u): return np.random.permutation(N_ITEMS).tolist()
+
+    for name, rec_fn in [("Popular", pop_rec), ("Diverse", diverse_rec)]:
+        all_recs = set()
+        for u in range(N_USERS):
+            all_recs.update(rec_fn(u)[:K])
+        coverage = len(all_recs) / N_ITEMS
+        print(f"  {name:10s} catalog coverage: {coverage:.2%}")
+
+
+def demo_metric_tradeoffs():
+    """Show precision vs diversity tradeoff across lambda in MMR."""
+    print("\n=== Precision-Diversity Tradeoff ===")
+    rng = np.random.default_rng(9)
+    N_ITEMS = 20; K = 5
+    # Relevance scores and random similarity matrix
+    scores_v = rng.uniform(0, 1, N_ITEMS)
+    sim_mat = rng.uniform(0, 1, (N_ITEMS, N_ITEMS))
+    sim_mat = (sim_mat + sim_mat.T) / 2; np.fill_diagonal(sim_mat, 1)
+
+    def mmr_select(scores, sim, lam, k):
+        selected = []; cands = list(range(len(scores)))
+        while len(selected) < k and cands:
+            if not selected:
+                best = max(cands, key=lambda i: scores[i])
+            else:
+                best = max(cands, key=lambda i: lam*scores[i] - (1-lam)*max(sim[i,j] for j in selected))
+            selected.append(best); cands.remove(best)
+        return selected
+
+    print(f"  {'Lambda':>8}  {'Avg Relevance':>15}  {'Avg Diversity':>14}")
+    for lam in [1.0, 0.7, 0.5, 0.3, 0.0]:
+        sel = mmr_select(scores_v, sim_mat, lam, K)
+        rel = np.mean(scores_v[sel])
+        pairs = [(i, j) for i in sel for j in sel if i < j]
+        div = np.mean([1 - sim_mat[i, j] for i, j in pairs]) if pairs else 0
+        print(f"  {lam:>8.1f}  {rel:>15.3f}  {div:>14.3f}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_catalog_coverage()
+    demo_metric_tradeoffs()

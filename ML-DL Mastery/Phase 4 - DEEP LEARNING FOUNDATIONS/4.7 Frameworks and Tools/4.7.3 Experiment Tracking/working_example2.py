@@ -73,5 +73,46 @@ def demo():
     print("  Saved experiment_tracking.png")
     print(f"  Run JSONs saved to {RUN_DIR}")
 
+def demo_compare_runs():
+    """Load all saved runs and compare them in a leaderboard-style table."""
+    print("\n=== Run Leaderboard ===")
+    runs = sorted(RUN_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime)
+    if not runs:
+        print("  No runs found — run demo() first."); return
+    records = [json.loads(r.read_text()) for r in runs]
+    # Sort by test_mse ascending
+    records_sorted = sorted(records, key=lambda r: r["metrics"].get("test_mse", [9999])[0])
+    print(f"  {'Rank':>4}  {'Run ID':>10}  {'alpha':>8}  {'Test MSE':>10}  {'Duration':>10}")
+    for rank, rec in enumerate(records_sorted, 1):
+        alpha = rec["params"].get("alpha", "?")
+        mse   = rec["metrics"].get("test_mse", [0])[0]
+        dur   = rec.get("duration_s", 0)
+        print(f"  {rank:>4}  {rec['run_id']:>10}  {alpha:>8}  {mse:>10.4f}  {dur:>9.3f}s")
+
+
+def demo_csv_export():
+    """Export run history to CSV — common for sharing experiment results."""
+    print("\n=== Export Runs to CSV ===")
+    runs = sorted(RUN_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime)
+    if not runs:
+        print("  No runs found."); return
+    records = [json.loads(r.read_text()) for r in runs]
+    csv_path = OUTPUT / "run_history.csv"
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["run_id", "alpha", "train_mse", "test_mse", "duration_s"])
+        writer.writeheader()
+        for rec in records:
+            writer.writerow({
+                "run_id": rec["run_id"],
+                "alpha":  rec["params"].get("alpha"),
+                "train_mse": rec["metrics"].get("train_mse", [None])[0],
+                "test_mse":  rec["metrics"].get("test_mse", [None])[0],
+                "duration_s": rec.get("duration_s"),
+            })
+    print(f"  Saved {len(records)} runs to {csv_path}")
+
+
 if __name__ == "__main__":
     demo()
+    demo_compare_runs()
+    demo_csv_export()
